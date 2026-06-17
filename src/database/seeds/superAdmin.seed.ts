@@ -1,52 +1,103 @@
-// import db from "../connection";
-// import { superAdmin } from "@/config/env";
-// import { hashPassword } from "@/modules/auth/utils/password";
+import db from "../connection";
 
-// export async function seedSuperAdmin() {
-//   console.log("Seeding super admin...");
+import { superAdmin } from "../data/superAdmin";
 
-//   const [roles] = await db.execute(
-//     `
-//     SELECT id
-//     FROM roles
-//     WHERE slug = ?
-//     LIMIT 1
-//     `,
-//     ["super-admin"],
-//   );
+import { hashPassword } from "@/modules/auth/utils/password";
 
-//   const role = (roles as any[])[0];
+type RoleRow = {
+  id: number;
+};
 
-//   if (!role) {
-//     throw new Error("Super Admin role not found");
-//   }
+type UserRow = {
+  id: number;
+};
 
-//   const hashedPassword = await hashPassword(superAdmin.password);
+export async function seedSuperAdmin() {
+  console.log("Seeding super admin...");
 
-//   await db.execute(
-//     `
-//     INSERT INTO users
-//     (
-//       first_name,
-//       last_name,
-//       email,
-//       password,
-//       role_id
-//     )
-//     VALUES (?, ?, ?, ?, ?)
-//     ON DUPLICATE KEY UPDATE
-//       first_name = VALUES(first_name),
-//       last_name = VALUES(last_name),
-//       role_id = VALUES(role_id)
-//     `,
-//     [
-//       superAdmin.firstName,
-//       superAdmin.lastName,
-//       superAdmin.email,
-//       hashedPassword,
-//       role.id,
-//     ],
-//   );
+  /**
+   * Check if super admin already exists.
+   *
+   * Prevents duplicate users when
+   * seeding multiple times.
+   */
+  const [existingUsers] = await db.execute(
+    `
+    SELECT id
+    FROM users
+    WHERE email = ?
+    LIMIT 1
+    `,
+    [superAdmin.email],
+  );
 
-//   console.log("Super admin seeded");
-// }
+  const existingUser = (existingUsers as UserRow[])[0];
+
+  if (existingUser) {
+    console.log("Super admin already exists. Skipping...");
+
+    return;
+  }
+
+  /**
+   * Resolve Super Admin role.
+   */
+  const [roleRows] = await db.execute(
+    `
+    SELECT id
+    FROM roles
+    WHERE slug = ?
+    LIMIT 1
+    `,
+    ["super-admin"],
+  );
+
+  const role = (roleRows as RoleRow[])[0];
+
+  if (!role) {
+    throw new Error("Super Admin role not found. Run role seeds first.");
+  }
+
+  /**
+   * Hash password before saving.
+   */
+  const passwordHash = await hashPassword(superAdmin.password);
+
+  /**
+   * Create bootstrap admin account.
+   */
+  await db.execute(
+    `
+    INSERT INTO users
+    (
+      first_name,
+      last_name,
+      email,
+      password_hash,
+      role_id,
+      status,
+      email_verified,
+      email_verified_at,
+      password_changed_at
+    )
+    VALUES
+    (
+      ?, ?, ?, ?, ?, ?, ?, NOW(), NOW()
+    )
+    `,
+    [
+      superAdmin.firstName,
+      superAdmin.lastName,
+      superAdmin.email,
+      passwordHash,
+
+      role.id,
+
+      "active",
+
+      true,
+    ],
+  );
+
+  console.log("Super admin created successfully");
+}

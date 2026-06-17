@@ -3,6 +3,7 @@ import db from "../connection";
 import { seedPermissions } from "./permissions.seed";
 import { seedRolePermissions } from "./rolePermission.seed";
 import { seedRoles } from "./roles.seed";
+import { seedSuperAdmin } from "./superAdmin.seed";
 
 async function seedDatabase() {
   try {
@@ -28,6 +29,14 @@ async function seedDatabase() {
      * - permissions table populated
      */
     await seedRolePermissions();
+
+    /**
+     * Create Super admin.
+     *
+     * Requires:
+     * - roles table populated
+     */
+    await seedSuperAdmin();
 
     console.log("\nDatabase seeding completed successfully");
   } catch (error) {
