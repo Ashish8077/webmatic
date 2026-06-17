@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
     email                   VARCHAR(255)    NOT NULL UNIQUE,
     phone                   VARCHAR(20)     DEFAULT NULL,
     password_hash           VARCHAR(255)    NOT NULL,
-    role                    ENUM('SUPER_ADMIN','EDITOR','MARKETING_MANAGER') NOT NULL DEFAULT 'EDITOR',
+    role_id                 BIGINT UNSIGNED NOT NULL,
     profile_image           VARCHAR(500)    DEFAULT NULL,
     status                  ENUM('active','inactive','suspended') NOT NULL DEFAULT 'active',
     email_verified          BOOLEAN         NOT NULL DEFAULT FALSE,
@@ -17,7 +17,12 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at              TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at              TIMESTAMP       NULL DEFAULT NULL,
 
-    INDEX idx_role          (role),
+    CONSTRAINT fk_users_role
+        FOREIGN KEY (role_id)
+        REFERENCES roles(id)
+        ON DELETE RESTRICT,
+
+    INDEX idx_role          (role_id),
     INDEX idx_status        (status),
     INDEX idx_deleted_at    (deleted_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

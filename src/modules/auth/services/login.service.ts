@@ -1,49 +1,72 @@
-import bcrypt from "bcryptjs";
-import { UserRepository } from "../repositories/user.repository";
+import { comparePassword } from "../utils/password";
 
-export class LoginService {
-  constructor(private userRepository = new UserRepository()) {}
+import { findUserByEmail } from "../repositories/user.repository";
 
-  async execute(email: string, password: string, ip: string = "unknown") {
-    // 1. Find user
-    const user = await this.userRepository.findByEmail(email);
+import {
+  durationToDate,
+  durationToSeconds,
+  generateAccessToken,
+  generateRefreshToken,
+  getRefreshTokenExpiryDate,
+} from "../utils/jwt";
 
-    if (!user) {
-      // Generic message — never reveal whether email exists
-      throw new Error("Invalid credentials");
-    }
+import { LoginInput } from "../validators/login.schema";
+import { AppError } from "@/lib/errors/app-error";
+import { createHash } from "@/shared/utils/hash";
+import { env } from "@/config/env";
+import { createRefreshToken } from "../repositories/refresh-token.repository";
 
-    // 2. Check account status
-    if (user.status !== "active") {
-      throw new Error("Your account is not active. Please contact support.");
-    }
+interface LoginResponse {
+  accessToken: string;
+  refreshToken: string;
+  user: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: string;
+  };
+}
 
-    // 3. Check account lock (brute-force protection)
-    if (user.locked_until && new Date(user.locked_until) > new Date()) {
-      const minutesLeft = Math.ceil(
-        (new Date(user.locked_until).getTime() - Date.now()) / 60000,
-      );
-      throw new Error(
-        `Account temporarily locked. Try again in ${minutesLeft} minute(s).`,
-      );
-    }
+export async function loginService(data: LoginInput): Promise<LoginResponse> {
+  const user = await findUserByEmail(data.email);
 
-    // 4. Verify password
-    const valid = await bcrypt.compare(password, user.password_hash);
-
-    if (!valid) {
-      await this.userRepository.incrementFailedAttempts(user.id);
-      throw new Error("Invalid credentials");
-    }
-
-    // 5. Update last login
-    await this.userRepository.updateLastLogin(user.id, ip);
-
-    // 6. Fetch permissions
-    const permissions = await this.userRepository.getUserPermissions(user.id);
-
-    // Return safe user object (no password_hash)
-    const { password_hash, ...safeUser } = user;
-    return { user: safeUser, permissions };
+  if (!user) {
+    throw new AppError("Invalid email or password", 401);
   }
+
+  if (user.status !== "active") {
+    throw new Error("Account is not active");
+  }
+
+  const isValidPassword = await comparePassword(
+    data.password,
+    user.password_hash,
+  );
+
+  if (!isValidPassword) {
+    throw new AppError("Invalid email or password", 401);
+  }
+
+  const accessToken = generateAccessToken(user.id);
+
+  const refreshToken = generateRefreshToken(user.id);
+
+  const tokenHash = createHash(refreshToken);
+
+  const expiresAt = durationToDate(env.JWT_REFRESH_EXPIRES_IN);
+
+  await createRefreshToken(user.id, tokenHash, expiresAt);
+
+  return {
+    accessToken,
+    refreshToken,
+    user: {
+      id: user.id,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      email: user.email,
+      role: user.role_slug,
+    },
+  };
 }
