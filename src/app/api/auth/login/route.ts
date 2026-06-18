@@ -2,7 +2,7 @@ import { handleApiError } from "@/lib/http/handle-api-error";
 import { successResponse } from "@/lib/http/success-response";
 import { validate } from "@/lib/validation/validation";
 import { loginService } from "@/modules/auth/services/login.service";
-import { setAuthCookies } from "@/modules/auth/utils/cookies";
+import { setAuthCookies } from "@/lib/auth/cookies";
 import {
   LoginInput,
   loginSchema,

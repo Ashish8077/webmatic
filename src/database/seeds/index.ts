@@ -4,6 +4,7 @@ import { seedPermissions } from "./permissions.seed";
 import { seedRolePermissions } from "./rolePermission.seed";
 import { seedRoles } from "./roles.seed";
 import { seedSuperAdmin } from "./superAdmin.seed";
+import { seedUserRoles } from "./userRoles.seed";
 
 async function seedDatabase() {
   try {
@@ -37,6 +38,15 @@ async function seedDatabase() {
      * - roles table populated
      */
     await seedSuperAdmin();
+
+    /**
+     * Create user-role mappings.
+     *
+     * Requires:
+     * - users table populated
+     * - roles table populated
+     */
+    await seedUserRoles();
 
     console.log("\nDatabase seeding completed successfully");
   } catch (error) {

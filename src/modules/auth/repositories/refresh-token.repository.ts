@@ -1,4 +1,5 @@
 import db from "@/database/connection";
+import { RowDataPacket } from "mysql2";
 
 export async function createRefreshToken(
   userId: number,
@@ -31,4 +32,33 @@ export async function revokeRefreshToken(tokenHash: string): Promise<void> {
     `,
     [tokenHash],
   );
+}
+
+interface RefreshTokenRow extends RowDataPacket {
+  id: number;
+  user_id: number;
+  token_hash: string;
+  is_revoked: number;
+  expires_at: Date;
+}
+
+export async function findRefreshTokenByHash(
+  tokenHash: string,
+): Promise<RefreshTokenRow | null> {
+  const [rows] = await db.execute<RefreshTokenRow[]>(
+    `
+    SELECT
+      id,
+      user_id,
+      token_hash,
+      is_revoked,
+      expires_at
+    FROM refresh_tokens
+    WHERE token_hash = ?
+    LIMIT 1
+    `,
+    [tokenHash],
+  );
+
+  return rows[0] ?? null;
 }
