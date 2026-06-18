@@ -74,7 +74,6 @@ export async function seedSuperAdmin() {
       last_name,
       email,
       password_hash,
-      role_id,
       status,
       email_verified,
       email_verified_at,
@@ -82,7 +81,7 @@ export async function seedSuperAdmin() {
     )
     VALUES
     (
-      ?, ?, ?, ?, ?, ?, ?, NOW(), NOW()
+      ?, ?, ?, ?, ?, ?, NOW(), NOW()
     )
     `,
     [
@@ -90,8 +89,6 @@ export async function seedSuperAdmin() {
       superAdmin.lastName,
       superAdmin.email,
       passwordHash,
-
-      role.id,
 
       "active",
 

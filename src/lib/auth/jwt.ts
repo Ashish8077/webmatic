@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 import { env } from "@/config/env";
+import { JwtPayload } from "./types";
+import { AppError } from "../errors/app-error";
 
 export function generateAccessToken(userId: number) {
   return jwt.sign({ sub: userId }, env.JWT_ACCESS_SECRET, {
@@ -19,8 +21,17 @@ export function generateRefreshToken(userId: number) {
   );
 }
 
-export function getRefreshTokenExpiryDate(days: number): Date {
-  return new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+export function verifyAccessToken(accessToken: string): JwtPayload {
+  const decoded = jwt.verify(accessToken, env.JWT_ACCESS_SECRET);
+  if (typeof decoded === "string" || !decoded.sub) {
+    throw new AppError("Invalid access token", 401);
+  }
+
+  return {
+    sub: Number(decoded.sub),
+    iat: Number(decoded.iat),
+    exp: Number(decoded.exp),
+  };
 }
 
 export function durationToSeconds(value: string): number {
