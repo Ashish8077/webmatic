@@ -3,9 +3,9 @@ import path from "path";
 
 import { PoolConnection, RowDataPacket } from "mysql2/promise";
 
-import db from "../../connection";
+import db from "./connection";
 
-const MIGRATIONS_DIR = path.join(process.cwd(), "src/database/migrations/auth");
+const MIGRATIONS_DIR = path.join(process.cwd(), "src/database/migrations");
 
 interface MigrationRow extends RowDataPacket {
   migration: string;
