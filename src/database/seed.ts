@@ -1,10 +1,10 @@
-import db from "../connection";
+import db from "./connection";
 
-import { seedPermissions } from "./permissions.seed";
-import { seedRolePermissions } from "./rolePermission.seed";
-import { seedRoles } from "./roles.seed";
-import { seedSuperAdmin } from "./superAdmin.seed";
-import { seedUserRoles } from "./userRoles.seed";
+import { seedPermissions } from "./seeds/permissions.seed";
+import { seedRolePermissions } from "./seeds/rolePermission.seed";
+import { seedRoles } from "./seeds/roles.seed";
+import { seedSuperAdmin } from "./seeds/superAdmin.seed";
+import { seedUserRoles } from "./seeds/userRoles.seed";
 
 async function seedDatabase() {
   try {
