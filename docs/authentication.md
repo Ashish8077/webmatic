@@ -81,13 +81,13 @@ A user is assigned **one role** via `user_roles`. Each role maps to a set of per
 
 ### Roles (seeded)
 
-| Slug                | Name              | Permissions                                     |
-|---------------------|-------------------|-------------------------------------------------|
-| `super-admin`       | Super Admin       | `*` (all permissions)                           |
-| `editor`            | Editor            | page, page-builder, blog, blog-category, blog-tag, media |
+| Slug                | Name              | Permissions                                                            |
+| ------------------- | ----------------- | ---------------------------------------------------------------------- |
+| `super-admin`       | Super Admin       | `*` (all permissions)                                                  |
+| `editor`            | Editor            | page, page-builder, blog, blog-category, blog-tag, media               |
 | `marketing-manager` | Marketing Manager | blog, blog-category, blog-tag, seo, redirect, sitemap, lead, analytics |
-| `content-manager`   | Content Manager   | page, page-builder, service, media              |
-| `sales-manager`     | Sales Manager     | contact, lead                                   |
+| `content-manager`   | Content Manager   | page, page-builder, service, media                                     |
+| `sales-manager`     | Sales Manager     | contact, lead                                                          |
 
 ### Permission Check
 
@@ -114,10 +114,10 @@ Returns `{ id, firstName, lastName, email }` for the authenticated user. Require
 
 Two `httpOnly` cookies carry the session:
 
-| Cookie          | Purpose                        | Flags                                          | Max-Age Source              |
-|-----------------|--------------------------------|-------------------------------------------------|-----------------------------|
-| `accessToken`   | Short-lived JWT for API auth   | `httpOnly`, `secure` (prod), `sameSite: strict`, `path: /` | `JWT_ACCESS_EXPIRES_IN`     |
-| `refreshToken`  | Long-lived JWT for renewal     | `httpOnly`, `secure` (prod), `sameSite: strict`, `path: /` | `JWT_REFRESH_EXPIRES_IN`    |
+| Cookie         | Purpose                      | Flags                                                      | Max-Age Source           |
+| -------------- | ---------------------------- | ---------------------------------------------------------- | ------------------------ |
+| `accessToken`  | Short-lived JWT for API auth | `httpOnly`, `secure` (prod), `sameSite: strict`, `path: /` | `JWT_ACCESS_EXPIRES_IN`  |
+| `refreshToken` | Long-lived JWT for renewal   | `httpOnly`, `secure` (prod), `sameSite: strict`, `path: /` | `JWT_REFRESH_EXPIRES_IN` |
 
 - Cookies are **set** via `setAuthCookies()` on login and refresh.
 - Cookies are **cleared** via `clearAuthCookies()` on logout.
@@ -131,10 +131,10 @@ Two `httpOnly` cookies carry the session:
 
 ## JWT Expiry
 
-| Token          | Secret Env Var        | Expiry Env Var             | Format    |
-|----------------|-----------------------|----------------------------|-----------|
-| Access Token   | `JWT_ACCESS_SECRET`   | `JWT_ACCESS_EXPIRES_IN`    | e.g. `15m` |
-| Refresh Token  | `JWT_REFRESH_SECRET`  | `JWT_REFRESH_EXPIRES_IN`   | e.g. `7d`  |
+| Token         | Secret Env Var       | Expiry Env Var           | Format     |
+| ------------- | -------------------- | ------------------------ | ---------- |
+| Access Token  | `JWT_ACCESS_SECRET`  | `JWT_ACCESS_EXPIRES_IN`  | e.g. `15m` |
+| Refresh Token | `JWT_REFRESH_SECRET` | `JWT_REFRESH_EXPIRES_IN` | e.g. `7d`  |
 
 Duration strings use a single-char suffix: `m` (minutes), `h` (hours), `d` (days).
 
@@ -153,24 +153,24 @@ Passwords are hashed with **bcrypt** using 12 salt rounds.
 
 ### `users`
 
-| Column                  | Type                                        | Notes                     |
-|-------------------------|---------------------------------------------|---------------------------|
-| `id`                    | `BIGINT UNSIGNED` PK AUTO_INCREMENT         |                           |
-| `first_name`            | `VARCHAR(100)` NOT NULL                     |                           |
-| `last_name`             | `VARCHAR(100)` NOT NULL                     |                           |
-| `email`                 | `VARCHAR(255)` NOT NULL UNIQUE              |                           |
-| `phone`                 | `VARCHAR(20)` NULL                          |                           |
-| `password_hash`         | `VARCHAR(255)` NOT NULL                     | bcrypt                    |
-| `profile_image`         | `VARCHAR(500)` NULL                         |                           |
-| `status`                | `ENUM('active','inactive','suspended')`     | Default `active`          |
-| `email_verified`        | `BOOLEAN` NOT NULL                          | Default `FALSE`           |
-| `email_verified_at`     | `TIMESTAMP` NULL                            |                           |
-| `failed_login_attempts` | `TINYINT UNSIGNED` NOT NULL                 | Default `0`               |
-| `locked_until`          | `TIMESTAMP` NULL                            |                           |
-| `password_changed_at`   | `TIMESTAMP` NULL                            |                           |
-| `created_at`            | `TIMESTAMP` NOT NULL                        | Default `CURRENT_TIMESTAMP` |
-| `updated_at`            | `TIMESTAMP` NOT NULL                        | Auto-update               |
-| `deleted_at`            | `TIMESTAMP` NULL                            | Soft delete               |
+| Column                  | Type                                    | Notes                       |
+| ----------------------- | --------------------------------------- | --------------------------- |
+| `id`                    | `BIGINT UNSIGNED` PK AUTO_INCREMENT     |                             |
+| `first_name`            | `VARCHAR(100)` NOT NULL                 |                             |
+| `last_name`             | `VARCHAR(100)` NOT NULL                 |                             |
+| `email`                 | `VARCHAR(255)` NOT NULL UNIQUE          |                             |
+| `phone`                 | `VARCHAR(20)` NULL                      |                             |
+| `password_hash`         | `VARCHAR(255)` NOT NULL                 | bcrypt                      |
+| `profile_image`         | `VARCHAR(500)` NULL                     |                             |
+| `status`                | `ENUM('active','inactive','suspended')` | Default `active`            |
+| `email_verified`        | `BOOLEAN` NOT NULL                      | Default `FALSE`             |
+| `email_verified_at`     | `TIMESTAMP` NULL                        |                             |
+| `failed_login_attempts` | `TINYINT UNSIGNED` NOT NULL             | Default `0`                 |
+| `locked_until`          | `TIMESTAMP` NULL                        |                             |
+| `password_changed_at`   | `TIMESTAMP` NULL                        |                             |
+| `created_at`            | `TIMESTAMP` NOT NULL                    | Default `CURRENT_TIMESTAMP` |
+| `updated_at`            | `TIMESTAMP` NOT NULL                    | Auto-update                 |
+| `deleted_at`            | `TIMESTAMP` NULL                        | Soft delete                 |
 
 Indexes: `idx_status`, `idx_deleted_at`.
 
@@ -178,35 +178,35 @@ Indexes: `idx_status`, `idx_deleted_at`.
 
 ### `roles`
 
-| Column       | Type                                | Notes  |
-|--------------|-------------------------------------|--------|
-| `id`         | `BIGINT UNSIGNED` PK AUTO_INCREMENT |        |
-| `name`       | `VARCHAR(50)` NOT NULL              |        |
-| `slug`       | `VARCHAR(50)` NOT NULL UNIQUE       |        |
-| `created_at` | `TIMESTAMP` NOT NULL                |        |
-| `updated_at` | `TIMESTAMP` NOT NULL                |        |
+| Column       | Type                                | Notes |
+| ------------ | ----------------------------------- | ----- |
+| `id`         | `BIGINT UNSIGNED` PK AUTO_INCREMENT |       |
+| `name`       | `VARCHAR(50)` NOT NULL              |       |
+| `slug`       | `VARCHAR(50)` NOT NULL UNIQUE       |       |
+| `created_at` | `TIMESTAMP` NOT NULL                |       |
+| `updated_at` | `TIMESTAMP` NOT NULL                |       |
 
 ---
 
 ### `permissions`
 
-| Column       | Type                                 | Notes                   |
-|--------------|--------------------------------------|-------------------------|
-| `id`         | `BIGINT UNSIGNED` PK AUTO_INCREMENT  |                         |
-| `name`       | `VARCHAR(150)` NOT NULL              |                         |
-| `slug`       | `VARCHAR(150)` NOT NULL UNIQUE       | e.g. `page.create`     |
-| `module`     | `VARCHAR(100)` NOT NULL              | e.g. `page`, `blog`    |
-| `created_at` | `TIMESTAMP` NOT NULL                 |                         |
-| `updated_at` | `TIMESTAMP` NOT NULL                 |                         |
+| Column       | Type                                | Notes               |
+| ------------ | ----------------------------------- | ------------------- |
+| `id`         | `BIGINT UNSIGNED` PK AUTO_INCREMENT |                     |
+| `name`       | `VARCHAR(150)` NOT NULL             |                     |
+| `slug`       | `VARCHAR(150)` NOT NULL UNIQUE      | e.g. `page.create`  |
+| `module`     | `VARCHAR(100)` NOT NULL             | e.g. `page`, `blog` |
+| `created_at` | `TIMESTAMP` NOT NULL                |                     |
+| `updated_at` | `TIMESTAMP` NOT NULL                |                     |
 
 ---
 
 ### `user_roles`
 
-| Column    | Type              | Notes                          |
-|-----------|-------------------|--------------------------------|
-| `user_id` | `BIGINT UNSIGNED` | FK → `users.id` ON DELETE CASCADE  |
-| `role_id` | `BIGINT UNSIGNED` | FK → `roles.id` ON DELETE CASCADE  |
+| Column    | Type              | Notes                             |
+| --------- | ----------------- | --------------------------------- |
+| `user_id` | `BIGINT UNSIGNED` | FK → `users.id` ON DELETE CASCADE |
+| `role_id` | `BIGINT UNSIGNED` | FK → `roles.id` ON DELETE CASCADE |
 
 Composite PK: `(user_id, role_id)`.
 
@@ -214,10 +214,10 @@ Composite PK: `(user_id, role_id)`.
 
 ### `role_permissions`
 
-| Column          | Type              | Notes                                |
-|-----------------|-------------------|--------------------------------------|
-| `role_id`       | `BIGINT UNSIGNED` | FK → `roles.id` ON DELETE CASCADE        |
-| `permission_id` | `BIGINT UNSIGNED` | FK → `permissions.id` ON DELETE CASCADE  |
+| Column          | Type              | Notes                                   |
+| --------------- | ----------------- | --------------------------------------- |
+| `role_id`       | `BIGINT UNSIGNED` | FK → `roles.id` ON DELETE CASCADE       |
+| `permission_id` | `BIGINT UNSIGNED` | FK → `permissions.id` ON DELETE CASCADE |
 
 Composite PK: `(role_id, permission_id)`.
 
@@ -225,17 +225,17 @@ Composite PK: `(role_id, permission_id)`.
 
 ### `refresh_tokens`
 
-| Column        | Type                                | Notes                         |
-|---------------|-------------------------------------|-------------------------------|
-| `id`          | `BIGINT UNSIGNED` PK AUTO_INCREMENT |                               |
+| Column        | Type                                | Notes                             |
+| ------------- | ----------------------------------- | --------------------------------- |
+| `id`          | `BIGINT UNSIGNED` PK AUTO_INCREMENT |                                   |
 | `user_id`     | `BIGINT UNSIGNED` NOT NULL          | FK → `users.id` ON DELETE CASCADE |
-| `token_hash`  | `VARCHAR(255)` NOT NULL UNIQUE      | SHA-256 of raw token          |
-| `device_info` | `VARCHAR(255)` NULL                 | Reserved, not yet populated   |
-| `ip_address`  | `VARCHAR(45)` NULL                  | Reserved, not yet populated   |
-| `is_revoked`  | `TINYINT(1)` NOT NULL               | Default `0`                   |
-| `expires_at`  | `TIMESTAMP` NOT NULL                |                               |
-| `revoked_at`  | `TIMESTAMP` NULL                    |                               |
-| `created_at`  | `TIMESTAMP` NOT NULL                |                               |
+| `token_hash`  | `VARCHAR(255)` NOT NULL UNIQUE      | SHA-256 of raw token              |
+| `device_info` | `VARCHAR(255)` NULL                 | Reserved, not yet populated       |
+| `ip_address`  | `VARCHAR(45)` NULL                  | Reserved, not yet populated       |
+| `is_revoked`  | `TINYINT(1)` NOT NULL               | Default `0`                       |
+| `expires_at`  | `TIMESTAMP` NOT NULL                |                                   |
+| `revoked_at`  | `TIMESTAMP` NULL                    |                                   |
+| `created_at`  | `TIMESTAMP` NOT NULL                |                                   |
 
 Indexes: `idx_user_id`, `idx_token_hash`, `idx_expires_at`.
 
