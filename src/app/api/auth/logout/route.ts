@@ -1,5 +1,5 @@
-import { handleApiError } from "@/lib/http/handle-api-error";
-import { successResponse } from "@/lib/http/success-response";
+import { handleApiError } from "@/shared/utils/http/handle-api-error";
+import { successResponse } from "@/shared/utils/http/success-response";
 import { logoutService } from "@/modules/auth/services/logout.service";
 import { clearAuthCookies } from "@/modules/auth/lib/cookies";
 import { cookies } from "next/headers";

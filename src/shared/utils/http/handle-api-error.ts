@@ -1,8 +1,8 @@
 import { ZodIssue } from "zod";
 import { NextResponse } from "next/server";
 
-import { AppError } from "@/lib/errors/app-error";
-import { ValidationError } from "@/lib/errors/validation-error";
+import { AppError } from "@/shared/utils/errors/app-error";
+import { ValidationError } from "@/shared/utils/errors/validation-error";
 
 export function handleApiError(error: unknown) {
   if (error instanceof ValidationError) {

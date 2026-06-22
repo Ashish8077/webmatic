@@ -1,6 +1,6 @@
 /// Shared app infrastructure
-import { createHash } from "@/shared/utils/hash";
-import { AppError } from "@/lib/errors/app-error";
+import { createHash } from "@/shared/utils/crypto/hash";
+import { AppError } from "@/shared/utils/errors/app-error";
 
 // Auth module
 import { findRefreshTokenByHash } from "@/modules/auth/repositories/refresh-token.repository";
