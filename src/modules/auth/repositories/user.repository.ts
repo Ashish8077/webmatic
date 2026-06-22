@@ -1,6 +1,5 @@
 import db from "@/database/connection";
 
-import { RowDataPacket } from "mysql2";
 import { UserRow } from "./types";
 
 export async function findUserByEmail(email: string): Promise<UserRow | null> {

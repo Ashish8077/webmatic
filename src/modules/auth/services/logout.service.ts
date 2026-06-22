@@ -1,5 +1,5 @@
 // Shared app infrastructure
-import { createHash } from "@/shared/utils/hash";
+import { createHash } from "@/shared/utils/crypto/hash";
 
 // Auth module
 import { revokeRefreshToken } from "@/modules/auth/repositories/refresh-token.repository";

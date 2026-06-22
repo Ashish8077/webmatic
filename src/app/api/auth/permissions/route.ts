@@ -1,5 +1,5 @@
-import { handleApiError } from "@/lib/http/handle-api-error";
-import { successResponse } from "@/lib/http/success-response";
+import { handleApiError } from "@/shared/utils/http/handle-api-error";
+import { successResponse } from "@/shared/utils/http/success-response";
 import { getAuthUser } from "@/modules/auth/lib/get-auth-user";
 import { permissionsService } from "@/modules/auth/services/permissions.service";
 
