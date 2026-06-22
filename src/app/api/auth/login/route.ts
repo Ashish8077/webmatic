@@ -1,8 +1,11 @@
+// Shared app infrastructure
 import { handleApiError } from "@/lib/http/handle-api-error";
 import { successResponse } from "@/lib/http/success-response";
 import { validate } from "@/lib/validation/validation";
+
+// Auth module
 import { loginService } from "@/modules/auth/services/login.service";
-import { setAuthCookies } from "@/lib/auth/cookies";
+import { setAuthCookies } from "@/modules/auth/lib/cookies";
 import {
   LoginInput,
   loginSchema,

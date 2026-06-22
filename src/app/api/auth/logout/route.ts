@@ -1,7 +1,7 @@
 import { handleApiError } from "@/lib/http/handle-api-error";
 import { successResponse } from "@/lib/http/success-response";
 import { logoutService } from "@/modules/auth/services/logout.service";
-import { clearAuthCookies } from "@/lib/auth/cookies";
+import { clearAuthCookies } from "@/modules/auth/lib/cookies";
 import { cookies } from "next/headers";
 
 export async function POST() {

@@ -1,19 +1,21 @@
-import { comparePassword } from "../utils/password";
+// External packages
 
-import { findUserByEmail } from "../repositories/user.repository";
+// Shared app infrastructure
+import { AppError } from "@/lib/errors/app-error";
+import { createHash } from "@/shared/utils/hash";
+import { env } from "@/config/env";
 
+// Auth module
+import { comparePassword } from "@/modules/auth/lib/password";
+import { findUserByEmail } from "@/modules/auth/repositories/user.repository";
 import {
   durationToDate,
   generateAccessToken,
   generateRefreshToken,
-} from "@/lib/auth/jwt";
-
-import { LoginInput } from "../validators/login.schema";
-import { AppError } from "@/lib/errors/app-error";
-import { createHash } from "@/shared/utils/hash";
-import { env } from "@/config/env";
-import { createRefreshToken } from "../repositories/refresh-token.repository";
-import { LoginResponse } from "../types";
+} from "@/modules/auth/lib/jwt";
+import { createRefreshToken } from "@/modules/auth/repositories/refresh-token.repository";
+import type { LoginResponse } from "@/modules/auth/services/types";
+import type { LoginInput } from "@/modules/auth/validators/login.schema";
 
 export async function loginService(
   loginInput: LoginInput,

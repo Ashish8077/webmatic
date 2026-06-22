@@ -9,3 +9,11 @@ export interface LoginResponse {
     role: string;
   };
 }
+
+export interface RefreshTokenResponse {
+  accessToken: string;
+}
+
+export interface PermissionsResponse {
+  permissions: string[];
+}

@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
-import { AuthUser } from "./types";
-import { AppError } from "../errors/app-error";
+import type { AuthUser } from "./types";
+import { AppError } from "@/lib/errors/app-error";
 import { verifyAccessToken } from "./jwt";
 
 export async function getAuthUser(): Promise<AuthUser> {

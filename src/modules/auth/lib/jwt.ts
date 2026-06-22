@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { env } from "@/config/env";
-import { JwtPayload } from "./types";
-import { AppError } from "../errors/app-error";
+import type { JwtPayload } from "./types";
+import { AppError } from "@/lib/errors/app-error";
 
 export function generateAccessToken(userId: number) {
   return jwt.sign({ sub: userId }, env.JWT_ACCESS_SECRET, {

@@ -1,5 +1,8 @@
+// Shared app infrastructure
 import { createHash } from "@/shared/utils/hash";
-import { revokeRefreshToken } from "../repositories/refresh-token.repository";
+
+// Auth module
+import { revokeRefreshToken } from "@/modules/auth/repositories/refresh-token.repository";
 
 export async function logoutService(refreshToken: string) {
   const tokenHash = createHash(refreshToken);
