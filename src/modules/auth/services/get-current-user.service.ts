@@ -1,4 +1,4 @@
-import { AppError } from "@/lib/errors/app-error";
+import { AppError } from "@/shared/utils/errors/app-error";
 import { findUserById } from "../repositories/user.repository";
 
 export async function getCurrentUserService(userId: number) {

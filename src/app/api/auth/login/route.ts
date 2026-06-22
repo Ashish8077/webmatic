@@ -1,7 +1,7 @@
 // Shared app infrastructure
-import { handleApiError } from "@/lib/http/handle-api-error";
-import { successResponse } from "@/lib/http/success-response";
-import { validate } from "@/lib/validation/validation";
+import { handleApiError } from "@/shared/utils/http/handle-api-error";
+import { successResponse } from "@/shared/utils/http/success-response";
+import { validate } from "@/shared/utils/validation/validation";
 
 // Auth module
 import { loginService } from "@/modules/auth/services/login.service";

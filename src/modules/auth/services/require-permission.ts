@@ -1,4 +1,4 @@
-import { AppError } from "@/lib/errors/app-error";
+import { AppError } from "@/shared/utils/errors/app-error";
 
 import { hasPermission } from "@/modules/auth/repositories/permission.repository";
 

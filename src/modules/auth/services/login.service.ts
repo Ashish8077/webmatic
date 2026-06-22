@@ -1,8 +1,8 @@
 // External packages
 
 // Shared app infrastructure
-import { AppError } from "@/lib/errors/app-error";
-import { createHash } from "@/shared/utils/hash";
+import { AppError } from "@/shared/utils/errors/app-error";
+import { createHash } from "@/shared/utils/crypto/hash";
 import { env } from "@/config/env";
 
 // Auth module

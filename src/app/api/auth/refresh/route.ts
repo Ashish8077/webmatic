@@ -1,8 +1,8 @@
-import { AppError } from "@/lib/errors/app-error";
-import { handleApiError } from "@/lib/http/handle-api-error";
-import { successResponse } from "@/lib/http/success-response";
+import { AppError } from "@/shared/utils/errors/app-error";
+import { handleApiError } from "@/shared/utils/http/handle-api-error";
+import { successResponse } from "@/shared/utils/http/success-response";
 import { refreshTokenService } from "@/modules/auth/services/refresh-token.service";
-import { clearAuthCookies, setAuthCookies } from "@/modules/auth/lib/cookies";
+import { setAuthCookies } from "@/modules/auth/lib/cookies";
 import { cookies } from "next/headers";
 
 export async function POST() {
