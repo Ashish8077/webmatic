@@ -1,11 +1,11 @@
+/// Shared app infrastructure
 import { createHash } from "@/shared/utils/hash";
-import { findRefreshTokenByHash } from "../repositories/refresh-token.repository";
 import { AppError } from "@/lib/errors/app-error";
-import { generateAccessToken } from "../../../lib/auth/jwt";
 
-export interface RefreshTokenResponse {
-  accessToken: string;
-}
+// Auth module
+import { findRefreshTokenByHash } from "@/modules/auth/repositories/refresh-token.repository";
+import { generateAccessToken } from "@/modules/auth/lib/jwt";
+import { RefreshTokenResponse } from "@/modules/auth/services/types";
 
 export async function refreshTokenService(
   refreshToken: string,

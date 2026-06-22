@@ -1,4 +1,4 @@
-import { getAuthUser } from "@/lib/auth/get-auth-user";
+import { getAuthUser } from "@/modules/auth/lib/get-auth-user";
 import { handleApiError } from "@/lib/http/handle-api-error";
 import { successResponse } from "@/lib/http/success-response";
 import { getCurrentUserService } from "@/modules/auth/services/get-current-user.service";

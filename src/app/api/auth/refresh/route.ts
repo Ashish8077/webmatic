@@ -2,7 +2,7 @@ import { AppError } from "@/lib/errors/app-error";
 import { handleApiError } from "@/lib/http/handle-api-error";
 import { successResponse } from "@/lib/http/success-response";
 import { refreshTokenService } from "@/modules/auth/services/refresh-token.service";
-import { clearAuthCookies, setAuthCookies } from "@/lib/auth/cookies";
+import { clearAuthCookies, setAuthCookies } from "@/modules/auth/lib/cookies";
 import { cookies } from "next/headers";
 
 export async function POST() {
@@ -18,8 +18,6 @@ export async function POST() {
     const response = successResponse({
       message: "Token refreshed successfully",
     });
-
-    console.log(accessToken);
 
     setAuthCookies(response, accessToken, refreshToken);
     return response;

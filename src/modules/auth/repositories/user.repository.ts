@@ -1,17 +1,7 @@
 import db from "@/database/connection";
 
 import { RowDataPacket } from "mysql2";
-
-export interface UserRow extends RowDataPacket {
-  id: number;
-  first_name: string;
-  last_name: string | null;
-  email: string;
-  password_hash: string;
-  status: string;
-  role_id: number | null;
-  role_slug: string | null;
-}
+import { UserRow } from "./types";
 
 export async function findUserByEmail(email: string): Promise<UserRow | null> {
   const [rows] = await db.execute<UserRow[]>(
@@ -39,8 +29,8 @@ export async function findUserByEmail(email: string): Promise<UserRow | null> {
 
   return rows[0] ?? null;
 }
-export async function findUserById(userId: number) {
-  const [rows] = await db.execute(
+export async function findUserById(userId: number): Promise<UserRow | null> {
+  const [rows] = await db.execute<UserRow[]>(
     `
     SELECT
       u.id,
@@ -56,5 +46,5 @@ export async function findUserById(userId: number) {
     [userId],
   );
 
-  return (rows as any[])[0] ?? null;
+  return rows[0] ?? null;
 }
