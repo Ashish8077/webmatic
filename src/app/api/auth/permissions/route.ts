@@ -9,15 +9,12 @@ export async function GET() {
 
     const result = await permissionsService(authUser.userId);
 
-    console.log("Permissions result:", result);
-
     return successResponse({
       message: "Permissions fetched successfully",
       data: result,
       statusCode: 200,
     });
   } catch (error) {
-    console.log("Error fetching permissions:", error);
     return handleApiError(error);
   }
 }

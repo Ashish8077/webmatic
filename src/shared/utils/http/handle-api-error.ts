@@ -33,6 +33,18 @@ export function handleApiError(error: unknown) {
     );
   }
 
+  if (error instanceof SyntaxError) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Invalid JSON payload",
+      },
+      {
+        status: 400,
+      },
+    );
+  }
+
   return NextResponse.json(
     {
       success: false,
