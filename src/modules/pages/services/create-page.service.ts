@@ -1,11 +1,9 @@
 // modules/pages/services/create-page.service.ts
 
-import { AppError } from "@/lib/errors/app-error";
+import { AppError } from "@/shared/utils/errors/app-error";
+import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
 
-import {
-  createPage,
-  findPublishedPageBySlug,
-} from "../repositories/page.repository";
+import { createPage, findPageSlug } from "../repositories/page.repository";
 
 import { CreatePageInput } from "../validators/create-page.schema";
 
@@ -14,20 +12,27 @@ import { CreatePageResponse } from "../types";
 export async function createPageService(
   pageData: CreatePageInput,
 ): Promise<CreatePageResponse> {
-  const existingPage = await findPublishedPageBySlug(pageData.slug);
+  const existingPage = await findPageSlug(pageData.slug);
 
   if (existingPage) {
     throw new AppError("Page slug already exists", 409);
   }
 
-  const pageId = await createPage(pageData);
+  try {
+    const pageId = await createPage(pageData);
 
-  return {
-    page: {
-      id: pageId,
-      title: pageData.title,
-      slug: pageData.slug,
-      status: "draft",
-    },
-  };
+    return {
+      page: {
+        id: pageId,
+        title: pageData.title,
+        slug: pageData.slug,
+        status: "draft",
+      },
+    };
+  } catch (error) {
+    if (isDuplicateKeyError(error)) {
+      throw new AppError("Page slug already exists", 409);
+    }
+    throw error;
+  }
 }

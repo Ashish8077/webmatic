@@ -1,3 +1,7 @@
+import {
+  emptyStringToNull,
+  nullableUrl,
+} from "@/shared/utils/validation/zod-helpers";
 import { z } from "zod";
 
 export const createPageSchema = z.object({
@@ -9,23 +13,21 @@ export const createPageSchema = z.object({
     .min(1, "Slug is required")
     .max(255)
     .regex(
-      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-      "Slug must contain only lowercase letters, numbers and hyphens",
+      /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/,
+      "Slug must start with a letter and contain only lowercase letters, numbers and hyphens",
     ),
 
   status: z.enum(["draft", "published"]).default("draft"),
 
-  template: z.string().trim().max(100).nullable().optional(),
+  template: emptyStringToNull(100).optional(),
 
-  seoTitle: z.string().trim().max(255).nullable().optional(),
+  seoTitle: emptyStringToNull(255).optional(),
 
-  metaDescription: z.string().trim().max(500).nullable().optional(),
+  metaDescription: emptyStringToNull(1000).optional(),
 
-  metaKeywords: z.string().trim().max(1000).nullable().optional(),
+  metaKeywords: emptyStringToNull(1000).optional(),
 
-  canonicalUrl: z.url("Invalid canonical URL").nullable().optional(),
-
-  robotsIndex: z.boolean().default(true),
+  canonicalUrl: nullableUrl("Invalid canonical URL").optional(),
 
   schemaMarkup: z.record(z.string(), z.unknown()).nullable().optional(),
 });
