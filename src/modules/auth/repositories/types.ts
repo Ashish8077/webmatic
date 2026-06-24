@@ -22,3 +22,13 @@ export interface RefreshTokenRow extends RowDataPacket {
 export interface PermissionRow extends RowDataPacket {
   slug: string;
 }
+
+export interface AuthUserRow extends RowDataPacket {
+  id: number;
+  email: string;
+}
+
+export interface AuthPermissionRow extends RowDataPacket {
+  role_slug: string;
+  permission_slug: string;
+}

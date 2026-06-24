@@ -36,7 +36,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
 export async function GET(request: Request): Promise<NextResponse> {
   try {
-    const authUser = await getAuthUser();
+    const user = await getAuthUser();
 
     const { searchParams } = new URL(request.url);
 
@@ -45,7 +45,7 @@ export async function GET(request: Request): Promise<NextResponse> {
       Object.fromEntries(searchParams.entries()),
     );
 
-    const pagesData = await getPagesService(query);
+    const pagesData = await getPagesService(query, user);
 
     return successResponse({
       message: "Pages fetched successfully",

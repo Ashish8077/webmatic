@@ -23,7 +23,11 @@ export async function GET(
   { params }: RouteParams,
 ): Promise<NextResponse> {
   try {
-    await getAuthUser();
+    const user = await getAuthUser();
+
+    if (!user) {
+      throw new AppError("Authentication required", 401);
+    }
 
     const { id } = await params;
 
