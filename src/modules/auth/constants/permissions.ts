@@ -21,3 +21,5 @@ export const PERMISSIONS = {
 
   AUDIT_LOG_VIEW: "audit-log.view",
 } as const;
+
+export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];
