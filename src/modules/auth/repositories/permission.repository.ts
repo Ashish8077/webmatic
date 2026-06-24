@@ -1,7 +1,7 @@
 import db from "@/database/connection";
 
 import type { AuthPermissionRow, AuthUserRow, PermissionRow } from "./types";
-import { AuthUser } from "../lib/types";
+import { AuthUser } from "../types/auth-user";
 
 export async function findPermissionsByUserId(
   userId: number,

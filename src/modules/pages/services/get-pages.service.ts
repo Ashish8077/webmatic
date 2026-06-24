@@ -3,16 +3,17 @@
 import { GetPagesQuery } from "../validators/get-pages-query.schema";
 import { countPages, findPages } from "../repositories/page.repository";
 
-import { PageListItem, PageListResponse } from "../types";
-import { AuthUser } from "@/modules/auth/lib/types";
+import { PageListItem, PageListResponse } from "../services/types";
+
+import { AuthUser } from "@/modules/auth/types/auth-user";
+import { requirePermission } from "@/modules/auth/authorization/permission";
+import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 
 export async function getPagesService(
   query: GetPagesQuery,
   user: AuthUser,
 ): Promise<PageListResponse> {
-  console.log("This is Context inside getPagesService", user.roles);
-  console.log("This is Context inside getPagesService", user.permissions);
-
+  requirePermission(user, PERMISSIONS.PAGE_VIEW);
   const [rows, totalItems] = await Promise.all([
     findPages(query),
     countPages(query),

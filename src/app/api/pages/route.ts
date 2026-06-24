@@ -1,4 +1,4 @@
-import { getAuthUser } from "@/modules/auth/lib/get-auth-user";
+import { requireAuth } from "@/modules/auth/lib/get-auth-user";
 import { createPageService } from "@/modules/pages/services/create-page.service";
 import { getPagesService } from "@/modules/pages/services/get-pages.service";
 
@@ -15,14 +15,14 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request): Promise<NextResponse> {
   try {
-    const authUser = await getAuthUser();
+    const user = await requireAuth();
 
     const createPageData: CreatePageInput = validate(
       createPageSchema,
       await request.json(),
     );
 
-    const createdPage = await createPageService(createPageData);
+    const createdPage = await createPageService(createPageData, user);
 
     return successResponse({
       message: "Page created successfully",
@@ -36,7 +36,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
 export async function GET(request: Request): Promise<NextResponse> {
   try {
-    const user = await getAuthUser();
+    const user = await requireAuth();
 
     const { searchParams } = new URL(request.url);
 

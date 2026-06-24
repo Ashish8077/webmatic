@@ -4,11 +4,17 @@ import {
   updatePageStatus,
 } from "../repositories/page.repository";
 import { UpdatePageStatusInput } from "../validators/update-page-status.schema";
+import { PERMISSIONS } from "@/modules/auth/constants/permissions";
+import { requirePermission } from "@/modules/auth/authorization/permission";
+import { AuthUser } from "@/modules/auth/types/auth-user";
 
 export async function updatePageStatusService(
   pageId: number,
   statusData: UpdatePageStatusInput,
+  user: AuthUser,
 ): Promise<void> {
+  requirePermission(user, PERMISSIONS.PAGE_PUBLISH);
+
   const page = await findPageById(pageId);
 
   if (!page) {
