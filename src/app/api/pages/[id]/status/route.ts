@@ -24,9 +24,8 @@ export async function PATCH(
   request: Request,
   { params }: RouteContext,
 ): Promise<NextResponse> {
-  const user = await requireAuth();
-
   try {
+    const user = await requireAuth();
     const { id } = await params;
 
     const pageId = Number(id);

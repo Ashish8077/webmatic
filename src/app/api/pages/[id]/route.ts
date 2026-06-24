@@ -25,10 +25,6 @@ export async function GET(
   try {
     const user = await requireAuth();
 
-    if (!user) {
-      throw new AppError("Authentication required", 401);
-    }
-
     const { id } = await params;
 
     const pageId = Number(id);
@@ -53,13 +49,8 @@ export async function PATCH(
   request: Request,
   { params }: RouteParams,
 ): Promise<NextResponse> {
-  const user = await requireAuth();
-
-  if (!user) {
-    throw new AppError("Authentication required", 401);
-  }
-
   try {
+    const user = await requireAuth();
     const { id } = await params;
 
     const pageId = Number(id);
@@ -85,13 +76,8 @@ export async function PATCH(
 }
 
 export async function DELETE(request: Request, { params }: RouteParams) {
-  const user = await requireAuth();
-
-  if (!user) {
-    throw new AppError("Authentication required", 401);
-  }
-
   try {
+    const user = await requireAuth();
     const { id } = await params;
 
     const pageId = Number(id);
