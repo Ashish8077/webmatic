@@ -1,4 +1,4 @@
-import { getAuthUser } from "@/modules/auth/lib/get-auth-user";
+import { requireAuth } from "@/modules/auth/lib/get-auth-user";
 import { deletePageService } from "@/modules/pages/services/delete-page.service";
 import { getPageByIdService } from "@/modules/pages/services/get-page.service";
 import { updatePageService } from "@/modules/pages/services/update-page.service";
@@ -23,7 +23,7 @@ export async function GET(
   { params }: RouteParams,
 ): Promise<NextResponse> {
   try {
-    await getAuthUser();
+    const user = await requireAuth();
 
     const { id } = await params;
 
@@ -33,7 +33,7 @@ export async function GET(
       throw new AppError("Invalid page id", 400);
     }
 
-    const pageData = await getPageByIdService(pageId);
+    const pageData = await getPageByIdService(pageId, user);
 
     return successResponse({
       message: "Page fetched successfully",
@@ -50,6 +50,7 @@ export async function PATCH(
   { params }: RouteParams,
 ): Promise<NextResponse> {
   try {
+    const user = await requireAuth();
     const { id } = await params;
 
     const pageId = Number(id);
@@ -58,14 +59,12 @@ export async function PATCH(
       throw new AppError("Invalid page id", 400);
     }
 
-    await getAuthUser();
-
     const updatePageData: UpdatePageInput = validate(
       updatePageSchema,
       await request.json(),
     );
 
-    await updatePageService(pageId, updatePageData);
+    await updatePageService(pageId, updatePageData, user);
 
     return successResponse({
       message: "Page updated successfully",
@@ -78,6 +77,7 @@ export async function PATCH(
 
 export async function DELETE(request: Request, { params }: RouteParams) {
   try {
+    const user = await requireAuth();
     const { id } = await params;
 
     const pageId = Number(id);
@@ -86,9 +86,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
       throw new AppError("Invalid page id", 400);
     }
 
-    await getAuthUser();
-
-    await deletePageService(pageId);
+    await deletePageService(pageId, user);
 
     return successResponse({
       message: "Page deleted successfully",

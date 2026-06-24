@@ -1,8 +1,9 @@
 import { AppError } from "@/shared/utils/errors/app-error";
 import { Permission } from "../constants/permissions";
-import { AuthUser } from "../lib/types";
+import { AuthUser } from "../types/auth-user";
 
 export function hasPermission(user: AuthUser, permission: Permission): boolean {
+  console.log(user);
   if (user.roles.includes("super-admin")) {
     return true;
   }
@@ -16,7 +17,7 @@ export function requirePermission(
 ): void {
   if (!hasPermission(user, permission)) {
     throw new AppError(
-      "You do not have permission to perform this action",
+      "You do not have sufficient permissions to perform this action",
       403,
     );
   }

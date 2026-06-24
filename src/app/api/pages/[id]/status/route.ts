@@ -12,6 +12,7 @@ import { AppError } from "@/shared/utils/errors/app-error";
 import { validate } from "@/shared/utils/validation/validation";
 import { successResponse } from "@/shared/utils/http/success-response";
 import { handleApiError } from "@/shared/utils/http/handle-api-error";
+import { requireAuth } from "@/modules/auth/lib/get-auth-user";
 
 interface RouteContext {
   params: Promise<{
@@ -24,6 +25,7 @@ export async function PATCH(
   { params }: RouteContext,
 ): Promise<NextResponse> {
   try {
+    const user = await requireAuth();
     const { id } = await params;
 
     const pageId = Number(id);
@@ -37,7 +39,7 @@ export async function PATCH(
       await request.json(),
     );
 
-    await updatePageStatusService(pageId, statusData);
+    await updatePageStatusService(pageId, statusData, user);
 
     return successResponse({
       message:

@@ -1,5 +1,5 @@
 import db from "../connection";
-import { rolePermissions } from "../data/rolePermissions";
+import { rolePermissions } from "../data/role-permissions";
 
 type DatabaseRow = {
   id: number;

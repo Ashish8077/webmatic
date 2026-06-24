@@ -2,14 +2,17 @@ export const PERMISSIONS = {
   DASHBOARD_VIEW: "dashboard.view",
 
   PAGE_CREATE: "page.create",
-  PAGE_READ: "page.read",
+  PAGE_VIEW: "page.view",
   PAGE_UPDATE: "page.update",
   PAGE_DELETE: "page.delete",
+  PAGE_PUBLISH: "page.publish",
 
   BLOG_CREATE: "blog.create",
   BLOG_READ: "blog.read",
   BLOG_UPDATE: "blog.update",
   BLOG_DELETE: "blog.delete",
+  BLOG_PUBLISH: "blog.publish",
+  BLOG_UNPUBLISH: "blog.unpublish",
 
   SEO_MANAGE: "seo.manage",
 

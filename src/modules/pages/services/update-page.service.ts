@@ -6,11 +6,17 @@ import {
 } from "../repositories/page.repository";
 import { UpdatePageInput } from "../validators/update-page.schema";
 import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
+import { PERMISSIONS } from "@/modules/auth/constants/permissions";
+import { requirePermission } from "@/modules/auth/authorization/permission";
+import { AuthUser } from "@/modules/auth/types/auth-user";
 
 export async function updatePageService(
   pageId: number,
   pageData: UpdatePageInput,
+  user: AuthUser,
 ): Promise<void> {
+  requirePermission(user, PERMISSIONS.PAGE_UPDATE);
+
   const page = await findPageById(pageId);
 
   if (!page) {
@@ -18,7 +24,6 @@ export async function updatePageService(
   }
 
   const existingPage = await findPageSlug(pageData.slug);
-
 
   if (existingPage && existingPage.id == pageId) {
     throw new AppError("Page slug already exists", 409);

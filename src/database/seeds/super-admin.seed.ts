@@ -1,8 +1,7 @@
 import db from "../connection";
 
-import { superAdmin } from "../data/superAdmin";
-
 import { hashPassword } from "@/modules/auth/lib/password";
+import { superAdmin } from "../data/super-admin";
 
 type RoleRow = {
   id: number;

@@ -4,9 +4,3 @@ export interface AuthUser {
   roles: string[];
   permissions: string[];
 }
-
-export interface JwtPayload {
-  sub: number;
-  iat: number;
-  exp: number;
-}

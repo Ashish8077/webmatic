@@ -6,7 +6,7 @@ export function setAuthCookies(
   response: NextResponse,
   accessToken: string,
   refreshToken: string,
-) {
+): void {
   response.cookies.set("accessToken", accessToken, {
     httpOnly: true,
     secure: env.NODE_ENV === "production",

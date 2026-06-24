@@ -125,7 +125,7 @@ Two `httpOnly` cookies carry the session:
 
 ### Extracting the Authenticated User
 
-`getAuthUser()` reads the `accessToken` cookie via Next.js `cookies()`, verifies it with `jwt.verify`, and returns `{ userId }`.
+` requireAuth()` reads the `accessToken` cookie via Next.js `cookies()`, verifies it with `jwt.verify`, and returns `{ userId }`.
 
 ---
 
@@ -250,7 +250,7 @@ src/modules/auth/
 │   └── roles.ts                # UserRole enum + type
 ├── lib/
 │   ├── cookies.ts              # setAuthCookies / clearAuthCookies
-│   ├── get-auth-user.ts        # getAuthUser() — read cookie → verify JWT
+│   ├── get-auth-user.ts        #  requireAuth() — read cookie → verify JWT
 │   ├── jwt.ts                  # generate / verify tokens, duration helpers
 │   ├── password.ts             # hashPassword / comparePassword (bcrypt)
 │   └── types.ts                # AuthUser, JwtPayload interfaces

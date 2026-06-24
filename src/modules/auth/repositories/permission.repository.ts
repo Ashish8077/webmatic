@@ -1,6 +1,7 @@
 import db from "@/database/connection";
 
-import type { PermissionRow } from "./types";
+import type { AuthPermissionRow, AuthUserRow, PermissionRow } from "./types";
+import { AuthUser } from "../types/auth-user";
 
 export async function findPermissionsByUserId(
   userId: number,
@@ -47,4 +48,57 @@ export async function hasPermission(
   );
 
   return Array.isArray(rows) && rows.length > 0;
+}
+
+export async function findAuthUserById(
+  userId: number,
+): Promise<AuthUser | null> {
+  const [userRows] = await db.execute<AuthUserRow[]>(
+    `
+    SELECT
+      id,
+      email
+    FROM users
+    WHERE id = ?
+      AND deleted_at IS NULL
+    LIMIT 1
+    `,
+    [userId],
+  );
+
+  const user = userRows[0];
+
+  if (!user) {
+    return null;
+  }
+
+  const [permissionRows] = await db.execute<AuthPermissionRow[]>(
+    `
+      SELECT DISTINCT
+        r.slug AS role_slug,
+        p.slug AS permission_slug
+      FROM user_roles ur
+      INNER JOIN roles r
+        ON r.id = ur.role_id
+      INNER JOIN role_permissions rp
+        ON rp.role_id = r.id
+      INNER JOIN permissions p
+        ON p.id = rp.permission_id
+      WHERE ur.user_id = ?
+      `,
+    [userId],
+  );
+
+  const roles = [...new Set(permissionRows.map((row) => row.role_slug))];
+
+  const permissions = [
+    ...new Set(permissionRows.map((row) => row.permission_slug)),
+  ];
+
+  return {
+    userId: user.id,
+    email: user.email,
+    roles,
+    permissions,
+  };
 }
