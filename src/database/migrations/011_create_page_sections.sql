@@ -26,13 +26,13 @@ CREATE TABLE IF NOT EXISTS page_sections (
 
     INDEX idx_page_id (page_id),
 
-    INDEX idx_page_sort (page_id, sort_order),
-
-    INDEX idx_page_active_sort (
+    INDEX idx_page_visible (
         page_id,
+        deleted_at,
         is_active,
         sort_order
     ),
+
 
     INDEX idx_page_deleted_sort (
         page_id,
@@ -41,7 +41,9 @@ CREATE TABLE IF NOT EXISTS page_sections (
     ),
 
     CONSTRAINT chk_section_name
-        CHECK (CHAR_LENGTH(TRIM(section_name)) > 0),
+        CHECK (
+            CHAR_LENGTH(TRIM(section_name)) > 0
+        ),
 
     CONSTRAINT fk_page_sections_page
         FOREIGN KEY (page_id)

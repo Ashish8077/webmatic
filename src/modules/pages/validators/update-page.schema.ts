@@ -1,7 +1,7 @@
 import {
   emptyStringToNull,
   nullableUrl,
-} from "@/shared/utils/validation/zod-helpers";
+} from "@/shared/utils/validators/zod-helpers";
 import z from "zod";
 
 export const updatePageSchema = z

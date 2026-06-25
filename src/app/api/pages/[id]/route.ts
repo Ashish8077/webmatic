@@ -6,21 +6,16 @@ import {
   UpdatePageInput,
   updatePageSchema,
 } from "@/modules/pages/validators/update-page.schema";
+import { IdRouteParams } from "@/shared/types/route-params";
 import { AppError } from "@/shared/utils/errors/app-error";
 import { handleApiError } from "@/shared/utils/http/handle-api-error";
 import { successResponse } from "@/shared/utils/http/success-response";
-import { validate } from "@/shared/utils/validation/validation";
+import { validate } from "@/shared/utils/validators/validation";
 import { NextResponse } from "next/server";
-
-interface RouteParams {
-  params: Promise<{
-    id: string;
-  }>;
-}
 
 export async function GET(
   _request: Request,
-  { params }: RouteParams,
+  { params }: IdRouteParams,
 ): Promise<NextResponse> {
   try {
     const user = await requireAuth();
@@ -47,7 +42,7 @@ export async function GET(
 
 export async function PATCH(
   request: Request,
-  { params }: RouteParams,
+  { params }: IdRouteParams,
 ): Promise<NextResponse> {
   try {
     const user = await requireAuth();
@@ -75,7 +70,7 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(request: Request, { params }: RouteParams) {
+export async function DELETE(request: Request, { params }: IdRouteParams) {
   try {
     const user = await requireAuth();
     const { id } = await params;

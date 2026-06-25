@@ -37,6 +37,30 @@ export const permissions = [
     module: "pages",
   },
 
+  // ─────────────────────────────────────────────
+  // Page Sections
+  // ─────────────────────────────────────────────
+  {
+    name: "View Page Sections",
+    slug: "page-section.view",
+    module: "pages-sections",
+  },
+  {
+    name: "Create Page Section",
+    slug: "page-section.create",
+    module: "pages-sections",
+  },
+  {
+    name: "Update Page Section",
+    slug: "page-section.update",
+    module: "pages-sections",
+  },
+  {
+    name: "Delete Page Section",
+    slug: "page-section.delete",
+    module: "pages-sections",
+  },
+
   // Page Builder
   {
     name: "View Page Builder",

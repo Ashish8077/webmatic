@@ -9,7 +9,7 @@ import {
 import { getPagesQuerySchema } from "@/modules/pages/validators/get-pages-query.schema";
 import { handleApiError } from "@/shared/utils/http/handle-api-error";
 import { successResponse } from "@/shared/utils/http/success-response";
-import { validate } from "@/shared/utils/validation/validation";
+import { validate } from "@/shared/utils/validators/validation";
 
 import { NextResponse } from "next/server";
 

@@ -6,14 +6,6 @@ import { testUsers } from "../data/test-users";
 import { hashPassword } from "@/modules/auth/lib/password";
 import { AuthUserRow } from "@/modules/auth/repositories/types";
 
-type RoleRow = {
-  id: number;
-};
-
-type UserRow = {
-  id: number;
-};
-
 export async function seedTestUsers(): Promise<void> {
   console.log("Seeding test users...");
 
