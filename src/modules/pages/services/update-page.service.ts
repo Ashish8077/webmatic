@@ -15,7 +15,7 @@ export async function updatePageService(
   pageData: UpdatePageInput,
   user: AuthUser,
 ): Promise<void> {
-  requirePermission(user, PERMISSIONS.PAGE_UPDATE);
+  requirePermission(user, PERMISSIONS.PAGES_UPDATE);
 
   const page = await findPageById(pageId);
 
@@ -30,7 +30,10 @@ export async function updatePageService(
   }
 
   try {
-    await updatePage(pageId, pageData);
+    const updatedPageCount = await updatePage(pageId, pageData);
+    if (updatedPageCount === 0) {
+      throw new AppError("Page not found", 404);
+    }
   } catch (error) {
     if (isDuplicateKeyError(error)) {
       throw new AppError("Page slug already exists", 409);

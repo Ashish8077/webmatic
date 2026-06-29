@@ -1,4 +1,4 @@
-import { env } from "@/config/env";
+import { env } from "@/config/env.server";
 
 export const superAdmin = {
   firstName: env.SUPER_ADMIN_FIRST_NAME,

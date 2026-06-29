@@ -8,11 +8,11 @@ export async function deletePageService(
   pageId: number,
   user: AuthUser,
 ): Promise<void> {
-  requirePermission(user, PERMISSIONS.PAGE_DELETE);
+  requirePermission(user, PERMISSIONS.PAGES_DELETE);
 
-  const deleted = await softDeletePage(pageId);
+  const deletedPageCount = await softDeletePage(pageId);
 
-  if (!deleted) {
+  if (deletedPageCount === 0) {
     throw new AppError("Page not found", 404);
   }
 }

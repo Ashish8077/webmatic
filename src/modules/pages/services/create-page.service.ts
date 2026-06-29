@@ -16,7 +16,7 @@ export async function createPageService(
   pageData: CreatePageInput,
   user: AuthUser,
 ): Promise<CreatePageResponse> {
-  requirePermission(user, PERMISSIONS.PAGE_CREATE);
+  requirePermission(user, PERMISSIONS.PAGES_CREATE);
 
   const existingPage = await findPageSlug(pageData.slug);
 
