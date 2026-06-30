@@ -8,11 +8,15 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { showToast } from "@/components/ui/toast";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
+import { Permission } from "@/features/auth/constants/permissions";
 
 export default function PagesListPage() {
   const [pages, setPages] = useState<DummyPage[]>(dummyPages);
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"all" | "published" | "draft">("all");
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "published" | "draft"
+  >("all");
   const [deleteTarget, setDeleteTarget] = useState<DummyPage | null>(null);
 
   const filteredPages = useMemo(() => {
@@ -63,15 +67,26 @@ export default function PagesListPage() {
             Manage your website pages
           </p>
         </div>
-        <Link href="/pages/create">
-          <Button size="md">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19" />
-              <line x1="5" y1="12" x2="19" y2="12" />
-            </svg>
-            Create Page
-          </Button>
-        </Link>
+        <PermissionGate permission={Permission.PAGE_CREATE}>
+          <Link href="/pages/create">
+            <Button size="md">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Create Page
+            </Button>
+          </Link>
+        </PermissionGate>
       </div>
 
       {/* Filters */}
@@ -108,7 +123,17 @@ export default function PagesListPage() {
         {filteredPages.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 px-4">
             <div className="w-12 h-12 rounded-xl bg-surface-hover flex items-center justify-center mb-3">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-muted-foreground"
+              >
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                 <polyline points="14 2 14 8 20 8" />
               </svg>
@@ -156,9 +181,7 @@ export default function PagesListPage() {
                     </p>
                   </td>
                   <td className="px-5 py-4">
-                    <Badge variant={page.status}>
-                      {page.status}
-                    </Badge>
+                    <Badge variant={page.status}>{page.status}</Badge>
                   </td>
                   <td className="px-5 py-4 text-sm text-muted-foreground hidden lg:table-cell">
                     {page.publishedAt
@@ -184,8 +207,24 @@ export default function PagesListPage() {
                           title="Manage Sections"
                           className="p-2 rounded-lg text-muted-foreground hover:text-accent hover:bg-accent/10 transition-all cursor-pointer"
                         >
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                          <svg
+                            width="15"
+                            height="15"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <rect
+                              x="3"
+                              y="3"
+                              width="18"
+                              height="18"
+                              rx="2"
+                              ry="2"
+                            />
                             <line x1="3" y1="9" x2="21" y2="9" />
                             <line x1="3" y1="15" x2="21" y2="15" />
                           </svg>
@@ -198,7 +237,16 @@ export default function PagesListPage() {
                           title="Edit"
                           className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-surface-hover transition-all cursor-pointer"
                         >
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                          <svg
+                            width="15"
+                            height="15"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                           </svg>
@@ -207,7 +255,9 @@ export default function PagesListPage() {
 
                       {/* Toggle status */}
                       <button
-                        title={page.status === "published" ? "Unpublish" : "Publish"}
+                        title={
+                          page.status === "published" ? "Unpublish" : "Publish"
+                        }
                         onClick={() => handleToggleStatus(page)}
                         className={`p-2 rounded-lg transition-all cursor-pointer ${
                           page.status === "published"
@@ -215,7 +265,16 @@ export default function PagesListPage() {
                             : "text-muted-foreground hover:text-success hover:bg-success/10"
                         }`}
                       >
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <svg
+                          width="15"
+                          height="15"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.8"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
                           {page.status === "published" ? (
                             <>
                               <rect x="6" y="4" width="4" height="16" />
@@ -233,7 +292,16 @@ export default function PagesListPage() {
                         onClick={() => setDeleteTarget(page)}
                         className="p-2 rounded-lg text-muted-foreground hover:text-danger hover:bg-danger/10 transition-all cursor-pointer"
                       >
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <svg
+                          width="15"
+                          height="15"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.8"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
                           <polyline points="3 6 5 6 21 6" />
                           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                         </svg>

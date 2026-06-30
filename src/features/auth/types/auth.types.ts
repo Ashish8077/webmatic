@@ -14,7 +14,7 @@ export interface UserResponse {
     email: string;
   };
   roles: string[];
-  permission: string[];
+  permissions: string[];
 }
 
 export interface LoginResponse {

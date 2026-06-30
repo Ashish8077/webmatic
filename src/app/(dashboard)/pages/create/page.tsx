@@ -6,6 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { showToast } from "@/components/ui/toast";
+import { usePermissions } from "@/features/auth/api/use-has-permission";
+import { Permission } from "@/features/auth/constants/permissions";
+import { AccessDenied } from "@/features/auth/components/access-denied";
 
 function slugify(text: string): string {
   return text
@@ -31,6 +34,12 @@ export default function CreatePagePage() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const { has } = usePermissions();
+
+  if (!has(Permission.PAGE_CREATE)) {
+    return <AccessDenied />;
+  }
 
   const update = (field: string, value: string) => {
     setForm((prev) => {
@@ -72,7 +81,16 @@ export default function CreatePagePage() {
           onClick={() => router.back()}
           className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4 cursor-pointer"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <polyline points="15 18 9 12 15 6" />
           </svg>
           Back to Pages
@@ -141,7 +159,16 @@ export default function CreatePagePage() {
             className="w-full flex items-center justify-between px-6 py-4 text-sm font-medium text-foreground hover:bg-surface-hover transition-colors cursor-pointer"
           >
             <span className="flex items-center gap-2">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>

@@ -1,7 +1,6 @@
 import { requireAuth } from "@/modules/auth/lib/get-auth-user";
 import { handleApiError } from "@/shared/utils/http/handle-api-error";
 import { successResponse } from "@/shared/utils/http/success-response";
-import { getCurrentUserService } from "@/modules/auth/services/get-current-user.service";
 
 export async function GET() {
   try {
