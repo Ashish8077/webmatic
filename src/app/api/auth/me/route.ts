@@ -7,12 +7,16 @@ export async function GET() {
   try {
     const authUser = await requireAuth();
 
-    const user = await getCurrentUserService(authUser.userId);
-
     return successResponse({
       message: "User fetched successfully",
-      data: user,
-      statusCode: 200,
+      data: {
+        user: {
+          id: authUser.userId,
+          email: authUser.email,
+        },
+        roles: authUser.roles,
+        permissions: authUser.permissions,
+      },
     });
   } catch (error) {
     return handleApiError(error);
