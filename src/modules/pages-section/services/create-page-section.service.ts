@@ -16,7 +16,7 @@ export async function createPageSectionService(
   sectionData: CreatePageSectionInput,
   user: AuthUser,
 ): Promise<PageSectionResponse> {
-  requirePermission(user, PERMISSIONS.PAGE_SECTION_CREATE);
+  requirePermission(user, PERMISSIONS.PAGES_CREATE);
 
   const page = await findPageById(pageId);
   if (!page) {
@@ -30,6 +30,7 @@ export async function createPageSectionService(
   );
 
   const pageSection = await findPageSectionById(pageSectionId);
+
   if (!pageSection) {
     throw new AppError("Failed to retrieve created page section", 500);
   }

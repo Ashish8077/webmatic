@@ -9,7 +9,7 @@ export async function getPageByIdService(
   id: number,
   user: AuthUser,
 ): Promise<PageDetailsResponse> {
-  requirePermission(user, PERMISSIONS.PAGE_VIEW);
+  requirePermission(user, PERMISSIONS.PAGES_VIEW);
 
   const page = await findPageById(id);
 

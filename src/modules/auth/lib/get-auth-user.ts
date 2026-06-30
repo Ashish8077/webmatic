@@ -15,7 +15,6 @@ export async function requireAuth(): Promise<AuthUser> {
   const payload = verifyAccessToken(accessToken);
 
   const user = await findAuthUserById(payload.sub);
-
   if (!user) {
     throw new AppError("User not found", 404);
   }

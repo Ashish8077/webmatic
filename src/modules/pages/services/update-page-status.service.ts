@@ -13,7 +13,7 @@ export async function updatePageStatusService(
   statusData: UpdatePageStatusInput,
   user: AuthUser,
 ): Promise<void> {
-  requirePermission(user, PERMISSIONS.PAGE_PUBLISH);
+  requirePermission(user, PERMISSIONS.PAGES_PUBLISH);
 
   const page = await findPageById(pageId);
 
@@ -25,9 +25,9 @@ export async function updatePageStatusService(
     throw new AppError(`Page is already ${statusData.status}`, 409);
   }
 
-  const updated = await updatePageStatus(pageId, statusData.status);
+  const updatedPageCount = await updatePageStatus(pageId, statusData.status);
 
-  if (!updated) {
-    throw new AppError("Failed to update page status", 500);
+  if (updatedPageCount === 0) {
+    throw new AppError("Page not found", 404);
   }
 }

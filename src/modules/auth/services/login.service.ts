@@ -3,7 +3,7 @@
 // Shared app infrastructure
 import { AppError } from "@/shared/utils/errors/app-error";
 import { createHash } from "@/shared/utils/crypto/hash";
-import { env } from "@/config/env";
+import { env } from "@/config/env.server";
 
 // Auth module
 import { comparePassword } from "@/modules/auth/lib/password";

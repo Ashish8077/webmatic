@@ -22,5 +22,3 @@ export const createPageSectionSchema = z.object({
 });
 
 export type CreatePageSectionInput = z.infer<typeof createPageSectionSchema>;
-
-export default createPageSectionSchema;

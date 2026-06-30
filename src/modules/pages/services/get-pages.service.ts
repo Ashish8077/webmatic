@@ -13,7 +13,7 @@ export async function getPagesService(
   query: GetPagesQuery,
   user: AuthUser,
 ): Promise<PageListResponse> {
-  requirePermission(user, PERMISSIONS.PAGE_VIEW);
+  requirePermission(user, PERMISSIONS.PAGES_VIEW);
   const [rows, totalItems] = await Promise.all([
     findPages(query),
     countPages(query),

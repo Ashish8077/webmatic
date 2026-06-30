@@ -201,7 +201,7 @@ export async function createPage(createPage: CreatePageInput): Promise<number> {
 export async function updatePage(
   pageId: number,
   updatePage: UpdatePageInput,
-): Promise<boolean> {
+): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
     UPDATE pages
@@ -236,10 +236,10 @@ export async function updatePage(
     ],
   );
 
-  return result.affectedRows > 0;
+  return result.affectedRows;
 }
 
-export async function softDeletePage(pageId: number): Promise<boolean> {
+export async function softDeletePage(pageId: number): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
     UPDATE pages
@@ -251,13 +251,13 @@ export async function softDeletePage(pageId: number): Promise<boolean> {
     [pageId],
   );
 
-  return result.affectedRows > 0;
+  return result.affectedRows;
 }
 
 export async function updatePageStatus(
   pageId: number,
   status: "draft" | "published",
-): Promise<boolean> {
+): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
     UPDATE pages
@@ -274,5 +274,5 @@ export async function updatePageStatus(
     [status, status, pageId],
   );
 
-  return result.affectedRows > 0;
+  return result.affectedRows;
 }
