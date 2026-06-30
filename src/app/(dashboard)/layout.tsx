@@ -2,20 +2,21 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { AuthProvider, useAuth } from "@/lib/auth-context";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { ToastContainer } from "@/components/ui/toast";
+import { useCurrentUser } from "@/features/auth/hooks/use-current-user";
 
 function DashboardShell({ children }: { children: React.ReactNode }) {
-  const { isLoggedIn, isLoading } = useAuth();
   const router = useRouter();
 
+  const { data: user, isLoading, isError } = useCurrentUser();
+
   useEffect(() => {
-    if (!isLoading && !isLoggedIn) {
-      router.push("/login");
+    if (!isLoading && isError) {
+      router.replace("/login");
     }
-  }, [isLoggedIn, isLoading, router]);
+  }, [isLoading, isError, router]);
 
   if (isLoading) {
     return (
@@ -28,7 +29,9 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (!isLoggedIn) return null;
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen">
@@ -47,9 +50,5 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <AuthProvider>
-      <DashboardShell>{children}</DashboardShell>
-    </AuthProvider>
-  );
+  return <DashboardShell>{children}</DashboardShell>;
 }

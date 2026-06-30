@@ -1,9 +1,11 @@
 "use client";
 
-import { useAuth } from "@/lib/auth-context";
+import { useCurrentUser } from "@/features/auth/hooks/use-current-user";
 
 export function Topbar() {
-  const { user, logout } = useAuth();
+  const { data: user } = useCurrentUser();
+
+  function logout() {}
 
   return (
     <header className="sticky top-0 z-30 h-16 glass border-b border-white/[0.06]">

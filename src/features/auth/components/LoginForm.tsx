@@ -1,13 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { showToast } from "@/components/ui/toast";
-import { useAuth } from "@/lib/auth-context";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
 import { useForm } from "react-hook-form";
 import { LoginFormValues, loginSchema } from "../schemas/login.schema";
-import { useLogin } from "../hooks/useLogin";
+import { useLogin } from "../hooks/use-login";
 
 function LoginForm() {
   const loginMutation = useLogin();
@@ -27,7 +23,6 @@ function LoginForm() {
   async function onSubmit(values: LoginFormValues) {
     try {
       const response = await loginMutation.mutateAsync(values);
-
       console.log("SUCCESS", response);
     } catch (error) {
       console.log("ERROR", error);

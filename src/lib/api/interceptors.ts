@@ -14,11 +14,12 @@ import {
 
 import type { RetryAxiosRequestConfig } from "./types";
 import { ApiErrorResponse, ApiResponse } from "./responses";
+import { AUTH_ENDPOINTS } from "@/features/auth/constants/endpoints";
 
-const AUTH_ENDPOINTS = new Set([
-  "api/auth/login",
-  "api/auth/logout",
-  "api/auth/refresh",
+const AUTH_ENDPOINTS_SET = new Set([
+  `${AUTH_ENDPOINTS.LOGIN}`,
+  `${AUTH_ENDPOINTS.LOGOUT}`,
+  `${AUTH_ENDPOINTS.REFRESH}`,
 ]);
 
 export function setupInterceptors() {
@@ -61,8 +62,6 @@ export function setupInterceptors() {
 
       const requestUrl = originalRequest.url ?? "";
 
-      console.log(requestUrl);
-
       const status = error.response?.status;
 
       /**
@@ -89,7 +88,8 @@ export function setupInterceptors() {
        *
        * These should simply return backend message.
        */
-      if (AUTH_ENDPOINTS.has(requestUrl)) {
+
+      if (AUTH_ENDPOINTS_SET.has(requestUrl)) {
         return Promise.reject(
           new ApiError(
             error.response?.data?.message ?? "Authentication failed.",
@@ -124,7 +124,7 @@ export function setupInterceptors() {
         /**
          * Refresh cookies.
          */
-        await refreshClient.post<ApiResponse>("api/auth/refresh");
+        await refreshClient.post<ApiResponse>(AUTH_ENDPOINTS.REFRESH);
 
         /**
          * Replay queued requests.

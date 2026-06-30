@@ -8,4 +8,16 @@ export interface LoginRequest {
   password: string;
 }
 
-export interface LoginResponse {}
+export interface UserResponse {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
+export interface LoginResponse {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+}
