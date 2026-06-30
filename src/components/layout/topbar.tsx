@@ -1,11 +1,23 @@
 "use client";
 
 import { useCurrentUser } from "@/features/auth/hooks/use-current-user";
+import { useLogout } from "@/features/auth/hooks/use-logout";
 
 export function Topbar() {
-  const { data: user } = useCurrentUser();
+  const { data, isLoading } = useCurrentUser();
+  const logoutMutation = useLogout();
 
-  function logout() {}
+  if (isLoading) {
+    return null;
+  }
+
+  const user = data?.user;
+
+  const displayRole = data?.roles?.[0]?.replace("-", " ") ?? "Admin";
+
+  function logout() {
+    logoutMutation.mutateAsync();
+  }
 
   return (
     <header className="sticky top-0 z-30 h-16 glass border-b border-white/[0.06]">
@@ -26,19 +38,15 @@ export function Topbar() {
         <div className="flex items-center gap-4">
           {/* Role badge */}
           <span className="hidden sm:inline-flex items-center px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider rounded-full bg-accent/12 text-accent border border-accent/20">
-            {user?.role?.replace("-", " ") || "admin"}
+            {displayRole}
           </span>
 
           {/* Avatar + Name */}
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-accent/20">
-              {user?.firstName?.[0] || "A"}
-              {user?.lastName?.[0] || ""}
+              {displayRole.charAt(0).toUpperCase()}
             </div>
-            <div className="hidden md:block">
-              <p className="text-sm font-medium text-foreground leading-none">
-                {user?.firstName} {user?.lastName}
-              </p>
+            <div className="hidden md:block ">
               <p className="text-[11px] text-muted-foreground mt-0.5">
                 {user?.email}
               </p>
@@ -48,6 +56,7 @@ export function Topbar() {
           {/* Logout */}
           <button
             onClick={logout}
+            disabled={logoutMutation.isPending}
             className="p-2 rounded-lg text-muted-foreground hover:text-danger hover:bg-danger/10 transition-all duration-200 cursor-pointer"
             title="Logout"
           >
