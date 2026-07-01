@@ -5,6 +5,6 @@ export async function deletePageService(pageId: number): Promise<void> {
   const deleted = await softDeletePage(pageId);
 
   if (!deleted) {
-    throw new AppError("Page not found", 404);
+    throw new AppError("Page not found", 404 );
   }
 }
