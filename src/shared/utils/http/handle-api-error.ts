@@ -26,6 +26,7 @@ export function handleApiError(error: unknown) {
       {
         success: false,
         message: error.message,
+        ...(error.errors && { errors: error.errors }),
       },
       {
         status: error.statusCode,
