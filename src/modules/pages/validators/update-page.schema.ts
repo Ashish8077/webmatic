@@ -1,7 +1,7 @@
 import {
   emptyStringToNull,
   nullableUrl,
-} from "@/shared/utils/validation/zod-helpers";
+} from "@/shared/utils/validators/zod-helpers";
 import z from "zod";
 
 export const updatePageSchema = z
@@ -36,6 +36,9 @@ export const updatePageSchema = z
 
     schemaMarkup: z.record(z.string(), z.unknown()).nullable().optional(),
   })
-  .strict();
+  .strict()
+  .refine((data) => Object.keys(data).length > 0, {
+    message: "At least one field must be provided for update",
+  });
 
 export type UpdatePageInput = z.infer<typeof updatePageSchema>;

@@ -1,10 +1,11 @@
 import db from "./connection";
 
 import { seedPermissions } from "./seeds/permissions.seed";
-import { seedRolePermissions } from "./seeds/rolePermission.seed";
+import { seedRolePermissions } from "./seeds/role-permission.seed";
 import { seedRoles } from "./seeds/roles.seed";
-import { seedSuperAdmin } from "./seeds/superAdmin.seed";
-import { seedUserRoles } from "./seeds/userRoles.seed";
+import { seedSuperAdmin } from "./seeds/super-admin.seed";
+import { seedTestUsers } from "./seeds/test-users.seed";
+import { seedUserRoles } from "./seeds/user-roles.seed";
 
 async function seedDatabase() {
   try {
@@ -47,6 +48,15 @@ async function seedDatabase() {
      * - roles table populated
      */
     await seedUserRoles();
+
+    /**
+     * Create test users.
+     *
+     * Requires:
+     * - users table populated
+     * - roles table populated
+     */
+    await seedTestUsers();
 
     console.log("\nDatabase seeding completed successfully");
   } catch (error) {

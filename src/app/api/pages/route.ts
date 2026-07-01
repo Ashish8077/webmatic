@@ -1,4 +1,4 @@
-import { getAuthUser } from "@/modules/auth/lib/get-auth-user";
+import { requireAuth } from "@/modules/auth/lib/get-auth-user";
 import { createPageService } from "@/modules/pages/services/create-page.service";
 import { getPagesService } from "@/modules/pages/services/get-pages.service";
 
@@ -9,20 +9,20 @@ import {
 import { getPagesQuerySchema } from "@/modules/pages/validators/get-pages-query.schema";
 import { handleApiError } from "@/shared/utils/http/handle-api-error";
 import { successResponse } from "@/shared/utils/http/success-response";
-import { validate } from "@/shared/utils/validation/validation";
+import { validate } from "@/shared/utils/validators/validation";
 
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request): Promise<NextResponse> {
   try {
-    const authUser = await getAuthUser();
+    const user = await requireAuth();
 
     const createPageData: CreatePageInput = validate(
       createPageSchema,
       await request.json(),
     );
 
-    const createdPage = await createPageService(createPageData);
+    const createdPage = await createPageService(createPageData, user);
 
     return successResponse({
       message: "Page created successfully",
@@ -36,7 +36,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
 export async function GET(request: Request): Promise<NextResponse> {
   try {
-    const authUser = await getAuthUser();
+    const user = await requireAuth();
 
     const { searchParams } = new URL(request.url);
 
@@ -45,7 +45,7 @@ export async function GET(request: Request): Promise<NextResponse> {
       Object.fromEntries(searchParams.entries()),
     );
 
-    const pagesData = await getPagesService(query);
+    const pagesData = await getPagesService(query, user);
 
     return successResponse({
       message: "Pages fetched successfully",

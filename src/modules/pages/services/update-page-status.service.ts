@@ -4,11 +4,17 @@ import {
   updatePageStatus,
 } from "../repositories/page.repository";
 import { UpdatePageStatusInput } from "../validators/update-page-status.schema";
+import { PERMISSIONS } from "@/modules/auth/constants/permissions";
+import { requirePermission } from "@/modules/auth/authorization/permission";
+import { AuthUser } from "@/modules/auth/types/auth-user";
 
 export async function updatePageStatusService(
   pageId: number,
   statusData: UpdatePageStatusInput,
+  user: AuthUser,
 ): Promise<void> {
+  requirePermission(user, PERMISSIONS.PAGES_PUBLISH);
+
   const page = await findPageById(pageId);
 
   if (!page) {
@@ -19,9 +25,9 @@ export async function updatePageStatusService(
     throw new AppError(`Page is already ${statusData.status}`, 409);
   }
 
-  const updated = await updatePageStatus(pageId, statusData.status);
+  const updatedPageCount = await updatePageStatus(pageId, statusData.status);
 
-  if (!updated) {
-    throw new AppError("Failed to update page status", 500);
+  if (updatedPageCount === 0) {
+    throw new AppError("Page not found", 404);
   }
 }

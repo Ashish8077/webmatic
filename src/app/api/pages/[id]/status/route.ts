@@ -9,21 +9,18 @@ import {
 
 import { updatePageStatusService } from "@/modules/pages/services/update-page-status.service";
 import { AppError } from "@/shared/utils/errors/app-error";
-import { validate } from "@/shared/utils/validation/validation";
+import { validate } from "@/shared/utils/validators/validation";
 import { successResponse } from "@/shared/utils/http/success-response";
 import { handleApiError } from "@/shared/utils/http/handle-api-error";
-
-interface RouteContext {
-  params: Promise<{
-    id: string;
-  }>;
-}
+import { requireAuth } from "@/modules/auth/lib/get-auth-user";
+import { IdRouteParams } from "@/shared/types/route-params";
 
 export async function PATCH(
   request: Request,
-  { params }: RouteContext,
+  { params }: IdRouteParams,
 ): Promise<NextResponse> {
   try {
+    const user = await requireAuth();
     const { id } = await params;
 
     const pageId = Number(id);
@@ -37,7 +34,7 @@ export async function PATCH(
       await request.json(),
     );
 
-    await updatePageStatusService(pageId, statusData);
+    await updatePageStatusService(pageId, statusData, user);
 
     return successResponse({
       message:

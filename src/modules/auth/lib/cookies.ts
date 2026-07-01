@@ -1,4 +1,4 @@
-import { env } from "@/config/env";
+import { env } from "@/config/env.server";
 import { NextResponse } from "next/server";
 import { durationToSeconds } from "./jwt";
 
@@ -6,7 +6,7 @@ export function setAuthCookies(
   response: NextResponse,
   accessToken: string,
   refreshToken: string,
-) {
+): void {
   response.cookies.set("accessToken", accessToken, {
     httpOnly: true,
     secure: env.NODE_ENV === "production",
