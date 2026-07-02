@@ -22,15 +22,13 @@ export function handleApiError(error: unknown) {
   }
 
   if (error instanceof AppError) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: error.message,
-      },
-      {
-        status: error.statusCode,
-      },
-    );
+    const body = {
+      success: false,
+      message: error.message,
+      ...(error.errors && { errors: error.errors }),
+    };
+
+    return NextResponse.json(body, { status: error.statusCode });
   }
 
   if (error instanceof SyntaxError) {

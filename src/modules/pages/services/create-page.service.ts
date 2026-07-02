@@ -21,7 +21,9 @@ export async function createPageService(
   const existingPage = await findPageSlug(pageData.slug);
 
   if (existingPage) {
-    throw new AppError("Page slug already exists", 409);
+    throw new AppError("Page slug already exists", 409, {
+      slug: ["Page slug already exists."],
+    });
   }
 
   try {
