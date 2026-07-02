@@ -68,6 +68,7 @@ export function setupInterceptors() {
        * Convert non-auth errors.
        */
       if (status !== 401) {
+        console.log("Raw error response:", error.response?.data);
         return Promise.reject(
           new ApiError(
             error.response?.data?.message ?? "Something went wrong.",
@@ -75,6 +76,7 @@ export function setupInterceptors() {
             status ?? 500,
 
             error.response?.data?.code,
+            error.response?.data?.erros,
           ),
         );
       }
