@@ -1,7 +1,12 @@
-import { FieldValues, Path, UseFormSetError } from "react-hook-form";
+import {
+  FieldValues,
+  Path,
+  UseFormReturn,
+  UseFormSetError,
+} from "react-hook-form";
 
 export function applyServerErrors<T extends FieldValues>(
-  setError: UseFormSetError<T>,
+  form: UseFormReturn<T>,
   errors?: Partial<Record<Path<T>, string>>,
 ) {
   if (!errors) return;
@@ -11,7 +16,7 @@ export function applyServerErrors<T extends FieldValues>(
 
     if (!message) continue;
 
-    setError(field as Path<T>, {
+    form.setError(field as Path<T>, {
       type: "server",
       message,
     });

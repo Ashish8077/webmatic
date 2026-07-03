@@ -47,6 +47,7 @@ export interface PageListRow extends RowDataPacket {
   status: "draft" | "published";
   published_at: Date | null;
   created_at: Date;
+  updated_at: Date;
 }
 
 export interface CountRow extends RowDataPacket {

@@ -217,7 +217,5 @@ export async function softDeleteSection(sectionId: number): Promise<number> {
     [sectionId],
   );
 
-  console.log(result);
-
   return result.affectedRows;
 }

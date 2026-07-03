@@ -54,6 +54,7 @@ export interface PageListItem {
   title: string;
   slug: string;
   status: "draft" | "published";
+  publishedAt: string | null;
   updatedAt: string;
 }
 

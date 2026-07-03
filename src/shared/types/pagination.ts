@@ -7,9 +7,11 @@ export interface PaginationQuery {
 
 export interface PaginationMeta {
   page: number;
-  limit: number;
+  pageSize: number;
   totalItems: number;
   totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
 }
 
 export interface PaginatedResponse<T> {

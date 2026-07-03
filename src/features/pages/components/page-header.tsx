@@ -7,12 +7,14 @@ interface PageHeaderProps {
   title: string;
   description?: string;
   backLabel?: string;
+  children?: React.ReactNode;
 }
 
 function PageHeader({
   title,
   description,
   backLabel = "Back to Pages",
+  children,
 }: PageHeaderProps) {
   const router = useRouter();
 
@@ -25,7 +27,10 @@ function PageHeader({
         <ChevronLeft size={16} />
         {backLabel}
       </button>
-      <h1 className="text-2xl font-bold text-foreground">{title}</h1>
+      <div className="flex items-center gap-3">
+        <h1 className="text-2xl font-bold text-foreground">{title}</h1>
+        {children}
+      </div>
       {description && (
         <p className="text-sm text-muted-foreground mt-1">{description}</p>
       )}

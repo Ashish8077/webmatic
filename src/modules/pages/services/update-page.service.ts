@@ -1,7 +1,7 @@
 import { AppError } from "@/shared/utils/errors/app-error";
 import {
   findPageById,
-  findPageSlug,
+  findPageSlugExcludingPageId,
   updatePage,
 } from "../repositories/page.repository";
 import { UpdatePageInput } from "../validators/update-page.schema";
@@ -23,10 +23,12 @@ export async function updatePageService(
     throw new AppError("Page not found", 404);
   }
 
-  const existingPage = await findPageSlug(pageData.slug);
+  const existingPage = await findPageSlugExcludingPageId(pageData.slug, pageId);
 
-  if (existingPage && existingPage.id == pageId) {
-    throw new AppError("Page slug already exists", 409);
+  if (existingPage) {
+    throw new AppError("Page slug already exists", 409, {
+      slug: ["Page slug already exists."],
+    });
   }
 
   try {
@@ -36,7 +38,9 @@ export async function updatePageService(
     }
   } catch (error) {
     if (isDuplicateKeyError(error)) {
-      throw new AppError("Page slug already exists", 409);
+      throw new AppError("Page slug already exists", 409, {
+        slug: ["Page slug already exists."],
+      });
     }
     throw error;
   }

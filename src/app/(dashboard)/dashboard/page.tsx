@@ -14,8 +14,6 @@ export default function DashboardPage() {
 
   const { data: user } = useCurrentUser();
 
-  console.log(user);
-
   return (
     <div className="animate-fade-in">
       <div className="mb-8">

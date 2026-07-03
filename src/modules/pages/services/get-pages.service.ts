@@ -25,16 +25,20 @@ export async function getPagesService(
     slug: row.slug,
     status: row.status,
     publishedAt: row.published_at,
-    createdAt: row.created_at,
+    updatedAt: row.updated_at,
   }));
+
+  const totalPages = Math.ceil(totalItems / query.pageSize);
 
   return {
     items,
     pagination: {
       page: query.page,
-      limit: query.limit,
+      pageSize: query.pageSize,
       totalItems,
-      totalPages: Math.ceil(totalItems / query.limit),
+      totalPages,
+      hasNextPage: query.page < totalPages,
+      hasPreviousPage: query.page > 1,
     },
   };
 }

@@ -53,6 +53,7 @@ export async function GET(request: Request): Promise<NextResponse> {
       statusCode: 200,
     });
   } catch (error) {
+    console.log(error);
     return handleApiError(error);
   }
 }
