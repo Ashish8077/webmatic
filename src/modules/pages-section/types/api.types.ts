@@ -1,4 +1,5 @@
 import { JsonObject, JsonValue } from "@/shared/types/json";
+import { HomeSectionType } from "@/shared/constants/section-types";
 
 /**
  * create page section from request body schema
@@ -6,7 +7,7 @@ import { JsonObject, JsonValue } from "@/shared/types/json";
  */
 
 export interface CreatePageSectionRequest {
-  sectionName: string;
+  sectionType: HomeSectionType;
   title?: string | null;
   content: JsonObject;
   sortOrder?: number;
@@ -19,7 +20,6 @@ export interface CreatePageSectionRequest {
  */
 
 export interface UpdatePageSectionRequest {
-  sectionName?: string;
   title?: string | null;
   content?: JsonObject;
   sortOrder?: number;
@@ -35,7 +35,7 @@ export interface PageSectionResponse {
   section: {
     id: number;
     pageId: number;
-    sectionName: string;
+    sectionType: HomeSectionType;
     title: string | null;
     content: JsonObject;
     sortOrder: number;
@@ -52,7 +52,7 @@ export interface PageSectionResponse {
 
 export interface PageSectionListItem {
   id: number;
-  sectionName: string;
+  sectionType: HomeSectionType;
   title: string | null;
   content: JsonValue;
   sortOrder: number;

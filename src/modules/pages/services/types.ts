@@ -16,7 +16,7 @@ export interface PageListItem {
   slug: string;
   status: "draft" | "published";
   publishedAt: Date | null;
-  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface PageListResponse {

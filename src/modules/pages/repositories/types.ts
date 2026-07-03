@@ -21,6 +21,7 @@ export interface PublishedPageRow extends RowDataPacket {
   robots_follow: 0 | 1;
 
   schema_markup: JsonObject | null;
+  template: string | null;
 
   published_at: Date | null;
 }
@@ -47,6 +48,7 @@ export interface PageListRow extends RowDataPacket {
   status: "draft" | "published";
   published_at: Date | null;
   created_at: Date;
+  updated_at: Date;
 }
 
 export interface CountRow extends RowDataPacket {

@@ -1,8 +1,9 @@
 import { AppError } from "@/shared/utils/errors/app-error";
 import {
   findPageById,
-  findPageSlug,
+  findPageSlugExcludingPageId,
   updatePage,
+  countPagesByTemplate,
 } from "../repositories/page.repository";
 import { UpdatePageInput } from "../validators/update-page.schema";
 import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
@@ -23,10 +24,29 @@ export async function updatePageService(
     throw new AppError("Page not found", 404);
   }
 
-  const existingPage = await findPageSlug(pageData.slug);
+  const existingPage = await findPageSlugExcludingPageId(pageData.slug, pageId);
 
-  if (existingPage && existingPage.id == pageId) {
-    throw new AppError("Page slug already exists", 409);
+  if (existingPage) {
+    throw new AppError("Page slug already exists", 409, {
+      slug: ["Page slug already exists."],
+    });
+  }
+
+  // Prevent multiple home pages
+  if (pageData.template === "home") {
+    const homeCount = await countPagesByTemplate("home", pageId);
+    if (homeCount > 0) {
+      throw new AppError("Only one Home page can exist", 400, {
+        template: ["A page with the Home template already exists."],
+      });
+    }
+  }
+
+  // Prevent unpublishing the home page
+  if (page.template === "home" && pageData.status === "draft") {
+    throw new AppError("The Home page cannot be unpublished", 400, {
+      status: ["The Home page must remain published."],
+    });
   }
 
   try {
@@ -36,7 +56,9 @@ export async function updatePageService(
     }
   } catch (error) {
     if (isDuplicateKeyError(error)) {
-      throw new AppError("Page slug already exists", 409);
+      throw new AppError("Page slug already exists", 409, {
+        slug: ["Page slug already exists."],
+      });
     }
     throw error;
   }

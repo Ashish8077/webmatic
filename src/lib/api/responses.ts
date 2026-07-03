@@ -8,4 +8,5 @@ export interface ApiErrorResponse {
   success: boolean;
   message: string;
   code?: string;
+  errors?: Record<string, string[]>;
 }

@@ -12,8 +12,6 @@ export async function deleteSectionService(
 
   const deletedSectionCount = await softDeleteSection(sectionId);
 
-  console.log("deleted section count", deletedSectionCount);
-
   if (deletedSectionCount === 0) {
     throw new AppError("Section not found", 404);
   }

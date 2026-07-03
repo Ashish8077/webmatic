@@ -9,10 +9,12 @@ export interface LoginRequest {
 }
 
 export interface UserResponse {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
+  user: {
+    id: number;
+    email: string;
+  };
+  roles: string[];
+  permissions: string[];
 }
 
 export interface LoginResponse {

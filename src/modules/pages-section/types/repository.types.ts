@@ -6,7 +6,7 @@ export interface PageSectionRow extends RowDataPacket {
 
   page_id: number;
 
-  section_name: string;
+  section_type: string;
 
   title: string | null;
 

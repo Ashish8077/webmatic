@@ -10,7 +10,7 @@ export function toCreatePageSectionResponse(
 
       pageId: row.page_id,
 
-      sectionName: row.section_name,
+      sectionType: row.section_type as import("@/shared/constants/section-types").HomeSectionType,
 
       title: row.title,
 
@@ -32,8 +32,7 @@ export function toPageSectionListItem(
 ): PageSectionListItem {
   return {
     id: row.id,
-
-    sectionName: row.section_name,
+    sectionType: row.section_type as import("@/shared/constants/section-types").HomeSectionType,
 
     title: row.title,
 
@@ -54,7 +53,7 @@ export function toPageSectionResponse(
 
       pageId: row.page_id,
 
-      sectionName: row.section_name,
+      sectionType: row.section_type as import("@/shared/constants/section-types").HomeSectionType,
 
       title: row.title,
 

@@ -18,8 +18,6 @@ export async function GET(request: Request, { params }: IdRouteParams) {
 
     const pageSections = await getPageSectionsService(pageId, user);
 
-    console.log(pageSections);
-
     return successResponse({
       message: "Sections fetched successfully",
       data: pageSections,

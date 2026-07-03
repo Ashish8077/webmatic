@@ -3,16 +3,6 @@ import { z } from "zod";
 
 export const updatePageSectionSchema = z
   .object({
-    sectionName: z
-      .string()
-      .trim()
-      .min(1, "Section name is required")
-      .max(100, "Section name must not exceed 100 characters")
-      .regex(
-        /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/,
-        "Section name must start with a letter and contain only lowercase letters, numbers and hyphens",
-      )
-      .optional(),
     title: emptyStringToNull(255).optional(),
     content: z.record(z.string(), z.unknown()).optional(),
     sortOrder: z.coerce

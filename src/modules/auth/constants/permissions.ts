@@ -16,7 +16,7 @@ export const PERMISSIONS = {
 
   // Blog permissions
   BLOG_CREATE: "blog.create",
-  BLOG_READ: "blog.read",
+  BLOG_VIEW: "blog.read",
   BLOG_UPDATE: "blog.update",
   BLOG_DELETE: "blog.delete",
   BLOG_PUBLISH: "blog.publish",

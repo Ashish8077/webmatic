@@ -1,6 +1,7 @@
 import { findPageById } from "@/modules/pages/repositories/page.repository";
 import { CreatePageSectionInput } from "../validators/create-page-section.schema";
 import { AppError } from "@/shared/utils/errors/app-error";
+import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
 import { PageSectionResponse } from "../types/api.types";
 import {
   createPageSection,
@@ -23,17 +24,26 @@ export async function createPageSectionService(
     throw new AppError("Page not found", 404);
   }
 
-  const pageSectionId = await createPageSection(
-    pageId,
-    sectionData,
-    user.userId,
-  );
+  try {
+    const pageSectionId = await createPageSection(
+      pageId,
+      sectionData,
+      user.userId,
+    );
 
-  const pageSection = await findPageSectionById(pageSectionId);
+    const pageSection = await findPageSectionById(pageSectionId);
 
-  if (!pageSection) {
-    throw new AppError("Failed to retrieve created page section", 500);
+    if (!pageSection) {
+      throw new AppError("Failed to retrieve created page section", 500);
+    }
+
+    return toCreatePageSectionResponse(pageSection);
+  } catch (error) {
+    if (isDuplicateKeyError(error)) {
+      throw new AppError("A section of this type already exists on this page.", 409, {
+        sectionType: ["Duplicate section type."],
+      });
+    }
+    throw error;
   }
-
-  return toCreatePageSectionResponse(pageSection);
 }

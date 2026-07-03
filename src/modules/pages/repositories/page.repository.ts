@@ -11,11 +11,16 @@ import {
 import { GetPagesQuery } from "../validators/get-pages-query.schema";
 import { UpdatePageInput } from "../validators/update-page.schema";
 
-const SORT_COLUMNS = {
+type SortBy = NonNullable<GetPagesQuery["sortBy"]>;
+
+export const SORT_COLUMNS: Record<SortBy, string> = {
   title: "title",
+  slug: "slug",
+  status: "status",
   created_at: "created_at",
+  updated_at: "updated_at",
   published_at: "published_at",
-} as const;
+};
 
 export async function findPageSlug(slug: string): Promise<PageSlugRow | null> {
   const [rows] = await db.execute<PageSlugRow[]>(
@@ -29,6 +34,27 @@ export async function findPageSlug(slug: string): Promise<PageSlugRow | null> {
     LIMIT 1
     `,
     [slug],
+  );
+
+  return rows[0] ?? null;
+}
+
+export async function findPageSlugExcludingPageId(
+  slug: string,
+  pageId: number,
+): Promise<PageSlugRow | null> {
+  const [rows] = await db.execute<PageSlugRow[]>(
+    `
+    SELECT
+      id,
+      slug
+    FROM pages
+    WHERE slug = ?
+      AND id <> ?
+      AND deleted_at IS NULL
+    LIMIT 1
+    `,
+    [slug, pageId],
   );
 
   return rows[0] ?? null;
@@ -49,6 +75,7 @@ export async function findPublishedPageBySlug(
       robots_index,
       robots_follow,
       schema_markup,
+      template,
       published_at
     FROM pages
     WHERE slug = ?
@@ -62,10 +89,55 @@ export async function findPublishedPageBySlug(
   return rows[0] ?? null;
 }
 
+export async function findPublishedPageByTemplate(
+  template: string,
+): Promise<PublishedPageRow | null> {
+  const [rows] = await db.execute<PublishedPageRow[]>(
+    `
+    SELECT
+      id,
+      title,
+      slug,
+      seo_title,
+      meta_description,
+      canonical_url,
+      robots_index,
+      robots_follow,
+      schema_markup,
+      template,
+      published_at
+    FROM pages
+    WHERE template = ?
+      AND status = 'published'
+      AND deleted_at IS NULL
+    LIMIT 1
+    `,
+    [template],
+  );
+
+  return rows[0] ?? null;
+}
+
+export async function countPagesByTemplate(
+  template: string,
+  excludePageId?: number,
+): Promise<number> {
+  let query = `SELECT COUNT(*) as total FROM pages WHERE template = ? AND deleted_at IS NULL`;
+  const params: any[] = [template];
+
+  if (excludePageId) {
+    query += ` AND id != ?`;
+    params.push(excludePageId);
+  }
+
+  const [rows] = await db.execute<CountRow[]>(query, params);
+  return rows[0]?.total ?? 0;
+}
+
 export async function findPages(
   options: GetPagesQuery,
 ): Promise<PageListRow[]> {
-  const offset = (options.page - 1) * options.limit;
+  const offset = (options.page - 1) * options.pageSize;
 
   const where: string[] = ["deleted_at IS NULL"];
 
@@ -81,14 +153,14 @@ export async function findPages(
     params.push(options.status);
   }
 
-  const sortColumn = SORT_COLUMNS[options.sortBy] ?? SORT_COLUMNS.created_at;
+  const sortColumn = SORT_COLUMNS[options.sortBy];
 
-  const sortDirection = options.sortOrder === "asc" ? "ASC" : "DESC";
+  const sortDirection: "ASC" | "DESC" =
+    options.sortOrder === "asc" ? "ASC" : "DESC";
 
-  params.push(options.limit);
-  params.push(offset);
+  params.push(offset, options.pageSize);
 
-  const [rows] = await db.execute<PageListRow[]>(
+  const [rows] = await db.query<PageListRow[]>(
     `
     SELECT
       id,
@@ -96,11 +168,12 @@ export async function findPages(
       slug,
       status,
       published_at,
-      created_at
+      created_at,
+      updated_at
     FROM pages
     WHERE ${where.join(" AND ")}
     ORDER BY ${sortColumn} ${sortDirection}
-    LIMIT ${offset}, ${options.limit}
+    LIMIT ?, ?
     `,
     params,
   );
@@ -153,7 +226,7 @@ export async function countPages(options: GetPagesQuery): Promise<number> {
     params.push(options.status);
   }
 
-  const [rows] = await db.execute<CountRow[]>(
+  const [rows] = await db.query<CountRow[]>(
     `
     SELECT COUNT(*) AS total
     FROM pages
@@ -244,6 +317,11 @@ export async function softDeletePage(pageId: number): Promise<number> {
     `
     UPDATE pages
     SET
+      slug = CONCAT(
+        LEFT(slug, 255 - CHAR_LENGTH(CONCAT('__deleted__', id))),
+        '__deleted__',
+        id
+      ),
       deleted_at = CURRENT_TIMESTAMP
     WHERE id = ?
       AND deleted_at IS NULL
