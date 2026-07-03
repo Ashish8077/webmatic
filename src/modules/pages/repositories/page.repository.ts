@@ -75,6 +75,7 @@ export async function findPublishedPageBySlug(
       robots_index,
       robots_follow,
       schema_markup,
+      template,
       published_at
     FROM pages
     WHERE slug = ?
@@ -86,6 +87,51 @@ export async function findPublishedPageBySlug(
   );
 
   return rows[0] ?? null;
+}
+
+export async function findPublishedPageByTemplate(
+  template: string,
+): Promise<PublishedPageRow | null> {
+  const [rows] = await db.execute<PublishedPageRow[]>(
+    `
+    SELECT
+      id,
+      title,
+      slug,
+      seo_title,
+      meta_description,
+      canonical_url,
+      robots_index,
+      robots_follow,
+      schema_markup,
+      template,
+      published_at
+    FROM pages
+    WHERE template = ?
+      AND status = 'published'
+      AND deleted_at IS NULL
+    LIMIT 1
+    `,
+    [template],
+  );
+
+  return rows[0] ?? null;
+}
+
+export async function countPagesByTemplate(
+  template: string,
+  excludePageId?: number,
+): Promise<number> {
+  let query = `SELECT COUNT(*) as total FROM pages WHERE template = ? AND deleted_at IS NULL`;
+  const params: any[] = [template];
+
+  if (excludePageId) {
+    query += ` AND id != ?`;
+    params.push(excludePageId);
+  }
+
+  const [rows] = await db.execute<CountRow[]>(query, params);
+  return rows[0]?.total ?? 0;
 }
 
 export async function findPages(

@@ -1,19 +1,14 @@
 import { z } from "zod";
 import type { JsonObject, JsonValue } from "@/shared/types/json";
+import { HOME_SECTION_TYPES } from "@/shared/constants/section-types";
 
 const isJsonObject = (value: unknown): value is JsonObject =>
   typeof value === "object" && value !== null && !Array.isArray(value);
 
 export const pageSectionFormSchema = z.object({
-  sectionName: z
-    .string()
-    .trim()
-    .min(1, "Section name is required")
-    .max(100, "Section name must not exceed 100 characters")
-    .regex(
-      /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/,
-      "Section name must start with a letter and contain only lowercase letters, numbers and hyphens",
-    ),
+  sectionType: z.enum(HOME_SECTION_TYPES, {
+    message: "Invalid section type",
+  }),
   title: z.string().trim().max(255, "Title cannot exceed 255 characters"),
   content: z
     .string()
@@ -48,7 +43,7 @@ export const pageSectionFormSchema = z.object({
 export type PageSectionFormValues = z.infer<typeof pageSectionFormSchema>;
 
 export const DEFAULT_PAGE_SECTION_FORM_VALUES: PageSectionFormValues = {
-  sectionName: "",
+  sectionType: "hero",
   title: "",
   content: "{}",
   sortOrder: 0,

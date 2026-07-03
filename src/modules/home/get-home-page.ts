@@ -1,8 +1,5 @@
-import { findPublishedPageBySlug } from "@/modules/pages/repositories/page.repository";
+import { findPublishedPageByTemplate } from "@/modules/pages/repositories/page.repository";
 import { findPageSectionsByPageId } from "@/modules/pages-section/repositories/page-section.repository";
-
-/** Slug that identifies the home page in the CMS. */
-export const HOME_PAGE_SLUG = "home-page";
 
 // ─── Public types ─────────────────────────────────────────────────────────────
 
@@ -17,7 +14,7 @@ export interface HomePageMeta {
 
 export interface HomeSectionData {
   id: number;
-  sectionName: string;
+  sectionType: import("@/shared/constants/section-types").HomeSectionType;
   title: string | null;
   /** Raw JSON content stored in the database. */
   content: Record<string, unknown>;
@@ -39,7 +36,7 @@ export interface HomePageData {
  * Returns null when the home page does not exist or is not yet published.
  */
 export async function getHomePageData(): Promise<HomePageData | null> {
-  const page = await findPublishedPageBySlug(HOME_PAGE_SLUG);
+  const page = await findPublishedPageByTemplate("home");
 
   if (!page) return null;
 
@@ -49,7 +46,7 @@ export async function getHomePageData(): Promise<HomePageData | null> {
     .filter((row) => Boolean(row.is_active))
     .map((row) => ({
       id: row.id,
-      sectionName: row.section_name,
+      sectionType: row.section_type as import("@/shared/constants/section-types").HomeSectionType,
       title: row.title,
       content: (row.content ?? {}) as Record<string, unknown>,
       sortOrder: row.sort_order,

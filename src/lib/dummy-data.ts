@@ -30,10 +30,12 @@ export interface DummyPage {
   updatedAt: string;
 }
 
+import type { HomeSectionType } from "@/shared/constants/section-types";
+
 export interface DummySection {
   id: number;
   pageId: number;
-  sectionName: string;
+  sectionType: HomeSectionType;
   title: string | null;
   content: Record<string, unknown>;
   sortOrder: number;
@@ -166,7 +168,7 @@ export const dummySections: DummySection[] = [
   {
     id: 1,
     pageId: 1,
-    sectionName: "hero-banner",
+    sectionType: "hero",
     title: "Hero Banner",
     content: {
       heading: "Build Something Amazing",
@@ -182,7 +184,7 @@ export const dummySections: DummySection[] = [
   {
     id: 2,
     pageId: 1,
-    sectionName: "features-grid",
+    sectionType: "why-us",
     title: "Our Features",
     content: {
       features: [
@@ -199,7 +201,7 @@ export const dummySections: DummySection[] = [
   {
     id: 3,
     pageId: 1,
-    sectionName: "testimonials",
+    sectionType: "testimonials",
     title: "What Our Clients Say",
     content: {
       testimonials: [
@@ -215,7 +217,7 @@ export const dummySections: DummySection[] = [
   {
     id: 4,
     pageId: 1,
-    sectionName: "cta-section",
+    sectionType: "contact-cta",
     title: "Ready to Start?",
     content: {
       heading: "Let's Build Together",
@@ -232,7 +234,7 @@ export const dummySections: DummySection[] = [
   {
     id: 5,
     pageId: 2,
-    sectionName: "company-intro",
+    sectionType: "about",
     title: "Who We Are",
     content: {
       text: "We are a team of passionate developers building modern web solutions.",
@@ -243,29 +245,12 @@ export const dummySections: DummySection[] = [
     createdAt: "2025-12-02T09:00:00.000Z",
     updatedAt: "2026-05-20T11:30:00.000Z",
   },
-  {
-    id: 6,
-    pageId: 2,
-    sectionName: "team-members",
-    title: "Our Team",
-    content: {
-      members: [
-        { name: "Alex Johnson", role: "Lead Developer" },
-        { name: "Sara Williams", role: "Designer" },
-        { name: "Mike Chen", role: "Project Manager" },
-      ],
-    },
-    sortOrder: 1,
-    isActive: true,
-    createdAt: "2025-12-02T09:00:00.000Z",
-    updatedAt: "2026-05-20T11:30:00.000Z",
-  },
 
   // Services sections
   {
     id: 7,
     pageId: 3,
-    sectionName: "services-list",
+    sectionType: "services",
     title: "What We Offer",
     content: {
       services: [
@@ -279,51 +264,18 @@ export const dummySections: DummySection[] = [
     createdAt: "2026-01-08T15:00:00.000Z",
     updatedAt: "2026-06-10T16:45:00.000Z",
   },
-  {
-    id: 8,
-    pageId: 3,
-    sectionName: "pricing-table",
-    title: "Pricing",
-    content: {
-      plans: [
-        { name: "Starter", price: "$499/mo" },
-        { name: "Pro", price: "$999/mo" },
-        { name: "Enterprise", price: "Custom" },
-      ],
-    },
-    sortOrder: 1,
-    isActive: true,
-    createdAt: "2026-01-08T15:00:00.000Z",
-    updatedAt: "2026-06-10T16:45:00.000Z",
-  },
 
   // Contact sections
   {
     id: 9,
     pageId: 4,
-    sectionName: "contact-form",
+    sectionType: "faq",
     title: "Send us a Message",
     content: {
       fields: ["name", "email", "phone", "message"],
       submitText: "Send Message",
     },
     sortOrder: 0,
-    isActive: true,
-    createdAt: "2026-02-12T08:00:00.000Z",
-    updatedAt: "2026-06-20T13:10:00.000Z",
-  },
-  {
-    id: 10,
-    pageId: 4,
-    sectionName: "office-locations",
-    title: "Our Offices",
-    content: {
-      locations: [
-        { city: "New York", address: "123 Broadway, NY 10001" },
-        { city: "London", address: "45 Oxford Street, W1D 1BS" },
-      ],
-    },
-    sortOrder: 1,
     isActive: true,
     createdAt: "2026-02-12T08:00:00.000Z",
     updatedAt: "2026-06-20T13:10:00.000Z",

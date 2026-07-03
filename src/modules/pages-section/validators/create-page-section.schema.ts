@@ -1,16 +1,11 @@
 import { emptyStringToNull } from "@/shared/utils/validators/zod-helpers";
 import { z } from "zod";
+import { HOME_SECTION_TYPES } from "@/shared/constants/section-types";
 
 export const createPageSectionSchema = z.object({
-  sectionName: z
-    .string()
-    .trim()
-    .min(1, "Section name is required")
-    .max(100, "Section name must not exceed 100 characters")
-    .regex(
-      /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/,
-      "Section name must start with a letter and contain only lowercase letters, numbers and hyphens",
-    ),
+  sectionType: z.enum(HOME_SECTION_TYPES, {
+    message: "Invalid section type",
+  }),
   title: emptyStringToNull(255).optional(),
   content: z.record(z.string(), z.unknown()),
   sortOrder: z.coerce

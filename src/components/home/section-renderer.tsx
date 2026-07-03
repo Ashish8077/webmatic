@@ -8,6 +8,8 @@ import { FaqSection } from "./sections/faq-section";
 import { ContactCtaSection } from "./sections/contact-cta-section";
 import { FooterCtaSection } from "./sections/footer-cta-section";
 
+import type { HomeSectionType } from "@/shared/constants/section-types";
+
 // ─── Section component contract ───────────────────────────────────────────────
 
 type SectionComponent = React.ComponentType<{
@@ -16,12 +18,12 @@ type SectionComponent = React.ComponentType<{
 }>;
 
 /**
- * Maps each supported section_name value to its rendering component.
+ * Maps each supported section_type value to its rendering component.
  *
- * Keys must match the `sectionName` values stored in the database exactly.
+ * Keys must match the `sectionType` values stored in the database exactly.
  * Unknown names are silently skipped (no error thrown in production).
  */
-const SECTION_MAP: Readonly<Record<string, SectionComponent>> = {
+const SECTION_MAP: Readonly<Record<HomeSectionType, SectionComponent>> = {
   hero: HeroSection,
   about: AboutSection,
   services: ServicesSection,
@@ -40,16 +42,16 @@ interface SectionRendererProps {
 
 /**
  * Resolves a HomeSectionData record to its corresponding React component and
- * renders it. Returns null for unrecognised section names so new section types
+ * renders it. Returns null for unrecognised section types so new section types
  * can be introduced in the CMS without causing a runtime error.
  */
 export function SectionRenderer({ section }: SectionRendererProps) {
-  const Component = SECTION_MAP[section.sectionName];
+  const Component = SECTION_MAP[section.sectionType];
 
   if (!Component) {
     if (process.env.NODE_ENV === "development") {
       console.warn(
-        `[SectionRenderer] No component registered for sectionName: "${section.sectionName}". ` +
+        `[SectionRenderer] No component registered for sectionType: "${section.sectionType}". ` +
           `Add it to SECTION_MAP in section-renderer.tsx.`,
       );
     }

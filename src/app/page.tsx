@@ -50,7 +50,8 @@ export default async function HomePage() {
             className="absolute inset-0 blur-3xl opacity-20 pointer-events-none"
             aria-hidden="true"
             style={{
-              background: "radial-gradient(circle, #6366f1 0%, transparent 70%)",
+              background:
+                "radial-gradient(circle, #6366f1 0%, transparent 70%)",
             }}
           />
           <h1 className="relative text-5xl sm:text-6xl font-extrabold gradient-text mb-4">

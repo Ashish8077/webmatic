@@ -3,7 +3,7 @@
 import { AppError } from "@/shared/utils/errors/app-error";
 import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
 
-import { createPage, findPageSlug } from "../repositories/page.repository";
+import { createPage, findPageSlug, countPagesByTemplate } from "../repositories/page.repository";
 
 import { CreatePageInput } from "../validators/create-page.schema";
 
@@ -24,6 +24,15 @@ export async function createPageService(
     throw new AppError("Page slug already exists", 409, {
       slug: ["Page slug already exists."],
     });
+  }
+
+  if (pageData.template === "home") {
+    const homeCount = await countPagesByTemplate("home");
+    if (homeCount > 0) {
+      throw new AppError("Only one Home page can exist", 400, {
+        template: ["A page with the Home template already exists."],
+      });
+    }
   }
 
   try {

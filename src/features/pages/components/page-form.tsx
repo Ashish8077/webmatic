@@ -7,7 +7,7 @@ import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup } from "@/components/ui/toggle-group";
 import { usePageForm } from "@/features/pages/hooks/use-page-form";
-import { PAGE_TEMPLATES } from "@/features/pages/constants/page-templates";
+import { PAGE_TEMPLATES } from "@/shared/constants/templates";
 import SeoFields from "./seo-fields";
 import type { CreatePageFormValues } from "@/features/pages/schemas/create-page.schema";
 

@@ -1,9 +1,10 @@
 import type { BaseResponse } from "@/shared/types/api.types";
 import type { JsonObject, JsonValue } from "@/shared/types/json";
+import { HomeSectionType } from "@/shared/constants/section-types";
 
 export interface PageSectionListItem {
   id: number;
-  sectionName: string;
+  sectionType: HomeSectionType;
   title: string | null;
   content: JsonValue;
   sortOrder: number;
@@ -13,7 +14,7 @@ export interface PageSectionListItem {
 export interface PageSection {
   id: number;
   pageId: number;
-  sectionName: string;
+  sectionType: HomeSectionType;
   title: string | null;
   content: JsonObject;
   sortOrder: number;
@@ -23,7 +24,7 @@ export interface PageSection {
 }
 
 export interface CreatePageSectionRequest {
-  sectionName: string;
+  sectionType: HomeSectionType;
   title?: string | null;
   content: JsonObject;
   sortOrder?: number;
@@ -31,7 +32,6 @@ export interface CreatePageSectionRequest {
 }
 
 export interface UpdatePageSectionRequest {
-  sectionName?: string;
   title?: string | null;
   content?: JsonObject;
   sortOrder?: number;

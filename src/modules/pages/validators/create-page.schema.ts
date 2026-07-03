@@ -3,6 +3,7 @@ import {
   nullableUrl,
 } from "@/shared/utils/validators/zod-helpers";
 import { z } from "zod";
+import { PAGE_TEMPLATE_VALUES } from "@/shared/constants/templates";
 
 export const createPageSchema = z.object({
   title: z.string().trim().min(1, "Title is required").max(255),
@@ -19,7 +20,7 @@ export const createPageSchema = z.object({
 
   status: z.enum(["draft", "published"]).default("draft"),
 
-  template: emptyStringToNull(100).optional(),
+  template: z.enum(PAGE_TEMPLATE_VALUES).nullable().optional(),
 
   seoTitle: emptyStringToNull(255).optional(),
 

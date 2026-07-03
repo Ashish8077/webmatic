@@ -21,6 +21,7 @@ export interface PublishedPageRow extends RowDataPacket {
   robots_follow: 0 | 1;
 
   schema_markup: JsonObject | null;
+  template: string | null;
 
   published_at: Date | null;
 }

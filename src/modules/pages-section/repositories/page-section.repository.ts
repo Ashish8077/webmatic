@@ -19,7 +19,7 @@ export async function findPageSectionById(
       SELECT
         id,
         page_id,
-        section_name,
+        section_type,
         title,
         content,
         sort_order,
@@ -50,7 +50,7 @@ export async function findPageSectionsByPageId(
     SELECT
       id,
       page_id,
-      section_name,
+      section_type,
       title,
       content,
       sort_order,
@@ -84,7 +84,7 @@ export async function createPageSection(
     `
     INSERT INTO page_sections (
       page_id,
-      section_name,
+      section_type,
       title,
       content,
       sort_order,
@@ -96,7 +96,7 @@ export async function createPageSection(
     `,
     [
       pageId,
-      createPageSection.sectionName,
+      createPageSection.sectionType,
       createPageSection.title ?? null,
       JSON.stringify(createPageSection.content),
       createPageSection.sortOrder,
@@ -124,11 +124,6 @@ export async function updatePageSection(
 ): Promise<number> {
   const updates: string[] = [];
   const values: QueryValue[] = [];
-
-  if (updatePageSection.sectionName !== undefined) {
-    updates.push("section_name = ?");
-    values.push(updatePageSection.sectionName);
-  }
 
   if (updatePageSection.title !== undefined) {
     updates.push("title = ?");
@@ -181,7 +176,7 @@ export async function findSectionById(
     SELECT
       id,
       page_id,
-      section_name,
+      section_type,
       title,
       content,
       sort_order,

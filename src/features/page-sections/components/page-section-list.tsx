@@ -91,9 +91,9 @@ export function PageSectionList({
                   <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-md bg-accent/10 px-1.5 text-xs font-bold text-accent">
                     {section.sortOrder}
                   </span>
-                  <h2 className="truncate text-sm font-semibold text-foreground">
-                    {section.sectionName}
-                  </h2>
+                  <div className="font-medium text-foreground">
+                    {section.sectionType}
+                  </div>
                   <Badge variant={section.isActive ? "active" : "inactive"}>
                     {section.isActive ? "Active" : "Inactive"}
                   </Badge>

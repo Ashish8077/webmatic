@@ -3,6 +3,7 @@ import {
   nullableUrl,
 } from "@/shared/utils/validators/zod-helpers";
 import z from "zod";
+import { PAGE_TEMPLATE_VALUES } from "@/shared/constants/templates";
 
 export const updatePageSchema = z
   .object({
@@ -20,7 +21,7 @@ export const updatePageSchema = z
 
     status: z.enum(["draft", "published"]),
 
-    template: emptyStringToNull(100).optional(),
+    template: z.enum(PAGE_TEMPLATE_VALUES).nullable().optional(),
 
     seoTitle: emptyStringToNull(255).optional(),
 

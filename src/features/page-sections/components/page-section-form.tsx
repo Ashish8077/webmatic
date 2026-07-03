@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import type { PageSectionFormValues } from "../schemas/page-section.schema";
 
+import { HOME_SECTION_TYPES } from "@/shared/constants/section-types";
+
 interface PageSectionFormProps {
   form: UseFormReturn<PageSectionFormValues>;
   onSubmit: (data: PageSectionFormValues) => Promise<void>;
@@ -14,6 +16,7 @@ interface PageSectionFormProps {
   submitLabel: string;
   isLoading?: boolean;
   isSubmitting?: boolean;
+  isEditing?: boolean;
 }
 
 export function PageSectionForm({
@@ -23,6 +26,7 @@ export function PageSectionForm({
   submitLabel,
   isLoading = false,
   isSubmitting = false,
+  isEditing = false,
 }: PageSectionFormProps) {
   if (isLoading) {
     return (
@@ -35,14 +39,34 @@ export function PageSectionForm({
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-      <Input
-        label="Section Name"
-        placeholder="hero-banner"
-        autoComplete="off"
-        disabled={isSubmitting}
-        {...form.register("sectionName")}
-        error={form.formState.errors.sectionName?.message}
-      />
+      {isEditing ? (
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-medium text-foreground">Section Type</label>
+          <div className="flex h-10 items-center">
+            <span className="inline-flex items-center rounded-md bg-accent/10 px-2 py-1 text-xs font-medium text-accent ring-1 ring-inset ring-accent/20">
+              {form.getValues("sectionType")}
+            </span>
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-medium text-foreground">Section Type</label>
+          <select
+            className="flex h-10 w-full rounded-md border border-card-border bg-card-bg px-3 py-2 text-sm text-foreground transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={isSubmitting}
+            {...form.register("sectionType")}
+          >
+            {HOME_SECTION_TYPES.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
+          </select>
+          {form.formState.errors.sectionType?.message && (
+            <p className="text-xs text-danger">{form.formState.errors.sectionType.message as string}</p>
+          )}
+        </div>
+      )}
 
       <Input
         label="Title"

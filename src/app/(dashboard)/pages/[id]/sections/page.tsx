@@ -95,7 +95,7 @@ export default function SectionsPage() {
     if (!section || !isModalOpen || !editingSectionId) return;
 
     reset({
-      sectionName: section.sectionName,
+      sectionType: section.sectionType,
       title: section.title ?? "",
       content: stringifySectionContent(section.content),
       sortOrder: section.sortOrder,
@@ -106,7 +106,7 @@ export default function SectionsPage() {
   const toMutationPayload = (
     values: PageSectionFormValues,
   ): CreatePageSectionRequest => ({
-    sectionName: values.sectionName,
+    sectionType: values.sectionType,
     title: values.title.trim() || null,
     content: parseSectionContent(values.content),
     sortOrder: values.sortOrder,
@@ -271,6 +271,7 @@ export default function SectionsPage() {
           submitLabel={editingSectionId ? "Save Changes" : "Add Section"}
           isLoading={Boolean(editingSectionId && sectionQuery.isPending)}
           isSubmitting={isSaving}
+          isEditing={!!editingSectionId}
         />
       </Modal>
 
@@ -279,7 +280,7 @@ export default function SectionsPage() {
         onClose={() => setDeleteTarget(null)}
         onConfirm={handleDelete}
         title="Delete Section"
-        message={`Are you sure you want to delete "${deleteTarget?.sectionName}"? This action cannot be undone.`}
+        message={`Are you sure you want to delete "${deleteTarget?.sectionType}"? This action cannot be undone.`}
       />
     </div>
   );
