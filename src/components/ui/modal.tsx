@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 interface ModalProps {
   isOpen: boolean;
@@ -43,26 +44,33 @@ export function Modal({
 
   if (!isOpen) return null;
 
-  return (
+  const portalNode = typeof document === "undefined" ? null : document.body;
+
+  if (!portalNode) return null;
+
+  return createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 "
       onClick={(e) => {
         if (e.target === overlayRef.current) onClose();
       }}
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in" />
+      <div
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        style={{ animation: "fadeIn 0.4s ease-out forwards" }}
+      />
 
       {/* Panel */}
       <div
         className={`
-          relative w-full ${sizeStyles[size]}
+          relative z-10 w-full ${sizeStyles[size]}
           bg-card-bg border border-card-border rounded-2xl
           shadow-2xl shadow-black/40
-          animate-scale-in
           max-h-[90vh] flex flex-col
         `}
+        style={{ animation: "scaleIn 0.2s ease-out forwards" }}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-card-border">
@@ -90,6 +98,7 @@ export function Modal({
         {/* Body */}
         <div className="px-6 py-5 overflow-y-auto">{children}</div>
       </div>
-    </div>
+    </div>,
+    portalNode,
   );
 }

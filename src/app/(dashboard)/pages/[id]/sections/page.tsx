@@ -92,6 +92,8 @@ export default function SectionsPage() {
   useEffect(() => {
     const section = sectionQuery.data?.data.section;
 
+    console.log(section);
+
     if (!section || !isModalOpen || !editingSectionId) return;
 
     reset({
