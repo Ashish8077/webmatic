@@ -1,6 +1,6 @@
 import db from "@/database/connection";
 import { ResultSetHeader } from "mysql2";
-import { CreatePageInput } from "../validators/create-page.schema";
+import { CreatePageInput } from "../schemas/create-page.schema";
 import {
   CountRow,
   PageDetailsRow,
@@ -8,8 +8,8 @@ import {
   PageSlugRow,
   PublishedPageRow,
 } from "./types";
-import { GetPagesQuery } from "../validators/get-pages-query.schema";
-import { UpdatePageInput } from "../validators/update-page.schema";
+import { GetPagesQuery } from "../schemas/get-pages-query.schema";
+import { UpdatePageInput } from "../schemas/update-page.schema";
 
 type SortBy = NonNullable<GetPagesQuery["sortBy"]>;
 

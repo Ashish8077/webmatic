@@ -5,7 +5,7 @@ import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
 
 import { createPage, findPageSlug } from "../repositories/page.repository";
 
-import { CreatePageInput } from "../validators/create-page.schema";
+import { CreatePageInput } from "../schemas/create-page.schema";
 
 import { CreatePageResponse } from "../services/types";
 import { requirePermission } from "@/modules/auth/authorization/permission";

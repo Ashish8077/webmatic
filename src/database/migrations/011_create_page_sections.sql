@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS page_sections (
 
     page_id BIGINT UNSIGNED NOT NULL,
 
-    section_type VARCHAR(100) NOT NULL,
+    section_type VARCHAR(50) NOT NULL,
 
     content JSON NOT NULL COMMENT 'Section-specific content',
 
@@ -16,11 +16,11 @@ CREATE TABLE IF NOT EXISTS page_sections (
         'published'
     ) NOT NULL DEFAULT 'draft',
 
-    published_at TIMESTAMP NULL DEFAULT NULL,
-
     created_by BIGINT UNSIGNED DEFAULT NULL,
 
     updated_by BIGINT UNSIGNED DEFAULT NULL,
+
+    deleted_by BIGINT UNSIGNED DEFAULT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -28,10 +28,6 @@ CREATE TABLE IF NOT EXISTS page_sections (
         ON UPDATE CURRENT_TIMESTAMP,
 
     deleted_at TIMESTAMP NULL DEFAULT NULL,
-
-    INDEX idx_page_id (page_id),
-
-    INDEX idx_section_type (section_type),
 
 
     INDEX idx_page_deleted_sort (
@@ -47,12 +43,9 @@ CREATE TABLE IF NOT EXISTS page_sections (
         sort_order
         ),
 
-    INDEX idx_published_at (published_at),
+    CONSTRAINT uk_page_section_type_per_page
+        UNIQUE (page_id, section_type),
 
-    CONSTRAINT chk_section_type
-        CHECK (
-            CHAR_LENGTH(TRIM(section_type)) > 0
-        ),
 
     CONSTRAINT fk_page_sections_page
         FOREIGN KEY (page_id)
@@ -72,17 +65,15 @@ CREATE TABLE IF NOT EXISTS page_sections (
         ON DELETE SET NULL
         ON UPDATE CASCADE,
 
+    CONSTRAINT fk_page_sections_deleted_by
+        FOREIGN KEY (deleted_by)
+        REFERENCES users(id)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE,
+
     CONSTRAINT chk_sort_order
-        CHECK (sort_order >= 0),
+        CHECK (sort_order >= 0)
 
-    CONSTRAINT chk_content_json
-        CHECK (JSON_VALID(content)),
-
-    CONSTRAINT chk_settings_json
-        CHECK (
-            settings IS NULL
-            OR JSON_VALID(settings)
-        )
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4

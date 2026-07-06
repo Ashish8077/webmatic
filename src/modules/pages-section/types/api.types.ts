@@ -1,5 +1,9 @@
-import { JsonObject, JsonValue } from "@/shared/types/json";
 import { HomeSectionType } from "@/shared/constants/section-types";
+import { JsonObject, JsonValue } from "@/shared/types/json";
+import {
+  PageSectionStatus,
+  PageSectionType,
+} from "../schemas/page-section.schema";
 
 /**
  * create page section from request body schema
@@ -35,11 +39,11 @@ export interface PageSectionResponse {
   section: {
     id: number;
     pageId: number;
-    sectionType: HomeSectionType;
-    title: string | null;
-    content: JsonObject;
+    sectionType: PageSectionType;
+    content: JsonValue;
+    settings: JsonObject | null;
     sortOrder: number;
-    isActive: boolean;
+    status: PageSectionStatus;
     createdAt: Date;
     updatedAt: Date;
   };
@@ -52,9 +56,9 @@ export interface PageSectionResponse {
 
 export interface PageSectionListItem {
   id: number;
-  sectionType: HomeSectionType;
-  title: string | null;
+  sectionType: PageSectionType;
   content: JsonValue;
+  settings: JsonObject | null;
   sortOrder: number;
-  isActive: boolean;
+  status: PageSectionStatus;
 }

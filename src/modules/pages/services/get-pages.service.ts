@@ -1,6 +1,6 @@
 // get-pages.service.ts
 
-import { GetPagesQuery } from "../validators/get-pages-query.schema";
+import { GetPagesQuery } from "../schemas/get-pages-query.schema";
 import { countPages, findPages } from "../repositories/page.repository";
 
 import { PageListItem, PageListResponse } from "../services/types";

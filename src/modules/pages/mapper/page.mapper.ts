@@ -4,7 +4,7 @@ import {
   PageListItem,
 } from "../services/types";
 import { PageDetailsRow, PageListRow } from "../repositories/types";
-import { CreatePageInput } from "../validators/create-page.schema";
+import { CreatePageInput } from "../schemas/create-page.schema";
 
 /**
  * Maps the create page DTO to the create page response.

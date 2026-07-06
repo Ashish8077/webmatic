@@ -7,21 +7,13 @@ export function toCreatePageSectionResponse(
   return {
     section: {
       id: row.id,
-
       pageId: row.page_id,
-
-      sectionType: row.section_type as import("@/shared/constants/section-types").HomeSectionType,
-
-      title: row.title,
-
+      sectionType: row.section_type,
       content: row.content,
-
+      settings: row.settings,
       sortOrder: row.sort_order,
-
-      isActive: Boolean(row.is_active),
-
+      status: row.status,
       createdAt: row.created_at,
-
       updatedAt: row.updated_at,
     },
   };
@@ -32,15 +24,11 @@ export function toPageSectionListItem(
 ): PageSectionListItem {
   return {
     id: row.id,
-    sectionType: row.section_type as import("@/shared/constants/section-types").HomeSectionType,
-
-    title: row.title,
-
+    sectionType: row.section_type,
     content: row.content,
-
+    settings: row.settings,
     sortOrder: row.sort_order,
-
-    isActive: Boolean(row.is_active),
+    status: row.status,
   };
 }
 
@@ -50,21 +38,13 @@ export function toPageSectionResponse(
   return {
     section: {
       id: row.id,
-
       pageId: row.page_id,
-
-      sectionType: row.section_type as import("@/shared/constants/section-types").HomeSectionType,
-
-      title: row.title,
-
+      sectionType: row.section_type,
       content: row.content,
-
+      settings: row.settings,
       sortOrder: row.sort_order,
-
-      isActive: Boolean(row.is_active),
-
+      status: row.status,
       createdAt: row.created_at,
-
       updatedAt: row.updated_at,
     },
   };
