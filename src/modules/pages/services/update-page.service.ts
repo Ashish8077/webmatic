@@ -4,7 +4,7 @@ import {
   findPageSlugExcludingPageId,
   updatePage,
 } from "../repositories/page.repository";
-import { UpdatePageInput } from "../validators/update-page.schema";
+import { UpdatePageInput } from "../schemas/update-page.schema";
 import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { requirePermission } from "@/modules/auth/authorization/permission";

@@ -5,7 +5,7 @@ import { updatePageService } from "@/modules/pages/services/update-page.service"
 import {
   UpdatePageInput,
   updatePageSchema,
-} from "@/modules/pages/validators/update-page.schema";
+} from "@/modules/pages/schemas/update-page.schema";
 import { IdRouteParams } from "@/shared/types/route-params";
 import { AppError } from "@/shared/utils/errors/app-error";
 import { handleApiError } from "@/shared/utils/http/handle-api-error";

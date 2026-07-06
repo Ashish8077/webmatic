@@ -15,7 +15,7 @@ import {
 } from "@/modules/auth/lib/jwt";
 import { createRefreshToken } from "@/modules/auth/repositories/refresh-token.repository";
 import type { LoginResponse } from "@/modules/auth/services/types";
-import type { LoginInput } from "@/modules/auth/validators/login.schema";
+import type { LoginInput } from "@/modules/auth/schemas/login.schema";
 
 export async function loginService(
   loginInput: LoginInput,

@@ -10,7 +10,7 @@ export async function deleteSectionService(
 ): Promise<void> {
   requirePermission(user, PERMISSIONS.PAGES_DELETE);
 
-  const deletedSectionCount = await softDeleteSection(sectionId);
+  const deletedSectionCount = await softDeleteSection(sectionId, user.userId);
 
   if (deletedSectionCount === 0) {
     throw new AppError("Section not found", 404);

@@ -1,39 +1,38 @@
 import { ResultSetHeader } from "mysql2";
 
-import type { CreatePageSectionInput } from "../validators/create-page-section.schema";
+import type { CreatePageSectionInput } from "../schemas/create-page-section.schema";
 import db from "@/database/connection";
 import { PageSectionRow } from "../types/repository.types";
-import { UpdatePageSectionInput } from "../validators/update-page-section.schema";
+import { UpdatePageSectionInput } from "../schemas/update-page-section.schema";
 import { QueryValue } from "@/shared/types/database";
 
 /**
- * Find a page section by its ID
- * @param id - Page section ID
- * @returns Page section row or null if not found
+ * find page section by id
+ * @param sectionId - section id
+ * @returns page section row or null
  */
-export async function findPageSectionById(
-  id: number,
+export async function findSectionById(
+  sectionId: number,
 ): Promise<PageSectionRow | null> {
   const [rows] = await db.execute<PageSectionRow[]>(
     `
-      SELECT
-        id,
-        page_id,
-        section_type,
-        title,
-        content,
-        sort_order,
-        is_active,
-        created_at,
-        updated_at
-      FROM page_sections
-      WHERE id = ?
-        AND deleted_at IS NULL
-      LIMIT 1
-      `,
-    [id],
+    SELECT
+      id,
+      page_id,
+      section_type,
+      content,
+      settings,
+      sort_order,
+      status,
+      created_at,
+      updated_at
+    FROM page_sections
+    WHERE id = ?
+      AND deleted_at IS NULL
+    LIMIT 1
+    `,
+    [sectionId],
   );
-
   return rows[0] ?? null;
 }
 
@@ -51,10 +50,10 @@ export async function findPageSectionsByPageId(
       id,
       page_id,
       section_type,
-      title,
       content,
+      settings,
       sort_order,
-      is_active,
+      status,
       created_at,
       updated_at
     FROM page_sections
@@ -85,10 +84,10 @@ export async function createPageSection(
     INSERT INTO page_sections (
       page_id,
       section_type,
-      title,
       content,
+      settings,
       sort_order,
-      is_active,
+      status,
       created_by,
       updated_by
     )
@@ -97,10 +96,10 @@ export async function createPageSection(
     [
       pageId,
       createPageSection.sectionType,
-      createPageSection.title ?? null,
       JSON.stringify(createPageSection.content),
+      JSON.stringify(createPageSection.settings ?? {}),
       createPageSection.sortOrder,
-      createPageSection.isActive,
+      createPageSection.status,
       userId,
       userId,
     ],
@@ -125,14 +124,18 @@ export async function updatePageSection(
   const updates: string[] = [];
   const values: QueryValue[] = [];
 
-  if (updatePageSection.title !== undefined) {
-    updates.push("title = ?");
-    values.push(updatePageSection.title);
-  }
-
   if (updatePageSection.content !== undefined) {
     updates.push("content = ?");
     values.push(JSON.stringify(updatePageSection.content));
+  }
+
+  if (updatePageSection.settings !== undefined) {
+    updates.push("settings = ?");
+    values.push(
+      updatePageSection.settings === null
+        ? null
+        : JSON.stringify(updatePageSection.settings),
+    );
   }
 
   if (updatePageSection.sortOrder !== undefined) {
@@ -140,9 +143,9 @@ export async function updatePageSection(
     values.push(updatePageSection.sortOrder);
   }
 
-  if (updatePageSection.isActive !== undefined) {
-    updates.push("is_active = ?");
-    values.push(updatePageSection.isActive);
+  if (updatePageSection.status !== undefined) {
+    updates.push("status = ?");
+    values.push(updatePageSection.status);
   }
 
   updates.push("updated_by = ?");
@@ -164,52 +167,26 @@ export async function updatePageSection(
 }
 
 /**
- * find page section by id
- * @param sectionId - section id
- * @returns page section row or null
- */
-export async function findSectionById(
-  sectionId: number,
-): Promise<PageSectionRow | null> {
-  const [rows] = await db.execute<PageSectionRow[]>(
-    `
-    SELECT
-      id,
-      page_id,
-      section_type,
-      title,
-      content,
-      sort_order,
-      is_active,
-      created_at,
-      updated_at
-    FROM page_sections
-    WHERE id = ?
-      AND deleted_at IS NULL
-    LIMIT 1
-    `,
-    [sectionId],
-  );
-  return rows[0] ?? null;
-}
-
-/**
  * delete page section
  * @param sectionId - section id
  * @param deletedBy - user id
  * @returns updated page section id
  */
 
-export async function softDeleteSection(sectionId: number): Promise<number> {
+export async function softDeleteSection(
+  sectionId: number,
+  deletedBy: number,
+): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
     UPDATE page_sections
     SET
-      deleted_at = CURRENT_TIMESTAMP
+      deleted_at = CURRENT_TIMESTAMP,
+      deleted_by = ?
     WHERE id = ?
       AND deleted_at IS NULL
     `,
-    [sectionId],
+    [deletedBy, sectionId],
   );
 
   return result.affectedRows;

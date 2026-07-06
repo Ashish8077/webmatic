@@ -1,7 +1,7 @@
 import { requireAuth } from "@/modules/auth/lib/get-auth-user";
 import { createPageSectionService } from "@/modules/pages-section/services/create-page-section.service";
 import { getPageSectionsService } from "@/modules/pages-section/services/get-page-sections.service";
-import { createPageSectionSchema } from "@/modules/pages-section/validators/create-page-section.schema";
+import { createPageSectionSchema } from "@/modules/pages-section/schemas/create-page-section.schema";
 
 import { IdRouteParams } from "@/shared/types/route-params";
 import { handleApiError } from "@/shared/utils/http/handle-api-error";
@@ -54,6 +54,7 @@ export async function POST(
       statusCode: 201,
     });
   } catch (error) {
+    console.log(error);
     return handleApiError(error);
   }
 }

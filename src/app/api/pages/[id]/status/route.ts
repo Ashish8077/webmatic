@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import {
   updatePageStatusSchema,
   type UpdatePageStatusInput,
-} from "@/modules/pages/validators/update-page-status.schema";
+} from "@/modules/pages/schemas/update-page-status.schema";
 
 import { updatePageStatusService } from "@/modules/pages/services/update-page-status.service";
 import { AppError } from "@/shared/utils/errors/app-error";
