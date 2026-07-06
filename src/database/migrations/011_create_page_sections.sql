@@ -37,14 +37,14 @@ CREATE TABLE IF NOT EXISTS page_sections (
     INDEX idx_page_deleted_sort (
         page_id,
         deleted_at,
-        display_order
+        sort_order
     ),
 
     INDEX idx_page_visible (
         page_id,
         status,
         deleted_at,
-        display_order
+        sort_order
         ),
 
     INDEX idx_published_at (published_at),
@@ -72,8 +72,8 @@ CREATE TABLE IF NOT EXISTS page_sections (
         ON DELETE SET NULL
         ON UPDATE CASCADE,
 
-    CONSTRAINT chk_display_order
-        CHECK (display_order >= 0),
+    CONSTRAINT chk_sort_order
+        CHECK (sort_order >= 0),
 
     CONSTRAINT chk_content_json
         CHECK (JSON_VALID(content)),
