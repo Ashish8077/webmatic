@@ -8,6 +8,7 @@ import { PageListItem, PageListResponse } from "../services/types";
 import { AuthUser } from "@/modules/auth/types/auth-user";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
+import { toPageListItems } from "../mapper/page.mapper";
 
 export async function getPagesService(
   query: GetPagesQuery,
@@ -19,22 +20,15 @@ export async function getPagesService(
     countPages(query),
   ]);
 
-  const items: PageListItem[] = rows.map((row) => ({
-    id: row.id,
-    title: row.title,
-    slug: row.slug,
-    status: row.status,
-    publishedAt: row.published_at,
-    updatedAt: row.updated_at,
-  }));
+  const items = toPageListItems(rows);
 
-  const totalPages = Math.ceil(totalItems / query.pageSize);
+  const totalPages = Math.ceil(totalItems / query.limit);
 
   return {
     items,
     pagination: {
       page: query.page,
-      pageSize: query.pageSize,
+      limit: query.limit,
       totalItems,
       totalPages,
       hasNextPage: query.page < totalPages,

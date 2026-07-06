@@ -22,6 +22,13 @@ export const SORT_COLUMNS: Record<SortBy, string> = {
   published_at: "published_at",
 };
 
+/**
+ * Finds a page by slug.
+ *
+ * @param slug - Slug of the page to find.
+ * @returns The page slug row or null if not found.
+ */
+
 export async function findPageSlug(slug: string): Promise<PageSlugRow | null> {
   const [rows] = await db.execute<PageSlugRow[]>(
     `
@@ -38,6 +45,14 @@ export async function findPageSlug(slug: string): Promise<PageSlugRow | null> {
 
   return rows[0] ?? null;
 }
+
+/**
+ * Finds a page by slug, excluding a specific page ID.
+ *
+ * @param slug - Slug of the page to find.
+ * @param pageId - ID of the page to exclude.
+ * @returns The page slug row or null if not found.
+ */
 
 export async function findPageSlugExcludingPageId(
   slug: string,
@@ -59,6 +74,13 @@ export async function findPageSlugExcludingPageId(
 
   return rows[0] ?? null;
 }
+
+/**
+ * Finds a published page by slug.
+ *
+ * @param slug - Slug of the page to find.
+ * @returns The published page row or null if not found.
+ */
 
 export async function findPublishedPageBySlug(
   slug: string,
@@ -118,26 +140,17 @@ export async function findPublishedPageByTemplate(
   return rows[0] ?? null;
 }
 
-export async function countPagesByTemplate(
-  template: string,
-  excludePageId?: number,
-): Promise<number> {
-  let query = `SELECT COUNT(*) as total FROM pages WHERE template = ? AND deleted_at IS NULL`;
-  const params: any[] = [template];
-
-  if (excludePageId) {
-    query += ` AND id != ?`;
-    params.push(excludePageId);
-  }
-
-  const [rows] = await db.execute<CountRow[]>(query, params);
-  return rows[0]?.total ?? 0;
-}
+/**
+ * Finds pages by query.
+ *
+ * @param options - Options for finding pages.
+ * @returns The page list rows.
+ */
 
 export async function findPages(
   options: GetPagesQuery,
 ): Promise<PageListRow[]> {
-  const offset = (options.page - 1) * options.pageSize;
+  const offset = (options.page - 1) * options.limit;
 
   const where: string[] = ["deleted_at IS NULL"];
 
@@ -158,7 +171,7 @@ export async function findPages(
   const sortDirection: "ASC" | "DESC" =
     options.sortOrder === "asc" ? "ASC" : "DESC";
 
-  params.push(offset, options.pageSize);
+  params.push(offset, options.limit);
 
   const [rows] = await db.query<PageListRow[]>(
     `
@@ -181,6 +194,13 @@ export async function findPages(
   return rows;
 }
 
+/**
+ * Finds a page by ID.
+ *
+ * @param id - ID of the page to find.
+ * @returns The page details row or null if not found.
+ */
+
 export async function findPageById(id: number): Promise<PageDetailsRow | null> {
   const [rows] = await db.execute<PageDetailsRow[]>(
     `
@@ -189,11 +209,16 @@ export async function findPageById(id: number): Promise<PageDetailsRow | null> {
       title,
       slug,
       status,
-      template,
       seo_title,
       meta_description,
       meta_keywords,
       canonical_url,
+      og_title,
+      og_description,
+      og_image_id,
+      twitter_title,
+      twitter_description,
+      twitter_image_id,
       robots_index,
       robots_follow,
       schema_markup,
@@ -238,7 +263,18 @@ export async function countPages(options: GetPagesQuery): Promise<number> {
   return Number(rows[0].total);
 }
 
-export async function createPage(createPage: CreatePageInput): Promise<number> {
+/**
+ * Creates a new page.
+ *
+ * @param page - Page data to insert.
+ * @param userId - ID of the authenticated user creating the page.
+ * @returns The newly created page ID.
+ */
+
+export async function createPage(
+  page: CreatePageInput,
+  userId: number,
+): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
     INSERT INTO pages
@@ -246,34 +282,79 @@ export async function createPage(createPage: CreatePageInput): Promise<number> {
       title,
       slug,
       status,
-      template,
+
       seo_title,
       meta_description,
       meta_keywords,
       canonical_url,
-      schema_markup
+
+      og_title,
+      og_description,
+      og_image_id,
+
+      twitter_title,
+      twitter_description,
+      twitter_image_id,
+
+      schema_markup,
+
+      published_at,
+      created_by,
+      updated_by
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
     [
-      createPage.title,
-      createPage.slug,
-      createPage.status,
-      createPage.template ?? null,
-      createPage.seoTitle ?? null,
-      createPage.metaDescription ?? null,
-      createPage.metaKeywords ?? null,
-      createPage.canonicalUrl ?? null,
-      createPage.schemaMarkup ? JSON.stringify(createPage.schemaMarkup) : null,
+      // Basic Information
+      page.title,
+      page.slug,
+      page.status,
+
+      // SEO
+      page.seoTitle ?? null,
+      page.metaDescription ?? null,
+      page.metaKeywords ?? null,
+      page.canonicalUrl ?? null,
+
+      // Open Graph
+      page.ogTitle ?? null,
+      page.ogDescription ?? null,
+      page.ogImageId ?? null,
+
+      // Twitter Card
+      page.twitterTitle ?? null,
+      page.twitterDescription ?? null,
+      page.twitterImageId ?? null,
+
+      // Schema
+
+      page.schemaMarkup ? JSON.stringify(page.schemaMarkup) : null,
+
+      // Publishing
+      page.status === "published" ? new Date() : null,
+
+      // Audit
+      userId,
+      userId,
     ],
   );
 
   return result.insertId;
 }
 
+/**
+ * Updates an existing page.
+ *
+ * @param pageId - ID of the page to update.
+ * @param updatePage - Page data to update.
+ * @returns The number of affected rows.
+ */
+
 export async function updatePage(
   pageId: number,
   updatePage: UpdatePageInput,
+  userId: number,
+  publishedAt: Date | null,
 ): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
@@ -282,14 +363,21 @@ export async function updatePage(
       title = ?,
       slug = ?,
       status = ?,
-      template = ?,
       seo_title = ?,
       meta_description = ?,
       meta_keywords = ?,
       canonical_url = ?,
+      og_title = ?,
+      og_description = ?,
+      og_image_id = ?,
+      twitter_title = ?,
+      twitter_description = ?,
+      twitter_image_id = ?,
       robots_index = ?,
       robots_follow = ?,
-      schema_markup = ?
+      schema_markup = ?,
+      published_at = ?,
+      updated_by = ?
     WHERE id = ?
       AND deleted_at IS NULL
     `,
@@ -297,14 +385,21 @@ export async function updatePage(
       updatePage.title,
       updatePage.slug,
       updatePage.status,
-      updatePage.template ?? null,
       updatePage.seoTitle ?? null,
       updatePage.metaDescription ?? null,
       updatePage.metaKeywords ?? null,
       updatePage.canonicalUrl ?? null,
+      updatePage.ogTitle ?? null,
+      updatePage.ogDescription ?? null,
+      updatePage.ogImageId ?? null,
+      updatePage.twitterTitle ?? null,
+      updatePage.twitterDescription ?? null,
+      updatePage.twitterImageId ?? null,
       updatePage.robotsIndex ?? true,
       updatePage.robotsFollow ?? true,
       updatePage.schemaMarkup ? JSON.stringify(updatePage.schemaMarkup) : null,
+      updatePage.status === "published" ? new Date() : null,
+      userId,
       pageId,
     ],
   );
@@ -312,7 +407,17 @@ export async function updatePage(
   return result.affectedRows;
 }
 
-export async function softDeletePage(pageId: number): Promise<number> {
+/**
+ * Soft deletes a page.
+ *
+ * @param pageId - ID of the page to soft delete.
+ * @returns The number of affected rows.
+ */
+
+export async function softDeletePage(
+  pageId: number,
+  deletedBy: number,
+): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
     UPDATE pages
@@ -322,11 +427,12 @@ export async function softDeletePage(pageId: number): Promise<number> {
         '__deleted__',
         id
       ),
-      deleted_at = CURRENT_TIMESTAMP
+      deleted_at = CURRENT_TIMESTAMP,
+      deleted_by = ?
     WHERE id = ?
       AND deleted_at IS NULL
     `,
-    [pageId],
+    [deletedBy, pageId],
   );
 
   return result.affectedRows;
@@ -335,21 +441,23 @@ export async function softDeletePage(pageId: number): Promise<number> {
 export async function updatePageStatus(
   pageId: number,
   status: "draft" | "published",
+  updatedBy: number,
 ): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
     UPDATE pages
     SET
       status = ?,
+      updated_by = ?,
       published_at = CASE
         WHEN ? = 'published'
-        THEN CURRENT_TIMESTAMP
+          THEN COALESCE(published_at, CURRENT_TIMESTAMP)
         ELSE NULL
       END
     WHERE id = ?
       AND deleted_at IS NULL
     `,
-    [status, status, pageId],
+    [status, updatedBy, status, pageId],
   );
 
   return result.affectedRows;

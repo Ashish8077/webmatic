@@ -30,6 +30,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       data: createdPage,
     });
   } catch (error) {
+    console.log(error);
     return handleApiError(error);
   }
 }

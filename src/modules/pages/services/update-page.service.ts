@@ -3,7 +3,6 @@ import {
   findPageById,
   findPageSlugExcludingPageId,
   updatePage,
-  countPagesByTemplate,
 } from "../repositories/page.repository";
 import { UpdatePageInput } from "../validators/update-page.schema";
 import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
@@ -32,25 +31,18 @@ export async function updatePageService(
     });
   }
 
-  // Prevent multiple home pages
-  if (pageData.template === "home") {
-    const homeCount = await countPagesByTemplate("home", pageId);
-    if (homeCount > 0) {
-      throw new AppError("Only one Home page can exist", 400, {
-        template: ["A page with the Home template already exists."],
-      });
-    }
-  }
-
-  // Prevent unpublishing the home page
-  if (page.template === "home" && pageData.status === "draft") {
-    throw new AppError("The Home page cannot be unpublished", 400, {
-      status: ["The Home page must remain published."],
-    });
-  }
+  const publishedAt =
+    page.status == "draft" && pageData.status == "published"
+      ? new Date()
+      : null;
 
   try {
-    const updatedPageCount = await updatePage(pageId, pageData);
+    const updatedPageCount = await updatePage(
+      pageId,
+      pageData,
+      user.userId,
+      publishedAt,
+    );
     if (updatedPageCount === 0) {
       throw new AppError("Page not found", 404);
     }

@@ -25,7 +25,11 @@ export async function updatePageStatusService(
     throw new AppError(`Page is already ${statusData.status}`, 409);
   }
 
-  const updatedPageCount = await updatePageStatus(pageId, statusData.status);
+  const updatedPageCount = await updatePageStatus(
+    pageId,
+    statusData.status,
+    user.userId,
+  );
 
   if (updatedPageCount === 0) {
     throw new AppError("Page not found", 404);

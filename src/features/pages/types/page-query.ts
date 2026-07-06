@@ -1,6 +1,6 @@
 export const DEFAULT_PAGE_QUERY: PageQuery = {
   page: 1,
-  pageSize: 10,
+  limit: 10,
   search: "",
   status: undefined,
   sortBy: "updated_at",
@@ -9,7 +9,7 @@ export const DEFAULT_PAGE_QUERY: PageQuery = {
 
 export interface PageQuery {
   page: number;
-  pageSize: number;
+  limit: number;
   search: string;
   status?: "draft" | "published";
   sortBy:

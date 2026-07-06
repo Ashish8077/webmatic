@@ -13,14 +13,7 @@ export async function deletePageService(
   if (!page) {
     throw new AppError("Page not found", 404);
   }
-
-  if (page.template === "home") {
-    throw new AppError("Cannot delete the Home page.", 400, {
-      template: ["Reassign the Home template to another page before deleting this one."],
-    });
-  }
-
-  const deletedPageCount = await softDeletePage(pageId);
+  const deletedPageCount = await softDeletePage(pageId, user.userId);
 
   if (deletedPageCount === 0) {
     throw new AppError("Page not found", 404);

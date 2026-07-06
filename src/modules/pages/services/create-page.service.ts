@@ -3,7 +3,7 @@
 import { AppError } from "@/shared/utils/errors/app-error";
 import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
 
-import { createPage, findPageSlug, countPagesByTemplate } from "../repositories/page.repository";
+import { createPage, findPageSlug } from "../repositories/page.repository";
 
 import { CreatePageInput } from "../validators/create-page.schema";
 
@@ -11,6 +11,7 @@ import { CreatePageResponse } from "../services/types";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { AuthUser } from "@/modules/auth/types/auth-user";
+import { toCreatePageResponse } from "../mapper/page.mapper";
 
 export async function createPageService(
   pageData: CreatePageInput,
@@ -26,26 +27,10 @@ export async function createPageService(
     });
   }
 
-  if (pageData.template === "home") {
-    const homeCount = await countPagesByTemplate("home");
-    if (homeCount > 0) {
-      throw new AppError("Only one Home page can exist", 400, {
-        template: ["A page with the Home template already exists."],
-      });
-    }
-  }
-
   try {
-    const pageId = await createPage(pageData);
+    const pageId = await createPage(pageData, user.userId);
 
-    return {
-      page: {
-        id: pageId,
-        title: pageData.title,
-        slug: pageData.slug,
-        status: "draft",
-      },
-    };
+    return toCreatePageResponse(pageId, pageData);
   } catch (error) {
     if (isDuplicateKeyError(error)) {
       throw new AppError("Page slug already exists", 409);
