@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS pages (
     -- Audit
     created_by BIGINT UNSIGNED DEFAULT NULL,
     updated_by BIGINT UNSIGNED DEFAULT NULL,
+    deleted_by BIGINT UNSIGNED DEFAULT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -64,6 +65,11 @@ CREATE TABLE IF NOT EXISTS pages (
 
     CONSTRAINT fk_pages_updated_by
         FOREIGN KEY (updated_by)
+        REFERENCES users(id)
+        ON DELETE SET NULL,
+
+    CONSTRAINT fk_pages_deleted_by
+        FOREIGN KEY (deleted_by)
         REFERENCES users(id)
         ON DELETE SET NULL
 

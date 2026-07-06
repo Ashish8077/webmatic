@@ -3,7 +3,13 @@ import {
   nullableUrl,
 } from "@/shared/utils/validators/zod-helpers";
 import z from "zod";
-import { PAGE_TEMPLATE_VALUES } from "@/shared/constants/templates";
+
+const nullableImageId = z.coerce
+  .number()
+  .int()
+  .positive("Invalid image id")
+  .nullable()
+  .optional();
 
 export const updatePageSchema = z
   .object({
@@ -21,8 +27,6 @@ export const updatePageSchema = z
 
     status: z.enum(["draft", "published"]),
 
-    template: z.enum(PAGE_TEMPLATE_VALUES).nullable().optional(),
-
     seoTitle: emptyStringToNull(255).optional(),
 
     metaDescription: emptyStringToNull(1000).optional(),
@@ -30,6 +34,18 @@ export const updatePageSchema = z
     metaKeywords: emptyStringToNull(1000).optional(),
 
     canonicalUrl: nullableUrl("Invalid canonical URL").optional(),
+
+    ogTitle: emptyStringToNull(255).optional(),
+
+    ogDescription: emptyStringToNull(1000).optional(),
+
+    ogImageId: nullableImageId,
+
+    twitterTitle: emptyStringToNull(255).optional(),
+
+    twitterDescription: emptyStringToNull(1000).optional(),
+
+    twitterImageId: nullableImageId,
 
     robotsIndex: z.boolean().optional(),
 

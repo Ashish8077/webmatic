@@ -1,18 +1,8 @@
+import { paginationSchema } from "@/shared/schemas/pagination";
 import z from "zod";
 
-export const getPagesQuerySchema = z
-  .object({
-    page: z.coerce.number().int().min(1).default(1),
-
-    pageSize: z.coerce.number().int().min(1).max(100).default(20),
-
-    search: z.preprocess((value) => {
-      if (typeof value !== "string") return value;
-
-      const trimmed = value.trim();
-      return trimmed === "" ? undefined : trimmed;
-    }, z.string().optional()),
-
+export const getPagesQuerySchema = paginationSchema
+  .extend({
     status: z.enum(["draft", "published"]).optional(),
 
     sortBy: z

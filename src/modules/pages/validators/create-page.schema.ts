@@ -5,9 +5,16 @@ import {
 import { z } from "zod";
 import { PAGE_TEMPLATE_VALUES } from "@/shared/constants/templates";
 
-export const createPageSchema = z.object({
-  title: z.string().trim().min(1, "Title is required").max(255),
+const nullableImageId = z.coerce
+  .number()
+  .int()
+  .positive("Invalid image id")
+  .nullable()
+  .optional();
 
+export const createPageSchema = z.object({
+  // Basic Information
+  title: z.string().trim().min(1, "Title is required").max(255),
   slug: z
     .string()
     .trim()
@@ -20,16 +27,27 @@ export const createPageSchema = z.object({
 
   status: z.enum(["draft", "published"]).default("draft"),
 
-  template: z.enum(PAGE_TEMPLATE_VALUES).nullable().optional(),
-
+  // SEO
   seoTitle: emptyStringToNull(255).optional(),
-
   metaDescription: emptyStringToNull(1000).optional(),
-
   metaKeywords: emptyStringToNull(1000).optional(),
-
   canonicalUrl: nullableUrl("Invalid canonical URL").optional(),
 
+  // Open Graph
+  ogTitle: emptyStringToNull(255).optional(),
+  ogDescription: emptyStringToNull(1000).optional(),
+  ogImageId: nullableImageId,
+
+  // Twitter Card
+  twitterTitle: emptyStringToNull(255).optional(),
+  twitterDescription: emptyStringToNull(1000).optional(),
+  twitterImageId: nullableImageId,
+
+  // Robots tags
+  robotsIndex: z.boolean().default(true),
+  robotsFollow: z.boolean().default(true),
+
+  // Structured Data
   schemaMarkup: z.record(z.string(), z.unknown()).nullable().optional(),
 });
 
