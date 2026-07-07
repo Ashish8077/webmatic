@@ -5,7 +5,7 @@ import { Permission } from "@/features/auth/constants/permissions";
 import { AccessDenied } from "@/features/auth/components/access-denied";
 import { useCreatePage } from "@/features/pages/hooks/create-page";
 import { PageForm, PageHeader } from "@/features/pages/components";
-import type { CreatePageFormValues } from "@/features/pages/schemas/create-page.schema";
+import type { CreatePageInput } from "@/features/pages/schemas/create-page.schema";
 import { usePageForm } from "@/features/pages/hooks/use-page-form";
 import { ApiError } from "@/lib/api/errors";
 import { applyServerErrors } from "@/shared/utils/form/apply-server-errors";
@@ -20,11 +20,10 @@ export default function CreatePagePage() {
     return <AccessDenied />;
   }
 
-  const handleSubmit = async (pageData: CreatePageFormValues) => {
+  const handleSubmit = async (pageData: CreatePageInput) => {
     try {
-      console.log(pageData);
       await createPageMutation.mutateAsync(pageData);
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (error instanceof ApiError) {
         applyServerErrors(form, error.errors);
       }

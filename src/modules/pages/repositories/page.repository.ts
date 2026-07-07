@@ -354,7 +354,6 @@ export async function updatePage(
   pageId: number,
   updatePage: UpdatePageInput,
   userId: number,
-  publishedAt: Date | null,
 ): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `

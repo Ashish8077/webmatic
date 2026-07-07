@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS page_sections (
 
     page_id BIGINT UNSIGNED NOT NULL,
 
-    section_type VARCHAR(50) NOT NULL,
+    section_type VARCHAR(100) NOT NULL,
 
     content JSON NOT NULL COMMENT 'Section-specific content',
 

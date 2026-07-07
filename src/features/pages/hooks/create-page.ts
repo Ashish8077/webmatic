@@ -8,7 +8,7 @@ export function useCreatePage() {
 
   return useMutation({
     mutationFn: createPage,
-    async onSuccess(page) {
+    async onSuccess() {
       await queryClient.invalidateQueries({
         queryKey: ["pages"],
       });

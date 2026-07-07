@@ -3,27 +3,30 @@ import {
   nullableUrl,
 } from "@/shared/utils/validators/zod-helpers";
 import { z } from "zod";
-import { PAGE_TEMPLATE_VALUES } from "@/shared/constants/templates";
 
 const nullableImageId = z.coerce
   .number()
   .int()
-  .positive("Invalid image id")
+  .positive({ message: "Invalid image id" })
   .nullable()
   .optional();
 
 export const createPageSchema = z.object({
   // Basic Information
-  title: z.string().trim().min(1, "Title is required").max(255),
+  title: z
+    .string()
+    .trim()
+    .min(1, { message: "Title is required" })
+    .max(255, { message: "Title must be less than 255 characters" }),
   slug: z
     .string()
     .trim()
-    .min(1, "Slug is required")
-    .max(255)
-    .regex(
-      /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/,
-      "Slug must start with a letter and contain only lowercase letters, numbers and hyphens",
-    ),
+    .min(1, { message: "Slug is required" })
+    .max(255, { message: "Slug must be less than 255 characters" })
+    .regex(/^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/, {
+      message:
+        "Slug must start with a letter and contain only lowercase letters, numbers and hyphens",
+    }),
 
   status: z.enum(["draft", "published"]).default("draft"),
 

@@ -3,7 +3,7 @@
 import { GetPagesQuery } from "../schemas/get-pages-query.schema";
 import { countPages, findPages } from "../repositories/page.repository";
 
-import { PageListItem, PageListResponse } from "../services/types";
+import { PageListResponse } from "../services/types";
 
 import { AuthUser } from "@/modules/auth/types/auth-user";
 import { requirePermission } from "@/modules/auth/authorization/permission";

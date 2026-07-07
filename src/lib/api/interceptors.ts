@@ -68,7 +68,6 @@ export function setupInterceptors() {
        * Convert non-auth errors.
        */
       if (status !== 401) {
-
         return Promise.reject(
           new ApiError(
             error.response?.data?.message ?? "Something went wrong.",
@@ -139,7 +138,7 @@ export function setupInterceptors() {
          */
 
         return apiClient(originalRequest);
-      } catch (refreshError) {
+      } catch {
         /**
          * Reject queued requests.
          */

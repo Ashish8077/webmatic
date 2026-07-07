@@ -10,9 +10,12 @@ export function useLogin() {
 
   return useMutation({
     mutationFn: login,
-    onSuccess(user) {
-      queryClient.setQueryData(["current-user"], user);
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["current-user"] });
       router.replace("/dashboard");
     },
   });
 }
+
+  // queryClient.removeQueries({ queryKey: ["current-user"] });
+  //     router.refresh();

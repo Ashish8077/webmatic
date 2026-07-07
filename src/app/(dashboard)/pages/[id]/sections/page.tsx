@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Plus } from "lucide-react";
@@ -96,10 +96,10 @@ export default function SectionsPage() {
 
     reset({
       sectionType: section.sectionType,
-      title: section.title ?? "",
       content: stringifySectionContent(section.content),
+      settings: stringifySectionContent(section.settings),
       sortOrder: section.sortOrder,
-      isActive: section.isActive,
+      status: section.status,
     });
   }, [editingSectionId, isModalOpen, reset, sectionQuery.data]);
 
@@ -107,10 +107,10 @@ export default function SectionsPage() {
     values: PageSectionFormValues,
   ): CreatePageSectionRequest => ({
     sectionType: values.sectionType,
-    title: values.title.trim() || null,
-    content: parseSectionContent(values.content),
+    content: parseSectionContent(values.content)!,
+    settings: parseSectionContent(values.settings),
     sortOrder: values.sortOrder,
-    isActive: values.isActive,
+    status: values.status,
   });
 
   const handleSubmit = async (values: PageSectionFormValues) => {
@@ -155,18 +155,19 @@ export default function SectionsPage() {
     }
   };
 
-  const handleToggleActive = async (section: PageSectionListItem) => {
+  const handleToggleStatus = async (section: PageSectionListItem) => {
     setUpdatingSectionId(section.id);
 
     try {
+      const newStatus = section.status === "published" ? "draft" : "published";
       await updateSectionMutation.mutateAsync({
         sectionId: section.id,
         data: {
-          isActive: !section.isActive,
+          status: newStatus,
         },
       });
       showToast(
-        `Section ${section.isActive ? "deactivated" : "activated"} successfully`,
+        `Section ${newStatus === "published" ? "published" : "moved to draft"} successfully`,
         "success",
       );
     } catch (error) {
@@ -254,7 +255,7 @@ export default function SectionsPage() {
         onCreate={openCreate}
         onEdit={openEdit}
         onDelete={setDeleteTarget}
-        onToggleActive={handleToggleActive}
+        onToggleStatus={handleToggleStatus}
         updatingSectionId={updatingSectionId}
       />
 

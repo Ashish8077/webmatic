@@ -12,7 +12,7 @@ export default function DashboardPage() {
   const draftPages = dummyPages.filter((p) => p.status === "draft").length;
   const totalSections = dummySections.length;
 
-  const { data: user } = useCurrentUser();
+  useCurrentUser();
 
   return (
     <div className="animate-fade-in">

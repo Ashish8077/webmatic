@@ -9,7 +9,7 @@ import { useUpdatePage } from "@/features/pages/hooks/use-update-page";
 import { showToast } from "@/components/ui/toast";
 import { ApiError } from "@/lib/api/errors";
 import { applyServerErrors } from "@/shared/utils/form/apply-server-errors";
-import type { CreatePageFormValues } from "@/features/pages/schemas/create-page.schema";
+import type { CreatePageInput } from "@/features/pages/schemas/create-page.schema";
 
 export default function EditPagePage({
   params,
@@ -33,16 +33,24 @@ export default function EditPagePage({
       title: page.title,
       slug: page.slug,
       status: page.status ?? "draft",
-      template: page.template ?? "default",
       seoTitle: page.seoTitle ?? "",
       metaDescription: page.metaDescription ?? "",
       metaKeywords: page.metaKeywords ?? "",
       canonicalUrl: page.canonicalUrl ?? "",
+      ogTitle: page.ogTitle ?? "",
+      ogDescription: page.ogDescription ?? "",
+      ogImageId: page.ogImageId ?? null,
+      twitterTitle: page.twitterTitle ?? "",
+      twitterDescription: page.twitterDescription ?? "",
+      twitterImageId: page.twitterImageId ?? null,
+      robotsIndex: page.robotsIndex ?? true,
+      robotsFollow: page.robotsFollow ?? true,
     });
-  }, [page]);
+  }, [form, page]);
 
-  const handleSubmit = async (pageData: CreatePageFormValues) => {
+  const handleSubmit = async (pageData: CreatePageInput) => {
     try {
+      console.log("submitted", pageData);
       await updatePageMutation.mutateAsync(pageData);
       showToast("Page updated successfully", "success");
     } catch (error) {
