@@ -19,7 +19,7 @@ interface PageSectionListProps {
   onCreate: () => void;
   onEdit: (section: PageSectionListItem) => void;
   onDelete: (section: PageSectionListItem) => void;
-  onToggleActive: (section: PageSectionListItem) => void;
+  onToggleStatus: (section: PageSectionListItem) => void;
   updatingSectionId?: number | null;
 }
 
@@ -34,7 +34,7 @@ export function PageSectionList({
   onCreate,
   onEdit,
   onDelete,
-  onToggleActive,
+  onToggleStatus,
   updatingSectionId = null,
 }: PageSectionListProps) {
   if (isLoading) {
@@ -82,7 +82,7 @@ export function PageSectionList({
             key={section.id}
             className={`
               rounded-2xl border bg-card-bg p-5 transition-all duration-200 hover:border-accent/20
-              ${section.isActive ? "border-card-border" : "border-card-border/50 opacity-70"}
+              ${section.status === "published" ? "border-card-border" : "border-card-border/50 opacity-70"}
             `}
           >
             <div className="flex items-start justify-between gap-4">
@@ -94,16 +94,10 @@ export function PageSectionList({
                   <div className="font-medium text-foreground">
                     {section.sectionType}
                   </div>
-                  <Badge variant={section.isActive ? "active" : "inactive"}>
-                    {section.isActive ? "Active" : "Inactive"}
+                  <Badge variant={section.status === "published" ? "active" : "inactive"}>
+                    {section.status === "published" ? "Published" : "Draft"}
                   </Badge>
                 </div>
-
-                {section.title && (
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {section.title}
-                  </p>
-                )}
 
                 <div className="mt-3 overflow-hidden rounded-lg border border-card-border/60 bg-surface">
                   <div className="flex items-center gap-2 border-b border-card-border/60 px-3 py-2 text-xs text-muted-foreground">
@@ -118,19 +112,19 @@ export function PageSectionList({
 
               <div className="flex shrink-0 items-center gap-1">
                 <button
-                  title={section.isActive ? "Deactivate" : "Activate"}
+                  title={section.status === "published" ? "Move to Draft" : "Publish"}
                   disabled={isUpdating}
-                  onClick={() => onToggleActive(section)}
+                  onClick={() => onToggleStatus(section)}
                   className={`
                     rounded-lg p-2 transition-all disabled:cursor-not-allowed disabled:opacity-50
                     ${
-                      section.isActive
+                      section.status === "published"
                         ? "text-success hover:bg-success/10"
                         : "text-muted-foreground hover:bg-success/10 hover:text-success"
                     }
                   `}
                 >
-                  {section.isActive ? (
+                  {section.status === "published" ? (
                     <Eye size={15} strokeWidth={1.8} />
                   ) : (
                     <EyeOff size={15} strokeWidth={1.8} />

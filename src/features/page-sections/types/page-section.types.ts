@@ -1,41 +1,44 @@
 import type { BaseResponse } from "@/shared/types/api.types";
 import type { JsonObject, JsonValue } from "@/shared/types/json";
-import { HomeSectionType } from "@/shared/constants/section-types";
+import {
+  PageSectionStatus,
+  PageSectionType,
+} from "@/modules/pages-section/schemas/page-section.schema";
 
 export interface PageSectionListItem {
   id: number;
-  sectionType: HomeSectionType;
-  title: string | null;
+  sectionType: PageSectionType;
   content: JsonValue;
+  settings: JsonObject | null;
   sortOrder: number;
-  isActive: boolean;
+  status: PageSectionStatus;
 }
 
 export interface PageSection {
   id: number;
   pageId: number;
-  sectionType: HomeSectionType;
-  title: string | null;
+  sectionType: PageSectionType;
   content: JsonObject;
+  settings: JsonObject | null;
   sortOrder: number;
-  isActive: boolean;
+  status: PageSectionStatus;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface CreatePageSectionRequest {
-  sectionType: HomeSectionType;
-  title?: string | null;
+  sectionType: PageSectionType;
   content: JsonObject;
+  settings?: JsonObject | null;
   sortOrder?: number;
-  isActive: boolean;
+  status?: PageSectionStatus;
 }
 
 export interface UpdatePageSectionRequest {
-  title?: string | null;
   content?: JsonObject;
+  settings?: JsonObject | null;
   sortOrder?: number;
-  isActive?: boolean;
+  status?: PageSectionStatus;
 }
 
 export interface ListPageSectionsResponse extends BaseResponse {

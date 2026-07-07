@@ -1,5 +1,5 @@
 import { ArrowRight, Sparkles } from "lucide-react";
-import { str, arr, obj } from "../content-helpers";
+import { str, obj } from "../content-helpers";
 
 interface SectionProps {
   content: Record<string, unknown>;
@@ -30,19 +30,20 @@ export function HeroSection({ content, title }: SectionProps) {
       className="relative min-h-screen flex items-center justify-center px-4 py-32 overflow-hidden"
     >
       {/* Decorative background orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      <div
+        className="absolute inset-0 overflow-hidden pointer-events-none"
+        aria-hidden="true"
+      >
         <div
           className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full opacity-[0.18]"
           style={{
-            background:
-              "radial-gradient(circle, #6366f1 0%, transparent 65%)",
+            background: "radial-gradient(circle, #6366f1 0%, transparent 65%)",
           }}
         />
         <div
           className="absolute -bottom-60 -left-40 w-[500px] h-[500px] rounded-full opacity-[0.12]"
           style={{
-            background:
-              "radial-gradient(circle, #818cf8 0%, transparent 65%)",
+            background: "radial-gradient(circle, #818cf8 0%, transparent 65%)",
           }}
         />
         {/* Subtle dot-grid pattern */}

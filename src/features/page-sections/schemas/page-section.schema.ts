@@ -1,65 +1,73 @@
 import { z } from "zod";
 import type { JsonObject, JsonValue } from "@/shared/types/json";
-import { HOME_SECTION_TYPES } from "@/shared/constants/section-types";
+import { PAGE_SECTION_TYPES } from "@/modules/pages-section/constants/page-section.constants";
 
 const isJsonObject = (value: unknown): value is JsonObject =>
   typeof value === "object" && value !== null && !Array.isArray(value);
 
+const jsonObjectSuperRefine = (value: string | undefined, ctx: z.RefinementCtx) => {
+  if (!value || value.trim() === "") return;
+
+  try {
+    const parsed = JSON.parse(value) as unknown;
+
+    if (!isJsonObject(parsed)) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Must be a JSON object",
+      });
+    }
+  } catch {
+    ctx.addIssue({
+      code: "custom",
+      message: "Must be valid JSON",
+    });
+  }
+};
+
 export const pageSectionFormSchema = z.object({
-  sectionType: z.enum(HOME_SECTION_TYPES, {
+  sectionType: z.enum(PAGE_SECTION_TYPES, {
     message: "Invalid section type",
   }),
-  title: z.string().trim().max(255, "Title cannot exceed 255 characters"),
   content: z
     .string()
     .trim()
     .min(1, "Content is required")
-    .superRefine((value, ctx) => {
-      if (!value) return;
-
-      try {
-        const parsed = JSON.parse(value) as unknown;
-
-        if (!isJsonObject(parsed)) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Content must be a JSON object",
-          });
-        }
-      } catch {
-        ctx.addIssue({
-          code: "custom",
-          message: "Content must be valid JSON",
-        });
-      }
-    }),
+    .superRefine(jsonObjectSuperRefine),
+  settings: z
+    .string()
+    .trim()
+    .optional()
+    .superRefine(jsonObjectSuperRefine),
   sortOrder: z
     .number()
     .int("Sort order must be an integer")
     .min(0, "Sort order cannot be negative"),
-  isActive: z.boolean(),
+  status: z.enum(["draft", "published"]),
 });
 
 export type PageSectionFormValues = z.infer<typeof pageSectionFormSchema>;
 
 export const DEFAULT_PAGE_SECTION_FORM_VALUES: PageSectionFormValues = {
   sectionType: "hero",
-  title: "",
   content: "{}",
+  settings: "{}",
   sortOrder: 0,
-  isActive: true,
+  status: "draft",
 };
 
-export function parseSectionContent(content: string): JsonObject {
+export function parseSectionContent(content: string | undefined | null): JsonObject | null {
+  if (!content || content.trim() === "") return null;
   const parsed = JSON.parse(content) as unknown;
 
   if (!isJsonObject(parsed)) {
-    throw new Error("Section content must be a JSON object.");
+    throw new Error("Must be a JSON object.");
   }
 
   return parsed;
 }
 
-export function stringifySectionContent(content: JsonValue): string {
-  return JSON.stringify(content ?? {}, null, 2);
+export function stringifySectionContent(content: JsonValue | undefined | null): string {
+  if (content === null || content === undefined) return "";
+  return JSON.stringify(content, null, 2);
 }

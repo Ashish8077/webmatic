@@ -4,7 +4,6 @@ import {
   jsonObjectSchema,
   optionalJsonObjectSchema,
   pageSectionStatusSchema,
-  pageSectionTypeSchema,
 } from "./page-section.schema";
 
 export const updatePageSectionSchema = z

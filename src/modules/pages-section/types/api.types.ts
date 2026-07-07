@@ -1,4 +1,5 @@
-import { HomeSectionType } from "@/shared/constants/section-types";
+import { CreatePageSectionInput } from "../schemas/create-page-section.schema";
+import { UpdatePageSectionInput } from "../schemas/update-page-section.schema";
 import { JsonObject, JsonValue } from "@/shared/types/json";
 import {
   PageSectionStatus,
@@ -10,25 +11,14 @@ import {
  *
  */
 
-export interface CreatePageSectionRequest {
-  sectionType: HomeSectionType;
-  title?: string | null;
-  content: JsonObject;
-  sortOrder?: number;
-  isActive: boolean;
-}
+export type CreatePageSectionRequest = CreatePageSectionInput;
 
 /**
  * update page section from request body schema
  *
  */
 
-export interface UpdatePageSectionRequest {
-  title?: string | null;
-  content?: JsonObject;
-  sortOrder?: number;
-  isActive?: boolean;
-}
+export type UpdatePageSectionRequest = UpdatePageSectionInput;
 
 /**
  * response from create page section api

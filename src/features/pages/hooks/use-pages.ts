@@ -2,8 +2,9 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { getPages } from "../api/get-pages";
+import type { PageQuery } from "../types/page-query";
 
-export function usePages(params: any) {
+export function usePages(params: PageQuery) {
   return useQuery({
     queryKey: ["pages", params],
     queryFn: () => getPages(params),

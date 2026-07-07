@@ -5,9 +5,15 @@ import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { ToggleGroup } from "@/components/ui/toggle-group";
 import type { PageSectionFormValues } from "../schemas/page-section.schema";
 
-import { HOME_SECTION_TYPES } from "@/shared/constants/section-types";
+import { PAGE_SECTION_TYPES } from "@/modules/pages-section/constants/page-section.constants";
+
+const STATUS_OPTIONS = [
+  { label: "Draft", value: "draft" as const },
+  { label: "Published", value: "published" as const },
+];
 
 interface PageSectionFormProps {
   form: UseFormReturn<PageSectionFormValues>;
@@ -56,7 +62,7 @@ export function PageSectionForm({
             disabled={isSubmitting}
             {...form.register("sectionType")}
           >
-            {HOME_SECTION_TYPES.map((type) => (
+            {PAGE_SECTION_TYPES.map((type) => (
               <option key={type} value={type}>
                 {type}
               </option>
@@ -68,13 +74,7 @@ export function PageSectionForm({
         </div>
       )}
 
-      <Input
-        label="Title"
-        placeholder="Display title"
-        disabled={isSubmitting}
-        {...form.register("title")}
-        error={form.formState.errors.title?.message}
-      />
+
 
       <Textarea
         label="Content JSON"
@@ -83,6 +83,15 @@ export function PageSectionForm({
         className="min-h-[180px] font-mono text-xs"
         {...form.register("content")}
         error={form.formState.errors.content?.message}
+      />
+      
+      <Textarea
+        label="Settings JSON"
+        placeholder='{"theme": "dark"}'
+        disabled={isSubmitting}
+        className="min-h-[120px] font-mono text-xs"
+        {...form.register("settings")}
+        error={form.formState.errors.settings?.message}
       />
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -96,39 +105,16 @@ export function PageSectionForm({
         />
 
         <Controller
-          name="isActive"
+          name="status"
           control={form.control}
           render={({ field }) => (
-            <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-foreground">
-                Status
-              </label>
-              <button
-                type="button"
-                aria-pressed={field.value}
-                disabled={isSubmitting}
-                onClick={() => field.onChange(!field.value)}
-                className={`
-                  inline-flex h-10 w-[92px] items-center rounded-lg border px-2 transition-all
-                  disabled:cursor-not-allowed disabled:opacity-50
-                  ${
-                    field.value
-                      ? "border-success/30 bg-success/15"
-                      : "border-card-border bg-surface"
-                  }
-                `}
-              >
-                <span
-                  className={`
-                    inline-block h-6 w-6 rounded-md shadow-sm transition-all duration-200
-                    ${field.value ? "translate-x-12 bg-success" : "bg-muted-foreground"}
-                  `}
-                />
-              </button>
-              <p className="text-xs text-muted-foreground">
-                {field.value ? "Active" : "Inactive"}
-              </p>
-            </div>
+            <ToggleGroup
+              label="Status"
+              value={field.value}
+              onChange={field.onChange}
+              options={STATUS_OPTIONS}
+              error={form.formState.errors.status?.message}
+            />
           )}
         />
       </div>

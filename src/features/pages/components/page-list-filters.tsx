@@ -1,5 +1,4 @@
 import { Input } from "@/components/ui/input";
-import { GetPagesQuery } from "@/modules/pages/schemas/get-pages-query.schema";
 
 import type { PageQuery } from "@/features/pages/types/page-query";
 

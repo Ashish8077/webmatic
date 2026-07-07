@@ -1,15 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Controller, UseFormReturn } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup } from "@/components/ui/toggle-group";
 import { usePageForm } from "@/features/pages/hooks/use-page-form";
-import { PAGE_TEMPLATES } from "@/shared/constants/templates";
 import SeoFields from "./seo-fields";
-import type { CreatePageFormValues } from "@/features/pages/schemas/create-page.schema";
+import type { CreatePageInput } from "@/features/pages/schemas/create-page.schema";
 
 const STATUS_OPTIONS = [
   { label: "Draft", value: "draft" as const },
@@ -18,9 +16,9 @@ const STATUS_OPTIONS = [
 
 interface PageFormProps {
   form: ReturnType<typeof usePageForm>;
-  onSubmit: (data: CreatePageFormValues) => Promise<void>;
+  onSubmit: (data: CreatePageInput) => Promise<void>;
   submitLabel?: string;
-  defaultValues?: Partial<CreatePageFormValues>;
+  defaultValues?: Partial<CreatePageInput>;
 }
 
 function PageForm({
@@ -31,7 +29,12 @@ function PageForm({
   const router = useRouter();
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+    <form
+      onSubmit={form.handleSubmit(onSubmit, (errors) =>
+        console.log("Form errors:", errors),
+      )}
+      className="space-y-6"
+    >
       {/* Core Fields */}
       <div className="bg-card-bg border border-card-border rounded-2xl p-6 space-y-5">
         <Input
@@ -49,17 +52,6 @@ function PageForm({
           {...form.register("slug")}
           hint="URL path for this page"
           error={form.formState.errors.slug?.message}
-        />
-
-        <Select
-          label="Template"
-          {...form.register("template")}
-          error={form.formState.errors.template?.message}
-          hint="Layout template for this page"
-          options={PAGE_TEMPLATES.map((t) => ({
-            label: t.label,
-            value: t.value,
-          }))}
         />
 
         <Controller
@@ -83,6 +75,13 @@ function PageForm({
           seoTitle: form.register("seoTitle"),
           metaDescription: form.register("metaDescription"),
           canonicalUrl: form.register("canonicalUrl"),
+          metaKeywords: form.register("metaKeywords"),
+          ogTitle: form.register("ogTitle"),
+          ogDescription: form.register("ogDescription"),
+          twitterTitle: form.register("twitterTitle"),
+          twitterDescription: form.register("twitterDescription"),
+          robotsIndex: form.register("robotsIndex"),
+          robotsFollow: form.register("robotsFollow"),
         }}
         errors={form.formState.errors}
         warnings={form.seoWarnings}
