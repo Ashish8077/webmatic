@@ -1,24 +1,10 @@
-import { CreatePageSectionInput } from "../schemas/create-page-section.schema";
-import { UpdatePageSectionInput } from "../schemas/update-page-section.schema";
+import { CreatePageSectionInput } from "../validation/create-page-section.schema";
+import { UpdatePageSectionInput } from "../validation/update-page-section.schema";
 import { JsonObject, JsonValue } from "@/shared/types/json";
 import {
   PageSectionStatus,
   PageSectionType,
-} from "../schemas/page-section.schema";
-
-/**
- * create page section from request body schema
- *
- */
-
-export type CreatePageSectionRequest = CreatePageSectionInput;
-
-/**
- * update page section from request body schema
- *
- */
-
-export type UpdatePageSectionRequest = UpdatePageSectionInput;
+} from "../validation/page-section.schema";
 
 /**
  * response from create page section api

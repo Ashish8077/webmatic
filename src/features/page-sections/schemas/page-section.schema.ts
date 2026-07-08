@@ -1,73 +1,99 @@
 import { z } from "zod";
-import type { JsonObject, JsonValue } from "@/shared/types/json";
-import { PAGE_SECTION_TYPES } from "@/modules/pages-section/constants/page-section.constants";
+import {
+  PAGE_SECTION_TYPES,
+  SECTION_STATUS,
+} from "@/modules/pages-section/constants/page-section.constants";
+import { nonNegativeInt } from "@/shared/utils/validators/zod-helpers";
 
-const isJsonObject = (value: unknown): value is JsonObject =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
-
-const jsonObjectSuperRefine = (value: string | undefined, ctx: z.RefinementCtx) => {
-  if (!value || value.trim() === "") return;
-
-  try {
-    const parsed = JSON.parse(value) as unknown;
-
-    if (!isJsonObject(parsed)) {
-      ctx.addIssue({
-        code: "custom",
-        message: "Must be a JSON object",
-      });
+export const pageSectionTypeSchema = z.enum(PAGE_SECTION_TYPES, {
+  error: (issue) => {
+    if (issue.input === undefined) {
+      return "Section type is required.";
     }
-  } catch {
-    ctx.addIssue({
-      code: "custom",
-      message: "Must be valid JSON",
-    });
-  }
-};
+
+    return "Invalid section type selected.";
+  },
+});
+
+export const pageSectionStatusSchema = z.enum(SECTION_STATUS, {
+  error: (issue) => {
+    if (issue.input === undefined) {
+      return "Status is required.";
+    }
+
+    return "Invalid status selected.";
+  },
+});
+
+export const jsonObjectSchema = z
+  .record(z.string(), z.unknown())
+  .refine((value) => Object.keys(value).length > 0, {
+    message: "Content is required.",
+  });
+
+export const optionalJsonObjectSchema = z.record(z.string(), z.unknown()).nullable().optional();
+
+export const createPageSectionSchema = z.object({
+  sectionType: pageSectionTypeSchema,
+
+  content: jsonObjectSchema,
+
+  settings: optionalJsonObjectSchema,
+
+  sortOrder: nonNegativeInt.default(0),
+
+  status: pageSectionStatusSchema.optional(),
+});
+
+export const updatePageSectionSchema = z.object({
+  content: jsonObjectSchema.optional(),
+
+  settings: optionalJsonObjectSchema,
+
+  sortOrder: nonNegativeInt.optional(),
+
+  status: pageSectionStatusSchema.optional(),
+});
+
+export type CreatePageSectionInput = z.infer<typeof createPageSectionSchema>;
+export type UpdatePageSectionInput = z.infer<typeof updatePageSectionSchema>;
 
 export const pageSectionFormSchema = z.object({
-  sectionType: z.enum(PAGE_SECTION_TYPES, {
-    message: "Invalid section type",
-  }),
-  content: z
-    .string()
-    .trim()
-    .min(1, "Content is required")
-    .superRefine(jsonObjectSuperRefine),
-  settings: z
-    .string()
-    .trim()
-    .optional()
-    .superRefine(jsonObjectSuperRefine),
+  sectionType: pageSectionTypeSchema,
+  content: z.string().trim().min(1, { message: "Content is required." }),
+  settings: z.string().trim().optional(),
   sortOrder: z
     .number()
-    .int("Sort order must be an integer")
-    .min(0, "Sort order cannot be negative"),
-  status: z.enum(["draft", "published"]),
+    .int()
+    .min(0, { message: "Sort order cannot be negative." }),
+  status: pageSectionStatusSchema,
 });
 
 export type PageSectionFormValues = z.infer<typeof pageSectionFormSchema>;
 
 export const DEFAULT_PAGE_SECTION_FORM_VALUES: PageSectionFormValues = {
-  sectionType: "hero",
+  sectionType: PAGE_SECTION_TYPES[0],
   content: "{}",
   settings: "{}",
   sortOrder: 0,
-  status: "draft",
+  status: SECTION_STATUS.DRAFT,
 };
 
-export function parseSectionContent(content: string | undefined | null): JsonObject | null {
-  if (!content || content.trim() === "") return null;
-  const parsed = JSON.parse(content) as unknown;
-
-  if (!isJsonObject(parsed)) {
-    throw new Error("Must be a JSON object.");
+export const stringifySectionContent = (content: unknown): string => {
+  if (!content) return "{}";
+  if (typeof content === "string") return content;
+  try {
+    return JSON.stringify(content, null, 2);
+  } catch {
+    return "{}";
   }
+};
 
-  return parsed;
-}
-
-export function stringifySectionContent(content: JsonValue | undefined | null): string {
-  if (content === null || content === undefined) return "";
-  return JSON.stringify(content, null, 2);
-}
+export const parseSectionContent = (content?: string | null): any => {
+  if (!content || content.trim() === "") return null;
+  try {
+    return JSON.parse(content);
+  } catch {
+    return null;
+  }
+};

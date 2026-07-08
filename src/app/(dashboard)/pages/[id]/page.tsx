@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect } from "react";
+import { use, useMemo } from "react";
 import Link from "next/link";
 import { PageForm, PageHeader } from "@/features/pages/components";
 import { usePage } from "@/features/pages/hooks/use-page";
@@ -21,32 +21,31 @@ export default function EditPagePage({
 
   const { data, isPending, isError } = usePage(pageId);
   const updatePageMutation = useUpdatePage(pageId);
-  const form = usePageForm();
-
   const page = data?.data;
 
-  // Populate form when page data loads
-  useEffect(() => {
-    if (!page) return;
+  const formValues = useMemo(() => {
+    return page
+      ? {
+          title: page.title,
+          slug: page.slug,
+          status: page.status ?? "draft",
+          seoTitle: page.seoTitle ?? "",
+          metaDescription: page.metaDescription ?? "",
+          metaKeywords: page.metaKeywords ?? "",
+          canonicalUrl: page.canonicalUrl ?? "",
+          ogTitle: page.ogTitle ?? "",
+          ogDescription: page.ogDescription ?? "",
+          ogImageId: page.ogImageId ?? null,
+          twitterTitle: page.twitterTitle ?? "",
+          twitterDescription: page.twitterDescription ?? "",
+          twitterImageId: page.twitterImageId ?? null,
+          robotsIndex: page.robotsIndex ?? true,
+          robotsFollow: page.robotsFollow ?? true,
+        }
+      : undefined;
+  }, [page]);
 
-    form.reset({
-      title: page.title,
-      slug: page.slug,
-      status: page.status ?? "draft",
-      seoTitle: page.seoTitle ?? "",
-      metaDescription: page.metaDescription ?? "",
-      metaKeywords: page.metaKeywords ?? "",
-      canonicalUrl: page.canonicalUrl ?? "",
-      ogTitle: page.ogTitle ?? "",
-      ogDescription: page.ogDescription ?? "",
-      ogImageId: page.ogImageId ?? null,
-      twitterTitle: page.twitterTitle ?? "",
-      twitterDescription: page.twitterDescription ?? "",
-      twitterImageId: page.twitterImageId ?? null,
-      robotsIndex: page.robotsIndex ?? true,
-      robotsFollow: page.robotsFollow ?? true,
-    });
-  }, [form, page]);
+  const form = usePageForm({ values: formValues });
 
   const handleSubmit = async (pageData: CreatePageInput) => {
     try {

@@ -2,8 +2,9 @@ import { AuthUser } from "@/modules/auth/types/auth-user";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { updatePageSection } from "../repositories/page-section.repository";
-import { UpdatePageSectionInput } from "../schemas/update-page-section.schema";
+import { UpdatePageSectionInput } from "../validation/update-page-section.schema";
 import { AppError } from "@/shared/utils/errors/app-error";
+import { PageStatus } from "@/modules/pages/constants/page.constants";
 
 export async function updatePageSectionService(
   sectionId: number,

@@ -3,7 +3,7 @@ import {
   findPageById,
   updatePageStatus,
 } from "../repositories/page.repository";
-import { UpdatePageStatusInput } from "../schemas/update-page-status.schema";
+import { UpdatePageStatusInput } from "../validation/update-page-status.schema";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { AuthUser } from "@/modules/auth/types/auth-user";

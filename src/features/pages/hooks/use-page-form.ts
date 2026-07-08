@@ -22,12 +22,14 @@ const DEFAULT_VALUES: CreatePageInput = {
   robotsFollow: true,
 };
 
-export function usePageForm(
-  overrides?: Partial<CreatePageInput>,
-): UseFormReturn<CreatePageInput> & { seoWarnings: SeoWarning[] } {
+export function usePageForm(options?: {
+  defaultValues?: Partial<CreatePageInput>;
+  values?: CreatePageInput;
+}): UseFormReturn<CreatePageInput> & { seoWarnings: SeoWarning[] } {
   const form = useForm<CreatePageInput>({
     resolver: zodResolver(createPageSchema) as unknown as Resolver<CreatePageInput>,
-    defaultValues: { ...DEFAULT_VALUES, ...overrides },
+    defaultValues: { ...DEFAULT_VALUES, ...options?.defaultValues },
+    values: options?.values,
   });
 
   const seoTitle = useWatch({ control: form.control, name: "seoTitle" });

@@ -3,7 +3,7 @@ import { RowDataPacket } from "mysql2";
 import {
   PageSectionStatus,
   PageSectionType,
-} from "../schemas/page-section.schema";
+} from "../validation/page-section.schema";
 
 export interface PageSectionRow extends RowDataPacket {
   id: number;

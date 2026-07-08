@@ -1,10 +1,13 @@
 import { ResultSetHeader } from "mysql2";
 
-import type { CreatePageSectionInput } from "../schemas/create-page-section.schema";
+import type { CreatePageSectionInput } from "../validation/create-page-section.schema";
 import db from "@/database/connection";
 import { PageSectionRow } from "../types/repository.types";
-import { UpdatePageSectionInput } from "../schemas/update-page-section.schema";
+import { UpdatePageSectionInput } from "../validation/update-page-section.schema";
 import { QueryValue } from "@/shared/types/database";
+import { toJson } from "@/shared/utils/database/json";
+import { PageStatus } from "@/modules/pages/constants/page.constants";
+import { SectionStatus } from "../constants/page-section.constants";
 
 /**
  * find page section by id
@@ -78,6 +81,7 @@ export async function createPageSection(
   pageId: number,
   createPageSection: CreatePageSectionInput,
   userId: number,
+  status: SectionStatus,
 ): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
@@ -96,10 +100,10 @@ export async function createPageSection(
     [
       pageId,
       createPageSection.sectionType,
-      JSON.stringify(createPageSection.content),
-      JSON.stringify(createPageSection.settings ?? {}),
+      toJson(createPageSection.content),
+      toJson(createPageSection.settings ?? {}),
       createPageSection.sortOrder,
-      createPageSection.status,
+      status,
       userId,
       userId,
     ],
@@ -126,7 +130,7 @@ export async function updatePageSection(
 
   if (updatePageSection.content !== undefined) {
     updates.push("content = ?");
-    values.push(JSON.stringify(updatePageSection.content));
+    values.push(toJson(updatePageSection.content));
   }
 
   if (updatePageSection.settings !== undefined) {
@@ -134,7 +138,7 @@ export async function updatePageSection(
     values.push(
       updatePageSection.settings === null
         ? null
-        : JSON.stringify(updatePageSection.settings),
+        : toJson(updatePageSection.settings),
     );
   }
 

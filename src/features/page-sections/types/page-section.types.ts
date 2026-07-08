@@ -3,7 +3,7 @@ import type { JsonObject, JsonValue } from "@/shared/types/json";
 import {
   PageSectionStatus,
   PageSectionType,
-} from "@/modules/pages-section/schemas/page-section.schema";
+} from "@/modules/pages-section/validation/page-section.schema";
 
 export interface PageSectionListItem {
   id: number;

@@ -1,9 +1,10 @@
 import { paginationSchema } from "@/shared/schemas/pagination";
 import z from "zod";
+import { PAGE_STATUS } from "../constants/page.constants";
 
 export const getPagesQuerySchema = paginationSchema
   .extend({
-    status: z.enum(["draft", "published"]).optional(),
+    status: z.enum(PAGE_STATUS).optional(),
 
     sortBy: z
       .enum([

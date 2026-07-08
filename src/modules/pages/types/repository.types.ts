@@ -1,10 +1,7 @@
 import { JsonObject } from "@/shared/types/json";
 import { PaginationQuery } from "@/shared/types/pagination";
 import { RowDataPacket } from "mysql2";
-
-/**
- * Interface for a page slug row.
- */
+import { PageStatus } from "../constants/page.constants";
 
 export interface PageSlugRow extends RowDataPacket {
   id: number;
@@ -29,16 +26,10 @@ export interface PublishedPageRow extends RowDataPacket {
 
   published_at: Date | null;
 }
-
-export interface FindPagesOptions {
-  page: number;
-  limit: number;
-}
-
 export interface GetPagesQuery extends PaginationQuery {
   search?: string;
 
-  status?: "draft" | "published";
+  status?: PageStatus;
 
   sortBy?: "title" | "created_at" | "published_at";
 
@@ -53,7 +44,7 @@ export interface PageListRow extends RowDataPacket {
   id: number;
   title: string;
   slug: string;
-  status: "draft" | "published";
+  status: PageStatus;
   published_at: Date | null;
   created_at: Date;
   updated_at: Date;
@@ -73,7 +64,7 @@ export interface PageDetailsRow extends RowDataPacket {
   title: string;
   slug: string;
 
-  status: "draft" | "published";
+  status: PageStatus;
 
   seo_title: string | null;
   meta_description: string | null;

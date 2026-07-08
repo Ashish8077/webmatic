@@ -1,25 +1,28 @@
+import { PageStatus } from "../constants/page.constants";
+import { PageDetailsRow, PageListRow } from "../types/repository.types";
 import {
   CreatePageResponse,
   PageDetailsResponse,
   PageListItem,
-} from "../services/types";
-import { PageDetailsRow, PageListRow } from "../repositories/types";
-import { CreatePageInput } from "../schemas/create-page.schema";
+} from "../types/service.types";
+
+type CreatedPage = {
+  id: number;
+  title: string;
+  slug: string;
+  status: PageStatus;
+};
 
 /**
  * Maps the create page DTO to the create page response.
- * @param pageId - The ID of the created page.
  * @param page - The create page DTO.
  * @returns The create page response.
  */
 
-export function toCreatePageResponse(
-  pageId: number,
-  page: CreatePageInput,
-): CreatePageResponse {
+export function toCreatePageResponse(page: CreatedPage): CreatePageResponse {
   return {
     page: {
-      id: pageId,
+      id: page.id,
       title: page.title,
       slug: page.slug,
       status: page.status,

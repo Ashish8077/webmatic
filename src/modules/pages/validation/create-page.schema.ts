@@ -1,15 +1,10 @@
 import {
   emptyStringToNull,
+  nullableImageId,
   nullableUrl,
 } from "@/shared/utils/validators/zod-helpers";
 import { z } from "zod";
-
-const nullableImageId = z.coerce
-  .number()
-  .int()
-  .positive({ message: "Invalid image id" })
-  .nullable()
-  .optional();
+import { PAGE_STATUS } from "../constants/page.constants";
 
 export const createPageSchema = z.object({
   // Basic Information
@@ -28,7 +23,7 @@ export const createPageSchema = z.object({
         "Slug must start with a letter and contain only lowercase letters, numbers and hyphens",
     }),
 
-  status: z.enum(["draft", "published"]).default("draft"),
+  status: z.enum(PAGE_STATUS).optional(),
 
   // SEO
   seoTitle: emptyStringToNull(255).optional(),

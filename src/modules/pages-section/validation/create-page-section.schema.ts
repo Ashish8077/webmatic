@@ -15,17 +15,13 @@ export const createPageSectionSchema = z.object({
 
   sortOrder: z
     .number()
-    .int()
+    .int({ message: "Sort order must be an integer." })
     .min(0, {
       message: "Sort order cannot be negative.",
     })
     .default(0),
 
-  status: pageSectionStatusSchema.default("draft"),
+  status: pageSectionStatusSchema.optional(),
 });
 
-
-
 export type CreatePageSectionInput = z.infer<typeof createPageSectionSchema>;
-
-

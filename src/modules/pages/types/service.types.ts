@@ -1,12 +1,13 @@
 import { JsonObject } from "@/shared/types/json";
 import { PaginationMeta } from "@/shared/types/pagination";
+import { PageStatus } from "../constants/page.constants";
 
 export interface CreatePageResponse {
   page: {
     id: number;
     title: string;
     slug: string;
-    status: "draft" | "published";
+    status: PageStatus;
   };
 }
 
@@ -14,7 +15,7 @@ export interface PageListItem {
   id: number;
   title: string;
   slug: string;
-  status: "draft" | "published";
+  status: PageStatus;
   publishedAt: string | null;
   updatedAt: string;
 }
@@ -28,7 +29,7 @@ export interface PageDetailsResponse {
   id: number;
   title: string;
   slug: string;
-  status: "draft" | "published";
+  status: PageStatus;
   seoTitle: string | null;
   metaDescription: string | null;
   metaKeywords: string | null;

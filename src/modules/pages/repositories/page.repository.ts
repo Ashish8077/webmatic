@@ -1,15 +1,18 @@
 import db from "@/database/connection";
 import { ResultSetHeader } from "mysql2";
-import { CreatePageInput } from "../schemas/create-page.schema";
+import { CreatePageInput } from "../validation/create-page.schema";
+
+import { GetPagesQuery } from "../validation/get-pages-query.schema";
+import { UpdatePageInput } from "../validation/update-page.schema";
+import { toJson } from "@/shared/utils/database/json";
+import { PageStatus } from "../constants/page.constants";
 import {
   CountRow,
   PageDetailsRow,
   PageListRow,
   PageSlugRow,
   PublishedPageRow,
-} from "./types";
-import { GetPagesQuery } from "../schemas/get-pages-query.schema";
-import { UpdatePageInput } from "../schemas/update-page.schema";
+} from "../types/repository.types";
 
 type SortBy = NonNullable<GetPagesQuery["sortBy"]>;
 
@@ -274,6 +277,8 @@ export async function countPages(options: GetPagesQuery): Promise<number> {
 export async function createPage(
   page: CreatePageInput,
   userId: number,
+  publishedAt: Date | null,
+  status: PageStatus,
 ): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
@@ -308,7 +313,7 @@ export async function createPage(
       // Basic Information
       page.title,
       page.slug,
-      page.status,
+      status,
 
       // SEO
       page.seoTitle ?? null,
@@ -328,10 +333,10 @@ export async function createPage(
 
       // Schema
 
-      page.schemaMarkup ? JSON.stringify(page.schemaMarkup) : null,
+      toJson(page.schemaMarkup),
 
       // Publishing
-      page.status === "published" ? new Date() : null,
+      publishedAt,
 
       // Audit
       userId,
@@ -354,6 +359,8 @@ export async function updatePage(
   pageId: number,
   updatePage: UpdatePageInput,
   userId: number,
+  publishedAt: Date | null,
+  status: PageStatus,
 ): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
@@ -383,7 +390,7 @@ export async function updatePage(
     [
       updatePage.title,
       updatePage.slug,
-      updatePage.status,
+      status,
       updatePage.seoTitle ?? null,
       updatePage.metaDescription ?? null,
       updatePage.metaKeywords ?? null,
@@ -396,8 +403,8 @@ export async function updatePage(
       updatePage.twitterImageId ?? null,
       updatePage.robotsIndex ?? true,
       updatePage.robotsFollow ?? true,
-      updatePage.schemaMarkup ? JSON.stringify(updatePage.schemaMarkup) : null,
-      updatePage.status === "published" ? new Date() : null,
+      toJson(updatePage.schemaMarkup),
+      publishedAt,
       userId,
       pageId,
     ],
@@ -439,7 +446,7 @@ export async function softDeletePage(
 
 export async function updatePageStatus(
   pageId: number,
-  status: "draft" | "published",
+  status: PageStatus,
   updatedBy: number,
 ): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
@@ -451,7 +458,7 @@ export async function updatePageStatus(
       published_at = CASE
         WHEN ? = 'published'
           THEN COALESCE(published_at, CURRENT_TIMESTAMP)
-        ELSE NULL
+        ELSE published_at
       END
     WHERE id = ?
       AND deleted_at IS NULL

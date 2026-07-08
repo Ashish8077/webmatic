@@ -4,7 +4,7 @@ import {
   findPageSlugExcludingPageId,
   updatePage,
 } from "../repositories/page.repository";
-import { UpdatePageInput } from "../schemas/update-page.schema";
+import { UpdatePageInput } from "../validation/update-page.schema";
 import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { requirePermission } from "@/modules/auth/authorization/permission";
@@ -17,31 +17,39 @@ export async function updatePageService(
 ): Promise<void> {
   requirePermission(user, PERMISSIONS.PAGES_UPDATE);
 
-  const page = await findPageById(pageId);
-
-  if (!page) {
-    throw new AppError("Page not found", 404);
-  }
-
-  const existingPage = await findPageSlugExcludingPageId(pageData.slug, pageId);
-
-  if (existingPage) {
-    throw new AppError("Page slug already exists", 409, {
-      slug: ["Page slug already exists."],
-    });
-  }
-
-  const publishedAt =
-    page.status == "draft" && pageData.status == "published"
-      ? new Date()
-      : null;
-
   try {
+    const page = await findPageById(pageId);
+
+    if (!page) {
+      throw new AppError("Page not found", 404);
+    }
+
+    const existingPage = await findPageSlugExcludingPageId(
+      pageData.slug,
+      pageId,
+    );
+
+    if (existingPage) {
+      throw new AppError("Page slug already exists", 409, {
+        slug: ["Page slug already exists."],
+      });
+    }
+
+    const publishedAt =
+      page.status !== "published" &&
+      pageData.status === "published" &&
+      !page.published_at
+        ? new Date()
+        : page.published_at;
+
+    const status = pageData.status ?? page.status;
+
     const updatedPageCount = await updatePage(
       pageId,
       pageData,
       user.userId,
       publishedAt,
+      status,
     );
     if (updatedPageCount === 0) {
       throw new AppError("Page not found", 404);

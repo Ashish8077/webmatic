@@ -1,7 +1,7 @@
 import { requireAuth } from "@/modules/auth/lib/get-auth-user";
 import { createPageSectionService } from "@/modules/pages-section/services/create-page-section.service";
 import { getPageSectionsService } from "@/modules/pages-section/services/get-page-sections.service";
-import { createPageSectionSchema } from "@/modules/pages-section/schemas/create-page-section.schema";
+import { createPageSectionSchema } from "@/modules/pages-section/validation/create-page-section.schema";
 
 import { IdRouteParams } from "@/shared/types/route-params";
 import { handleApiError } from "@/shared/utils/http/handle-api-error";

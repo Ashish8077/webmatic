@@ -5,8 +5,8 @@ import { getPagesService } from "@/modules/pages/services/get-pages.service";
 import {
   CreatePageInput,
   createPageSchema,
-} from "@/modules/pages/schemas/create-page.schema";
-import { getPagesQuerySchema } from "@/modules/pages/schemas/get-pages-query.schema";
+} from "@/modules/pages/validation/create-page.schema";
+import { getPagesQuerySchema } from "@/modules/pages/validation/get-pages-query.schema";
 import { handleApiError } from "@/shared/utils/http/handle-api-error";
 import { successResponse } from "@/shared/utils/http/success-response";
 import { validate } from "@/shared/utils/validators/validation";
@@ -30,7 +30,6 @@ export async function POST(request: Request): Promise<NextResponse> {
       data: createdPage,
     });
   } catch (error) {
-    console.log(error);
     return handleApiError(error);
   }
 }

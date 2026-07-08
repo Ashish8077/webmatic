@@ -5,7 +5,7 @@ import { updatePageService } from "@/modules/pages/services/update-page.service"
 import {
   UpdatePageInput,
   updatePageSchema,
-} from "@/modules/pages/schemas/update-page.schema";
+} from "@/modules/pages/validation/update-page.schema";
 import { IdRouteParams } from "@/shared/types/route-params";
 import { AppError } from "@/shared/utils/errors/app-error";
 import { handleApiError } from "@/shared/utils/http/handle-api-error";
@@ -66,6 +66,7 @@ export async function PATCH(
       statusCode: 200,
     });
   } catch (error) {
+    console.log(error);
     return handleApiError(error);
   }
 }

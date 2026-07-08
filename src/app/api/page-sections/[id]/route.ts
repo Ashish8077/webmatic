@@ -2,7 +2,7 @@ import { requireAuth } from "@/modules/auth/lib/get-auth-user";
 import { deleteSectionService } from "@/modules/pages-section/services/delete-section.service";
 import { getSectionById } from "@/modules/pages-section/services/get-section.service";
 import { updatePageSectionService } from "@/modules/pages-section/services/update-page-section.service";
-import { updatePageSectionSchema } from "@/modules/pages-section/schemas/update-page-section.schema";
+import { updatePageSectionSchema } from "@/modules/pages-section/validation/update-page-section.schema";
 import { IdRouteParams } from "@/shared/types/route-params";
 import { handleApiError } from "@/shared/utils/http/handle-api-error";
 import { successResponse } from "@/shared/utils/http/success-response";
