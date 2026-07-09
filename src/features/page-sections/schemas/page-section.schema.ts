@@ -5,6 +5,7 @@ import {
 } from "@/modules/pages-section/constants/page-section.constants";
 import { nonNegativeInt } from "@/shared/utils/validators/zod-helpers";
 
+// Page section type schema with custom error messages
 export const pageSectionTypeSchema = z.enum(PAGE_SECTION_TYPES, {
   error: (issue) => {
     if (issue.input === undefined) {
@@ -15,24 +16,25 @@ export const pageSectionTypeSchema = z.enum(PAGE_SECTION_TYPES, {
   },
 });
 
+// Page section status schema with custom error messages
 export const pageSectionStatusSchema = z.enum(SECTION_STATUS, {
-  error: (issue) => {
-    if (issue.input === undefined) {
-      return "Status is required.";
-    }
-
-    return "Invalid status selected.";
-  },
+  error: "Invalid status selected.",
 });
 
+// JSON object schema with custom error message for empty object
 export const jsonObjectSchema = z
   .record(z.string(), z.unknown())
   .refine((value) => Object.keys(value).length > 0, {
     message: "Content is required.",
   });
 
-export const optionalJsonObjectSchema = z.record(z.string(), z.unknown()).nullable().optional();
+// Optional JSON object schema
+export const optionalJsonObjectSchema = z
+  .record(z.string(), z.unknown())
+  .nullable()
+  .optional();
 
+// Create page section schema
 export const createPageSectionSchema = z.object({
   sectionType: pageSectionTypeSchema,
 
@@ -40,11 +42,12 @@ export const createPageSectionSchema = z.object({
 
   settings: optionalJsonObjectSchema,
 
-  sortOrder: nonNegativeInt.default(0),
+  sortOrder: nonNegativeInt.optional(),
 
   status: pageSectionStatusSchema.optional(),
 });
 
+// Update page section schema
 export const updatePageSectionSchema = z.object({
   content: jsonObjectSchema.optional(),
 
@@ -58,42 +61,6 @@ export const updatePageSectionSchema = z.object({
 export type CreatePageSectionInput = z.infer<typeof createPageSectionSchema>;
 export type UpdatePageSectionInput = z.infer<typeof updatePageSectionSchema>;
 
-export const pageSectionFormSchema = z.object({
-  sectionType: pageSectionTypeSchema,
-  content: z.string().trim().min(1, { message: "Content is required." }),
-  settings: z.string().trim().optional(),
-  sortOrder: z
-    .number()
-    .int()
-    .min(0, { message: "Sort order cannot be negative." }),
-  status: pageSectionStatusSchema,
-});
+ 
 
-export type PageSectionFormValues = z.infer<typeof pageSectionFormSchema>;
 
-export const DEFAULT_PAGE_SECTION_FORM_VALUES: PageSectionFormValues = {
-  sectionType: PAGE_SECTION_TYPES[0],
-  content: "{}",
-  settings: "{}",
-  sortOrder: 0,
-  status: SECTION_STATUS.DRAFT,
-};
-
-export const stringifySectionContent = (content: unknown): string => {
-  if (!content) return "{}";
-  if (typeof content === "string") return content;
-  try {
-    return JSON.stringify(content, null, 2);
-  } catch {
-    return "{}";
-  }
-};
-
-export const parseSectionContent = (content?: string | null): any => {
-  if (!content || content.trim() === "") return null;
-  try {
-    return JSON.parse(content);
-  } catch {
-    return null;
-  }
-};

@@ -1,14 +1,15 @@
 "use client";
 
+import { useEffect } from "react";
 import { Controller, useFormState, type UseFormReturn } from "react-hook-form";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup } from "@/components/ui/toggle-group";
-import type { PageSectionFormValues } from "../schemas/page-section.schema";
 
 import { PAGE_SECTION_TYPES } from "@/modules/pages-section/constants/page-section.constants";
+import { PageSectionFormValues } from "../schemas/page-section-form.schema";
 
 const STATUS_OPTIONS = [
   { label: "Draft", value: "draft" as const },
@@ -20,6 +21,8 @@ interface PageSectionFormProps {
   onSubmit: (data: PageSectionFormValues) => Promise<void>;
   onCancel: () => void;
   submitLabel: string;
+  formId?: string;
+  hideActions?: boolean;
   isLoading?: boolean;
   isSubmitting?: boolean;
   isEditing?: boolean;
@@ -30,11 +33,19 @@ export function PageSectionForm({
   onSubmit,
   onCancel,
   submitLabel,
+  formId,
+  hideActions = false,
   isLoading = false,
   isSubmitting = false,
   isEditing = false,
 }: PageSectionFormProps) {
   const { errors } = useFormState({ control: form.control });
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    form.setFocus(isEditing ? "content" : "sectionType");
+  }, [form, isEditing, isLoading]);
 
   if (isLoading) {
     return (
@@ -46,7 +57,11 @@ export function PageSectionForm({
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+    <form
+      id={formId}
+      onSubmit={form.handleSubmit(onSubmit)}
+      className="space-y-5"
+    >
       {isEditing ? (
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-foreground">
@@ -125,20 +140,22 @@ export function PageSectionForm({
         />
       </div>
 
-      <div className="flex justify-end gap-3 pt-2">
-        <Button
-          type="button"
-          variant="secondary"
-          size="sm"
-          disabled={isSubmitting}
-          onClick={onCancel}
-        >
-          Cancel
-        </Button>
-        <Button type="submit" size="sm" isLoading={isSubmitting}>
-          {submitLabel}
-        </Button>
-      </div>
+      {!hideActions && (
+        <div className="flex justify-end gap-3 pt-2">
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            disabled={isSubmitting}
+            onClick={onCancel}
+          >
+            Cancel
+          </Button>
+          <Button type="submit" size="sm" isLoading={isSubmitting}>
+            {submitLabel}
+          </Button>
+        </div>
+      )}
     </form>
   );
 }

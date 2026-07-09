@@ -19,7 +19,7 @@ export const createPageSectionSchema = z.object({
     .min(0, {
       message: "Sort order cannot be negative.",
     })
-    .default(0),
+    .optional(),
 
   status: pageSectionStatusSchema.optional(),
 });

@@ -102,7 +102,7 @@ export async function createPageSection(
       createPageSection.sectionType,
       toJson(createPageSection.content),
       toJson(createPageSection.settings ?? {}),
-      createPageSection.sortOrder,
+      createPageSection.sortOrder ?? 0,
       status,
       userId,
       userId,

@@ -1,37 +1,63 @@
 "use client";
-
+// React
 import { useEffect, useMemo, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+
+// Next.js
 import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+
+// Third-party
 import { ArrowLeft, Plus } from "lucide-react";
+
+// UI Components
 import { Button } from "@/components/ui/button";
-import { Modal } from "@/components/ui/modal";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { Modal } from "@/components/ui/modal";
 import { showToast } from "@/components/ui/toast";
+
+// Lib
 import { ApiError } from "@/lib/api/errors";
+
+// Shared
 import { applyServerErrors } from "@/shared/utils/forms/apply-server-errors";
+
+// Pages Feature
 import { usePage } from "@/features/pages/hooks/use-page";
+
+// Page Sections Components
 import {
   PageSectionForm,
   PageSectionList,
 } from "@/features/page-sections/components";
-import {
-  DEFAULT_PAGE_SECTION_FORM_VALUES,
-  parseSectionContent,
-  stringifySectionContent,
-  type PageSectionFormValues,
-} from "@/features/page-sections/schemas/page-section.schema";
 
+// Page Sections Hooks
 import { useCreatePageSection } from "@/features/page-sections/hooks/use-create-page-section";
 import { useDeletePageSection } from "@/features/page-sections/hooks/use-delete-page-section";
 import { usePageSection } from "@/features/page-sections/hooks/use-page-section";
 import { usePageSectionForm } from "@/features/page-sections/hooks/use-page-section-form";
 import { usePageSections } from "@/features/page-sections/hooks/use-page-sections";
 import { useUpdatePageSection } from "@/features/page-sections/hooks/use-update-page-section";
+
+// Page Sections Schema
+import {
+  DEFAULT_PAGE_SECTION_FORM_VALUES,
+  PageSectionFormValues,
+} from "@/features/page-sections/schemas/page-section-form.schema";
+import {
+  parseOptionalSectionContent,
+  parseRequiredSectionContent,
+  stringifyOptionalSectionContent,
+  stringifySectionContent,
+} from "@/features/page-sections/schemas/page-section.utils";
+
+// Types
 import type {
   CreatePageSectionRequest,
   PageSectionListItem,
+  UpdatePageSectionRequest,
 } from "@/features/page-sections/types/page-section.types";
+
+const PAGE_SECTION_FORM_ID = "page-section-form";
 
 export default function SectionsPage() {
   const { id } = useParams<{ id: string }>();
@@ -70,6 +96,7 @@ export default function SectionsPage() {
     return Math.max(...sections.map((section) => section.sortOrder)) + 1;
   }, [sections]);
 
+  // Open create modal
   const openCreate = () => {
     setEditingSectionId(null);
     reset({
@@ -98,34 +125,41 @@ export default function SectionsPage() {
     reset({
       sectionType: section.sectionType,
       content: stringifySectionContent(section.content),
-      settings: stringifySectionContent(section.settings),
+      settings: stringifyOptionalSectionContent(section.settings),
       sortOrder: section.sortOrder,
       status: section.status,
     });
   }, [editingSectionId, isModalOpen, reset, sectionQuery.data]);
 
-  const toMutationPayload = (
+  const toCreateMutationPayload = (
     values: PageSectionFormValues,
   ): CreatePageSectionRequest => ({
     sectionType: values.sectionType,
-    content: parseSectionContent(values.content)!,
-    settings: parseSectionContent(values.settings),
+    content: parseRequiredSectionContent(values.content),
+    settings: parseOptionalSectionContent(values.settings),
+    sortOrder: values.sortOrder,
+    status: values.status,
+  });
+
+  const toUpdateMutationPayload = (
+    values: PageSectionFormValues,
+  ): UpdatePageSectionRequest => ({
+    content: parseRequiredSectionContent(values.content),
+    settings: parseOptionalSectionContent(values.settings),
     sortOrder: values.sortOrder,
     status: values.status,
   });
 
   const handleSubmit = async (values: PageSectionFormValues) => {
     try {
-      const payload = toMutationPayload(values);
-
       if (editingSectionId) {
         await updateSectionMutation.mutateAsync({
           sectionId: editingSectionId,
-          data: payload,
+          data: toUpdateMutationPayload(values),
         });
         showToast("Section updated successfully", "success");
       } else {
-        await createSectionMutation.mutateAsync(payload);
+        await createSectionMutation.mutateAsync(toCreateMutationPayload(values));
         showToast("Section created successfully", "success");
       }
 
@@ -184,7 +218,9 @@ export default function SectionsPage() {
   const isInvalidPageId = !Number.isInteger(pageId) || pageId <= 0;
   const isSaving =
     createSectionMutation.isPending || updateSectionMutation.isPending;
+  const isSectionFormLoading = Boolean(editingSectionId && sectionQuery.isPending);
 
+  // Invalid page id handler
   if (isInvalidPageId) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
@@ -199,6 +235,7 @@ export default function SectionsPage() {
     );
   }
 
+  // Page loading handler
   if (pageQuery.isPending) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
@@ -208,6 +245,7 @@ export default function SectionsPage() {
     );
   }
 
+  //
   if (pageQuery.isError || !page) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
@@ -222,6 +260,7 @@ export default function SectionsPage() {
     );
   }
 
+  // Page sections UI
   return (
     <div className="animate-fade-in">
       <div className="mb-6">
@@ -265,15 +304,41 @@ export default function SectionsPage() {
         onClose={closeModal}
         title={editingSectionId ? "Edit Section" : "Add Section"}
         size="lg"
+        footer={
+          <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3">
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              className="w-full sm:w-auto"
+              disabled={isSaving || isSectionFormLoading}
+              onClick={closeModal}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              form={PAGE_SECTION_FORM_ID}
+              size="sm"
+              className="w-full sm:w-auto"
+              disabled={isSectionFormLoading}
+              isLoading={isSaving}
+            >
+              {editingSectionId ? "Save Changes" : "Add Section"}
+            </Button>
+          </div>
+        }
       >
         <PageSectionForm
+          formId={PAGE_SECTION_FORM_ID}
           form={form}
           onSubmit={handleSubmit}
           onCancel={closeModal}
           submitLabel={editingSectionId ? "Save Changes" : "Add Section"}
-          isLoading={Boolean(editingSectionId && sectionQuery.isPending)}
+          isLoading={isSectionFormLoading}
           isSubmitting={isSaving}
           isEditing={!!editingSectionId}
+          hideActions
         />
       </Modal>
 

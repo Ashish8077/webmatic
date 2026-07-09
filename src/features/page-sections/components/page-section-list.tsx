@@ -10,8 +10,8 @@ import {
   Trash2,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { stringifySectionContent } from "../schemas/page-section.utils";
 import type { PageSectionListItem } from "../types/page-section.types";
-import { stringifySectionContent } from "../schemas/page-section.schema";
 
 interface PageSectionListProps {
   sections: PageSectionListItem[];
@@ -94,7 +94,11 @@ export function PageSectionList({
                   <div className="font-medium text-foreground">
                     {section.sectionType}
                   </div>
-                  <Badge variant={section.status === "published" ? "active" : "inactive"}>
+                  <Badge
+                    variant={
+                      section.status === "published" ? "active" : "inactive"
+                    }
+                  >
                     {section.status === "published" ? "Published" : "Draft"}
                   </Badge>
                 </div>
@@ -112,7 +116,9 @@ export function PageSectionList({
 
               <div className="flex shrink-0 items-center gap-1">
                 <button
-                  title={section.status === "published" ? "Move to Draft" : "Publish"}
+                  title={
+                    section.status === "published" ? "Move to Draft" : "Publish"
+                  }
                   disabled={isUpdating}
                   onClick={() => onToggleStatus(section)}
                   className={`

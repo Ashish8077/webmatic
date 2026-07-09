@@ -22,6 +22,6 @@ export async function POST(req: Request) {
       data: service,
     });
   } catch (error) {
-    handleApiError(error);
+    return handleApiError(error);
   }
 }
