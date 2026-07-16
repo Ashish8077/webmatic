@@ -15,7 +15,6 @@ export async function getPageSectionsService(
 
   const page = await findPageById(pageId);
 
-  console.log(page);
 
   if (!page) {
     throw new AppError("Page not found", 404);

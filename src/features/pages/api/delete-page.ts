@@ -6,6 +6,6 @@ export async function deletePage(id: number): Promise<BaseResponse> {
   const response = await apiClient.delete<BaseResponse>(
     PAGES_ENDPOINTS.DELETE_PAGE(id),
   );
-  console.log(response);
+
   return response.data;
 }

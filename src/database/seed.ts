@@ -4,6 +4,8 @@ import { seedPermissions } from "./seeds/permissions.seed";
 import { seedRolePermissions } from "./seeds/role-permission.seed";
 import { seedRoles } from "./seeds/roles.seed";
 import { seedSuperAdmin } from "./seeds/super-admin.seed";
+import { seedSystemPageSections } from "./seeds/system-page-sections.seed";
+import { seedSystemPages } from "./seeds/system-pages.seed";
 import { seedTestUsers } from "./seeds/test-users.seed";
 import { seedUserRoles } from "./seeds/user-roles.seed";
 
@@ -57,6 +59,22 @@ async function seedDatabase() {
      * - roles table populated
      */
     await seedTestUsers();
+
+    /**
+     * Seed system pages.
+     *
+     * Requires:
+     * - pages table populated
+     */
+    await seedSystemPages();
+
+    /**
+     * Seed system page sections.
+     *
+     * Requires:
+     * - system-pages table populated
+     */
+    await seedSystemPageSections();
 
     console.log("\nDatabase seeding completed successfully");
   } catch (error) {

@@ -8,8 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup } from "@/components/ui/toggle-group";
 
-import { PAGE_SECTION_TYPES } from "@/modules/pages-section/constants/page-section.constants";
 import { PageSectionFormValues } from "../schemas/page-section-form.schema";
+import { HOME_SECTION_TYPES } from "@/modules/home/constants/home-section-types";
 
 const STATUS_OPTIONS = [
   { label: "Draft", value: "draft" as const },
@@ -83,7 +83,7 @@ export function PageSectionForm({
             disabled={isSubmitting}
             {...form.register("sectionType")}
           >
-            {PAGE_SECTION_TYPES.map((type) => (
+            {HOME_SECTION_TYPES.map((type) => (
               <option key={type} value={type}>
                 {type}
               </option>

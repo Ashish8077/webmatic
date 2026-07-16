@@ -12,7 +12,7 @@ export interface PageSectionRow extends RowDataPacket {
 
   section_type: PageSectionType;
 
-  content: JsonObject | null;
+  content: JsonObject;
 
   settings: JsonObject | null;
 

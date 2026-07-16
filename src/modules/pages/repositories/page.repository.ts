@@ -1,9 +1,7 @@
 import db from "@/database/connection";
 import { ResultSetHeader } from "mysql2";
-import { CreatePageInput } from "../validation/create-page.schema";
 
 import { GetPagesQuery } from "../validation/get-pages-query.schema";
-import { UpdatePageInput } from "../validation/update-page.schema";
 import { toJson } from "@/shared/utils/database/json";
 import { PageStatus } from "../constants/page.constants";
 import {
@@ -13,6 +11,7 @@ import {
   PageSlugRow,
   PublishedPageRow,
 } from "../types/repository.types";
+import { CreatePagePayload, UpdatePagePayload } from "../types/service.types";
 
 type SortBy = NonNullable<GetPagesQuery["sortBy"]>;
 
@@ -94,13 +93,13 @@ export async function findPublishedPageBySlug(
       id,
       title,
       slug,
+      template,
       seo_title,
       meta_description,
       canonical_url,
       robots_index,
       robots_follow,
       schema_markup,
-      template,
       published_at
     FROM pages
     WHERE slug = ?
@@ -114,6 +113,14 @@ export async function findPublishedPageBySlug(
   return rows[0] ?? null;
 }
 
+/**
+ * Finds a published page by page type.
+ * Used for loading system pages (home, about, services, etc.) on the public website.
+ *
+ * @param template - The template to find.
+ * @returns The published page row or null if not found.
+ */
+
 export async function findPublishedPageByTemplate(
   template: string,
 ): Promise<PublishedPageRow | null> {
@@ -123,13 +130,13 @@ export async function findPublishedPageByTemplate(
       id,
       title,
       slug,
+      template,
       seo_title,
       meta_description,
       canonical_url,
       robots_index,
       robots_follow,
       schema_markup,
-      template,
       published_at
     FROM pages
     WHERE template = ?
@@ -182,6 +189,7 @@ export async function findPages(
       id,
       title,
       slug,
+      template,
       status,
       published_at,
       created_at,
@@ -211,7 +219,9 @@ export async function findPageById(id: number): Promise<PageDetailsRow | null> {
       id,
       title,
       slug,
+      template,
       status,
+      is_system,
       seo_title,
       meta_description,
       meta_keywords,
@@ -275,10 +285,8 @@ export async function countPages(options: GetPagesQuery): Promise<number> {
  */
 
 export async function createPage(
-  page: CreatePageInput,
+  page: CreatePagePayload,
   userId: number,
-  publishedAt: Date | null,
-  status: PageStatus,
 ): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
@@ -286,7 +294,10 @@ export async function createPage(
     (
       title,
       slug,
+      template,
       status,
+
+      is_system,
 
       seo_title,
       meta_description,
@@ -307,13 +318,18 @@ export async function createPage(
       created_by,
       updated_by
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?,  FALSE, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CASE
+    WHEN ?
+      THEN CURRENT_TIMESTAMP
+    ELSE NULL
+  END, ?, ?)
     `,
     [
       // Basic Information
       page.title,
       page.slug,
-      status,
+      page.template,
+      page.status,
 
       // SEO
       page.seoTitle ?? null,
@@ -336,7 +352,7 @@ export async function createPage(
       toJson(page.schemaMarkup),
 
       // Publishing
-      publishedAt,
+      page.status === "published",
 
       // Audit
       userId,
@@ -357,10 +373,8 @@ export async function createPage(
 
 export async function updatePage(
   pageId: number,
-  updatePage: UpdatePageInput,
+  updatePage: UpdatePagePayload,
   userId: number,
-  publishedAt: Date | null,
-  status: PageStatus,
 ): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
@@ -368,6 +382,7 @@ export async function updatePage(
     SET
       title = ?,
       slug = ?,
+      template = ?,
       status = ?,
       seo_title = ?,
       meta_description = ?,
@@ -382,7 +397,11 @@ export async function updatePage(
       robots_index = ?,
       robots_follow = ?,
       schema_markup = ?,
-      published_at = ?,
+      published_at = CASE 
+      WHEN ?
+        THEN COALESCE(published_at, CURRENT_TIMESTAMP)
+        ELSE published_at
+      END,
       updated_by = ?
     WHERE id = ?
       AND deleted_at IS NULL
@@ -390,21 +409,22 @@ export async function updatePage(
     [
       updatePage.title,
       updatePage.slug,
-      status,
-      updatePage.seoTitle ?? null,
-      updatePage.metaDescription ?? null,
-      updatePage.metaKeywords ?? null,
-      updatePage.canonicalUrl ?? null,
-      updatePage.ogTitle ?? null,
-      updatePage.ogDescription ?? null,
-      updatePage.ogImageId ?? null,
-      updatePage.twitterTitle ?? null,
-      updatePage.twitterDescription ?? null,
-      updatePage.twitterImageId ?? null,
-      updatePage.robotsIndex ?? true,
-      updatePage.robotsFollow ?? true,
+      updatePage.template,
+      updatePage.status,
+      updatePage.seoTitle,
+      updatePage.metaDescription,
+      updatePage.metaKeywords,
+      updatePage.canonicalUrl,
+      updatePage.ogTitle,
+      updatePage.ogDescription,
+      updatePage.ogImageId,
+      updatePage.twitterTitle,
+      updatePage.twitterDescription,
+      updatePage.twitterImageId,
+      updatePage.robotsIndex,
+      updatePage.robotsFollow,
       toJson(updatePage.schemaMarkup),
-      publishedAt,
+      updatePage.status === "published",
       userId,
       pageId,
     ],

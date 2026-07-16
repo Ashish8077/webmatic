@@ -25,7 +25,6 @@ export default function PagesListPage() {
 
   const handleDelete = () => {
     if (!deleteTarget) return;
-    console.log(deleteTarget.id);
     deletePageMutation.mutate(deleteTarget.id);
     setDeleteTarget(null);
   };

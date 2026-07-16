@@ -24,7 +24,7 @@ export const createPageSchema = z.object({
         "Slug must start with a letter and contain only lowercase letters, numbers and hyphens",
     }),
 
-  status: z.enum(["draft", "published"]).optional(),
+  status: z.enum(["draft", "published"]).default("draft"),
 
   seoTitle: z
     .string()
@@ -87,4 +87,3 @@ export const createPageSchema = z.object({
 });
 
 export type CreatePageInput = z.infer<typeof createPageSchema>;
-

@@ -1,4 +1,9 @@
-import { useForm, UseFormReturn, useWatch, type Resolver } from "react-hook-form";
+import {
+  useForm,
+  UseFormReturn,
+  useWatch,
+  type Resolver,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CreatePageInput,
@@ -27,13 +32,18 @@ export function usePageForm(options?: {
   values?: CreatePageInput;
 }): UseFormReturn<CreatePageInput> & { seoWarnings: SeoWarning[] } {
   const form = useForm<CreatePageInput>({
-    resolver: zodResolver(createPageSchema) as unknown as Resolver<CreatePageInput>,
+    resolver: zodResolver(
+      createPageSchema,
+    ) as unknown as Resolver<CreatePageInput>,
     defaultValues: { ...DEFAULT_VALUES, ...options?.defaultValues },
     values: options?.values,
   });
 
   const seoTitle = useWatch({ control: form.control, name: "seoTitle" });
-  const metaDescription = useWatch({ control: form.control, name: "metaDescription" });
+  const metaDescription = useWatch({
+    control: form.control,
+    name: "metaDescription",
+  });
 
   const seoWarnings: SeoWarning[] = analyzeSeo({
     seoTitle: seoTitle ?? "",

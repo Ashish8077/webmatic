@@ -3,14 +3,13 @@ import {
   pageSectionStatusSchema,
   pageSectionTypeSchema,
 } from "./page-section.schema";
-import {
-  PAGE_SECTION_TYPES,
-  SECTION_STATUS,
-} from "@/modules/pages-section/constants/page-section.constants";
+import { SECTION_STATUS } from "@/modules/pages-section/constants/page-section.constants";
+
 import {
   jsonStringSchema,
   optionalJsonStringSchema,
 } from "@/shared/utils/validators/json-string";
+import { HOME_SECTION_TYPES } from "@/modules/home/constants/home-section-types";
 
 const sortOrderSchema = z.preprocess(
   (value) => {
@@ -47,7 +46,7 @@ export const pageSectionFormSchema = z.object({
 export type PageSectionFormValues = z.infer<typeof pageSectionFormSchema>;
 
 export const DEFAULT_PAGE_SECTION_FORM_VALUES: PageSectionFormValues = {
-  sectionType: PAGE_SECTION_TYPES[0],
+  sectionType: HOME_SECTION_TYPES[0],
   content: "{}",
   settings: "",
   sortOrder: 0,

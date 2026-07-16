@@ -5,6 +5,7 @@ import {
 } from "@/shared/utils/validators/zod-helpers";
 import z from "zod";
 import { PAGE_STATUS } from "../constants/page.constants";
+import { customPageTemplateSchema } from "../constants/page-templates";
 
 export const updatePageSchema = z
   .object({
@@ -21,6 +22,8 @@ export const updatePageSchema = z
       ),
 
     status: z.enum(PAGE_STATUS).optional(),
+
+    template: customPageTemplateSchema.default("default"),
 
     seoTitle: emptyStringToNull(255).optional(),
 

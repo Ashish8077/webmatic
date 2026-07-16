@@ -1,12 +1,11 @@
 import { z } from "zod";
-import {
-  PAGE_SECTION_TYPES,
-  SECTION_STATUS,
-} from "@/modules/pages-section/constants/page-section.constants";
+import { SECTION_STATUS } from "@/modules/pages-section/constants/page-section.constants";
+
 import { nonNegativeInt } from "@/shared/utils/validators/zod-helpers";
+import { HOME_SECTION_TYPES } from "@/modules/home/constants/home-section-types";
 
 // Page section type schema with custom error messages
-export const pageSectionTypeSchema = z.enum(PAGE_SECTION_TYPES, {
+export const pageSectionTypeSchema = z.enum(HOME_SECTION_TYPES, {
   error: (issue) => {
     if (issue.input === undefined) {
       return "Section type is required.";
@@ -17,9 +16,12 @@ export const pageSectionTypeSchema = z.enum(PAGE_SECTION_TYPES, {
 });
 
 // Page section status schema with custom error messages
-export const pageSectionStatusSchema = z.enum(SECTION_STATUS, {
-  error: "Invalid status selected.",
-});
+export const pageSectionStatusSchema = z.enum(
+  [SECTION_STATUS.DRAFT, SECTION_STATUS.PUBLISHED],
+  {
+    error: "Invalid status selected.",
+  },
+);
 
 // JSON object schema with custom error message for empty object
 export const jsonObjectSchema = z
@@ -60,7 +62,3 @@ export const updatePageSectionSchema = z.object({
 
 export type CreatePageSectionInput = z.infer<typeof createPageSectionSchema>;
 export type UpdatePageSectionInput = z.infer<typeof updatePageSectionSchema>;
-
- 
-
-

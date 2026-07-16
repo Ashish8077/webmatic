@@ -9,6 +9,8 @@ import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { AuthUser } from "@/modules/auth/types/auth-user";
+import { toUpdatePagePayload } from "../mapper/page.mapper";
+import { SYSTEM_PAGE_PROTECTED_FIELDS } from "../constants/page.constants";
 
 export async function updatePageService(
   pageId: number,
@@ -24,32 +26,33 @@ export async function updatePageService(
       throw new AppError("Page not found", 404);
     }
 
-    const existingPage = await findPageSlugExcludingPageId(
-      pageData.slug,
-      pageId,
-    );
-
-    if (existingPage) {
-      throw new AppError("Page slug already exists", 409, {
-        slug: ["Page slug already exists."],
-      });
+    if (page.is_system) {
+      for (const field of SYSTEM_PAGE_PROTECTED_FIELDS) {
+        if (pageData[field] !== undefined) {
+          throw new AppError(`System page ${field} cannot be changed.`, 400);
+        }
+      }
     }
 
-    const publishedAt =
-      page.status !== "published" &&
-      pageData.status === "published" &&
-      !page.published_at
-        ? new Date()
-        : page.published_at;
+    if (!page.is_system && pageData.slug !== undefined) {
+      const existingPage = await findPageSlugExcludingPageId(
+        pageData.slug,
+        pageId,
+      );
 
-    const status = pageData.status ?? page.status;
+      if (existingPage) {
+        throw new AppError("Page slug already exists", 409, {
+          slug: ["Page slug already exists."],
+        });
+      }
+    }
+
+    const updatePayload = toUpdatePagePayload(page, pageData);
 
     const updatedPageCount = await updatePage(
       pageId,
-      pageData,
+      updatePayload,
       user.userId,
-      publishedAt,
-      status,
     );
     if (updatedPageCount === 0) {
       throw new AppError("Page not found", 404);

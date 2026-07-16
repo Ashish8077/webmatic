@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { getHomePageData } from "@/modules/home/get-home-page";
+import { getHomePageData } from "@/modules/home/services/get-home-page";
 import { SectionRenderer } from "@/components/home/section-renderer";
-import { HomeNav } from "@/components/home/home-nav";
+import { Header } from "@/components/layout/header";
 
 /**
  * ISR: revalidate the page every 60 seconds so content changes in the CMS
@@ -67,12 +67,8 @@ export default async function HomePage() {
 
   return (
     <>
-      <HomeNav siteTitle={data.meta.title} />
-      {/*
-        pt-16 offsets the fixed 64px (h-16) navigation bar so the first
-        section is not hidden underneath it.
-      */}
-      <main className="pt-16">
+      <Header />
+      <main>
         {data.sections.map((section) => (
           <SectionRenderer key={section.id} section={section} />
         ))}

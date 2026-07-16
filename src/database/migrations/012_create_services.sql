@@ -56,25 +56,25 @@ CREATE TABLE IF NOT EXISTS services (
 
     CONSTRAINT uk_services_slug UNIQUE (slug),
 
-    CONSTRAINT fk_services_featured_image
-        FOREIGN KEY (featured_image_id)
-        REFERENCES media(id)
-        ON DELETE SET NULL,
+    -- CONSTRAINT fk_services_featured_image
+    --     FOREIGN KEY (featured_image_id)
+    --     REFERENCES media(id)
+    --     ON DELETE SET NULL,
 
-    CONSTRAINT fk_services_banner_image
-        FOREIGN KEY (banner_image_id)
-        REFERENCES media(id)
-        ON DELETE SET NULL,
+    -- CONSTRAINT fk_services_banner_image
+    --     FOREIGN KEY (banner_image_id)
+    --     REFERENCES media(id)
+    --     ON DELETE SET NULL,
 
-    CONSTRAINT fk_services_og_image
-        FOREIGN KEY (open_graph_image_id)
-        REFERENCES media(id)
-        ON DELETE SET NULL,
+    -- CONSTRAINT fk_services_og_image
+    --     FOREIGN KEY (open_graph_image_id)
+    --     REFERENCES media(id)
+    --     ON DELETE SET NULL,
 
-    CONSTRAINT fk_services_twitter_image
-        FOREIGN KEY (twitter_image_id)
-        REFERENCES media(id)
-        ON DELETE SET NULL,
+    -- CONSTRAINT fk_services_twitter_image
+    --     FOREIGN KEY (twitter_image_id)
+    --     REFERENCES media(id)
+    --     ON DELETE SET NULL,
 
     CONSTRAINT fk_services_created_by
         FOREIGN KEY (created_by)

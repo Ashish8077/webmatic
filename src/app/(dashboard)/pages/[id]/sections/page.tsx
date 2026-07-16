@@ -159,7 +159,9 @@ export default function SectionsPage() {
         });
         showToast("Section updated successfully", "success");
       } else {
-        await createSectionMutation.mutateAsync(toCreateMutationPayload(values));
+        await createSectionMutation.mutateAsync(
+          toCreateMutationPayload(values),
+        );
         showToast("Section created successfully", "success");
       }
 
@@ -218,7 +220,9 @@ export default function SectionsPage() {
   const isInvalidPageId = !Number.isInteger(pageId) || pageId <= 0;
   const isSaving =
     createSectionMutation.isPending || updateSectionMutation.isPending;
-  const isSectionFormLoading = Boolean(editingSectionId && sectionQuery.isPending);
+  const isSectionFormLoading = Boolean(
+    editingSectionId && sectionQuery.isPending,
+  );
 
   // Invalid page id handler
   if (isInvalidPageId) {

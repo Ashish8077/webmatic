@@ -28,7 +28,8 @@ export default function EditPagePage({
       ? {
           title: page.title,
           slug: page.slug,
-          status: page.status ?? "draft",
+          status: page.status,
+          template: page.template,
           seoTitle: page.seoTitle ?? "",
           metaDescription: page.metaDescription ?? "",
           metaKeywords: page.metaKeywords ?? "",
@@ -49,7 +50,6 @@ export default function EditPagePage({
 
   const handleSubmit = async (pageData: CreatePageInput) => {
     try {
-      console.log("submitted", pageData);
       await updatePageMutation.mutateAsync(pageData);
       showToast("Page updated successfully", "success");
     } catch (error) {

@@ -77,9 +77,6 @@ export const nullableImageId = z.coerce
   .int()
   .positive("Invalid image id")
   .nullable()
-  .optional();
+  .default(null);
 
-export {
-  jsonStringSchema,
-  optionalJsonStringSchema,
-} from "./json-string";
+export { jsonStringSchema, optionalJsonStringSchema } from "./json-string";

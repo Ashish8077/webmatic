@@ -12,9 +12,12 @@ import { BaseResponse } from "@/shared/types/api.types";
 
 // ===== ===== ===== ===== ===== ===== ===== API Requests =====  ===== ===== ===== ===== ===== =====
 
+import { PageTemplate } from "@/modules/pages/constants/page-templates";
+
 export interface CreatePageRequest {
   title: string;
   slug: string;
+  template?: PageTemplate;
   status?: "draft" | "published";
   seoTitle?: string;
   metaDescription?: string;
@@ -39,6 +42,7 @@ export interface Page {
   id: number;
   title: string;
   slug: string;
+  template: PageTemplate;
   status: "draft" | "published";
   seoTitle: string | null;
   metaDescription: string | null;
@@ -72,6 +76,7 @@ export interface PageListItem {
   id: number;
   title: string;
   slug: string;
+  template: PageTemplate;
   status: "draft" | "published";
   publishedAt: string | null;
   updatedAt: string;

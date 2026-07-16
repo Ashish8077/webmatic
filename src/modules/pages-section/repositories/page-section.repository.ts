@@ -71,6 +71,38 @@ export async function findPageSectionsByPageId(
 }
 
 /**
+ * Find all active sections for a specific page
+ * @param pageId - Page ID
+ * @returns Array of page section rows, ordered by sort_order
+ */
+export async function findPageActiveSectionsByPageId(
+  pageId: number,
+): Promise<PageSectionRow[]> {
+  const [rows] = await db.execute<PageSectionRow[]>(
+    `
+    SELECT
+      id,
+      page_id,
+      section_type,
+      content,
+      settings,
+      sort_order,
+      status,
+      created_at,
+      updated_at
+    FROM page_sections
+      WHERE page_id = ?
+        AND status = 'published'
+        AND deleted_at IS NULL
+    ORDER BY sort_order ASC
+    `,
+    [pageId],
+  );
+
+  return rows;
+}
+
+/**
  * Create a new page section
  * @param pageId - Page ID
  * @param createPageSection - Page section data

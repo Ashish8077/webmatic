@@ -10,7 +10,10 @@ import { CreatePageInput } from "../validation/create-page.schema";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { AuthUser } from "@/modules/auth/types/auth-user";
-import { toCreatePageResponse } from "../mapper/page.mapper";
+import {
+  toCreatePagePayload,
+  toCreatePageResponse,
+} from "../mapper/page.mapper";
 import { PageStatus } from "../constants/page.constants";
 import { CreatePageResponse } from "../types/service.types";
 
@@ -21,6 +24,18 @@ export async function createPageService(
   requirePermission(user, PERMISSIONS.PAGES_CREATE);
 
   try {
+    /**
+     * System page templates cannot be created.
+     */
+    if (pageData.template !== "default") {
+      throw new AppError("System page templates cannot be created.", 400, {
+        template: ["Only custom pages can be created."],
+      });
+    }
+
+    /**
+     * Slug must be unique
+     */
     const existingPage = await findPageSlug(pageData.slug);
 
     if (existingPage) {
@@ -29,16 +44,22 @@ export async function createPageService(
       });
     }
 
-    const publishedAt: Date | null =
-      pageData.status === "published" ? new Date() : null;
-    const status: PageStatus = pageData.status ?? "draft";
-    const pageId = await createPage(pageData, user.userId, publishedAt, status);
+    /**
+     * Create page
+     *
+     * Repository should always save:
+     * is_system = false
+     */
+
+    const createPageRequest = toCreatePagePayload(pageData);
+    const pageId = await createPage(createPageRequest, user.userId);
 
     return toCreatePageResponse({
       id: pageId,
-      title: pageData.title,
-      slug: pageData.slug,
-      status,
+      title: createPageRequest.title,
+      slug: createPageRequest.slug,
+      template: createPageRequest.template,
+      status: createPageRequest.status,
     });
   } catch (error) {
     if (isDuplicateKeyError(error)) {

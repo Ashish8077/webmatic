@@ -20,10 +20,7 @@ export function HomeNav({ siteTitle }: { siteTitle: string }) {
         </a>
 
         {/* Navigation links — hidden on mobile */}
-        <ul
-          className="hidden sm:flex items-center gap-1"
-          role="list"
-        >
+        <ul className="hidden sm:flex items-center gap-1" role="list">
           {(
             [
               { label: "About", href: "#about" },

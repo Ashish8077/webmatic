@@ -5,6 +5,7 @@ import {
 } from "@/shared/utils/validators/zod-helpers";
 import { z } from "zod";
 import { PAGE_STATUS } from "../constants/page.constants";
+import { customPageTemplateSchema } from "../constants/page-templates";
 
 export const createPageSchema = z.object({
   // Basic Information
@@ -23,22 +24,24 @@ export const createPageSchema = z.object({
         "Slug must start with a letter and contain only lowercase letters, numbers and hyphens",
     }),
 
-  status: z.enum(PAGE_STATUS).optional(),
+  status: z.enum(PAGE_STATUS).default("draft"),
+
+  template: customPageTemplateSchema.default("default"),
 
   // SEO
-  seoTitle: emptyStringToNull(255).optional(),
-  metaDescription: emptyStringToNull(1000).optional(),
-  metaKeywords: emptyStringToNull(1000).optional(),
-  canonicalUrl: nullableUrl("Invalid canonical URL").optional(),
+  seoTitle: emptyStringToNull(255).default(null),
+  metaDescription: emptyStringToNull(1000).default(null),
+  metaKeywords: emptyStringToNull(1000).default(null),
+  canonicalUrl: nullableUrl("Invalid canonical URL").default(null),
 
   // Open Graph
-  ogTitle: emptyStringToNull(255).optional(),
-  ogDescription: emptyStringToNull(1000).optional(),
+  ogTitle: emptyStringToNull(255).default(null),
+  ogDescription: emptyStringToNull(1000).default(null),
   ogImageId: nullableImageId,
 
   // Twitter Card
-  twitterTitle: emptyStringToNull(255).optional(),
-  twitterDescription: emptyStringToNull(1000).optional(),
+  twitterTitle: emptyStringToNull(255).default(null),
+  twitterDescription: emptyStringToNull(1000).default(null),
   twitterImageId: nullableImageId,
 
   // Robots tags
@@ -46,7 +49,7 @@ export const createPageSchema = z.object({
   robotsFollow: z.boolean().default(true),
 
   // Structured Data
-  schemaMarkup: z.record(z.string(), z.unknown()).nullable().optional(),
+  schemaMarkup: z.record(z.string(), z.unknown()).nullable().default(null),
 });
 
 export type CreatePageInput = z.infer<typeof createPageSchema>;
