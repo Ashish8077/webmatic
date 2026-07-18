@@ -17,17 +17,17 @@ interface SectionProps {
  * - copyright   string   — Optional copyright line
  */
 export function FooterCtaSection({ content, title }: SectionProps) {
-  const heading = str(content.heading, title ?? "Let's Build Something Amazing");
+  const heading = str(
+    content.heading,
+    title ?? "Let's Build Something Amazing",
+  );
   const subheading = str(content.subheading);
   const ctaLabel = str(content.ctaLabel, "Get Started Today");
   const ctaHref = str(content.ctaHref, "#hero");
   const copyright = str(content.copyright);
 
   return (
-    <footer
-      id="footer-cta"
-      className="py-24 px-4 border-t border-card-border"
-    >
+    <footer id="footer-cta" className="py-24 px-4 border-t border-card-border">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="text-3xl sm:text-4xl font-bold mb-4">
           <span className="gradient-text">{heading}</span>

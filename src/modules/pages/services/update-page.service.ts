@@ -10,7 +10,7 @@ import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { AuthUser } from "@/modules/auth/types/auth-user";
 import { toUpdatePagePayload } from "../mapper/page.mapper";
-import { SYSTEM_PAGE_PROTECTED_FIELDS } from "../constants/page.constants";
+
 
 export async function updatePageService(
   pageId: number,
@@ -27,10 +27,11 @@ export async function updatePageService(
     }
 
     if (page.is_system) {
-      for (const field of SYSTEM_PAGE_PROTECTED_FIELDS) {
-        if (pageData[field] !== undefined) {
-          throw new AppError(`System page ${field} cannot be changed.`, 400);
-        }
+      if (pageData.slug !== undefined && pageData.slug !== page.slug) {
+        throw new AppError(`System page slug cannot be changed.`, 400);
+      }
+      if (pageData.template !== undefined && pageData.template !== page.template) {
+        throw new AppError(`System page template cannot be changed.`, 400);
       }
     }
 

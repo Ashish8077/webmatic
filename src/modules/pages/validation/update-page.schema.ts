@@ -9,7 +9,7 @@ import { customPageTemplateSchema } from "../constants/page-templates";
 
 export const updatePageSchema = z
   .object({
-    title: z.string().trim().min(1).max(255),
+    title: z.string().trim().min(1).max(255).optional(),
 
     slug: z
       .string()
@@ -19,11 +19,12 @@ export const updatePageSchema = z
       .regex(
         /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/,
         "Slug must start with a letter and contain only lowercase letters, numbers and hyphens",
-      ),
+      )
+      .optional(),
 
     status: z.enum(PAGE_STATUS).optional(),
 
-    template: customPageTemplateSchema.default("default"),
+    template: customPageTemplateSchema.optional(),
 
     seoTitle: emptyStringToNull(255).optional(),
 

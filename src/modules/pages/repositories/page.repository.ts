@@ -191,6 +191,7 @@ export async function findPages(
       slug,
       template,
       status,
+      is_system,
       published_at,
       created_at,
       updated_at

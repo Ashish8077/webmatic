@@ -47,6 +47,7 @@ export interface PageListRow extends RowDataPacket {
   slug: string;
   template: PageTemplate;
   status: PageStatus;
+  is_system: boolean;
   published_at: Date | null;
   created_at: Date;
   updated_at: Date;

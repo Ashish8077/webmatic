@@ -24,3 +24,11 @@ export function obj(value: unknown): Record<string, unknown> | null {
   }
   return null;
 }
+
+/**
+ * Safe number extractor for unknown JSON content values.
+ * Returns `fallback` when the value is not a number.
+ */
+export function num(value: unknown, fallback = 0): number {
+  return typeof value === "number" ? value : fallback;
+}

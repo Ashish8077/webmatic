@@ -8,9 +8,14 @@ import DecorativeShapes from "./decorative-shapes";
 import SlideCounter from "./slide-counter";
 import HeroContent from "./hero-content";
 import BottomStrip from "./bottom-strip";
+import { parseHeroSettingsDefaults } from "@/features/page-sections/components/forms/hero-form";
 
-export function HeroSlider({ content }: SectionProps) {
+export function HeroSlider({ content, settings }: SectionProps) {
   const slides = useMemo(() => normaliseHeroSlides(content), [content]);
+  const parsedSettings = useMemo(
+    () => parseHeroSettingsDefaults(settings as any),
+    [settings],
+  );
 
   const [current, setCurrent] = useState<number>(0);
   const [animating, setAnimating] = useState<boolean>(false);
@@ -20,24 +25,30 @@ export function HeroSlider({ content }: SectionProps) {
   const goTo = useCallback(
     (index: number) => {
       if (animating || slides.length === 0) return;
-      const next = (index + slides.length) % slides.length;
+      let next = index;
+
+      if (next >= slides.length || next < 0) {
+        if (!parsedSettings.loop) return; // Do nothing if loop is disabled
+        next = (index + slides.length) % slides.length;
+      }
+
       setAnimating(true);
       setCurrent(next);
       setHighest((h) => Math.max(h, next));
       setTimeout(() => setAnimating(false), 500);
     },
-    [animating, slides.length],
+    [animating, slides.length, parsedSettings.loop],
   );
 
   const goPrev = () => goTo(current - 1);
   const goNext = useCallback(() => goTo(current + 1), [current, goTo]);
 
-  /* Auto-play — only pauses when mouse is over the strip */
+  /* Auto-play — only pauses when mouse is over the strip, respects setting */
   useEffect(() => {
-    if (paused) return;
-    const timer = setInterval(goNext, AUTOPLAY_DELAY);
+    if (paused || !parsedSettings.autoplay) return;
+    const timer = setInterval(goNext, parsedSettings.autoplayDelay);
     return () => clearInterval(timer);
-  }, [goNext, paused]);
+  }, [goNext, paused, parsedSettings.autoplay, parsedSettings.autoplayDelay]);
 
   /* Keyboard navigation */
   useEffect(() => {
@@ -53,23 +64,35 @@ export function HeroSlider({ content }: SectionProps) {
 
   const slide = slides[current];
 
+  console.log(parsedSettings.showPagination);
+
   return (
-    <section className="relative h-[calc(100vh-88px)] min-h-[500px] overflow-hidden bg-gradient-to-b from-[#f3f4f8] to-[#c7eef0] flex flex-col">
+    <section className="relative h-[calc(100vh-104px)] min-h-[500px] overflow-hidden bg-gradient-to-b from-[#f3f4f8] to-[#c7eef0] flex flex-col">
       <BackgroundRings />
       <DecorativeShapes current={current} slides={slides} />
-      <SlideCounter current={current} slides={slides} />
+
+      {parsedSettings.showPagination && (
+        <SlideCounter current={current} slides={slides} />
+      )}
+
       <HeroContent slide={slide} />
-      <BottomStrip
-        current={current}
-        goTo={goTo}
-        setPaused={setPaused}
-        paused={paused}
-        highest={highest}
-        AUTOPLAY_DELAY={AUTOPLAY_DELAY}
-        slides={slides}
-        goNext={goNext}
-        goPrev={goPrev}
-      />
+
+      {/* If showNavigation is toggled off, we could hide the bottom strip entirely or modify it. 
+          Assuming BottomStrip houses the navigation arrows. */}
+      {parsedSettings.showNavigation && (
+        <BottomStrip
+          current={current}
+          goTo={goTo}
+          setPaused={setPaused}
+          paused={paused}
+          highest={highest}
+          AUTOPLAY_DELAY={parsedSettings.autoplayDelay}
+          slides={slides}
+          goNext={goNext}
+          goPrev={goPrev}
+          showPagination={parsedSettings.showPagination}
+        />
+      )}
     </section>
   );
 }

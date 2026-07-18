@@ -23,6 +23,8 @@ export default function EditPagePage({
   const updatePageMutation = useUpdatePage(pageId);
   const page = data?.data;
 
+  console.log(page);
+
   const formValues = useMemo(() => {
     return page
       ? {
@@ -50,7 +52,14 @@ export default function EditPagePage({
 
   const handleSubmit = async (pageData: CreatePageInput) => {
     try {
-      await updatePageMutation.mutateAsync(pageData);
+      const payload: Partial<CreatePageInput> = { ...pageData };
+
+      // Ensure we don't send protected fields for system pages so backend doesn't reject
+      if (page?.isSystem) {
+        delete payload.slug;
+      }
+
+      await updatePageMutation.mutateAsync(payload as CreatePageInput);
       showToast("Page updated successfully", "success");
     } catch (error) {
       if (error instanceof ApiError) {
@@ -100,6 +109,7 @@ export default function EditPagePage({
         form={form}
         onSubmit={handleSubmit}
         submitLabel="Save Changes"
+        isSystem={page.isSystem}
       />
     </div>
   );

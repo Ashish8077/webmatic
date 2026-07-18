@@ -149,13 +149,15 @@ function PageListTable({
                     </button>
 
                     {/* Delete */}
-                    <button
-                      title="Delete"
-                      onClick={() => onDelete(page)}
-                      className="p-2 rounded-lg text-muted-foreground hover:text-danger hover:bg-danger/10 transition-all cursor-pointer"
-                    >
-                      <Trash2 size={15} strokeWidth={1.8} />
-                    </button>
+                    {!page.isSystem && (
+                      <button
+                        title="Delete"
+                        onClick={() => onDelete(page)}
+                        className="p-2 rounded-lg text-muted-foreground hover:text-danger hover:bg-danger/10 transition-all cursor-pointer"
+                      >
+                        <Trash2 size={15} strokeWidth={1.8} />
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>

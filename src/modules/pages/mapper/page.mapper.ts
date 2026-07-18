@@ -181,6 +181,7 @@ export function toPageDetailsResponse(
 
     createdAt: page.created_at.toISOString(),
     updatedAt: page.updated_at.toISOString(),
+    isSystem: Boolean(page.is_system),
   };
 }
 
@@ -209,5 +210,6 @@ export function toPageListItem(page: PageListRow): PageListItem {
     status: page.status,
     publishedAt: page.published_at?.toISOString() ?? null,
     updatedAt: page.updated_at.toISOString(),
+    isSystem: Boolean(page.is_system),
   };
 }

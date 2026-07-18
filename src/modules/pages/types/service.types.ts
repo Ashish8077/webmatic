@@ -21,6 +21,7 @@ export interface PageListItem {
   status: PageStatus;
   publishedAt: string | null;
   updatedAt: string;
+  isSystem?: boolean;
 }
 
 export interface PageListResponse {
@@ -50,6 +51,7 @@ export interface PageDetailsResponse {
   publishedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  isSystem?: boolean;
 }
 
 /**

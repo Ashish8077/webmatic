@@ -68,7 +68,7 @@ export default async function HomePage() {
   return (
     <>
       <Header />
-      <main>
+      <main className="pt-[104px]">
         {data.sections.map((section) => (
           <SectionRenderer key={section.id} section={section} />
         ))}

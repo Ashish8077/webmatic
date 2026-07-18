@@ -15,6 +15,9 @@ import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Modal } from "@/components/ui/modal";
 import { showToast } from "@/components/ui/toast";
 
+// Types
+import type { JsonObject } from "@/shared/types/json";
+
 // Lib
 import { ApiError } from "@/lib/api/errors";
 
@@ -28,6 +31,7 @@ import { usePage } from "@/features/pages/hooks/use-page";
 import {
   PageSectionForm,
   PageSectionList,
+  SectionContentModal,
 } from "@/features/page-sections/components";
 
 // Page Sections Hooks
@@ -50,9 +54,9 @@ import {
   stringifySectionContent,
 } from "@/features/page-sections/schemas/page-section.utils";
 
-// Types
 import type {
   CreatePageSectionRequest,
+  PageSection,
   PageSectionListItem,
   UpdatePageSectionRequest,
 } from "@/features/page-sections/types/page-section.types";
@@ -65,7 +69,8 @@ export default function SectionsPage() {
   const router = useRouter();
   const pageId = Number(id);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isContentModalOpen, setIsContentModalOpen] = useState(false);
   const [editingSectionId, setEditingSectionId] = useState<number | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<PageSectionListItem | null>(
     null,
@@ -103,24 +108,30 @@ export default function SectionsPage() {
       ...DEFAULT_PAGE_SECTION_FORM_VALUES,
       sortOrder: nextSortOrder,
     });
-    setIsModalOpen(true);
+    setIsCreateModalOpen(true);
   };
 
+  // Open content edit modal (structured form)
   const openEdit = (section: PageSectionListItem) => {
     setEditingSectionId(section.id);
-    setIsModalOpen(true);
+    setIsContentModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeCreateModal = () => {
+    setIsCreateModalOpen(false);
     setEditingSectionId(null);
     reset(DEFAULT_PAGE_SECTION_FORM_VALUES);
+  };
+
+  const closeContentModal = () => {
+    setIsContentModalOpen(false);
+    setEditingSectionId(null);
   };
 
   useEffect(() => {
     const section = sectionQuery.data?.data.section;
 
-    if (!section || !isModalOpen || !editingSectionId) return;
+    if (!section || !isCreateModalOpen || !editingSectionId) return;
 
     reset({
       sectionType: section.sectionType,
@@ -129,7 +140,7 @@ export default function SectionsPage() {
       sortOrder: section.sortOrder,
       status: section.status,
     });
-  }, [editingSectionId, isModalOpen, reset, sectionQuery.data]);
+  }, [editingSectionId, isCreateModalOpen, reset, sectionQuery.data]);
 
   const toCreateMutationPayload = (
     values: PageSectionFormValues,
@@ -150,22 +161,14 @@ export default function SectionsPage() {
     status: values.status,
   });
 
-  const handleSubmit = async (values: PageSectionFormValues) => {
+  // Create form submit (raw JSON form)
+  const handleCreateSubmit = async (values: PageSectionFormValues) => {
     try {
-      if (editingSectionId) {
-        await updateSectionMutation.mutateAsync({
-          sectionId: editingSectionId,
-          data: toUpdateMutationPayload(values),
-        });
-        showToast("Section updated successfully", "success");
-      } else {
-        await createSectionMutation.mutateAsync(
-          toCreateMutationPayload(values),
-        );
-        showToast("Section created successfully", "success");
-      }
-
-      closeModal();
+      await createSectionMutation.mutateAsync(
+        toCreateMutationPayload(values),
+      );
+      showToast("Section created successfully", "success");
+      closeCreateModal();
     } catch (error) {
       if (error instanceof ApiError) {
         applyServerErrors(form, error.errors);
@@ -173,7 +176,26 @@ export default function SectionsPage() {
         return;
       }
 
-      showToast("Failed to save section", "error");
+      showToast("Failed to create section", "error");
+    }
+  };
+
+  // Content modal submit (structured form)
+  const handleContentSubmit = async ({ content, settings }: { content: JsonObject; settings: JsonObject }) => {
+    if (!editingSectionId) return;
+
+    try {
+      await updateSectionMutation.mutateAsync({
+        sectionId: editingSectionId,
+        data: { content, settings },
+      });
+      showToast("Section updated successfully", "success");
+      closeContentModal();
+    } catch (error) {
+      showToast(
+        error instanceof ApiError ? error.message : "Failed to save section",
+        "error",
+      );
     }
   };
 
@@ -218,9 +240,17 @@ export default function SectionsPage() {
   };
 
   const isInvalidPageId = !Number.isInteger(pageId) || pageId <= 0;
-  const isSaving =
-    createSectionMutation.isPending || updateSectionMutation.isPending;
-  const isSectionFormLoading = Boolean(
+  const isCreateSaving = createSectionMutation.isPending;
+  const isContentSaving = updateSectionMutation.isPending;
+
+  // Derive the editing section's data for the content modal
+  const editingSection: PageSection | null =
+    sectionQuery.data?.data.section ?? null;
+  const editingSectionContent: JsonObject =
+    (editingSection?.content as JsonObject) ?? {};
+  const editingSectionSettings: JsonObject =
+    (editingSection?.settings as JsonObject) ?? {};
+  const isContentLoading = Boolean(
     editingSectionId && sectionQuery.isPending,
   );
 
@@ -303,10 +333,11 @@ export default function SectionsPage() {
         updatingSectionId={updatingSectionId}
       />
 
+      {/* Create modal — uses existing raw JSON form */}
       <Modal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        title={editingSectionId ? "Edit Section" : "Add Section"}
+        isOpen={isCreateModalOpen}
+        onClose={closeCreateModal}
+        title="Add Section"
         size="lg"
         footer={
           <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3">
@@ -315,8 +346,8 @@ export default function SectionsPage() {
               variant="secondary"
               size="sm"
               className="w-full sm:w-auto"
-              disabled={isSaving || isSectionFormLoading}
-              onClick={closeModal}
+              disabled={isCreateSaving}
+              onClick={closeCreateModal}
             >
               Cancel
             </Button>
@@ -325,10 +356,9 @@ export default function SectionsPage() {
               form={PAGE_SECTION_FORM_ID}
               size="sm"
               className="w-full sm:w-auto"
-              disabled={isSectionFormLoading}
-              isLoading={isSaving}
+              isLoading={isCreateSaving}
             >
-              {editingSectionId ? "Save Changes" : "Add Section"}
+              Add Section
             </Button>
           </div>
         }
@@ -336,15 +366,25 @@ export default function SectionsPage() {
         <PageSectionForm
           formId={PAGE_SECTION_FORM_ID}
           form={form}
-          onSubmit={handleSubmit}
-          onCancel={closeModal}
-          submitLabel={editingSectionId ? "Save Changes" : "Add Section"}
-          isLoading={isSectionFormLoading}
-          isSubmitting={isSaving}
-          isEditing={!!editingSectionId}
+          onSubmit={handleCreateSubmit}
+          onCancel={closeCreateModal}
+          submitLabel="Add Section"
+          isSubmitting={isCreateSaving}
           hideActions
         />
       </Modal>
+
+      {/* Edit modal — uses dynamic structured form */}
+      <SectionContentModal
+        isOpen={isContentModalOpen}
+        onClose={closeContentModal}
+        onSubmit={handleContentSubmit}
+        sectionType={editingSection?.sectionType ?? null}
+        content={editingSectionContent}
+        settings={editingSectionSettings}
+        isSubmitting={isContentSaving}
+        isLoading={isContentLoading}
+      />
 
       <ConfirmDialog
         isOpen={!!deleteTarget}

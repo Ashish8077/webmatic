@@ -6,6 +6,7 @@ import {
   ServiceSection,
   WhyChooseUsSection,
   TestimonialsSection,
+  ContactCtaSection,
 } from "./sections";
 import { FaqSection } from "@/components/sections/faq";
 import type { SectionProps } from "./sections/types";
@@ -29,6 +30,7 @@ const SECTION_MAP: Readonly<
   "why-choose-us": WhyChooseUsSection,
   testimonials: TestimonialsSection,
   faq: FaqSection,
+  "contact-cta": ContactCtaSection,
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -55,5 +57,5 @@ export function SectionRenderer({ section }: SectionRendererProps) {
     return null;
   }
 
-  return <Component content={section.content} />;
+  return <Component content={section.content} settings={section.settings} />;
 }

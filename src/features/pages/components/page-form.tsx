@@ -20,12 +20,14 @@ interface PageFormProps {
   onSubmit: (data: CreatePageInput) => Promise<void>;
   submitLabel?: string;
   defaultValues?: Partial<CreatePageInput>;
+  isSystem?: boolean;
 }
 
 function PageForm({
   form,
   onSubmit,
   submitLabel = "Create Page",
+  isSystem,
 }: PageFormProps) {
   const router = useRouter();
 
@@ -45,8 +47,13 @@ function PageForm({
         <Input
           label="Slug"
           placeholder="page-url-slug"
+          disabled={isSystem}
           {...form.register("slug")}
-          hint="URL path for this page"
+          hint={
+            isSystem
+              ? "System page slugs cannot be changed"
+              : "URL path for this page"
+          }
           error={form.formState.errors.slug?.message}
         />
 

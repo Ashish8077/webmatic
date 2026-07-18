@@ -12,6 +12,7 @@ const BottomStrip = ({
   slides,
   goNext,
   goPrev,
+  showPagination,
 }: {
   current: number;
   goTo: (index: number) => void;
@@ -22,6 +23,7 @@ const BottomStrip = ({
   slides: SlideType[];
   goNext: () => void;
   goPrev: () => void;
+  showPagination?: boolean;
 }) => {
   return (
     <div
@@ -34,7 +36,7 @@ const BottomStrip = ({
         {!paused && (
           <div
             key={`progress-${current}`}
-            className="h-full bg-orange-500 origin-left"
+            className="h-full w-full bg-orange-500 origin-left"
             style={{
               animation: `progress ${AUTOPLAY_DELAY}ms linear forwards`,
             }}
@@ -46,57 +48,59 @@ const BottomStrip = ({
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 flex items-center justify-between py-3 sm:py-4 gap-3">
           {/* Mobile dot indicators */}
           <div className="flex sm:hidden items-center gap-2 flex-1">
-            {slides.map((s, i) =>
-              i > highest ? null : (
-                <button
-                  key={s.id}
-                  onClick={() => goTo(i)}
-                  aria-label={`Go to slide ${s.id}`}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    i === current
-                      ? "w-6 bg-orange-500"
-                      : "w-2 bg-slate-300 hover:bg-slate-400"
-                  }`}
-                />
-              ),
-            )}
+            {showPagination !== false &&
+              slides.map((s, i) =>
+                i > highest ? null : (
+                  <button
+                    key={s.id}
+                    onClick={() => goTo(i)}
+                    aria-label={`Go to slide ${s.id}`}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      i === current
+                        ? "w-6 bg-orange-500"
+                        : "w-2 bg-slate-300 hover:bg-slate-400"
+                    }`}
+                  />
+                ),
+              )}
           </div>
 
           {/* Desktop: number + label tabs */}
           <div className="hidden sm:flex items-stretch gap-1 overflow-x-auto no-scrollbar flex-1 min-w-0">
-            {slides.map((s, i) =>
-              i > highest ? null : (
-                <button
-                  key={s.id}
-                  onClick={() => goTo(i)}
-                  className={`group relative flex items-start gap-3 shrink-0 text-left px-4 py-3 rounded-xl transition-all duration-300 ${
-                    i === current ? "bg-white shadow-sm" : "hover:bg-white/60"
-                  }`}
-                >
-                  <span
-                    className={`text-xl font-extrabold leading-none transition-colors duration-200 ${
-                      i === current ? "text-orange-500" : "text-slate-300"
+            {showPagination !== false &&
+              slides.map((s, i) =>
+                i > highest ? null : (
+                  <button
+                    key={s.id}
+                    onClick={() => goTo(i)}
+                    className={`group relative flex items-start gap-3 shrink-0 text-left px-4 py-3 rounded-xl transition-all duration-300 ${
+                      i === current ? "bg-white shadow-sm" : "hover:bg-white/60"
                     }`}
                   >
-                    {String(s.id).padStart(2, "0")}
-                  </span>
-                  <div className="min-w-0">
-                    {i === current && (
-                      <div className="mb-1.5 h-[2px] w-10 rounded-full bg-orange-500" />
-                    )}
-                    <p
-                      className={`text-sm sm:text-base font-semibold leading-snug whitespace-nowrap transition-colors duration-200 ${
-                        i === current
-                          ? "text-[#0c174c]"
-                          : "text-slate-400 group-hover:text-slate-600"
+                    <span
+                      className={`text-xl font-extrabold leading-none transition-colors duration-200 ${
+                        i === current ? "text-orange-500" : "text-slate-300"
                       }`}
                     >
-                      {s.label}
-                    </p>
-                  </div>
-                </button>
-              ),
-            )}
+                      {String(s.id).padStart(2, "0")}
+                    </span>
+                    <div className="min-w-0">
+                      {i === current && (
+                        <div className="mb-1.5 h-[2px] w-10 rounded-full bg-orange-500" />
+                      )}
+                      <p
+                        className={`text-sm sm:text-base font-semibold leading-snug whitespace-nowrap transition-colors duration-200 ${
+                          i === current
+                            ? "text-[#0c174c]"
+                            : "text-slate-400 group-hover:text-slate-600"
+                        }`}
+                      >
+                        {s.label}
+                      </p>
+                    </div>
+                  </button>
+                ),
+              )}
           </div>
 
           {/* Arrows */}

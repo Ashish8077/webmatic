@@ -5,8 +5,8 @@ export const PAGE_STATUS = {
 
 export type PageStatus = (typeof PAGE_STATUS)[keyof typeof PAGE_STATUS];
 
-export const SYSTEM_PAGE_PROTECTED_FIELDS = [
-  "title",
-  "slug",
-  "template",
-] as const;
+// export const SYSTEM_PAGE_PROTECTED_FIELDS = [
+//   "title",
+//   "slug",
+//   "template",
+// ] as const;

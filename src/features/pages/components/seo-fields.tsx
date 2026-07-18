@@ -4,7 +4,11 @@ import { useState } from "react";
 import { Search, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import type { UseFormRegisterReturn, FieldErrors, FieldValues } from "react-hook-form";
+import type {
+  UseFormRegisterReturn,
+  FieldErrors,
+  FieldValues,
+} from "react-hook-form";
 import type { SeoWarning } from "@/features/pages/utils/seo-analyzer";
 
 interface SeoFieldsProps {
@@ -124,22 +128,33 @@ function SeoFields({ register, errors, warnings }: SeoFieldsProps) {
 
           <div className="pt-4 border-t border-card-border mt-4">
             <h4 className="text-sm font-semibold mb-3">Robots</h4>
-            <div className="flex gap-6">
-              <label className="flex items-center gap-2 text-sm text-foreground">
-                <input
-                  type="checkbox"
-                  className="rounded border-card-border"
-                  {...register.robotsIndex}
-                />
-                Index
+            <div className="flex gap-8">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <div className="relative inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    className="sr-only peer"
+                    {...register.robotsIndex}
+                  />
+                  <div className="w-11 h-6 bg-card-border peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-card-border after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent"></div>
+                </div>
+                <span className="text-sm font-medium text-foreground">
+                  Index
+                </span>
               </label>
-              <label className="flex items-center gap-2 text-sm text-foreground">
-                <input
-                  type="checkbox"
-                  className="rounded border-card-border"
-                  {...register.robotsFollow}
-                />
-                Follow
+
+              <label className="flex items-center gap-3 cursor-pointer">
+                <div className="relative inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    className="sr-only peer"
+                    {...register.robotsFollow}
+                  />
+                  <div className="w-11 h-6 bg-card-border peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-card-border after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent"></div>
+                </div>
+                <span className="text-sm font-medium text-foreground">
+                  Follow
+                </span>
               </label>
             </div>
           </div>

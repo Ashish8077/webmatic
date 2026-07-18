@@ -60,6 +60,7 @@ export interface Page {
   publishedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  isSystem?: boolean;
 }
 
 export interface CreatePageResponse extends BaseResponse {
@@ -80,6 +81,7 @@ export interface PageListItem {
   status: "draft" | "published";
   publishedAt: string | null;
   updatedAt: string;
+  isSystem?: boolean;
 }
 
 export interface Pagination {
