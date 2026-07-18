@@ -39,21 +39,22 @@ CREATE TABLE IF NOT EXISTS services (
     schema_markup JSON NULL,
 
     -- Settings
-    status ENUM('draft','published','archived') NOT NULL DEFAULT 'draft',
+    status ENUM('draft','published') NOT NULL DEFAULT 'draft',
     is_featured BOOLEAN NOT NULL DEFAULT FALSE,
     sort_order INT UNSIGNED NOT NULL DEFAULT 0,
 
     -- Audit
-    published_at TIMESTAMP NULL,
+    published_at TIMESTAMP NULL DEFAULT NULL,
     created_by BIGINT UNSIGNED NULL,
     updated_by BIGINT UNSIGNED NULL,
     deleted_by BIGINT UNSIGNED NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP NULL,
+    deleted_at TIMESTAMP NULL DEFAULT NULL,
 
 
+    CONSTRAINT uk_services_name UNIQUE (name),
     CONSTRAINT uk_services_slug UNIQUE (slug),
 
     -- CONSTRAINT fk_services_featured_image
@@ -97,8 +98,9 @@ CREATE TABLE IF NOT EXISTS services (
         sort_order
     ),
 
-    INDEX idx_services_deleted_featured_sort (
+    INDEX idx_services_deleted_status_featured_sort (
         deleted_at,
+        status,
         is_featured,
         sort_order
     ),
@@ -111,6 +113,10 @@ CREATE TABLE IF NOT EXISTS services (
     INDEX idx_services_deleted_updated (
         deleted_at,
         updated_at
-    )
+    ),
+
+    CONSTRAINT chk_services_sort_order
+        CHECK (sort_order >= 0)
+
 
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
