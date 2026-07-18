@@ -1,13 +1,15 @@
+import { type ValidationErrors } from "@/shared/utils/errors/validation-errors";
+
 export class ApiError extends Error {
   readonly status: number;
   readonly code?: string;
-  public readonly errors?: Record<string, string[]>;
+  public readonly errors?: ValidationErrors;
 
   constructor(
     message: string,
     status: number,
     code?: string,
-    errors?: Record<string, string[]>,
+    errors?: ValidationErrors,
   ) {
     super(message);
 

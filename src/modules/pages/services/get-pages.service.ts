@@ -1,14 +1,13 @@
 // get-pages.service.ts
 
-import { GetPagesQuery } from "../schemas/get-pages-query.schema";
+import { GetPagesQuery } from "../validation/get-pages-query.schema";
 import { countPages, findPages } from "../repositories/page.repository";
-
-import { PageListResponse } from "../services/types";
 
 import { AuthUser } from "@/modules/auth/types/auth-user";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { toPageListItems } from "../mapper/page.mapper";
+import type { PageListItem, PageListResponse } from "../types/service.types";
 
 export async function getPagesService(
   query: GetPagesQuery,
@@ -20,7 +19,7 @@ export async function getPagesService(
     countPages(query),
   ]);
 
-  const items = toPageListItems(rows);
+  const items: PageListItem[] = toPageListItems(rows);
 
   const totalPages = Math.ceil(totalItems / query.limit);
 

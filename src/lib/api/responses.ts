@@ -1,3 +1,5 @@
+import { type ValidationErrors } from "@/shared/utils/errors/validation-errors";
+
 export interface ApiResponse<T = unknown> {
   success: boolean;
   message: string;
@@ -8,5 +10,5 @@ export interface ApiErrorResponse {
   success: boolean;
   message: string;
   code?: string;
-  errors?: Record<string, string[]>;
+  errors?: ValidationErrors;
 }

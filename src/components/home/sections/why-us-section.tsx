@@ -59,10 +59,7 @@ export function WhyUsSection({ content, title }: SectionProps) {
         </div>
 
         {reasons.length > 0 && (
-          <ul
-            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
-            role="list"
-          >
+          <ul className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" role="list">
             {reasons.map((reason, i) => (
               <li
                 key={i}

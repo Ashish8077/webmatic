@@ -10,6 +10,11 @@ CREATE TABLE IF NOT EXISTS pages (
         'published'
     ) NOT NULL DEFAULT 'draft',
 
+    template VARCHAR(100) NOT NULL DEFAULT 'default',
+
+    -- Page Type
+    is_system BOOLEAN NOT NULL DEFAULT FALSE,
+
     -- SEO
     seo_title VARCHAR(255) DEFAULT NULL,
     meta_description TEXT DEFAULT NULL,
@@ -47,13 +52,13 @@ CREATE TABLE IF NOT EXISTS pages (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         ON UPDATE CURRENT_TIMESTAMP,
 
-    deleted_at TIMESTAMP NULL DEFAULT NULL,
+    deleted_at TIMESTAMP NULL  NULL,
 
     -- Indexes
-    INDEX idx_slug (slug),
-    INDEX idx_status (status),
+    INDEX idx_template_status_deleted ( template, status, deleted_at),
     INDEX idx_published_at (published_at),
     INDEX idx_status_deleted (status, deleted_at),
+    INDEX idx_system_status (is_system, status),
 
     CONSTRAINT chk_page_title
         CHECK (CHAR_LENGTH(TRIM(title)) > 0),

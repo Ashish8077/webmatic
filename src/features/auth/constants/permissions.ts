@@ -12,11 +12,12 @@ export const Permission = {
   PAGE_SECTION_UPDATE: "page-section.update",
   PAGE_SECTION_DELETE: "page-section.delete",
 
-  SERVICE_VIEW: "service.view",
-  SERVICE_CREATE: "service.create",
-  SERVICE_UPDATE: "service.update",
-  SERVICE_DELETE: "service.delete",
-  SERVICE_PUBLISH: "service.publish",
+  //service permissions
+  SERVICES_CREATE: "service.create",
+  SERVICES_VIEW: "service.view",
+  SERVICES_UPDATE: "service.update",
+  SERVICES_DELETE: "service.delete",
+  SERVICES_PUBLISH: "service.publish",
 
   BLOG_VIEW: "blog.view",
   BLOG_CREATE: "blog.create",

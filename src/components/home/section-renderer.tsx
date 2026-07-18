@@ -1,21 +1,19 @@
-import type { HomeSectionData } from "@/modules/home/get-home-page";
-import { HeroSection } from "./sections/hero-section";
-import { AboutSection } from "./sections/about-section";
-import { ServicesSection } from "./sections/services-section";
-import { WhyUsSection } from "./sections/why-us-section";
-import { TestimonialsSection } from "./sections/testimonials-section";
-import { FaqSection } from "./sections/faq-section";
-import { ContactCtaSection } from "./sections/contact-cta-section";
-import { FooterCtaSection } from "./sections/footer-cta-section";
-
-import type { HomeSectionType } from "@/shared/constants/section-types";
+import type { HomeSectionData } from "@/modules/home/types/home.types";
+import { HomeSectionType } from "@/modules/home/constants/home-section-types";
+import {
+  AboutSection,
+  HeroSection,
+  ServiceSection,
+  WhyChooseUsSection,
+  TestimonialsSection,
+  ContactCtaSection,
+} from "./sections";
+import { FaqSection } from "@/components/sections/faq";
+import type { SectionProps } from "./sections/types";
 
 // ─── Section component contract ───────────────────────────────────────────────
 
-type SectionComponent = React.ComponentType<{
-  content: Record<string, unknown>;
-  title: string | null;
-}>;
+type SectionComponent = React.ComponentType<SectionProps>;
 
 /**
  * Maps each supported section_type value to its rendering component.
@@ -23,15 +21,16 @@ type SectionComponent = React.ComponentType<{
  * Keys must match the `sectionType` values stored in the database exactly.
  * Unknown names are silently skipped (no error thrown in production).
  */
-const SECTION_MAP: Readonly<Record<HomeSectionType, SectionComponent>> = {
+const SECTION_MAP: Readonly<
+  Partial<Record<HomeSectionType, SectionComponent>>
+> = {
   hero: HeroSection,
   about: AboutSection,
-  services: ServicesSection,
-  "why-us": WhyUsSection,
+  services: ServiceSection,
+  "why-choose-us": WhyChooseUsSection,
   testimonials: TestimonialsSection,
   faq: FaqSection,
   "contact-cta": ContactCtaSection,
-  "footer-cta": FooterCtaSection,
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -58,5 +57,5 @@ export function SectionRenderer({ section }: SectionRendererProps) {
     return null;
   }
 
-  return <Component content={section.content} title={section.title} />;
+  return <Component content={section.content} settings={section.settings} />;
 }

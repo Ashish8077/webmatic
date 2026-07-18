@@ -5,6 +5,7 @@ import { Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup } from "@/components/ui/toggle-group";
+import { Select } from "@/components/ui/select";
 import { usePageForm } from "@/features/pages/hooks/use-page-form";
 import SeoFields from "./seo-fields";
 import type { CreatePageInput } from "@/features/pages/schemas/create-page.schema";
@@ -19,22 +20,19 @@ interface PageFormProps {
   onSubmit: (data: CreatePageInput) => Promise<void>;
   submitLabel?: string;
   defaultValues?: Partial<CreatePageInput>;
+  isSystem?: boolean;
 }
 
 function PageForm({
   form,
   onSubmit,
   submitLabel = "Create Page",
+  isSystem,
 }: PageFormProps) {
   const router = useRouter();
 
   return (
-    <form
-      onSubmit={form.handleSubmit(onSubmit, (errors) =>
-        console.log("Form errors:", errors),
-      )}
-      className="space-y-6"
-    >
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
       {/* Core Fields */}
       <div className="bg-card-bg border border-card-border rounded-2xl p-6 space-y-5">
         <Input
@@ -49,8 +47,13 @@ function PageForm({
         <Input
           label="Slug"
           placeholder="page-url-slug"
+          disabled={isSystem}
           {...form.register("slug")}
-          hint="URL path for this page"
+          hint={
+            isSystem
+              ? "System page slugs cannot be changed"
+              : "URL path for this page"
+          }
           error={form.formState.errors.slug?.message}
         />
 

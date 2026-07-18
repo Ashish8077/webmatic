@@ -4,6 +4,8 @@
 // All dummy data in one place. Matches the API response shapes
 // so you can swap in fetch() calls later with minimal changes.
 
+import { HomeSectionData } from "@/modules/home/types/home.types";
+
 export interface DummyUser {
   id: number;
   firstName: string;
@@ -30,12 +32,10 @@ export interface DummyPage {
   updatedAt: string;
 }
 
-import type { HomeSectionType } from "@/shared/constants/section-types";
-
 export interface DummySection {
   id: number;
   pageId: number;
-  sectionType: HomeSectionType;
+  sectionType: string;
   title: string | null;
   content: Record<string, unknown>;
   sortOrder: number;
@@ -64,7 +64,8 @@ export const dummyPages: DummyPage[] = [
     status: "published",
     template: "default",
     seoTitle: "Welcome to Our Website",
-    metaDescription: "The main landing page of our website with all key information.",
+    metaDescription:
+      "The main landing page of our website with all key information.",
     metaKeywords: "home, landing, main",
     canonicalUrl: null,
     robotsIndex: true,
@@ -184,13 +185,25 @@ export const dummySections: DummySection[] = [
   {
     id: 2,
     pageId: 1,
-    sectionType: "why-us",
+    sectionType: "why_choose_us",
     title: "Our Features",
     content: {
       features: [
-        { icon: "zap", title: "Fast", description: "Lightning fast performance" },
-        { icon: "shield", title: "Secure", description: "Enterprise-grade security" },
-        { icon: "code", title: "Modern", description: "Built with latest tech" },
+        {
+          icon: "zap",
+          title: "Fast",
+          description: "Lightning fast performance",
+        },
+        {
+          icon: "shield",
+          title: "Secure",
+          description: "Enterprise-grade security",
+        },
+        {
+          icon: "code",
+          title: "Modern",
+          description: "Built with latest tech",
+        },
       ],
     },
     sortOrder: 1,
@@ -205,8 +218,16 @@ export const dummySections: DummySection[] = [
     title: "What Our Clients Say",
     content: {
       testimonials: [
-        { name: "John Doe", role: "CEO", quote: "Outstanding service and results." },
-        { name: "Jane Smith", role: "CTO", quote: "Transformed our business completely." },
+        {
+          name: "John Doe",
+          role: "CEO",
+          quote: "Outstanding service and results.",
+        },
+        {
+          name: "Jane Smith",
+          role: "CTO",
+          quote: "Transformed our business completely.",
+        },
       ],
     },
     sortOrder: 2,
@@ -217,7 +238,7 @@ export const dummySections: DummySection[] = [
   {
     id: 4,
     pageId: 1,
-    sectionType: "contact-cta",
+    sectionType: "cta",
     title: "Ready to Start?",
     content: {
       heading: "Let's Build Together",
@@ -254,7 +275,10 @@ export const dummySections: DummySection[] = [
     title: "What We Offer",
     content: {
       services: [
-        { title: "Web Development", description: "Full-stack web applications" },
+        {
+          title: "Web Development",
+          description: "Full-stack web applications",
+        },
         { title: "Mobile Apps", description: "iOS and Android development" },
         { title: "Cloud Solutions", description: "AWS, GCP, Azure services" },
       ],

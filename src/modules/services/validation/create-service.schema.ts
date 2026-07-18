@@ -1,0 +1,116 @@
+import {
+  emptyStringToNull,
+  faqItemSchema,
+  nonNegativeInt,
+  nullablePositiveInt,
+  nullableUrl,
+  stringArray,
+} from "@/shared/utils/validators/zod-helpers";
+import { z } from "zod";
+import { SERVICE_STATUS } from "../constants/service.constants";
+
+export const createServiceSchema = z
+  .object({
+    name: z
+      .string()
+      .trim()
+      .min(1, { message: "Service name is required" })
+      .max(255, { message: "Service name must not exceed 255 characters" }),
+
+    slug: z
+      .string()
+      .trim()
+      .min(1, { message: "Slug is required" })
+      .max(255, { message: "Slug must not exceed 255 characters" })
+      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
+        message:
+          "Slug may contain only lowercase letters, numbers, and hyphens",
+      }),
+
+    shortDescription: emptyStringToNull(2000).optional(),
+
+    description: emptyStringToNull(50000).optional(),
+
+    featuredImageId: nullablePositiveInt,
+
+    bannerImageId: nullablePositiveInt,
+
+    keyFeatures: stringArray(255).optional(),
+
+    benefits: stringArray(255).optional(),
+
+    faq: z.array(faqItemSchema).nullable().optional(),
+
+    ctaTitle: emptyStringToNull(255).optional(),
+
+    ctaDescription: emptyStringToNull(5000).optional(),
+
+    ctaButtonText: emptyStringToNull(100).optional(),
+
+    ctaButtonUrl: nullableUrl("Invalid URL").optional(),
+
+    seoTitle: emptyStringToNull(255).optional(),
+
+    metaDescription: emptyStringToNull(500).optional(),
+
+    metaKeywords: emptyStringToNull(500).optional(),
+
+    canonicalUrl: nullableUrl("Invalid URL").optional(),
+
+    openGraphTitle: emptyStringToNull(255).optional(),
+
+    openGraphDescription: emptyStringToNull(500).optional(),
+
+    openGraphImageId: nullablePositiveInt,
+
+    twitterTitle: emptyStringToNull(255).optional(),
+
+    twitterDescription: emptyStringToNull(500).optional(),
+
+    twitterImageId: nullablePositiveInt,
+
+    schemaMarkup: z.json().nullable().optional(),
+
+    status: z.enum(SERVICE_STATUS).optional(),
+
+    isFeatured: z.boolean().optional(),
+
+    sortOrder: nonNegativeInt.optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.status !== "published") return;
+
+    if (!data.description) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["description"],
+        message: "Description is required when publishing.",
+      });
+    }
+
+    if (!data.featuredImageId) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["featuredImageId"],
+        message: "Featured image is required when publishing.",
+      });
+    }
+
+    if (!data.seoTitle) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["seoTitle"],
+        message: "SEO title is required when publishing.",
+      });
+    }
+
+    if (!data.metaDescription) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["metaDescription"],
+        message: "Meta description is required when publishing.",
+      });
+    }
+  });
+
+export type CreateServiceInput = z.infer<typeof createServiceSchema>;

@@ -13,6 +13,10 @@ export async function deletePageService(
   if (!page) {
     throw new AppError("Page not found", 404);
   }
+
+  if (page.is_system) {
+    throw new AppError("System pages like the Homepage cannot be deleted.", 403);
+  }
   const deletedPageCount = await softDeletePage(pageId, user.userId);
 
   if (deletedPageCount === 0) {

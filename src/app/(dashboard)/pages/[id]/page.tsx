@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect } from "react";
+import { use, useMemo } from "react";
 import Link from "next/link";
 import { PageForm, PageHeader } from "@/features/pages/components";
 import { usePage } from "@/features/pages/hooks/use-page";
@@ -21,37 +21,45 @@ export default function EditPagePage({
 
   const { data, isPending, isError } = usePage(pageId);
   const updatePageMutation = useUpdatePage(pageId);
-  const form = usePageForm();
-
   const page = data?.data;
 
-  // Populate form when page data loads
-  useEffect(() => {
-    if (!page) return;
+  console.log(page);
 
-    form.reset({
-      title: page.title,
-      slug: page.slug,
-      status: page.status ?? "draft",
-      seoTitle: page.seoTitle ?? "",
-      metaDescription: page.metaDescription ?? "",
-      metaKeywords: page.metaKeywords ?? "",
-      canonicalUrl: page.canonicalUrl ?? "",
-      ogTitle: page.ogTitle ?? "",
-      ogDescription: page.ogDescription ?? "",
-      ogImageId: page.ogImageId ?? null,
-      twitterTitle: page.twitterTitle ?? "",
-      twitterDescription: page.twitterDescription ?? "",
-      twitterImageId: page.twitterImageId ?? null,
-      robotsIndex: page.robotsIndex ?? true,
-      robotsFollow: page.robotsFollow ?? true,
-    });
-  }, [form, page]);
+  const formValues = useMemo(() => {
+    return page
+      ? {
+          title: page.title,
+          slug: page.slug,
+          status: page.status,
+          template: page.template,
+          seoTitle: page.seoTitle ?? "",
+          metaDescription: page.metaDescription ?? "",
+          metaKeywords: page.metaKeywords ?? "",
+          canonicalUrl: page.canonicalUrl ?? "",
+          ogTitle: page.ogTitle ?? "",
+          ogDescription: page.ogDescription ?? "",
+          ogImageId: page.ogImageId ?? null,
+          twitterTitle: page.twitterTitle ?? "",
+          twitterDescription: page.twitterDescription ?? "",
+          twitterImageId: page.twitterImageId ?? null,
+          robotsIndex: page.robotsIndex ?? true,
+          robotsFollow: page.robotsFollow ?? true,
+        }
+      : undefined;
+  }, [page]);
+
+  const form = usePageForm({ values: formValues });
 
   const handleSubmit = async (pageData: CreatePageInput) => {
     try {
-      console.log("submitted", pageData);
-      await updatePageMutation.mutateAsync(pageData);
+      const payload: Partial<CreatePageInput> = { ...pageData };
+
+      // Ensure we don't send protected fields for system pages so backend doesn't reject
+      if (page?.isSystem) {
+        delete payload.slug;
+      }
+
+      await updatePageMutation.mutateAsync(payload as CreatePageInput);
       showToast("Page updated successfully", "success");
     } catch (error) {
       if (error instanceof ApiError) {
@@ -101,6 +109,7 @@ export default function EditPagePage({
         form={form}
         onSubmit={handleSubmit}
         submitLabel="Save Changes"
+        isSystem={page.isSystem}
       />
     </div>
   );

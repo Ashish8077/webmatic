@@ -4,11 +4,13 @@ import {
   findPageSlugExcludingPageId,
   updatePage,
 } from "../repositories/page.repository";
-import { UpdatePageInput } from "../schemas/update-page.schema";
+import { UpdatePageInput } from "../validation/update-page.schema";
 import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { AuthUser } from "@/modules/auth/types/auth-user";
+import { toUpdatePagePayload } from "../mapper/page.mapper";
+
 
 export async function updatePageService(
   pageId: number,
@@ -17,31 +19,41 @@ export async function updatePageService(
 ): Promise<void> {
   requirePermission(user, PERMISSIONS.PAGES_UPDATE);
 
-  const page = await findPageById(pageId);
-
-  if (!page) {
-    throw new AppError("Page not found", 404);
-  }
-
-  const existingPage = await findPageSlugExcludingPageId(pageData.slug, pageId);
-
-  if (existingPage) {
-    throw new AppError("Page slug already exists", 409, {
-      slug: ["Page slug already exists."],
-    });
-  }
-
-  const publishedAt =
-    page.status == "draft" && pageData.status == "published"
-      ? new Date()
-      : null;
-
   try {
+    const page = await findPageById(pageId);
+
+    if (!page) {
+      throw new AppError("Page not found", 404);
+    }
+
+    if (page.is_system) {
+      if (pageData.slug !== undefined && pageData.slug !== page.slug) {
+        throw new AppError(`System page slug cannot be changed.`, 400);
+      }
+      if (pageData.template !== undefined && pageData.template !== page.template) {
+        throw new AppError(`System page template cannot be changed.`, 400);
+      }
+    }
+
+    if (!page.is_system && pageData.slug !== undefined) {
+      const existingPage = await findPageSlugExcludingPageId(
+        pageData.slug,
+        pageId,
+      );
+
+      if (existingPage) {
+        throw new AppError("Page slug already exists", 409, {
+          slug: ["Page slug already exists."],
+        });
+      }
+    }
+
+    const updatePayload = toUpdatePagePayload(page, pageData);
+
     const updatedPageCount = await updatePage(
       pageId,
-      pageData,
+      updatePayload,
       user.userId,
-      publishedAt,
     );
     if (updatedPageCount === 0) {
       throw new AppError("Page not found", 404);

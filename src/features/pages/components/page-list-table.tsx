@@ -48,6 +48,9 @@ function PageListTable({
                 Title
               </th>
               <th className="text-left px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Template
+              </th>
+              <th className="text-left px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Status
               </th>
               <th className="text-left px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground hidden lg:table-cell">
@@ -79,6 +82,11 @@ function PageListTable({
                   <p className="text-xs text-muted-foreground mt-0.5">
                     /{page.slug}
                   </p>
+                </td>
+                <td className="px-5 py-4">
+                  <Badge variant={page.template === "default" ? "secondary" : "default"} className="capitalize">
+                    {page.template.split("-").join(" ")}
+                  </Badge>
                 </td>
                 <td className="px-5 py-4">
                   <Badge variant={page.status}>{page.status}</Badge>
@@ -141,13 +149,15 @@ function PageListTable({
                     </button>
 
                     {/* Delete */}
-                    <button
-                      title="Delete"
-                      onClick={() => onDelete(page)}
-                      className="p-2 rounded-lg text-muted-foreground hover:text-danger hover:bg-danger/10 transition-all cursor-pointer"
-                    >
-                      <Trash2 size={15} strokeWidth={1.8} />
-                    </button>
+                    {!page.isSystem && (
+                      <button
+                        title="Delete"
+                        onClick={() => onDelete(page)}
+                        className="p-2 rounded-lg text-muted-foreground hover:text-danger hover:bg-danger/10 transition-all cursor-pointer"
+                      >
+                        <Trash2 size={15} strokeWidth={1.8} />
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>

@@ -1,10 +1,13 @@
 import { ResultSetHeader } from "mysql2";
 
-import type { CreatePageSectionInput } from "../schemas/create-page-section.schema";
+import type { CreatePageSectionInput } from "../validation/create-page-section.schema";
 import db from "@/database/connection";
 import { PageSectionRow } from "../types/repository.types";
-import { UpdatePageSectionInput } from "../schemas/update-page-section.schema";
+import { UpdatePageSectionInput } from "../validation/update-page-section.schema";
 import { QueryValue } from "@/shared/types/database";
+import { toJson } from "@/shared/utils/database/json";
+import { PageStatus } from "@/modules/pages/constants/page.constants";
+import { SectionStatus } from "../constants/page-section.constants";
 
 /**
  * find page section by id
@@ -68,6 +71,38 @@ export async function findPageSectionsByPageId(
 }
 
 /**
+ * Find all active sections for a specific page
+ * @param pageId - Page ID
+ * @returns Array of page section rows, ordered by sort_order
+ */
+export async function findPageActiveSectionsByPageId(
+  pageId: number,
+): Promise<PageSectionRow[]> {
+  const [rows] = await db.execute<PageSectionRow[]>(
+    `
+    SELECT
+      id,
+      page_id,
+      section_type,
+      content,
+      settings,
+      sort_order,
+      status,
+      created_at,
+      updated_at
+    FROM page_sections
+      WHERE page_id = ?
+        AND status = 'published'
+        AND deleted_at IS NULL
+    ORDER BY sort_order ASC
+    `,
+    [pageId],
+  );
+
+  return rows;
+}
+
+/**
  * Create a new page section
  * @param pageId - Page ID
  * @param createPageSection - Page section data
@@ -78,6 +113,7 @@ export async function createPageSection(
   pageId: number,
   createPageSection: CreatePageSectionInput,
   userId: number,
+  status: SectionStatus,
 ): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
@@ -96,10 +132,10 @@ export async function createPageSection(
     [
       pageId,
       createPageSection.sectionType,
-      JSON.stringify(createPageSection.content),
-      JSON.stringify(createPageSection.settings ?? {}),
-      createPageSection.sortOrder,
-      createPageSection.status,
+      toJson(createPageSection.content),
+      toJson(createPageSection.settings ?? {}),
+      createPageSection.sortOrder ?? 0,
+      status,
       userId,
       userId,
     ],
@@ -126,7 +162,7 @@ export async function updatePageSection(
 
   if (updatePageSection.content !== undefined) {
     updates.push("content = ?");
-    values.push(JSON.stringify(updatePageSection.content));
+    values.push(toJson(updatePageSection.content));
   }
 
   if (updatePageSection.settings !== undefined) {
@@ -134,7 +170,7 @@ export async function updatePageSection(
     values.push(
       updatePageSection.settings === null
         ? null
-        : JSON.stringify(updatePageSection.settings),
+        : toJson(updatePageSection.settings),
     );
   }
 

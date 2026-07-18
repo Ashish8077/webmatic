@@ -19,13 +19,14 @@ export default function PagesListPage() {
   const deletePageMutation = useDeletePage();
   const toggleStatusMutation = useToggleStatus();
 
+
+
   const [deleteTarget, setDeleteTarget] = useState<PageListItem | null>(null);
 
   const pages = data?.data?.items ?? [];
 
   const handleDelete = () => {
     if (!deleteTarget) return;
-    console.log(deleteTarget.id);
     deletePageMutation.mutate(deleteTarget.id);
     setDeleteTarget(null);
   };
