@@ -27,55 +27,55 @@ export const createServiceSchema = z
           "Slug may contain only lowercase letters, numbers, and hyphens",
       }),
 
-    shortDescription: emptyStringToNull(2000).optional(),
+    shortDescription: emptyStringToNull(2000).default(null),
 
-    description: emptyStringToNull(50000).optional(),
+    description: emptyStringToNull(50000).default(null),
 
     featuredImageId: nullablePositiveInt,
 
     bannerImageId: nullablePositiveInt,
 
-    keyFeatures: stringArray(255).optional(),
+    keyFeatures: stringArray(255).default([]),
 
-    benefits: stringArray(255).optional(),
+    benefits: stringArray(255).default([]),
 
-    faq: z.array(faqItemSchema).nullable().optional(),
+    faq: z.array(faqItemSchema).default([]),
 
-    ctaTitle: emptyStringToNull(255).optional(),
+    ctaTitle: emptyStringToNull(255).default(null),
 
-    ctaDescription: emptyStringToNull(5000).optional(),
+    ctaDescription: emptyStringToNull(5000).default(null),
 
-    ctaButtonText: emptyStringToNull(100).optional(),
+    ctaButtonText: emptyStringToNull(100).default(null),
 
-    ctaButtonUrl: nullableUrl("Invalid URL").optional(),
+    ctaButtonUrl: nullableUrl("Invalid URL").default(null),
 
-    seoTitle: emptyStringToNull(255).optional(),
+    seoTitle: emptyStringToNull(255).default(null),
 
-    metaDescription: emptyStringToNull(500).optional(),
+    metaDescription: emptyStringToNull(500).default(null),
 
-    metaKeywords: emptyStringToNull(500).optional(),
+    metaKeywords: emptyStringToNull(500).default(null),
 
-    canonicalUrl: nullableUrl("Invalid URL").optional(),
+    canonicalUrl: nullableUrl("Invalid URL").default(null),
 
-    openGraphTitle: emptyStringToNull(255).optional(),
+    openGraphTitle: emptyStringToNull(255).default(null),
 
-    openGraphDescription: emptyStringToNull(500).optional(),
+    openGraphDescription: emptyStringToNull(500).default(null),
 
     openGraphImageId: nullablePositiveInt,
 
-    twitterTitle: emptyStringToNull(255).optional(),
+    twitterTitle: emptyStringToNull(255).default(null),
 
-    twitterDescription: emptyStringToNull(500).optional(),
+    twitterDescription: emptyStringToNull(500).default(null),
 
     twitterImageId: nullablePositiveInt,
 
-    schemaMarkup: z.json().nullable().optional(),
+    schemaMarkup: z.json().nullable().default(null),
 
-    status: z.enum(SERVICE_STATUS).optional(),
+    status: z.enum(SERVICE_STATUS).default("draft"),
 
-    isFeatured: z.boolean().optional(),
+    isFeatured: z.boolean().default(false),
 
-    sortOrder: nonNegativeInt.optional(),
+    sortOrder: nonNegativeInt.default(0),
   })
   .superRefine((data, ctx) => {
     if (data.status !== "published") return;

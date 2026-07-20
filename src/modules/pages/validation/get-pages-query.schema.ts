@@ -17,8 +17,6 @@ export const getPagesQuerySchema = paginationSchema
         "published_at",
       ])
       .default("updated_at"),
-
-    sortOrder: z.enum(["asc", "desc"]).default("desc"),
   })
   .strict();
 
