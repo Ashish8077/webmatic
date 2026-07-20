@@ -1,7 +1,7 @@
 // modules/pages/services/create-page.service.ts
 
 import { AppError } from "@/shared/utils/errors/app-error";
-import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
+import { handleDuplicateConstraint } from "@/shared/utils/errors/database-error.util";
 
 import { createPage, findPageSlug } from "../repositories/page.repository";
 
@@ -62,9 +62,9 @@ export async function createPageService(
       status: createPageRequest.status,
     });
   } catch (error) {
-    if (isDuplicateKeyError(error)) {
-      throw new AppError("Page slug already exists", 409);
-    }
+    handleDuplicateConstraint(error, {
+      slug: { field: "slug", message: "Page slug already exists." },
+    });
     throw error;
   }
 }

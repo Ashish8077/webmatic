@@ -12,7 +12,7 @@ export function useLogin() {
     mutationFn: login,
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["current-user"] });
-      router.replace("/dashboard");
+      router.replace("/admin/dashboard");
     },
   });
 }

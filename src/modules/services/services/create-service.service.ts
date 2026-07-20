@@ -1,5 +1,5 @@
 import { AppError } from "@/shared/utils/errors/app-error";
-import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
+import { handleDuplicateConstraint } from "@/shared/utils/errors/database-error.util";
 
 import {
   createService,
@@ -31,8 +31,6 @@ export async function createServiceService(
       serviceData.slug,
     );
 
-    console.log("existingService", existingService?.name?.trim());
-
     if (existingService) {
       if (existingService.name?.trim() === serviceData.name.trim()) {
         throw new AppError("Service name already exists", 409, {
@@ -57,19 +55,10 @@ export async function createServiceService(
       status: createServiceRequest.status,
     });
   } catch (error) {
-    if (isDuplicateKeyError(error)) {
-      if (error.constraint === "uk_services_slug") {
-        throw new AppError("Service slug already exists", 409, {
-          slug: ["Service slug already exists."],
-        });
-      }
-
-      if (error.constraint === "uk_services_name") {
-        throw new AppError("Service name already exists", 409, {
-          name: ["Service name already exists."],
-        });
-      }
-    }
+    handleDuplicateConstraint(error, {
+      uk_services_slug: { field: "slug", message: "Service slug already exists." },
+      uk_services_name: { field: "name", message: "Service name already exists." },
+    });
     throw error;
   }
 }

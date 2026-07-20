@@ -82,7 +82,7 @@ export default function EditPagePage({
       <div className="flex flex-col items-center justify-center py-20">
         <p className="text-muted-foreground">Page not found</p>
         <Link
-          href="/pages"
+          href="/admin/pages"
           className="text-accent text-sm mt-2 hover:underline"
         >
           Back to Pages
@@ -98,7 +98,7 @@ export default function EditPagePage({
         description={`Editing \u201c${page.title}\u201d`}
       >
         <Link
-          href={`/pages/${page.id}/sections`}
+          href={`/admin/pages/${page.id}/sections`}
           className="text-xs text-accent hover:text-accent-hover transition-colors px-2.5 py-1 rounded-lg bg-accent/10 border border-accent/20"
         >
           Manage Sections →

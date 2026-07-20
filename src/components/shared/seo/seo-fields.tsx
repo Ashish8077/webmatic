@@ -13,16 +13,16 @@ import type { SeoWarning } from "@/features/pages/utils/seo-analyzer";
 
 interface SeoFieldsProps {
   register: {
-    seoTitle: UseFormRegisterReturn<"seoTitle">;
-    metaDescription: UseFormRegisterReturn<"metaDescription">;
-    canonicalUrl: UseFormRegisterReturn<"canonicalUrl">;
-    metaKeywords: UseFormRegisterReturn<"metaKeywords">;
-    ogTitle: UseFormRegisterReturn<"ogTitle">;
-    ogDescription: UseFormRegisterReturn<"ogDescription">;
-    twitterTitle: UseFormRegisterReturn<"twitterTitle">;
-    twitterDescription: UseFormRegisterReturn<"twitterDescription">;
-    robotsIndex: UseFormRegisterReturn<"robotsIndex">;
-    robotsFollow: UseFormRegisterReturn<"robotsFollow">;
+    seoTitle: UseFormRegisterReturn<any>;
+    metaDescription: UseFormRegisterReturn<any>;
+    canonicalUrl: UseFormRegisterReturn<any>;
+    metaKeywords: UseFormRegisterReturn<any>;
+    ogTitle: UseFormRegisterReturn<any>;
+    ogDescription: UseFormRegisterReturn<any>;
+    twitterTitle: UseFormRegisterReturn<any>;
+    twitterDescription: UseFormRegisterReturn<any>;
+    robotsIndex: UseFormRegisterReturn<any>;
+    robotsFollow: UseFormRegisterReturn<any>;
   };
   errors: FieldErrors<FieldValues>;
   warnings: SeoWarning[];

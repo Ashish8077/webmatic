@@ -5,7 +5,7 @@ import {
   updateService,
 } from "../repositories/service.repository";
 import { UpdateServiceInput } from "../validation/update-service.schema";
-import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
+import { handleDuplicateConstraint } from "@/shared/utils/errors/database-error.util";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { AuthUser } from "@/modules/auth/types/auth-user";
@@ -65,11 +65,16 @@ export async function updateServiceService(
       throw new AppError("Service not found", 404);
     }
   } catch (error) {
-    if (isDuplicateKeyError(error)) {
-      throw new AppError("Service slug already exists", 409, {
-        slug: ["Service slug already exists."],
-      });
-    }
+    handleDuplicateConstraint(error, {
+      uk_services_slug: {
+        field: "slug",
+        message: "Service slug already exists.",
+      },
+      uk_services_name: {
+        field: "name",
+        message: "Service name already exists.",
+      },
+    });
     throw error;
   }
 }

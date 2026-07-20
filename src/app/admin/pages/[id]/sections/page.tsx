@@ -260,7 +260,7 @@ export default function SectionsPage() {
       <div className="flex flex-col items-center justify-center py-20">
         <p className="text-muted-foreground">Invalid page id</p>
         <Link
-          href="/pages"
+          href="/admin/pages"
           className="mt-2 text-sm text-accent hover:underline"
         >
           Back to Pages
@@ -285,7 +285,7 @@ export default function SectionsPage() {
       <div className="flex flex-col items-center justify-center py-20">
         <p className="text-muted-foreground">Page not found</p>
         <Link
-          href="/pages"
+          href="/admin/pages"
           className="mt-2 text-sm text-accent hover:underline"
         >
           Back to Pages
@@ -299,7 +299,7 @@ export default function SectionsPage() {
     <div className="animate-fade-in">
       <div className="mb-6">
         <button
-          onClick={() => router.push("/pages")}
+          onClick={() => router.push("/admin/pages")}
           className="mb-4 flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft size={16} />

@@ -17,7 +17,7 @@ export function Sidebar() {
       {/* Logo */}
       <div className="px-6 py-6 border-b border-white/[0.06]">
         <div className="flex items-center justify-between">
-          <Link href="/dashboard" className="flex items-center gap-3">
+          <Link href="/admin/dashboard" className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center shadow-lg shadow-accent/25">
               <svg
                 width="18"

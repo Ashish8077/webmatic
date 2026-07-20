@@ -24,7 +24,6 @@ export default function RootLayout({
       className={`dark h-full antialiased ${inter.className}`}
       style={{ colorScheme: "dark" }}
     >
-      <head></head>
       <body className="min-h-full flex flex-col">
         <QueryProvider>{children}</QueryProvider>
       </body>

@@ -13,7 +13,7 @@ export function useCreatePage() {
         queryKey: ["pages"],
       });
       // queryClient.setQueryData(["page", page.id], page);
-      router.push("/pages");
+      router.push("/admin/pages");
     },
   });
 }

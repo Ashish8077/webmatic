@@ -14,7 +14,7 @@ function PageListHeader({ title }: { title: string }) {
         </p>
       </div>
       <PermissionGate permission={Permission.PAGE_CREATE}>
-        <Link href="/pages/create">
+        <Link href="/admin/pages/create">
           <Button size="md">
             <Plus />
             Create Page

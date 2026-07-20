@@ -5,6 +5,7 @@ import { updatePageSection } from "../repositories/page-section.repository";
 import { UpdatePageSectionInput } from "../validation/update-page-section.schema";
 import { AppError } from "@/shared/utils/errors/app-error";
 import { PageStatus } from "@/modules/pages/constants/page.constants";
+import { handleDuplicateConstraint } from "@/shared/utils/errors/database-error.util";
 
 export async function updatePageSectionService(
   sectionId: number,
@@ -13,13 +14,23 @@ export async function updatePageSectionService(
 ): Promise<void> {
   requirePermission(user, PERMISSIONS.PAGES_UPDATE);
 
-  const updatedRowCount = await updatePageSection(
-    sectionId,
-    sectionData,
-    user.userId,
-  );
+  try {
+    const updatedRowCount = await updatePageSection(
+      sectionId,
+      sectionData,
+      user.userId,
+    );
 
-  if (updatedRowCount === 0) {
-    throw new AppError("Page section not found", 404);
+    if (updatedRowCount === 0) {
+      throw new AppError("Page section not found", 404);
+    }
+  } catch (error) {
+    handleDuplicateConstraint(error, {
+      uk_page_section_type_per_page: {
+        field: "sectionType",
+        message: "A section of this type already exists on this page.",
+      },
+    });
+    throw error;
   }
 }

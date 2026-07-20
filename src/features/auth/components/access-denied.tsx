@@ -83,7 +83,7 @@ export function AccessDenied({
 
           {/* Action */}
           <Link
-            href="/dashboard"
+            href="/admin/dashboard"
             className="group inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-accent to-purple-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/20 transition-all duration-300 hover:shadow-xl hover:shadow-accent/30 hover:brightness-110 active:scale-[0.98]"
           >
             <svg
