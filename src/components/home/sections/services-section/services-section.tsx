@@ -26,7 +26,7 @@ export const ServiceSection = ({ content }: SectionProps) => {
           </div>
 
           <Link
-            href={service.viewAllButton.to}
+            href="/services"
             className="shrink-0 inline-flex items-center gap-2 text-sm font-semibold text-[#081a4b] hover:text-orange-500 transition-colors duration-200 group"
           >
             {service.viewAllButton.text}
@@ -50,7 +50,7 @@ export const ServiceSection = ({ content }: SectionProps) => {
             {service.bottomText}
           </p>
           <Link
-            href={service.primaryButton.to}
+            href="/services"
             className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-orange-500 px-6 py-3 text-sm font-semibold text-white shadow-md shadow-orange-100 hover:bg-orange-600 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
           >
             {service.primaryButton.text}
