@@ -13,6 +13,8 @@ import { AboutHeroSection } from "@/components/sections/about-hero/about-hero-se
 import { CompanyStatisticsSection } from "@/components/sections/company-statistics/company-statistics-section";
 import { CompanyOverviewSection } from "@/components/sections/company-overview/company-overview-section";
 import { CoreValuesSection } from "@/components/sections/core-values/core-values-section";
+import { MissionVisionSection } from "@/components/sections/mission-vision/mission-vision-section";
+import { TeamMembersSection } from "@/components/sections/team-members/team-members-section";
 import type { SectionProps } from "./sections/types";
 
 // ─── Section component contract ───────────────────────────────────────────────
@@ -39,6 +41,8 @@ const SECTION_MAP: Readonly<
   "company-statistics": CompanyStatisticsSection as unknown as SectionComponent,
   "company-overview": CompanyOverviewSection as unknown as SectionComponent,
   "core-values": CoreValuesSection as unknown as SectionComponent,
+  "mission-vision": MissionVisionSection as unknown as SectionComponent,
+  "team-members": TeamMembersSection as unknown as SectionComponent,
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────

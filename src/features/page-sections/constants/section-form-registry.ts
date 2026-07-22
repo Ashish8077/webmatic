@@ -33,6 +33,8 @@ import { aboutHeroContentSchema } from "../schemas/about-hero.schema";
 import { companyStatisticsContentSchema } from "../schemas/company-statistics.schema";
 import { companyOverviewContentSchema } from "../schemas/company-overview.schema";
 import { coreValuesContentSchema } from "../schemas/core-values.schema";
+import { missionVisionContentSchema } from "../schemas/mission-vision.schema";
+import { teamMembersContentSchema } from "../schemas/team-members.schema";
 
 import {
   HeroContentForm,
@@ -77,6 +79,14 @@ import {
   CoreValuesContentForm,
   parseCoreValuesContentDefaults,
 } from "../components/forms/core-values-form";
+import {
+  MissionVisionContentForm,
+  parseMissionVisionContentDefaults,
+} from "../components/forms/mission-vision-form";
+import {
+  TeamMembersContentForm,
+  parseTeamMembersContentDefaults,
+} from "../components/forms/team-members-form";
 
 // ─── Content Registries ───────────────────────────────────────────────────────
 
@@ -92,6 +102,8 @@ export const SECTION_CONTENT_SCHEMA_MAP: Record<PageSectionType, z.ZodTypeAny> =
   "company-statistics": companyStatisticsContentSchema,
   "company-overview": companyOverviewContentSchema,
   "core-values": coreValuesContentSchema,
+  "mission-vision": missionVisionContentSchema,
+  "team-members": teamMembersContentSchema,
 };
 
 export const SECTION_CONTENT_FORM_MAP: Record<PageSectionType, SectionFieldComponent> = {
@@ -106,6 +118,8 @@ export const SECTION_CONTENT_FORM_MAP: Record<PageSectionType, SectionFieldCompo
   "company-statistics": CompanyStatisticsContentForm,
   "company-overview": CompanyOverviewContentForm,
   "core-values": CoreValuesContentForm,
+  "mission-vision": MissionVisionContentForm,
+  "team-members": TeamMembersContentForm,
 };
 
 export const SECTION_CONTENT_DEFAULTS_MAP: Record<PageSectionType, ParseDefaultsFn<any>> = {
@@ -120,6 +134,8 @@ export const SECTION_CONTENT_DEFAULTS_MAP: Record<PageSectionType, ParseDefaults
   "company-statistics": parseCompanyStatisticsContentDefaults,
   "company-overview": parseCompanyOverviewContentDefaults,
   "core-values": parseCoreValuesContentDefaults,
+  "mission-vision": parseMissionVisionContentDefaults,
+  "team-members": parseTeamMembersContentDefaults,
 };
 
 // ─── Settings Registries ──────────────────────────────────────────────────────
@@ -136,6 +152,8 @@ export const SECTION_SETTINGS_SCHEMA_MAP: Record<PageSectionType, z.ZodTypeAny> 
   "company-statistics": z.object({}),
   "company-overview": z.object({}),
   "core-values": z.object({}),
+  "mission-vision": z.object({}),
+  "team-members": z.object({}),
 };
 
 export const SECTION_SETTINGS_FORM_MAP: Record<PageSectionType, SectionFieldComponent> = {
@@ -150,6 +168,8 @@ export const SECTION_SETTINGS_FORM_MAP: Record<PageSectionType, SectionFieldComp
   "company-statistics": () => null,
   "company-overview": () => null,
   "core-values": () => null,
+  "mission-vision": () => null,
+  "team-members": () => null,
 };
 
 export const SECTION_SETTINGS_DEFAULTS_MAP: Record<PageSectionType, ParseDefaultsFn<any>> = {
@@ -164,4 +184,6 @@ export const SECTION_SETTINGS_DEFAULTS_MAP: Record<PageSectionType, ParseDefault
   "company-statistics": () => ({}),
   "company-overview": () => ({}),
   "core-values": () => ({}),
+  "mission-vision": () => ({}),
+  "team-members": () => ({}),
 };

@@ -10,6 +10,8 @@ export const HOME_SECTION_TYPES = [
   "company-statistics",
   "company-overview",
   "core-values",
+  "mission-vision",
+  "team-members",
 ] as const;
 
 export type HomeSectionType = (typeof HOME_SECTION_TYPES)[number];

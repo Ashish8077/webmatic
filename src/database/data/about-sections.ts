@@ -94,5 +94,56 @@ export const aboutSections = [
       ]
     },
     settings: {},
+  },
+  {
+    sectionType: "mission-vision",
+    sortOrder: 4,
+    content: {
+      missionTitle: "Our Mission",
+      missionDescription: "To empower businesses worldwide through innovative digital marketing and cutting-edge technology solutions that drive measurable growth and success.",
+      visionTitle: "Our Vision",
+      visionDescription: "To be the globally recognized standard in digital marketing excellence, creating a brand that people rely on for both exceptional quality and continuous innovation.",
+    },
+    settings: {},
+  },
+  {
+    sectionType: "team-members",
+    sortOrder: 5,
+    content: {
+      badge: "OUR TEAM",
+      heading: "Meet the People Behind the Brand",
+      description: "Our diverse team of experts combines creative brilliance with technical excellence.",
+      members: [
+        {
+          name: "John Doe",
+          designation: "CEO & Founder",
+          description: "Visionary leader with over 15 years of experience in digital marketing and technology.",
+          imageId: null,
+          sortOrder: 1,
+        },
+        {
+          name: "Jane Smith",
+          designation: "Chief Marketing Officer",
+          description: "Strategic marketing expert specializing in global brand development and scaling.",
+          imageId: null,
+          sortOrder: 2,
+        },
+        {
+          name: "Michael Johnson",
+          designation: "Head of Technology",
+          description: "Technical architect driving innovation and building robust, scalable digital platforms.",
+          imageId: null,
+          sortOrder: 3,
+        },
+        {
+          name: "Sarah Williams",
+          designation: "Creative Director",
+          description: "Award-winning designer passionate about creating beautiful, user-centric experiences.",
+          imageId: null,
+          sortOrder: 4,
+        }
+      ]
+    },
+    settings: {},
   }
 ] as const;
