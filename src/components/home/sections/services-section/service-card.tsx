@@ -29,19 +29,19 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
       </div>
 
       {/* Title */}
-      <h3 className="text-[17px] font-bold text-[#081a4b] leading-snug">
+      <h3 className="text-[16px] font-bold text-navy leading-[1.375]">
         {service.title}
       </h3>
 
       {/* Description */}
-      <p className="text-sm leading-relaxed text-slate-500 flex-1">
+      <p className="text-[14px] leading-[1.625] text-slate-500 flex-1">
         {service.description}
       </p>
 
       {/* CTA */}
       <Link
         href="/services"
-        className={`inline-flex items-center gap-1.5 text-sm font-semibold ${text} transition-colors duration-200 group/link`}
+        className={`inline-flex items-center gap-1.5 text-[14px] font-semibold ${text} transition-colors duration-200 group/link`}
       >
         {service.button.text}
         <ArrowRight

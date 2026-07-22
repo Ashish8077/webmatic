@@ -11,15 +11,15 @@ export const ServiceSection = ({ content }: SectionProps) => {
   );
 
   return (
-    <section className="bg-slate-50 py-20 sm:py-28">
+    <section className="bg-slate-50 py-20 lg:py-28">
       <div className="mx-auto max-w-[1170px] px-5 sm:px-8">
         {/* ── Section header ──────────────────────────────── */}
-        <div className="mb-14 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+        <div className="mb-14 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
           <div>
-            <span className="inline-block mb-4 text-xs font-bold uppercase tracking-[0.2em] text-orange-500">
+            <span className="inline-block mb-4 text-[12px] font-bold uppercase tracking-[0.2em] text-orange-500">
               {service.badge}
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-[#081a4b]">
+            <h2 className="text-[30px] lg:text-[36px] font-bold leading-[1.15] text-navy">
               {service.heading}{" "}
               <span className="text-orange-500">{service.highlight}</span>
             </h2>
@@ -27,7 +27,7 @@ export const ServiceSection = ({ content }: SectionProps) => {
 
           <Link
             href="/services"
-            className="shrink-0 inline-flex items-center gap-2 text-sm font-semibold text-[#081a4b] hover:text-orange-500 transition-colors duration-200 group"
+            className="shrink-0 inline-flex items-center gap-2 text-[14px] font-semibold text-navy hover:text-orange-500 transition-colors duration-200 group"
           >
             {service.viewAllButton.text}
             <ArrowRight
@@ -46,12 +46,12 @@ export const ServiceSection = ({ content }: SectionProps) => {
 
         {/* ── Bottom CTA strip ────────────────────────────── */}
         <div className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200 pt-10">
-          <p className="text-sm text-slate-500 text-center sm:text-left">
+          <p className="text-[14px] text-slate-500 text-center sm:text-left">
             {service.bottomText}
           </p>
           <Link
             href="/services"
-            className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-orange-500 px-6 py-3 text-sm font-semibold text-white shadow-md shadow-orange-100 hover:bg-orange-600 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+            className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-[14px] font-semibold text-white shadow-md shadow-primary/10 hover:bg-primary-hover transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
           >
             {service.primaryButton.text}
             <ArrowRight size={14} />

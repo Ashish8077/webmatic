@@ -40,17 +40,3 @@ export const DEFAULT_FAQ_CONTENT: FaqContentValues = {
   bottomText: "",
   primaryButton: { text: "", url: "" },
 };
-
-// ─── FAQ settings schema ──────────────────────────────────────────────────────
-
-export const faqSettingsSchema = z.object({
-  allowMultipleOpen: booleanSetting.default(false),
-  defaultExpanded: numberSetting(0, 100).nullable().default(null),
-});
-
-export type FaqSettingsValues = z.infer<typeof faqSettingsSchema>;
-
-export const DEFAULT_FAQ_SETTINGS: FaqSettingsValues = {
-  allowMultipleOpen: false,
-  defaultExpanded: null,
-};

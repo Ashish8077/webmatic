@@ -4,8 +4,6 @@ import type { JsonObject } from "@/shared/types/json";
 import {
   DEFAULT_FAQ_CONTENT,
   type FaqContentValues,
-  DEFAULT_FAQ_SETTINGS,
-  type FaqSettingsValues,
 } from "../../schemas/faq.schema";
 import {
   TextField,
@@ -13,11 +11,10 @@ import {
   ButtonFields,
   SectionHeadingFields,
   RepeaterField,
-  SwitchField,
   NumberField,
 } from "../fields";
 
-type FormShape = { content: FaqContentValues; settings: FaqSettingsValues };
+type FormShape = { content: FaqContentValues };
 
 export function parseFaqContentDefaults(
   content: JsonObject | undefined | null,
@@ -38,18 +35,6 @@ export function parseFaqContentDefaults(
         question: item.question ?? "",
         answer: item.answer ?? "",
       })) ?? DEFAULT_FAQ_CONTENT.items,
-  };
-}
-
-export function parseFaqSettingsDefaults(
-  settings: JsonObject | undefined | null,
-): FaqSettingsValues {
-  const raw = (settings ?? {}) as unknown as Partial<FaqSettingsValues>;
-  return {
-    allowMultipleOpen:
-      raw.allowMultipleOpen ?? DEFAULT_FAQ_SETTINGS.allowMultipleOpen,
-    defaultExpanded:
-      raw.defaultExpanded ?? DEFAULT_FAQ_SETTINGS.defaultExpanded,
   };
 }
 
@@ -97,30 +82,6 @@ export function FaqContentForm({ disabled }: { disabled?: boolean }) {
           </div>
         )}
       />
-    </div>
-  );
-}
-
-export function FaqSettingsForm({ disabled }: { disabled?: boolean }) {
-  return (
-    <div className="space-y-4">
-      <h3 className="text-sm font-semibold text-foreground border-b pb-2">
-        Accordion Behavior
-      </h3>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <SwitchField
-          name="settings.allowMultipleOpen"
-          label="Allow Multiple Open"
-          description="Allow multiple FAQ items to be open at the same time"
-          disabled={disabled}
-        />
-        <NumberField
-          name="settings.defaultExpanded"
-          label="Default Expanded Index"
-          placeholder="e.g. 0 to expand the first item"
-          disabled={disabled}
-        />
-      </div>
     </div>
   );
 }

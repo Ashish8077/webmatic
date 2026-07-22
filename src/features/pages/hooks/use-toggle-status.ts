@@ -1,6 +1,5 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { togglePageStatus } from "../api/publish-page";
-import { queryClient } from "@/lib/query";
 import { showToast } from "@/components/ui/toast";
 
 interface ToggleStatusParams {
@@ -9,6 +8,7 @@ interface ToggleStatusParams {
 }
 
 export function useToggleStatus() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ id, currentStatus }: ToggleStatusParams) => {
       const newStatus = currentStatus === "published" ? "draft" : "published";
