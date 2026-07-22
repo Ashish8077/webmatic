@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { type CompanyOverviewContentValues } from "@/features/page-sections/schemas/company-overview.schema";
 
 interface Props {
@@ -7,7 +8,6 @@ interface Props {
 }
 
 export function CompanyOverviewSection({ content }: Props) {
-  console.log("content", content);
   const data = content as unknown as CompanyOverviewContentValues;
 
   const paragraphs = data.description
@@ -16,14 +16,15 @@ export function CompanyOverviewSection({ content }: Props) {
     .filter((p) => p.length > 0);
 
   return (
-    <section className="py-20 lg:py-28 bg-white">
+    <section className="bg-white py-20 lg:py-28">
       <div className="mx-auto max-w-[1170px] px-5 sm:px-8">
         <div className="max-w-4xl mx-auto flex flex-col items-center text-center mb-14">
-          <div className="inline-block bg-[#ff5a30] text-white text-[13px] font-bold tracking-[0.1em] uppercase px-4 py-1 mb-6">
+          <span className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em] text-orange-500 mb-4">
+            <span className="h-px w-8 bg-orange-500 rounded-full" />
             {data.badge}
-          </div>
+          </span>
 
-          <h2 className="text-[32px] sm:text-[40px] lg:text-[48px] font-bold text-[#081a4b] leading-[1.2]">
+          <h2 className="text-[30px] lg:text-[36px] font-bold leading-[1.15] text-navy">
             {data.heading}
           </h2>
         </div>
@@ -32,9 +33,9 @@ export function CompanyOverviewSection({ content }: Props) {
           {paragraphs.map((paragraph, index) => (
             <p
               key={index}
-              className={`text-[17px] leading-relaxed text-slate-600 mb-6 ${
+              className={`text-[16px] leading-[1.625] text-slate-500 mb-6 ${
                 index === 0
-                  ? "first-letter:text-[68px] first-letter:font-normal first-letter:text-slate-500 first-letter:float-left first-letter:mr-4 first-letter:leading-[0.8] first-letter:mt-2"
+                  ? "first-letter:text-[68px] first-letter:font-normal first-letter:text-slate-400 first-letter:float-left first-letter:mr-4 first-letter:leading-[0.8] first-letter:mt-2"
                   : ""
               }`}
             >
@@ -43,23 +44,24 @@ export function CompanyOverviewSection({ content }: Props) {
           ))}
 
           {data.primaryButton?.text && data.primaryButton?.url && (
-            <div className="flex justify-center mt-12 mb-20">
+            <div className="flex justify-center mt-12 mb-16">
               <Link
                 href={data.primaryButton.url}
-                className="inline-flex items-center justify-center bg-[#3c4a5c] hover:bg-[#2b3543] text-white px-10 py-4 font-semibold rounded-sm transition-colors duration-200"
+                className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-[14px] font-semibold text-white shadow-lg shadow-primary/30 hover:bg-primary-hover transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
               >
                 {data.primaryButton.text}
+                <ArrowRight size={14} />
               </Link>
             </div>
           )}
 
           {data.bottomText && (
-            <div className="text-center text-[15px] text-slate-500">
+            <div className="text-center text-[14px] text-slate-500">
               {data.bottomText.supportingText}{" "}
               {data.bottomText.linkText && data.bottomText.linkUrl && (
                 <Link
                   href={data.bottomText.linkUrl}
-                  className="text-[#ff5a30] hover:text-[#e04a25] font-semibold transition-colors"
+                  className="text-orange-500 hover:text-orange-600 font-semibold transition-colors duration-200"
                 >
                   {data.bottomText.linkText}
                 </Link>
