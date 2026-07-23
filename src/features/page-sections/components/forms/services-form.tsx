@@ -11,7 +11,7 @@ import {
   TextField,
   TextareaField,
   ButtonFields,
-  ImageIdField,
+  MediaPickerField,
   SectionHeadingFields,
   RepeaterField,
 } from "../fields";
@@ -116,7 +116,7 @@ export function ServicesContentForm({ disabled }: { disabled?: boolean }) {
               label="Button"
               disabled={disabled}
             />
-            <ImageIdField
+            <MediaPickerField
               name={`content.services.${index}.imageId`}
               disabled={disabled}
             />

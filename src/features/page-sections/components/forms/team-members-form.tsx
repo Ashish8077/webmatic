@@ -9,7 +9,7 @@ import {
   TextField,
   TextareaField,
   RepeaterField,
-  ImageIdField,
+  MediaPickerField,
   NumberField,
 } from "../fields";
 
@@ -96,7 +96,7 @@ export function TeamMembersContentForm({
               disabled={disabled}
             />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <ImageIdField
+              <MediaPickerField
                 name={`content.members.${index}.imageId`}
                 label="Profile Image"
                 disabled={disabled}

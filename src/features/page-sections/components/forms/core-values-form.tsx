@@ -9,7 +9,7 @@ import {
   TextField,
   TextareaField,
   RepeaterField,
-  ImageIdField,
+  MediaPickerField,
 } from "../fields";
 
 type FormShape = { content: CoreValuesContentValues };
@@ -68,9 +68,8 @@ export function CoreValuesContentForm({ disabled }: { disabled?: boolean }) {
               placeholder="Write description here..."
               disabled={disabled}
             />
-            <ImageIdField
+            <MediaPickerField
               name={`content.values.${index}.iconId`}
-              label="Icon/Image"
               disabled={disabled}
             />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -9,7 +9,7 @@ import {
   TextField,
   TextareaField,
   RepeaterField,
-  ImageIdField,
+  MediaPickerField,
   NumberField,
 } from "../fields";
 
@@ -86,7 +86,7 @@ export function CompanyStatisticsContentForm({ disabled }: { disabled?: boolean 
             />
 
             <div className="pt-2">
-              <ImageIdField
+              <MediaPickerField
                 name={`content.items.${index}.iconId`}
                 label="Icon (Optional)"
                 disabled={disabled}

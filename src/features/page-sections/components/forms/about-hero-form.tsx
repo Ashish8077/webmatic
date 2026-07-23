@@ -8,7 +8,7 @@ import {
 import {
   TextField,
   TextareaField,
-  ImageIdField,
+  MediaPickerField,
 } from "../fields";
 
 export function parseAboutHeroContentDefaults(
@@ -70,9 +70,9 @@ export function AboutHeroContentForm({ disabled }: { disabled?: boolean }) {
       </div>
       
       <div className="pt-2">
-        <ImageIdField
+        <MediaPickerField
           name="content.imageId"
-          label="Background Image"
+          label="Hero Image"
           disabled={disabled}
         />
       </div>

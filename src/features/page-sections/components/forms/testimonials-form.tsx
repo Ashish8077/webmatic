@@ -9,11 +9,11 @@ import {
 import {
   TextField,
   TextareaField,
-  ImageIdField,
   SectionHeadingFields,
   RepeaterField,
   SliderSettingsFields,
   NumberField,
+  MediaPickerField,
 } from "../fields";
 
 import { parseSliderSettingsDefaults } from "../../schemas/common-settings.schema";
@@ -73,7 +73,7 @@ export function TestimonialsContentForm({ disabled }: { disabled?: boolean }) {
           label="Background Color (Optional)"
           disabled={disabled}
         />
-        <ImageIdField
+        <MediaPickerField
           name="content.backgroundImageId"
           label="Background Image (Optional)"
           disabled={disabled}
@@ -115,9 +115,9 @@ export function TestimonialsContentForm({ disabled }: { disabled?: boolean }) {
               />
             </div>
             
-            <ImageIdField
+            <MediaPickerField
               name={`content.testimonials.${index}.imageId`}
-              label="Profile Image ID"
+              label="Profile Image"
               disabled={disabled}
             />
 
