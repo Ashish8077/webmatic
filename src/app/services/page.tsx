@@ -7,6 +7,7 @@ import { ServicesCta } from "./_components/services-cta";
 import { ServicesFaq } from "./_components/services-faq";
 import { getHomePageData } from "@/modules/home/services/get-home-page";
 import { ContactCtaSection } from "@/components/home/sections/contact-cta-section/contact-cta-section";
+import { TestimonialsSection } from "@/components/sections/testimonials/testimonials-section";
 
 export const metadata: Metadata = {
   title: "Services | CMS Admin",
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
 export default async function ServicesPage() {
   const homeData = await getHomePageData();
   const contactCtaSection = homeData?.sections.find((s) => s.sectionType === "contact-cta");
+  const testimonialsSection = homeData?.sections.find((s) => s.sectionType === "testimonials");
 
   return (
     <>
@@ -26,6 +28,9 @@ export default async function ServicesPage() {
         <ServicesGrid />
         <ServicesCta />
         <ServicesFaq />
+        {testimonialsSection && (
+          <TestimonialsSection content={testimonialsSection.content} />
+        )}
         {contactCtaSection && (
           <ContactCtaSection content={contactCtaSection.content} />
         )}

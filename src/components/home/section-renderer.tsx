@@ -5,9 +5,9 @@ import {
   HeroSection,
   ServiceSection,
   WhyChooseUsSection,
-  TestimonialsSection,
   ContactCtaSection,
 } from "./sections";
+import { TestimonialsSection } from "@/components/sections/testimonials/testimonials-section";
 import { FaqSection } from "@/components/sections/faq";
 import { AboutHeroSection } from "@/components/sections/about-hero/about-hero-section";
 import { CompanyStatisticsSection } from "@/components/sections/company-statistics/company-statistics-section";

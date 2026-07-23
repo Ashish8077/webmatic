@@ -219,14 +219,26 @@ export const dummySections: DummySection[] = [
     content: {
       testimonials: [
         {
-          name: "John Doe",
-          role: "CEO",
-          quote: "Outstanding service and results.",
+          clientName: "John Doe",
+          clientDesignation: "CEO",
+          companyName: "",
+          testimonialTitle: "Outstanding service",
+          testimonialDescription: "Outstanding service and results.",
+          imageId: null,
+          rating: 5,
+          sortOrder: 1,
+          status: "published"
         },
         {
-          name: "Jane Smith",
-          role: "CTO",
-          quote: "Transformed our business completely.",
+          clientName: "Jane Smith",
+          clientDesignation: "CTO",
+          companyName: "",
+          testimonialTitle: "Transformed our business",
+          testimonialDescription: "Transformed our business completely.",
+          imageId: null,
+          rating: 5,
+          sortOrder: 2,
+          status: "published"
         },
       ],
     },
