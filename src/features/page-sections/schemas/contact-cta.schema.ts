@@ -2,12 +2,8 @@ import { z } from "zod";
 import {
   requiredString,
   optionalString,
-  buttonSchema,
-  optionalButtonSchema,
-  imageIdSchema,
   optionalUrl,
 } from "./common.schema";
-import { numberSetting } from "./common-settings.schema";
 
 // ─── Contact CTA content schema ──────────────────────────────────────────────
 

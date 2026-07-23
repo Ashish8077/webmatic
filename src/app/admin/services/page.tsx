@@ -12,7 +12,7 @@ import { useUpdateService } from "@/features/services/hooks/use-update-service";
 import type { ServiceListItem } from "@/features/services/types/service.types";
 
 export default function ServicesPage() {
-  const [page, setPage] = useState(1);
+  const [page] = useState(1);
   const [serviceToDelete, setServiceToDelete] = useState<ServiceListItem | null>(null);
 
   const { data, isLoading } = useServices({

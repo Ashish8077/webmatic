@@ -12,8 +12,9 @@ export function useDeleteService() {
       queryClient.invalidateQueries({ queryKey: SERVICES_QUERY_KEYS.ALL });
       toast.success("Service deleted successfully");
     },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "Failed to delete service");
+    onError: (error: Error) => {
+      const err = error as Error & { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "Failed to delete service");
     },
   });
 }

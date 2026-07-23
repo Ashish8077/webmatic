@@ -4,7 +4,6 @@ import type { JsonObject } from "@/shared/types/json";
 import {
   DEFAULT_HERO_CONTENT,
   type HeroContentValues,
-  DEFAULT_HERO_SETTINGS,
   type HeroSettingsValues,
 } from "../../schemas/hero.schema";
 import {

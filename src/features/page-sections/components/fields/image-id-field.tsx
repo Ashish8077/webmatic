@@ -20,7 +20,7 @@ export function ImageIdField({
 }: ImageIdFieldProps) {
   const { control } = useFormContext();
   const {
-    field,
+    field: { ref: fieldRef, ...fieldProps },
     fieldState: { error },
   } = useController({ name, control });
 
@@ -31,13 +31,13 @@ export function ImageIdField({
       placeholder="e.g. 12"
       disabled={disabled}
       error={error?.message}
-      value={field.value ?? ""}
+      value={fieldProps.value ?? ""}
       onChange={(e) => {
         const raw = e.target.value;
-        field.onChange(raw === "" ? null : Number(raw));
+        fieldProps.onChange(raw === "" ? null : Number(raw));
       }}
-      onBlur={field.onBlur}
-      ref={field.ref}
+      onBlur={fieldProps.onBlur}
+      ref={fieldRef}
     />
   );
 }

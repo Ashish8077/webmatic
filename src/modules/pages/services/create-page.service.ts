@@ -14,7 +14,6 @@ import {
   toCreatePagePayload,
   toCreatePageResponse,
 } from "../mapper/page.mapper";
-import { PageStatus } from "../constants/page.constants";
 import { CreatePageResponse } from "../types/service.types";
 
 export async function createPageService(

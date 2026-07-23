@@ -4,7 +4,6 @@ import type { JsonObject } from "@/shared/types/json";
 import {
   DEFAULT_CORE_VALUES_CONTENT,
   type CoreValuesContentValues,
-  type CoreValuesItemValues,
 } from "../../schemas/core-values.schema";
 import {
   TextField,

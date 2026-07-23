@@ -109,7 +109,7 @@ export function ServicesHero({ backgroundImage }: ServicesHeroProps = {}) {
             className="text-slate-600 text-lg sm:text-xl max-w-xl mb-10 leading-relaxed font-medium animate-fade-in"
             style={{ animationDelay: "200ms" }}
           >
-            Almost Overnight, the Internet's Gone From a Technical Wonder to a
+            Almost Overnight, the Internet&apos;s Gone From a Technical Wonder to a
             Business Must.
           </p>
 

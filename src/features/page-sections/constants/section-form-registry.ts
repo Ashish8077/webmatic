@@ -122,7 +122,7 @@ export const SECTION_CONTENT_FORM_MAP: Record<PageSectionType, SectionFieldCompo
   "team-members": TeamMembersContentForm,
 };
 
-export const SECTION_CONTENT_DEFAULTS_MAP: Record<PageSectionType, ParseDefaultsFn<any>> = {
+export const SECTION_CONTENT_DEFAULTS_MAP: Record<PageSectionType, ParseDefaultsFn<unknown>> = {
   hero: parseHeroContentDefaults,
   about: parseAboutContentDefaults,
   services: parseServicesContentDefaults,
@@ -172,7 +172,7 @@ export const SECTION_SETTINGS_FORM_MAP: Record<PageSectionType, SectionFieldComp
   "team-members": () => null,
 };
 
-export const SECTION_SETTINGS_DEFAULTS_MAP: Record<PageSectionType, ParseDefaultsFn<any>> = {
+export const SECTION_SETTINGS_DEFAULTS_MAP: Record<PageSectionType, ParseDefaultsFn<unknown>> = {
   hero: parseHeroSettingsDefaults,
   about: parseAboutSettingsDefaults,
   services: parseServicesSettingsDefaults,

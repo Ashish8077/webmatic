@@ -2,6 +2,8 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import type { CardItem } from "./types";
 
+import Image from "next/image";
+
 interface AboutCardProps {
   card: CardItem;
 }
@@ -15,10 +17,12 @@ const AboutCard = ({ card }: AboutCardProps) => {
       {/* Image Container */}
       <div className="relative h-44 overflow-hidden bg-slate-100">
         {card.imageId ? (
-          <img
+          <Image
             src={`/api/media/${card.imageId}`}
             alt={card.title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            unoptimized
           />
         ) : (
           <div className="h-full w-full flex items-center justify-center text-slate-300">

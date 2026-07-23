@@ -76,13 +76,13 @@ export function ServicesIntro() {
             
             <p className="text-base sm:text-lg text-slate-600 leading-relaxed mb-8">
               Our team of experts brings years of experience across multiple disciplines. 
-              Whether you're looking to build a new product, enhance an existing one, 
+              Whether you&apos;re looking to build a new product, enhance an existing one, 
               or completely transform your digital presence, we have the right services tailored for you.
             </p>
 
             {/* Trust metrics - social proof */}
             <div className="grid grid-cols-2 gap-6">
-              {trustMetrics.slice(0, 2).map((metric, index) => (
+              {trustMetrics.slice(0, 2).map((metric) => (
                 <div key={metric.label} className="group">
                   <div className="text-3xl sm:text-4xl font-bold text-[#081a4b] mb-1 group-hover:text-orange-500 transition-colors duration-300">
                     {metric.value}

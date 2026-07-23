@@ -12,7 +12,7 @@ export function normaliseWhyUsContent(raw: RawWhyUsContent): WhyUsContent {
       to: raw.learnMoreButton?.url,
     },
 
-    reasons: raw.reasons?.map((reason, index) => ({
+    reasons: raw.reasons?.map((reason) => ({
       key: reason.key,
       title: reason.title,
       description: reason.description,

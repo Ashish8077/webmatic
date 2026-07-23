@@ -11,7 +11,7 @@ import { AuthUser } from "@/modules/auth/types/auth-user";
 import { toCreatePageSectionResponse } from "../mapper/page-section.mapper";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
-import { PAGE_STATUS } from "@/modules/pages/constants/page.constants";
+
 import {
   SECTION_STATUS,
   SectionStatus,

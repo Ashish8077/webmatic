@@ -4,7 +4,6 @@ import type { JsonObject } from "@/shared/types/json";
 import {
   DEFAULT_TEAM_MEMBERS_CONTENT,
   type TeamMembersContentValues,
-  type TeamMemberValues,
 } from "../../schemas/team-members.schema";
 import {
   TextField,

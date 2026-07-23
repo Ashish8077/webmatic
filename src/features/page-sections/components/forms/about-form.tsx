@@ -51,9 +51,7 @@ export function parseAboutContentDefaults(
   };
 }
 
-export function parseAboutSettingsDefaults(
-  settings: JsonObject | undefined | null,
-): AboutSettingsValues {
+export function parseAboutSettingsDefaults(): AboutSettingsValues {
   return DEFAULT_ABOUT_SETTINGS;
 }
 
@@ -130,7 +128,7 @@ export function AboutContentForm({ disabled }: { disabled?: boolean }) {
   );
 }
 
-export function AboutSettingsForm({ disabled }: { disabled?: boolean }) {
+export function AboutSettingsForm() {
   return (
     <div className="flex min-h-[100px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center animate-in fade-in-50">
       <p className="text-sm text-muted-foreground">

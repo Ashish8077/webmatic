@@ -2,20 +2,18 @@ import { z } from "zod";
 import {
   requiredString,
   optionalString,
-  optionalButtonSchema,
   imageIdSchema,
 } from "./common.schema";
 
 // ─── About Hero content schema ──────────────────────────────────────────────────
 
 export const aboutHeroContentSchema = z.object({
-  badge: optionalString(100),
-  heading: requiredString("Heading"),
+  badge: requiredString("Badge").max(100),
+  heading: requiredString("Heading").max(200),
   highlight: optionalString(100),
-  description: requiredString("Description").max(1000, {
-    message: "Description must not exceed 1000 characters.",
-  }),
-  button: optionalButtonSchema,
+  description: optionalString(1000),
+  ctaLabel: optionalString(50),
+  ctaTargetId: optionalString(50),
   imageId: imageIdSchema, // Used for the background hero image
 });
 
@@ -26,6 +24,7 @@ export const DEFAULT_ABOUT_HERO_CONTENT: AboutHeroContentValues = {
   heading: "",
   highlight: "",
   description: "",
-  button: { text: "", url: "" },
+  ctaLabel: "",
+  ctaTargetId: "",
   imageId: null,
 };

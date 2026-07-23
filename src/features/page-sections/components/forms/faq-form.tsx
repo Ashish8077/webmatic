@@ -11,7 +11,6 @@ import {
   ButtonFields,
   SectionHeadingFields,
   RepeaterField,
-  NumberField,
 } from "../fields";
 
 type FormShape = { content: FaqContentValues };

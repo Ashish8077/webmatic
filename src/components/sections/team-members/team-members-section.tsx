@@ -17,28 +17,28 @@ export function TeamMembersSection({ content }: Props) {
   if (members.length === 0) return null;
 
   return (
-    <section className="bg-slate-50 py-20 lg:py-28">
-      <div className="mx-auto max-w-[1170px] px-5 sm:px-8">
+    <section className="relative bg-slate-50 py-24 lg:py-32 overflow-hidden">
+      <div className="relative z-10 mx-auto max-w-[1170px] px-5 sm:px-8">
         {/* ── Section header ──────────────────────────────── */}
-        <div className="mb-14 text-center">
+        <div className="mb-16 lg:mb-20 text-center flex flex-col items-center">
           {data.badge && (
-            <span className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em] text-orange-500 mb-4">
-              <span className="h-px w-8 bg-orange-500 rounded-full" />
+            <span className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white border border-orange-100 text-[12px] font-bold uppercase tracking-[0.2em] text-orange-600 mb-6 shadow-sm">
+              <span className="h-1.5 w-1.5 bg-orange-500 rounded-full animate-pulse" />
               {data.badge}
             </span>
           )}
-          <h2 className="text-[30px] lg:text-[36px] font-bold leading-[1.15] text-navy">
+          <h2 className="text-[32px] sm:text-[40px] lg:text-[48px] font-extrabold leading-[1.15] text-navy tracking-tight">
             {data.heading}
           </h2>
           {data.description && (
-            <p className="mt-3 text-[16px] leading-[1.625] text-slate-500 max-w-2xl mx-auto">
+            <p className="mt-4 text-[16px] lg:text-[18px] leading-[1.7] text-slate-500 max-w-2xl mx-auto">
               {data.description}
             </p>
           )}
         </div>
 
         {/* ── Team grid ───────────────────────────────────── */}
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {members.map((member, index) => {
             const imageUrl = member.imageId
               ? `/api/media/${member.imageId}`
@@ -47,38 +47,43 @@ export function TeamMembersSection({ content }: Props) {
             return (
               <div
                 key={index}
-                className="group rounded-2xl border border-slate-100 bg-white overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+                className="group relative rounded-3xl border border-slate-100 bg-white overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.02)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] flex flex-col"
               >
                 {/* Profile image */}
-                <div className="relative w-full aspect-square bg-slate-100 overflow-hidden">
+                <div className="relative w-full aspect-[4/5] bg-slate-100 overflow-hidden">
                   {imageUrl ? (
                     <Image
                       src={imageUrl}
                       alt={member.name}
                       fill
-                      className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
                   ) : (
-                    <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="absolute inset-0 flex items-center justify-center bg-slate-50 group-hover:bg-slate-100 transition-colors duration-500">
                       <User
-                        className="w-16 h-16 text-slate-300"
+                        className="w-20 h-20 text-slate-300 group-hover:text-slate-400 transition-colors duration-500"
                         strokeWidth={1}
                       />
                     </div>
                   )}
+                  {/* Subtle overlay gradient on image */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 </div>
 
                 {/* Info */}
-                <div className="p-6">
-                  <h3 className="text-base font-semibold text-navy">
+                <div className="p-8 text-center flex-grow flex flex-col justify-center relative bg-white transition-all duration-500">
+                  {/* Top accent line on card info */}
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-orange-500 rounded-b-full transition-all duration-500 group-hover:w-24 group-hover:bg-hero-primary" />
+                  
+                  <h3 className="text-xl font-bold text-navy group-hover:text-hero-primary transition-colors duration-300">
                     {member.name}
                   </h3>
-                  <p className="mt-1 text-[13px] font-medium text-orange-500">
+                  <p className="mt-2 text-[14px] font-semibold text-orange-500 uppercase tracking-wide">
                     {member.designation}
                   </p>
                   {member.description && (
-                    <p className="mt-3 text-[13px] leading-relaxed text-slate-500 line-clamp-3">
+                    <p className="mt-4 text-[14px] leading-[1.7] text-slate-500 line-clamp-3">
                       {member.description}
                     </p>
                   )}

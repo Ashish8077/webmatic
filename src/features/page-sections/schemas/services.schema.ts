@@ -6,7 +6,7 @@ import {
   optionalButtonSchema,
   imageIdSchema,
 } from "./common.schema";
-import { booleanSetting, numberSetting } from "./common-settings.schema";
+
 
 // ─── Service item schema ──────────────────────────────────────────────────────
 

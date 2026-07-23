@@ -21,13 +21,15 @@ import {
 } from "lucide-react";
 import clsx from "clsx";
 
+import type { Editor } from "@tiptap/react";
+
 interface RichTextEditorProps {
   value: string;
   onChange: (value: string) => void;
   error?: string;
 }
 
-const MenuBar = ({ editor }: { editor: any }) => {
+const MenuBar = ({ editor }: { editor: Editor | null }) => {
   if (!editor) {
     return null;
   }

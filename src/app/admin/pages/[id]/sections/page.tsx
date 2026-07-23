@@ -58,7 +58,6 @@ import type {
   CreatePageSectionRequest,
   PageSection,
   PageSectionListItem,
-  UpdatePageSectionRequest,
 } from "@/features/page-sections/types/page-section.types";
 
 const PAGE_SECTION_FORM_ID = "page-section-form";
@@ -152,14 +151,6 @@ export default function SectionsPage() {
     status: values.status,
   });
 
-  const toUpdateMutationPayload = (
-    values: PageSectionFormValues,
-  ): UpdatePageSectionRequest => ({
-    content: parseRequiredSectionContent(values.content),
-    settings: parseOptionalSectionContent(values.settings),
-    sortOrder: values.sortOrder,
-    status: values.status,
-  });
 
   // Create form submit (raw JSON form)
   const handleCreateSubmit = async (values: PageSectionFormValues) => {

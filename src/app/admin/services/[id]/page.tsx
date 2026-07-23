@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect } from "react";
+import { use } from "react";
 import { ServiceForm } from "@/features/services/components";
 import { useService } from "@/features/services/hooks/use-service";
 import { useUpdateService } from "@/features/services/hooks/use-update-service";

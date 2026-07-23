@@ -8,7 +8,8 @@ export const aboutSections = [
       highlight: "",
       description:
         "Webmatic Technology is a Full-service Creative and Strategic Digital Marketing serving businesses of all sizes worldwide.",
-      button: { text: "", url: "#statistics" },
+      ctaLabel: "Explore Our Story",
+      ctaTargetId: "company-overview",
       imageId: null,
     },
     settings: {},
@@ -75,7 +76,7 @@ export const aboutSections = [
           description: "Webmatic Technology starts by fully understanding your business objectives. Every strategy we create is designed with your goals at the forefront, ensuring we drive the results that matter most to you.",
           iconId: null,
           linkText: "Find Out More",
-          linkUrl: "/about"
+          linkUrl: "/about-us"
         },
         {
           title: "Exceptional Team",

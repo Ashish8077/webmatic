@@ -1,6 +1,5 @@
 import type { ComponentType } from "react";
 import type { JsonObject } from "@/shared/types/json";
-import type { z } from "zod";
 
 /**
  * Props contract that every section field component must accept.

@@ -19,7 +19,7 @@ export const homeSections = [
           highlight: "Convert & Grow",
           subheadline: "Drive business growth with creativity, analytics, and a strategy built around your goals.",
           primaryButton: { url: "/work", text: "See Our Work" },
-          secondaryButton: { url: "/about", text: "Learn More" },
+          secondaryButton: { url: "/about-us", text: "Learn More" },
           backgroundImageId: null,
         },
         {
@@ -51,7 +51,7 @@ export const homeSections = [
       description: "At Webmatic Technology, we've been dedicated to providing exceptional IT solutions and digital marketing services, evolving from a simple business plan to a globally recognised, award-winning agency.",
       bottomText: "We serve our clients' best interests with the best marketing solutions.",
       primaryButton: { url: "/contact", text: "Start a Project" },
-      learnMoreButton: { url: "/about", text: "Learn more about us" },
+      learnMoreButton: { url: "/about-us", text: "Learn more about us" },
       cards: [
         {
           badge: "Our Services",
@@ -64,7 +64,7 @@ export const homeSections = [
           badge: "Our Expertise",
           title: "Why Choose Webmatic",
           description: "Award-winning strategies backed by data, creativity, and a team that treats your brand like their own.",
-          button: { url: "/about", text: "What Makes Us Special" },
+          button: { url: "/about-us", text: "What Makes Us Special" },
           imageId: null
         },
         {
@@ -148,19 +148,19 @@ export const homeSections = [
       description: "Three core commitments that set us apart from every other digital marketing agency.",
       bottomText: "Still not sure? Let's talk — no pressure, no commitment.",
       primaryButton: { url: "/contact", text: "Talk to Us" },
-      learnMoreButton: { url: "/about", text: "Learn more about us" },
+      learnMoreButton: { url: "/about-us", text: "Learn more about us" },
       reasons: [
         {
           key: "customers-first",
           title: "Customers First",
           description: "Webmatic Technology starts by fully understanding your business objectives. Every strategy we create is designed with your goals at the forefront, ensuring we drive the results that matter most to you.",
-          button: { url: "/about", text: "Find Out More" },
+          button: { url: "/about-us", text: "Find Out More" },
         },
         {
           key: "exceptional-team",
           title: "Exceptional Team",
           description: "With our best in-house agency know-how, we can boast of having enterprise-level experience with a talented in-house team that definitely brings to the table when it comes to innovative digital marketing solutions.",
-          button: { url: "/about", text: "Meet The Team" },
+          button: { url: "/about-us", text: "Meet The Team" },
         },
         {
           key: "reliable-support",

@@ -6,7 +6,7 @@ import { PageSectionRow } from "../types/repository.types";
 import { UpdatePageSectionInput } from "../validation/update-page-section.schema";
 import { QueryValue } from "@/shared/types/database";
 import { toJson } from "@/shared/utils/database/json";
-import { PageStatus } from "@/modules/pages/constants/page.constants";
+
 import { SectionStatus } from "../constants/page-section.constants";
 
 /**

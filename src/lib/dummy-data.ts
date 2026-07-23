@@ -4,7 +4,7 @@
 // All dummy data in one place. Matches the API response shapes
 // so you can swap in fetch() calls later with minimal changes.
 
-import { HomeSectionData } from "@/modules/home/types/home.types";
+
 
 export interface DummyUser {
   id: number;

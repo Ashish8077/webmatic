@@ -37,13 +37,13 @@ export function ServicesContact() {
 
           {/* Headline - powerful and direct */}
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#081a4b] mb-8 leading-[1.1] tracking-tight">
-            Let's Build Something{" "}
+            Let&apos;s Build Something{" "}
             <span className="text-orange-500">Great Together</span>
           </h2>
 
           {/* Supporting copy - clear value proposition */}
           <p className="text-lg sm:text-xl text-slate-600 leading-relaxed mb-12 max-w-2xl mx-auto">
-            Schedule a free consultation with our team. We'll discuss your goals, 
+            Schedule a free consultation with our team. We&apos;ll discuss your goals, 
             answer your questions, and create a tailored strategy for your success.
           </p>
 

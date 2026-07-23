@@ -4,7 +4,6 @@ import type { JsonObject } from "@/shared/types/json";
 import {
   DEFAULT_TESTIMONIALS_CONTENT,
   type TestimonialsContentValues,
-  DEFAULT_TESTIMONIALS_SETTINGS,
   type TestimonialsSettingsValues,
 } from "../../schemas/testimonials.schema";
 import {

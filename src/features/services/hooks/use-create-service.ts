@@ -15,8 +15,9 @@ export function useCreateService() {
       toast.success("Service created successfully");
       router.push("/admin/services");
     },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "Failed to create service");
+    onError: (error: Error) => {
+      const err = error as Error & { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "Failed to create service");
     },
   });
 }

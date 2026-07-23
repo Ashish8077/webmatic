@@ -1,6 +1,6 @@
 "use client";
 
-import { ImagePlus, X, ImageIcon } from "lucide-react";
+import { ImagePlus, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
 

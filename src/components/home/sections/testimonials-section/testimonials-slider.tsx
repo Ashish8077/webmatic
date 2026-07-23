@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
 import { TestimonialItem } from "./types";
 
@@ -57,7 +58,7 @@ export function TestimonialsSlider({ items }: TestimonialsSliderProps) {
 
           {/* Title */}
           <h3 className="text-[20px] sm:text-[24px] font-bold text-navy leading-[1.375] mb-4">
-            "{t.title}"
+            &quot;{t.title}&quot;
           </h3>
 
           {/* Description */}
@@ -68,14 +69,18 @@ export function TestimonialsSlider({ items }: TestimonialsSliderProps) {
           {/* Author */}
           <div className="mt-8 flex items-center justify-center gap-4">
             {t.authorImageId && (
-              <img
-                src={`/api/media/${t.authorImageId}`}
-                alt={t.authorName}
-                className="h-12 w-12 rounded-full object-cover border-2 border-orange-100 shrink-0"
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-              />
+              <div className="relative h-12 w-12 shrink-0 rounded-full border-2 border-orange-100 overflow-hidden">
+                <Image
+                  src={`/api/media/${t.authorImageId}`}
+                  alt={t.authorName}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+              </div>
             )}
             <div className="text-left">
               <p className="text-[14px] font-bold text-navy uppercase tracking-wide">

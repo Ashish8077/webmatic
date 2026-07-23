@@ -14,8 +14,6 @@ import {
   ImageIdField,
   SectionHeadingFields,
   RepeaterField,
-  SwitchField,
-  NumberField,
 } from "../fields";
 
 type FormShape = {
@@ -55,9 +53,7 @@ export function parseServicesContentDefaults(
   };
 }
 
-export function parseServicesSettingsDefaults(
-  settings: JsonObject | undefined | null,
-): ServicesSettingsValues {
+export function parseServicesSettingsDefaults(): ServicesSettingsValues {
   return DEFAULT_SERVICES_SETTINGS;
 }
 
@@ -131,7 +127,7 @@ export function ServicesContentForm({ disabled }: { disabled?: boolean }) {
   );
 }
 
-export function ServicesSettingsForm({ disabled }: { disabled?: boolean }) {
+export function ServicesSettingsForm() {
   return (
     <div className="flex min-h-[100px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center animate-in fade-in-50">
       <p className="text-sm text-muted-foreground">

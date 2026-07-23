@@ -4,7 +4,7 @@ export interface DatabaseError {
   code?: string;
   constraint?: string;
   message?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export function isDuplicateKeyError(error: unknown): error is DatabaseError {
@@ -12,7 +12,7 @@ export function isDuplicateKeyError(error: unknown): error is DatabaseError {
     error !== null &&
     typeof error === "object" &&
     "code" in error &&
-    (error as any).code === "ER_DUP_ENTRY"
+    (error as Record<string, unknown>).code === "ER_DUP_ENTRY"
   );
 }
 

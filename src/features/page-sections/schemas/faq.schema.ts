@@ -4,7 +4,7 @@ import {
   optionalString,
   buttonSchema,
 } from "./common.schema";
-import { booleanSetting, numberSetting } from "./common-settings.schema";
+
 
 // ─── FAQ item schema ──────────────────────────────────────────────────────────
 

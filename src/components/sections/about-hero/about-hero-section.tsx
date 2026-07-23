@@ -11,7 +11,6 @@ export function AboutHeroSection({ content }: SectionProps) {
   const heading = data.heading;
   const highlight = data.highlight;
   const description = data.description;
-  const button = data.button;
   const imageUrl = data.imageId ? `/api/media/${data.imageId}` : "/hero/hero.jpg";
 
   return (
@@ -40,23 +39,26 @@ export function AboutHeroSection({ content }: SectionProps) {
           )}
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-serif leading-tight mb-6">
-            {heading}
+            {heading}{" "}
             {highlight && (
-              <span className="block">{highlight}</span>
+              <span className="text-orange-500 block mt-2">{highlight}</span>
             )}
           </h1>
 
-          <p className="text-base md:text-lg text-slate-200/90 leading-relaxed mb-10 max-w-xl">
-            {description}
-          </p>
+          {description && (
+            <p className="text-base md:text-lg text-slate-200/90 leading-relaxed mb-10 max-w-xl">
+              {description}
+            </p>
+          )}
 
-          {button?.url && (
+          {data.ctaLabel && (
             <Link
-              href={button.url}
-              className="inline-flex items-center justify-center w-14 h-14 bg-white rounded-full text-slate-800 hover:bg-orange-500 hover:text-white transition-colors duration-300 shadow-lg group"
-              aria-label={button.text || "Scroll down"}
+              href={data.ctaTargetId ? `#${data.ctaTargetId}` : "#"}
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-hero-primary px-7 py-3.5 text-[14px] font-semibold text-white shadow-lg transition-all duration-200 hover:bg-hero-primary-hover hover:-translate-y-0.5 active:translate-y-0"
+              aria-label={data.ctaLabel}
             >
-              <ArrowDown className="w-6 h-6 group-hover:animate-bounce" />
+              {data.ctaLabel}
+              <ArrowDown className="w-5 h-5 animate-bounce" />
             </Link>
           )}
         </div>

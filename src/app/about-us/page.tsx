@@ -48,7 +48,7 @@ export default async function AboutUsPage() {
             About Us Coming Soon
           </h1>
           <p className="relative text-muted-foreground text-lg">
-            Please create a page with slug "about-us" in the CMS and add the
+            Please create a page with slug &quot;about-us&quot; in the CMS and add the
             About Hero and Company Statistics sections.
           </p>
         </div>
@@ -74,7 +74,7 @@ export default async function AboutUsPage() {
       <Header />
       <main className="pt-[104px]">
         {sections.map((section) => (
-          <SectionRenderer key={section.id} section={section as any} />
+          <SectionRenderer key={section.id} section={section as unknown as React.ComponentProps<typeof SectionRenderer>["section"]} />
         ))}
       </main>
     </>
