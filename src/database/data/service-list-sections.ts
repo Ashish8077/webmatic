@@ -29,14 +29,14 @@ export const serviceListSections = [
     sectionType: "services",
     sortOrder: 2,
     content: {
-      heading: "",
-      subheading: "",
-      featuredOnly: false,
-      limit: 0,
+      badge: "WHAT WE DO",
+      heading: "We Believe in Building Strong Brands and",
+      highlight: "Integrated Strategies.",
+      viewAllButton: null,
+      bottomText: null,
+      primaryButton: null,
     },
-    settings: {
-      isVisible: true,
-    },
+    settings: null,
   },
 
   {

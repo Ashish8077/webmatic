@@ -3,10 +3,10 @@ import { HomeSectionType } from "@/modules/home/constants/home-section-types";
 import {
   AboutSection,
   HeroSection,
-  ServiceSection,
   WhyChooseUsSection,
   ContactCtaSection,
 } from "./sections";
+import { ServiceSection } from "@/components/sections/services/services-section";
 import { TestimonialsSection } from "@/components/sections/testimonials/testimonials-section";
 import { FaqSection } from "@/components/sections/faq";
 import { AboutHeroSection } from "@/components/sections/about-hero/about-hero-section";

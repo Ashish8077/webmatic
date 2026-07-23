@@ -87,51 +87,7 @@ export const homeSections = [
       highlight: "Integrated Strategies",
       bottomText: "Not sure which service fits your needs? Let's figure it out together.",
       primaryButton: { url: "/contact", text: "Talk to Us" },
-      viewAllButton: { url: "/services", text: "View all services" },
-      services: [
-        {
-          key: "brand-marketing",
-          title: "Brand Marketing",
-          description: "Focuses on conducting in-depth research on your customers, competitors, and search landscape to build a strong, memorable brand.",
-          button: { url: "/contact", text: "Talk Brand Strategy" },
-          imageId: null
-        },
-        {
-          key: "web-development",
-          title: "Web Development",
-          description: "Future-proof your website with scalable, secure, and high-performance web solutions tailored to your business needs.",
-          button: { url: "/contact", text: "Talk Web Development" },
-          imageId: null
-        },
-        {
-          key: "digital-marketing",
-          title: "Digital Marketing",
-          description: "Reach more customers through SEO, PPC, social media, and data-driven marketing strategies that deliver measurable growth.",
-          button: { url: "/contact", text: "Talk Digital Marketing" },
-          imageId: null
-        },
-        {
-          key: "app-development",
-          title: "App Development",
-          description: "Build modern mobile and web applications with seamless user experiences and scalable architecture.",
-          button: { url: "/contact", text: "Talk App Development" },
-          imageId: null
-        },
-        {
-          key: "content-writing",
-          title: "Content Writing",
-          description: "Create engaging, SEO-friendly content that attracts visitors, builds trust, and increases conversions.",
-          button: { url: "/contact", text: "Talk Content Writing" },
-          imageId: null
-        },
-        {
-          key: "game-development",
-          title: "Game App Development",
-          description: "Design and develop immersive gaming experiences for mobile and web platforms with engaging gameplay.",
-          button: { url: "/contact", text: "Talk Game App Development" },
-          imageId: null
-        }
-      ]
+      viewAllButton: { url: "/services", text: "View all services" }
     },
     settings: {
       columns: 1,

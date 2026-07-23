@@ -2,21 +2,9 @@ import { z } from "zod";
 import {
   requiredString,
   optionalString,
-  buttonSchema,
   optionalButtonSchema,
-  imageIdSchema,
 } from "./common.schema";
 
-
-// ─── Service item schema ──────────────────────────────────────────────────────
-
-const serviceItemSchema = z.object({
-  key: requiredString("Key"),
-  title: requiredString("Title"),
-  description: optionalString(1000),
-  imageId: imageIdSchema,
-  button: optionalButtonSchema,
-});
 
 // ─── Services content schema ──────────────────────────────────────────────────
 
@@ -25,9 +13,8 @@ export const servicesContentSchema = z.object({
   heading: requiredString("Heading"),
   highlight: optionalString(),
   viewAllButton: optionalButtonSchema,
-  services: z.array(serviceItemSchema),
   bottomText: optionalString(500),
-  primaryButton: buttonSchema,
+  primaryButton: optionalButtonSchema,
 });
 
 export type ServicesContentValues = z.infer<typeof servicesContentSchema>;
@@ -37,7 +24,6 @@ export const DEFAULT_SERVICES_CONTENT: ServicesContentValues = {
   heading: "",
   highlight: "",
   viewAllButton: { text: "", url: "" },
-  services: [],
   bottomText: "",
   primaryButton: { text: "", url: "" },
 };

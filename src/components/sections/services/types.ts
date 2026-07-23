@@ -1,21 +1,22 @@
-import { RawCMSButton } from "../types";
+import { RawCMSButton } from "@/components/home/sections/types";
 
 export interface CardItem {
   key: string;
   title: string;
   description: string;
   imageId: number | null;
-  button: RawCMSButton;
+  slug: string;
+  ctaButtonText?: string | null;
 }
 
 export interface RawServiceContent {
   badge: string;
   heading: string;
   highlight: string;
-  viewAllButton: RawCMSButton;
+  viewAllButton?: RawCMSButton;
   services: CardItem[];
-  bottomText: string;
-  primaryButton: RawCMSButton;
+  bottomText?: string;
+  primaryButton?: RawCMSButton;
 }
 
 export interface ServiceButton {
@@ -28,19 +29,16 @@ export interface ServiceCard {
   title: string;
   description: string;
   imageId: number | null;
-  button: ServiceButton;
+  slug: string;
+  ctaButtonText?: string | null;
 }
 
 export interface ServiceContent {
   badge: string;
   heading: string;
   highlight: string;
-
-  viewAllButton: ServiceButton;
-
+  viewAllButton?: ServiceButton;
   services: ServiceCard[];
-
-  bottomText: string;
-
-  primaryButton: ServiceButton;
+  bottomText?: string;
+  primaryButton?: ServiceButton;
 }

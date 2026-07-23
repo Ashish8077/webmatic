@@ -15,6 +15,9 @@ export interface ServiceListItem {
   id: number;
   name: string;
   slug: string;
+  shortDescription: string | null;
+  featuredImageId: number | null;
+  ctaButtonText: string | null;
   status: ServiceStatus;
   isFeatured: boolean;
   sortOrder: number;

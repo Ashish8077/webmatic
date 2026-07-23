@@ -41,6 +41,9 @@ export interface ServiceListRow extends RowDataPacket {
   id: number;
   name: string;
   slug: string;
+  short_description: string | null;
+  featured_image_id: number | null;
+  cta_button_text: string | null;
   status: ServiceStatus;
   is_featured: boolean;
   sort_order: number;

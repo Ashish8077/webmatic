@@ -3,6 +3,8 @@ import { findPublishedPageByTemplate } from "../../pages/repositories/page.repos
 import { PageSectionRow } from "../../pages-section/types/repository.types";
 import { HomePageData, HomeSectionData } from "../types/home.types";
 
+import { findServices } from "@/modules/services/repositories/service.repository";
+
 // ─── Data fetcher ─────────────────────────────────────────────────────────────
 
 /**
@@ -21,14 +23,43 @@ export async function getHomePageData(): Promise<HomePageData | null> {
     page.id,
   );
 
-  const sections: HomeSectionData[] = sectionRows.map((row) => ({
-    id: row.id,
-    sectionType: row.section_type,
-    title: row.title,
-    content: row.content,
-    settings: row.settings,
-    sortOrder: row.sort_order,
-  }));
+  const sections: HomeSectionData[] = await Promise.all(
+    sectionRows.map(async (row) => {
+      let content = row.content as Record<string, unknown>;
+
+      if (row.section_type === "services") {
+        const services = await findServices({
+          page: 1,
+          limit: 6,
+          status: "published",
+          isFeatured: true,
+          sortBy: "sort_order",
+          sortOrder: "asc",
+        });
+        
+        content = {
+          ...content,
+          services: services.map((service) => ({
+            key: service.slug,
+            title: service.name,
+            description: service.short_description,
+            imageId: service.featured_image_id,
+            slug: service.slug,
+            ctaButtonText: service.cta_button_text,
+          })),
+        };
+      }
+
+      return {
+        id: row.id,
+        sectionType: row.section_type,
+        title: row.title,
+        content,
+        settings: row.settings,
+        sortOrder: row.sort_order,
+      };
+    }),
+  );
 
   return {
     meta: {

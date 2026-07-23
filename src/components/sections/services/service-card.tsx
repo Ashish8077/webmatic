@@ -40,10 +40,10 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
 
       {/* CTA */}
       <Link
-        href="/services"
+        href={`/services/${service.slug}`}
         className={`inline-flex items-center gap-1.5 text-[14px] font-semibold ${text} transition-colors duration-200 group/link`}
       >
-        {service.button.text}
+        {service.ctaButtonText || `Talk ${service.title}`}
         <ArrowRight
           size={13}
           className="transition-transform duration-200 group-hover/link:translate-x-0.5"
