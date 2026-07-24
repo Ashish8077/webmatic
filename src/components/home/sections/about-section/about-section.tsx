@@ -20,7 +20,7 @@ export const AboutSection = ({ content }: SectionProps) => {
             {/* Top: Eyebrow and Heading */}
             <div>
               <span className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em] text-orange-500 mb-3">
-                <span className="h-px w-8 bg-orange-500 rounded-full" />
+                <span className="h-px w-6 bg-orange-500 rounded-full" />
                 {about.badge}
               </span>
               <h2 className="text-[30px] lg:text-[36px] font-bold leading-[1.15] text-navy">

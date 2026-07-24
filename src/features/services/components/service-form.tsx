@@ -193,6 +193,54 @@ export default function ServiceForm({
           </p>
         </div>
 
+        {/* Icon Selection */}
+        <div className="space-y-4 border border-card-border p-4 rounded-xl bg-surface">
+          <div>
+            <label className="text-sm font-medium text-foreground block mb-2">Service Icon</label>
+            <Controller
+              name="iconType"
+              control={form.control}
+              render={({ field }) => (
+                <ToggleGroup
+                  value={field.value || "library"}
+                  onChange={field.onChange}
+                  options={[
+                    { label: "Library Icon", value: "library" },
+                    { label: "Uploaded Image", value: "image" },
+                  ]}
+                  error={form.formState.errors.iconType?.message}
+                />
+              )}
+            />
+          </div>
+
+          <div className="pt-2">
+            {form.watch("iconType") === "image" ? (
+              <Controller
+                name="iconImageId"
+                control={form.control}
+                render={({ field }) => (
+                  <ImagePicker
+                    label="Icon Image"
+                    description="Upload or select an image to use as the icon."
+                    value={field.value}
+                    onChange={field.onChange}
+                    error={form.formState.errors.iconImageId?.message}
+                  />
+                )}
+              />
+            ) : (
+              <Input
+                label="Icon Name"
+                placeholder="e.g. Activity, Code, Zap"
+                {...form.register("iconName")}
+                error={form.formState.errors.iconName?.message}
+                hint="Enter the name of a Lucide React icon"
+              />
+            )}
+          </div>
+        </div>
+
         <Controller
           name="featuredImageId"
           control={form.control}

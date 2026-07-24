@@ -117,6 +117,9 @@ export async function findServices(
       name,
       slug,
       short_description,
+      icon_type,
+      icon_name,
+      icon_image_id,
       featured_image_id,
       cta_button_text,
       status,
@@ -152,6 +155,9 @@ export async function findServiceById(
       description,
       featured_image_id,
       banner_image_id,
+      icon_type,
+      icon_name,
+      icon_image_id,
       key_features,
       benefits,
       faq,
@@ -239,6 +245,9 @@ export async function createService(
       description,
       featured_image_id,
       banner_image_id,
+      icon_type,
+      icon_name,
+      icon_image_id,
       key_features,
       benefits,
       faq,
@@ -264,7 +273,7 @@ export async function createService(
       created_by,
       updated_by
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CASE WHEN ? THEN CURRENT_TIMESTAMP ELSE NULL END, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CASE WHEN ? THEN CURRENT_TIMESTAMP ELSE NULL END, ?, ?)
     `,
     [
       service.name,
@@ -273,6 +282,9 @@ export async function createService(
       service.description,
       service.featured_image_id,
       service.banner_image_id,
+      service.icon_type,
+      service.icon_name,
+      service.icon_image_id,
       service.key_features,
       service.benefits,
       service.faq,
@@ -342,6 +354,21 @@ export async function updateService(
   if (updateData.banner_image_id !== undefined) {
     updates.push("banner_image_id = ?");
     values.push(updateData.banner_image_id);
+  }
+
+  if (updateData.icon_type !== undefined) {
+    updates.push("icon_type = ?");
+    values.push(updateData.icon_type);
+  }
+
+  if (updateData.icon_name !== undefined) {
+    updates.push("icon_name = ?");
+    values.push(updateData.icon_name);
+  }
+
+  if (updateData.icon_image_id !== undefined) {
+    updates.push("icon_image_id = ?");
+    values.push(updateData.icon_image_id);
   }
 
   if (updateData.key_features !== undefined) {

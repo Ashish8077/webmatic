@@ -16,7 +16,8 @@ export const ServiceSection = ({ content }: SectionProps) => {
         {/* ── Section header ──────────────────────────────── */}
         <div className="mb-14 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
           <div>
-            <span className="inline-block mb-4 text-[12px] font-bold uppercase tracking-[0.2em] text-orange-500">
+            <span className="inline-flex items-center gap-2 mb-4 text-[12px] font-bold uppercase tracking-[0.2em] text-orange-500">
+              <span className="h-px w-6 bg-orange-500 rounded-full" />
               {service.badge}
             </span>
             <h2 className="text-[30px] lg:text-[36px] font-bold leading-[1.15] text-navy">

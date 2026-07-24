@@ -35,6 +35,10 @@ export const createServiceSchema = z
 
     bannerImageId: nullablePositiveInt,
 
+    iconType: z.enum(["library", "image"]).default("library"),
+    iconName: emptyStringToNull(100).default(null),
+    iconImageId: nullablePositiveInt,
+
     keyFeatures: stringArray(255).default([]),
 
     benefits: stringArray(255).default([]),

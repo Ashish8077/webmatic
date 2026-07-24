@@ -42,6 +42,9 @@ export interface ServiceListRow extends RowDataPacket {
   name: string;
   slug: string;
   short_description: string | null;
+  icon_type: "library" | "image";
+  icon_name: string | null;
+  icon_image_id: number | null;
   featured_image_id: number | null;
   cta_button_text: string | null;
   status: ServiceStatus;
@@ -69,6 +72,9 @@ export interface ServiceDetailsRow extends RowDataPacket {
 
   featured_image_id: number | null;
   banner_image_id: number | null;
+  icon_type: "library" | "image";
+  icon_name: string | null;
+  icon_image_id: number | null;
 
   key_features: JsonObject | null;
   benefits: JsonObject | null;

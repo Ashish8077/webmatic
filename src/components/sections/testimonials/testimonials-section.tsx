@@ -34,8 +34,10 @@ export function TestimonialsSection({ content }: SectionProps) {
         {/* ── Section header ──────────────────────────────── */}
         <div className="mb-14 text-center">
           {data.badge && (
-            <span className="inline-block mb-4 text-[12px] font-bold uppercase tracking-[0.2em] text-orange-500">
+            <span className="inline-flex items-center gap-2 mb-4 text-[12px] font-bold uppercase tracking-[0.2em] text-orange-500">
+              <span className="h-px w-6 bg-orange-500 rounded-full" />
               {data.badge}
+              <span className="h-px w-6 bg-orange-500 rounded-full" />
             </span>
           )}
           <h2 className="text-[30px] lg:text-[36px] font-bold leading-[1.15] text-navy">

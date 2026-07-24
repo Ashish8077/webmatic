@@ -37,6 +37,10 @@ export const updateServiceSchema = z
 
     bannerImageId: nullablePositiveInt.optional(),
 
+    iconType: z.enum(["library", "image"]).optional(),
+    iconName: emptyStringToNull(100).optional(),
+    iconImageId: nullablePositiveInt.optional(),
+
     keyFeatures: stringArray(255).optional(),
 
     benefits: stringArray(255).optional(),

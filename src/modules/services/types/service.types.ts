@@ -17,6 +17,9 @@ export interface ServiceListItem {
   slug: string;
   shortDescription: string | null;
   featuredImageId: number | null;
+  iconType: "library" | "image";
+  iconName: string | null;
+  iconImageId: number | null;
   ctaButtonText: string | null;
   status: ServiceStatus;
   isFeatured: boolean;
@@ -39,6 +42,9 @@ export interface ServiceDetailsResponse {
   
   featuredImageId: number | null;
   bannerImageId: number | null;
+  iconType: "library" | "image";
+  iconName: string | null;
+  iconImageId: number | null;
 
   keyFeatures: string[] | null;
   benefits: string[] | null;
@@ -84,6 +90,9 @@ export interface CreateServicePayload {
 
   featured_image_id: number | null;
   banner_image_id: number | null;
+  icon_type: "library" | "image";
+  icon_name: string | null;
+  icon_image_id: number | null;
 
   key_features: string | null; // stored as JSON string
   benefits: string | null;     // stored as JSON string
