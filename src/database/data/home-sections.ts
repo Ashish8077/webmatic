@@ -136,30 +136,6 @@ export const homeSections = [
       heading: "What Our",
       highlight: "Clients Say",
       description: "Real words from real clients who've grown with Webmatic Technology.",
-      testimonials: [
-        {
-          testimonialTitle: "Creative and Flawless Execution",
-          clientName: "Mrs. Linda",
-          clientDesignation: "Group Head of Digital Communications",
-          companyName: "",
-          testimonialDescription: "Creative and flawless execution with a sense of urgency and focus on results is how I'd describe the Webmatic team.",
-          imageId: null,
-          rating: 5,
-          sortOrder: 1,
-          status: "published"
-        },
-        {
-          testimonialTitle: "Webmatic Has Been Invaluable",
-          clientName: "Pam Hurley",
-          clientDesignation: "President",
-          companyName: "Hurley Write Inc.",
-          testimonialDescription: "Webmatic has been invaluable. They understand our brand and have given my ideas new life in a social media obsessed world.",
-          imageId: null,
-          rating: 5,
-          sortOrder: 2,
-          status: "published"
-        }
-      ]
     },
     settings: null,
   },

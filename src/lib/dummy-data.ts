@@ -217,30 +217,6 @@ export const dummySections: DummySection[] = [
     sectionType: "testimonials",
     title: "What Our Clients Say",
     content: {
-      testimonials: [
-        {
-          clientName: "John Doe",
-          clientDesignation: "CEO",
-          companyName: "",
-          testimonialTitle: "Outstanding service",
-          testimonialDescription: "Outstanding service and results.",
-          imageId: null,
-          rating: 5,
-          sortOrder: 1,
-          status: "published"
-        },
-        {
-          clientName: "Jane Smith",
-          clientDesignation: "CTO",
-          companyName: "",
-          testimonialTitle: "Transformed our business",
-          testimonialDescription: "Transformed our business completely.",
-          imageId: null,
-          rating: 5,
-          sortOrder: 2,
-          status: "published"
-        },
-      ],
     },
     sortOrder: 2,
     isActive: true,
@@ -286,14 +262,6 @@ export const dummySections: DummySection[] = [
     sectionType: "services",
     title: "What We Offer",
     content: {
-      services: [
-        {
-          title: "Web Development",
-          description: "Full-stack web applications",
-        },
-        { title: "Mobile Apps", description: "iOS and Android development" },
-        { title: "Cloud Solutions", description: "AWS, GCP, Azure services" },
-      ],
     },
     sortOrder: 0,
     isActive: true,

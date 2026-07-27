@@ -13,6 +13,7 @@ import {
   ButtonFields,
   SectionHeadingFields,
   RepeaterField,
+  VisualPickerField,
 } from "../fields";
 
 type FormShape = {
@@ -46,6 +47,9 @@ export function parseWhyChooseUsContentDefaults(
         key: reason.key ?? "",
         title: reason.title ?? "",
         description: reason.description ?? "",
+        visualType: reason.visualType ?? "none",
+        iconName: reason.iconName ?? null,
+        imageId: reason.imageId ?? null,
         button: {
           text: reason.button?.text ?? "",
           url: reason.button?.url ?? "",
@@ -91,6 +95,9 @@ export function WhyChooseUsContentForm({ disabled }: { disabled?: boolean }) {
           key: "",
           title: "",
           description: "",
+          visualType: "none",
+          iconName: null,
+          imageId: null,
           button: { text: "", url: "" },
         }}
         disabled={disabled}
@@ -118,6 +125,11 @@ export function WhyChooseUsContentForm({ disabled }: { disabled?: boolean }) {
               name={`content.reasons.${index}.button`}
               label="Button"
               disabled={disabled}
+            />
+            <VisualPickerField
+              name={`content.reasons.${index}`}
+              label="Reason Visual"
+              description="Select an icon or image for this reason."
             />
           </div>
         )}

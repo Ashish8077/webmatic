@@ -7,6 +7,7 @@ import {
   stringArray,
 } from "@/shared/utils/validators/zod-helpers";
 import { z } from "zod";
+import { visualAssetSchema } from "@/shared/schemas/visual-asset.schema";
 import { SERVICE_STATUS } from "../constants/service.constants";
 
 export const updateServiceSchema = z
@@ -37,9 +38,9 @@ export const updateServiceSchema = z
 
     bannerImageId: nullablePositiveInt.optional(),
 
-    iconType: z.enum(["library", "image"]).optional(),
-    iconName: emptyStringToNull(100).optional(),
-    iconImageId: nullablePositiveInt.optional(),
+    visualType: visualAssetSchema.shape.visualType.optional(),
+    iconName: visualAssetSchema.shape.iconName.optional(),
+    imageId: visualAssetSchema.shape.imageId.optional(),
 
     keyFeatures: stringArray(255).optional(),
 
@@ -88,6 +89,22 @@ export const updateServiceSchema = z
     message: "At least one field must be provided for update",
   })
   .superRefine((data, ctx) => {
+    // Validate visual asset rules if visualType is provided
+    if (data.visualType) {
+      const isIconNull = data.iconName === null || data.iconName === undefined;
+      const isImageNull = data.imageId === null || data.imageId === undefined;
+
+      if (data.visualType === "none" && (!isIconNull || !isImageNull)) {
+        ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+      }
+      if (data.visualType === "icon" && (isIconNull || !isImageNull)) {
+        ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+      }
+      if (data.visualType === "image" && (isImageNull || !isIconNull)) {
+        ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+      }
+    }
+
     // If status is provided in the payload and is 'published', validate required fields.
     // Note: This only validates fields present in the payload. The service layer
     // handles validation of the full entity state when publishing.

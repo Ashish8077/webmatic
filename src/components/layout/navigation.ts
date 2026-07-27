@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Briefcase, LayoutDashboard, StickyNotePlus } from "lucide-react";
+import { Briefcase, LayoutDashboard, StickyNotePlus, MessageSquareQuote } from "lucide-react";
 import { Permission } from "@/features/auth/constants/permissions";
 
 type NavItem = {
@@ -27,5 +27,11 @@ export const navItems: NavItem[] = [
     href: "/admin/services",
     permission: Permission.PAGE_VIEW,
     icon: Briefcase,
+  },
+  {
+    label: "Testimonials",
+    href: "/admin/testimonials",
+    permission: Permission.PAGE_VIEW,
+    icon: MessageSquareQuote,
   },
 ];

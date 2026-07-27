@@ -1,10 +1,10 @@
 "use client";
 // React
-import { useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 
 // Next.js
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 // Third-party
 import { ArrowLeft, Plus } from "lucide-react";
@@ -62,8 +62,12 @@ import type {
 
 const PAGE_SECTION_FORM_ID = "page-section-form";
 
-export default function SectionsPage() {
-  const { id } = useParams<{ id: string }>();
+export default function SectionsPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params);
 
   const router = useRouter();
   const pageId = Number(id);

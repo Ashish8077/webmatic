@@ -4,6 +4,7 @@ import { PageSectionRow } from "../../pages-section/types/repository.types";
 import { HomePageData, HomeSectionData } from "../types/home.types";
 
 import { findServices } from "@/modules/services/repositories/service.repository";
+import { findTestimonials } from "@/modules/testimonials/repositories/testimonial.repository";
 
 // ─── Data fetcher ─────────────────────────────────────────────────────────────
 
@@ -46,6 +47,29 @@ export async function getHomePageData(): Promise<HomePageData | null> {
             imageId: service.featured_image_id,
             slug: service.slug,
             ctaButtonText: service.cta_button_text,
+          })),
+        };
+      }
+
+      if (row.section_type === "testimonials") {
+        const testimonials = await findTestimonials({
+          page: 1,
+          limit: 10,
+          status: "published",
+          sortBy: "sort_order",
+          sortOrder: "asc",
+        });
+        
+        content = {
+          ...content,
+          testimonials: testimonials.map((t) => ({
+            clientName: t.client_name,
+            clientDesignation: t.designation || "",
+            companyName: t.company_name || "",
+            imageId: t.profile_image_id,
+            testimonialTitle: t.title || "",
+            testimonialDescription: t.description,
+            rating: t.rating,
           })),
         };
       }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Controller, useFieldArray } from "react-hook-form";
+import { Controller, useFieldArray, FormProvider } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup } from "@/components/ui/toggle-group";
@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { SeoFields } from "@/components/shared/seo";
 import { RichTextEditor } from "@/components/shared/editor";
 import { ImagePicker } from "@/components/shared/media";
+import { VisualPickerField } from "@/features/page-sections/components/fields";
 import type { ServiceFormValues } from "../schemas/service.schema";
 import { Star, Plus, Trash2 } from "lucide-react";
 import clsx from "clsx";
@@ -99,7 +100,8 @@ export default function ServiceForm({
   });
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
       {/* ────────────────────────────────────────────────────────────────────────
           SECTION 1 — BASIC INFORMATION
       ──────────────────────────────────────────────────────────────────────── */}
@@ -126,7 +128,7 @@ export default function ServiceForm({
                       "p-1.5 rounded-full transition-colors",
                       field.value
                         ? "text-yellow-400 bg-yellow-400/10"
-                        : "text-muted-foreground hover:bg-surface-hover"
+                        : "text-muted-foreground hover:bg-surface-hover",
                     )}
                   >
                     <Star
@@ -170,7 +172,7 @@ export default function ServiceForm({
             error={form.formState.errors.slug?.message}
           />
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <Input
             label="Sort Order"
@@ -189,56 +191,18 @@ export default function ServiceForm({
         <div className="mb-4">
           <h3 className="text-lg font-semibold">Listing Information</h3>
           <p className="text-sm text-muted-foreground mt-1">
-            Displayed on the Homepage, Services page, Related Services, and other service listings.
+            Displayed on the Homepage, Services page, Related Services, and
+            other service listings.
           </p>
         </div>
 
         {/* Icon Selection */}
         <div className="space-y-4 border border-card-border p-4 rounded-xl bg-surface">
-          <div>
-            <label className="text-sm font-medium text-foreground block mb-2">Service Icon</label>
-            <Controller
-              name="iconType"
-              control={form.control}
-              render={({ field }) => (
-                <ToggleGroup
-                  value={field.value || "library"}
-                  onChange={field.onChange}
-                  options={[
-                    { label: "Library Icon", value: "library" },
-                    { label: "Uploaded Image", value: "image" },
-                  ]}
-                  error={form.formState.errors.iconType?.message}
-                />
-              )}
-            />
-          </div>
-
-          <div className="pt-2">
-            {form.watch("iconType") === "image" ? (
-              <Controller
-                name="iconImageId"
-                control={form.control}
-                render={({ field }) => (
-                  <ImagePicker
-                    label="Icon Image"
-                    description="Upload or select an image to use as the icon."
-                    value={field.value}
-                    onChange={field.onChange}
-                    error={form.formState.errors.iconImageId?.message}
-                  />
-                )}
-              />
-            ) : (
-              <Input
-                label="Icon Name"
-                placeholder="e.g. Activity, Code, Zap"
-                {...form.register("iconName")}
-                error={form.formState.errors.iconName?.message}
-                hint="Enter the name of a Lucide React icon"
-              />
-            )}
-          </div>
+          <VisualPickerField
+            name=""
+            label="Service Visual"
+            description="Select an icon or image for the service card."
+          />
         </div>
 
         <Controller
@@ -270,7 +234,8 @@ export default function ServiceForm({
         <div>
           <h3 className="text-lg font-semibold">Detail Page</h3>
           <p className="text-sm text-muted-foreground mt-1">
-            Displayed on the individual service page after the visitor opens the service.
+            Displayed on the individual service page after the visitor opens the
+            service.
           </p>
         </div>
 
@@ -370,9 +335,7 @@ export default function ServiceForm({
             </Button>
           </div>
           {faqField.fields.length === 0 && (
-            <p className="text-sm text-muted-foreground py-2">
-              No FAQs added.
-            </p>
+            <p className="text-sm text-muted-foreground py-2">No FAQs added.</p>
           )}
           <div className="grid gap-4 md:grid-cols-2">
             {faqField.fields.map((field, index) => (
@@ -398,9 +361,7 @@ export default function ServiceForm({
                   label="Question"
                   placeholder="Enter question"
                   {...form.register(`faq.${index}.question` as const)}
-                  error={
-                    form.formState.errors.faq?.[index]?.question?.message
-                  }
+                  error={form.formState.errors.faq?.[index]?.question?.message}
                 />
                 <Textarea
                   label="Answer"
@@ -485,6 +446,7 @@ export default function ServiceForm({
           {submitLabel}
         </Button>
       </div>
-    </form>
+      </form>
+    </FormProvider>
   );
 }

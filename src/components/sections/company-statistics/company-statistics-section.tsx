@@ -1,5 +1,6 @@
-
 import { str, arr } from "@/components/home/content-helpers";
+import { VisualRenderer } from "@/components/ui/visual-renderer";
+import type { VisualAsset } from "@/shared/types/visual-asset.types";
 
 import type { SectionProps } from "@/components/home/sections/types";
 
@@ -28,6 +29,17 @@ export function CompanyStatisticsSection({ content }: SectionProps) {
 
               {/* Decorative top accent */}
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-1.5 bg-orange-500/80 rounded-b-full transition-all duration-500 group-hover:w-32 group-hover:bg-hero-primary" />
+
+              {/* Optional Visual */}
+              {Boolean(item.visualType) && (item.visualType as string) !== "none" && (
+                <div className="relative mb-6 w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
+                  <VisualRenderer
+                    asset={item as unknown as VisualAsset}
+                    className="w-full h-full rounded-2xl"
+                    iconClassName="w-8 h-8 text-orange-500"
+                  />
+                </div>
+              )}
 
               {/* Number */}
               <div className="relative mb-5 flex items-baseline justify-center">

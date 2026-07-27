@@ -9,7 +9,7 @@ import {
   TextField,
   TextareaField,
   RepeaterField,
-  MediaPickerField,
+  VisualPickerField,
   NumberField,
 } from "../fields";
 
@@ -28,6 +28,8 @@ export function parseTeamMembersContentDefaults(
         name: m.name ?? "",
         designation: m.designation ?? "",
         description: m.description ?? "",
+        visualType: m.visualType ?? "none",
+        iconName: m.iconName ?? null,
         imageId: m.imageId ?? null,
         sortOrder: m.sortOrder ?? 0,
       })) ?? DEFAULT_TEAM_MEMBERS_CONTENT.members,
@@ -70,6 +72,8 @@ export function TeamMembersContentForm({
           name: "",
           designation: "",
           description: "",
+          visualType: "none",
+          iconName: null,
           imageId: null,
           sortOrder: 0,
         }}
@@ -96,10 +100,10 @@ export function TeamMembersContentForm({
               disabled={disabled}
             />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <MediaPickerField
-                name={`content.members.${index}.imageId`}
-                label="Profile Image"
-                disabled={disabled}
+              <VisualPickerField
+                name={`content.members.${index}`}
+                label="Profile Visual"
+                description="Select an image or icon for this member."
               />
               <NumberField
                 name={`content.members.${index}.sortOrder`}

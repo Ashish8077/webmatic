@@ -6,12 +6,17 @@ import { requirePermission } from "@/modules/auth/authorization/permission";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { toServiceListItems } from "../mapper/service.mapper";
 import type { ServiceListItem, ServiceListResponse } from "../types/service.types";
+import { AppError } from "@/shared/utils/errors/app-error";
 
 export async function getServicesService(
   query: GetServicesQuery,
-  user: AuthUser,
+  user?: AuthUser,
 ): Promise<ServiceListResponse> {
-  requirePermission(user, PERMISSIONS.SERVICES_VIEW);
+  if (user) {
+    requirePermission(user, PERMISSIONS.SERVICES_VIEW);
+  } else if (query.status !== "published") {
+    throw new AppError("Unauthorized: Can only view published services", 401);
+  }
   
   const [rows, totalItems] = await Promise.all([
     findServices(query),

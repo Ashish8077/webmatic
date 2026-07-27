@@ -1,7 +1,8 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { WhyUsReason } from "./types";
-import { ICON_MAP } from "./constants";
+import { VisualRenderer } from "@/components/ui/visual-renderer";
+import type { VisualAsset } from "@/shared/types/visual-asset.types";
 
 interface ServiceCardProps {
   reason: WhyUsReason;
@@ -9,15 +10,24 @@ interface ServiceCardProps {
 }
 
 export function WhyUsCards({ reason, index }: ServiceCardProps) {
-  const { icon: Icon } = ICON_MAP[reason.key as keyof typeof ICON_MAP];
   const formattedIndex = index.toString().padStart(2, "0");
+
+  const hasVisual = reason.visualType && reason.visualType !== "none";
 
   return (
     <article className="group flex flex-col gap-4 rounded-2xl bg-white ring-1 ring-green-100 p-7 shadow-lg shadow-green-100/80 hover:shadow-xl hover:shadow-green-200/60 hover:ring-green-300 hover:-translate-y-1 transition-all duration-300">
       {/* Icon + Number row */}
       <div className="flex items-center justify-between">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 text-primary group-hover:bg-green-600 group-hover:text-white transition-all duration-300">
-          <Icon size={22} strokeWidth={1.75} />
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 text-primary group-hover:bg-green-600 group-hover:text-white transition-all duration-300 overflow-hidden">
+          {hasVisual ? (
+            <VisualRenderer
+              asset={reason as unknown as VisualAsset}
+              className="w-full h-full"
+              iconClassName="w-[22px] h-[22px] text-primary group-hover:text-white transition-colors duration-300"
+            />
+          ) : (
+            <ShieldCheck size={22} strokeWidth={1.75} />
+          )}
         </div>
         <span
           className="text-4xl font-black leading-none select-none text-slate-200 group-hover:text-slate-300 transition-colors duration-300"

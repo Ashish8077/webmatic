@@ -5,6 +5,9 @@ export interface RawWhyUsReason {
   title: string;
   description: string;
   button: RawCMSButton;
+  visualType?: "none" | "icon" | "image";
+  iconName?: string | null;
+  imageId?: number | null;
 }
 
 export interface RawWhyUsContent {
@@ -26,6 +29,9 @@ export interface WhyUsReason {
     to: string;
     text: string;
   };
+  visualType?: "none" | "icon" | "image";
+  iconName?: string | null;
+  imageId?: number | null;
 }
 
 export interface WhyUsContent {

@@ -13,6 +13,10 @@ export interface CreateServiceRequest {
   featuredImageId?: number | null;
   bannerImageId?: number | null;
 
+  visualType?: "none" | "icon" | "image";
+  iconName?: string | null;
+  imageId?: number | null;
+
   keyFeatures?: string[] | null;
   benefits?: string[] | null;
   faq?: { question: string; answer: string }[] | null;
@@ -51,6 +55,9 @@ export interface ServiceListItem {
   status: ServiceStatus;
   isFeatured: boolean;
   sortOrder: number;
+  visualType: "none" | "icon" | "image";
+  iconName: string | null;
+  imageId: number | null;
   publishedAt: string | null;
   updatedAt: string;
 }
@@ -71,6 +78,10 @@ export interface Service {
   
   featuredImageId: number | null;
   bannerImageId: number | null;
+
+  visualType: "none" | "icon" | "image";
+  iconName: string | null;
+  imageId: number | null;
 
   keyFeatures: string[] | null;
   benefits: string[] | null;

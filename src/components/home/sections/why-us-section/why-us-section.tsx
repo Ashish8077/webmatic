@@ -10,6 +10,8 @@ export const WhyChooseUsSection = ({ content }: SectionProps) => {
     content as unknown as RawWhyUsContent,
   );
 
+  console.log(content);
+
   return (
     <div className="relative">
       {/* ── Green header band ──────────────────────── */}
@@ -61,7 +63,13 @@ export const WhyChooseUsSection = ({ content }: SectionProps) => {
         <div className="mx-auto max-w-[1170px] px-5 sm:px-8 -mt-24 lg:-mt-32 pb-16 sm:pb-20 relative z-10">
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {whyChooseSection.reasons.map((reason, index) => {
-              return <WhyUsCards key={reason.key} reason={reason} index={index + 1} />;
+              return (
+                <WhyUsCards
+                  key={reason.key}
+                  reason={reason}
+                  index={index + 1}
+                />
+              );
             })}
           </div>
 

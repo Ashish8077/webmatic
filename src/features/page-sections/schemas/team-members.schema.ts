@@ -1,11 +1,24 @@
 import { z } from "zod";
+import { visualAssetSchema } from "@/shared/schemas/visual-asset.schema";
 
 export const teamMemberSchema = z.object({
   name: z.string().min(1, "Name is required"),
   designation: z.string().min(1, "Designation is required"),
   description: z.string().optional().default(""),
-  imageId: z.number().nullable().optional(),
+  visualType: visualAssetSchema.shape.visualType,
+  iconName: visualAssetSchema.shape.iconName,
+  imageId: visualAssetSchema.shape.imageId,
   sortOrder: z.number().optional().default(0),
+}).superRefine((data, ctx) => {
+  if (data.visualType === "none" && (data.iconName !== null || data.imageId !== null)) {
+    ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+  }
+  if (data.visualType === "icon" && (data.iconName === null || data.imageId !== null)) {
+    ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+  }
+  if (data.visualType === "image" && (data.imageId === null || data.iconName !== null)) {
+    ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+  }
 });
 
 export const teamMembersContentSchema = z.object({
@@ -27,6 +40,8 @@ export const DEFAULT_TEAM_MEMBERS_CONTENT: TeamMembersContentValues = {
       name: "",
       designation: "",
       description: "",
+      visualType: "none",
+      iconName: null,
       imageId: null,
       sortOrder: 0,
     },

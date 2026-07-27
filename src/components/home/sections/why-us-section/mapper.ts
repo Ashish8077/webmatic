@@ -20,6 +20,9 @@ export function normaliseWhyUsContent(raw: RawWhyUsContent): WhyUsContent {
         text: reason.button?.text,
         to: reason.button?.url,
       },
+      visualType: reason.visualType,
+      iconName: reason.iconName,
+      imageId: reason.imageId,
     })),
 
     bottomText: raw.bottomText,

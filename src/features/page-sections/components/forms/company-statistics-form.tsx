@@ -9,7 +9,7 @@ import {
   TextField,
   TextareaField,
   RepeaterField,
-  MediaPickerField,
+  VisualPickerField,
   NumberField,
 } from "../fields";
 
@@ -26,7 +26,9 @@ export function parseCompanyStatisticsContentDefaults(
         suffix: item.suffix ?? "",
         title: item.title ?? "",
         description: item.description ?? "",
-        iconId: (item.iconId as number | null) ?? null,
+        visualType: item.visualType ?? "none",
+        iconName: item.iconName ?? null,
+        imageId: (item.imageId as number | null) ?? null,
         sortOrder: item.sortOrder ?? 0,
       })) ?? DEFAULT_COMPANY_STATISTICS_CONTENT.items,
   };
@@ -43,7 +45,9 @@ export function CompanyStatisticsContentForm({ disabled }: { disabled?: boolean 
           suffix: "+",
           title: "",
           description: "",
-          iconId: null,
+          visualType: "none",
+          iconName: null,
+          imageId: null,
           sortOrder: 0,
         }}
         disabled={disabled}
@@ -86,10 +90,10 @@ export function CompanyStatisticsContentForm({ disabled }: { disabled?: boolean 
             />
 
             <div className="pt-2">
-              <MediaPickerField
-                name={`content.items.${index}.iconId`}
-                label="Icon (Optional)"
-                disabled={disabled}
+              <VisualPickerField
+                name={`content.items.${index}`}
+                label="Statistic Visual (Optional)"
+                description="Select an icon or image for this statistic."
               />
             </div>
           </div>

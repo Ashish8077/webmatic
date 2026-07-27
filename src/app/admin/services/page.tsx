@@ -5,20 +5,29 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
-import { ServiceListTable } from "@/features/services/components";
+import { 
+  ServiceListTable, 
+  ServiceListFilters, 
+  ServiceListPagination 
+} from "@/features/services/components";
 import { useServices } from "@/features/services/hooks/use-services";
+import { useServiceFilters } from "@/features/services/hooks/use-service-filters";
 import { useDeleteService } from "@/features/services/hooks/use-delete-service";
 import { useUpdateService } from "@/features/services/hooks/use-update-service";
 import type { ServiceListItem } from "@/features/services/types/service.types";
 
 export default function ServicesPage() {
-  const [page] = useState(1);
+  const {
+    query,
+    updateSearch,
+    updateStatus,
+    updateSort,
+    updatePagination,
+  } = useServiceFilters();
+
   const [serviceToDelete, setServiceToDelete] = useState<ServiceListItem | null>(null);
 
-  const { data, isLoading } = useServices({
-    page,
-    limit: 10,
-  });
+  const { data, isLoading } = useServices(query);
 
   const deleteMutation = useDeleteService();
   const updateMutation = useUpdateService();
@@ -58,6 +67,13 @@ export default function ServicesPage() {
         </Link>
       </div>
 
+      <ServiceListFilters
+        query={query}
+        onSearchChange={updateSearch}
+        onStatusChange={updateStatus}
+        onSortChange={updateSort}
+      />
+
       <ServiceListTable
         services={data?.data?.items || []}
         isLoading={isLoading}
@@ -65,6 +81,13 @@ export default function ServicesPage() {
         onToggleStatus={handleToggleStatus}
         onToggleFeatured={handleToggleFeatured}
       />
+
+      {data?.data?.pagination && (
+        <ServiceListPagination
+          pagination={data.data.pagination}
+          onPaginationChange={updatePagination}
+        />
+      )}
 
       <ConfirmDialog
         isOpen={!!serviceToDelete}

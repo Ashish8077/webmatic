@@ -4,11 +4,20 @@ import ServiceCard from "./service-card";
 import { SectionProps } from "@/components/home/sections/types";
 import { normaliseServiceContent } from "./mapper";
 import { RawServiceContent } from "./types";
+import { getServicesService } from "@/modules/services/services/get-services.service";
 
-export const ServiceSection = ({ content }: SectionProps) => {
+export const ServiceSection = async ({ content }: SectionProps) => {
   const service = normaliseServiceContent(
     content as unknown as RawServiceContent,
   );
+
+  const servicesResponse = await getServicesService({
+    page: 1,
+    limit: 100,
+    status: "published",
+    sortBy: "sort_order",
+    sortOrder: "asc",
+  });
 
   return (
     <section className="bg-slate-50 py-20 lg:py-28">
@@ -42,8 +51,8 @@ export const ServiceSection = ({ content }: SectionProps) => {
 
         {/* ── Services grid ───────────────────────────────── */}
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {service.services.map((serviceItem) => (
-            <ServiceCard key={serviceItem.key} service={serviceItem} />
+          {servicesResponse.items.map((serviceItem) => (
+            <ServiceCard key={serviceItem.id} service={serviceItem} />
           ))}
         </div>
 

@@ -3,11 +3,20 @@ import { normaliseTestimonialContent } from "./mapper";
 import type { RawTestimonialContent } from "./types";
 import { TestimonialsSlider } from "./testimonials-slider";
 import Image from "next/image";
+import { getTestimonialsService } from "@/modules/testimonials/services/get-testimonials.service";
 
-export function TestimonialsSection({ content }: SectionProps) {
+export async function TestimonialsSection({ content }: SectionProps) {
   const data = normaliseTestimonialContent(
     content as unknown as RawTestimonialContent,
   );
+
+  const testimonialsResponse = await getTestimonialsService({
+    page: 1,
+    limit: 100,
+    status: "published",
+    sortBy: "sort_order",
+    sortOrder: "asc",
+  });
 
   const bgStyle = data.backgroundColor ? { backgroundColor: data.backgroundColor } : {};
 
@@ -54,7 +63,7 @@ export function TestimonialsSection({ content }: SectionProps) {
         </div>
 
         {/* ── Testimonials slider (Client Component) ──────── */}
-        <TestimonialsSlider items={data.testimonials} />
+        <TestimonialsSlider items={testimonialsResponse.items} />
       </div>
     </section>
   );

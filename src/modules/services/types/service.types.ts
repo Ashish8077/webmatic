@@ -1,6 +1,51 @@
 import { JsonObject } from "@/shared/types/json";
 import { PaginationMeta } from "@/shared/types/pagination";
+import { VisualType } from "@/shared/types/visual-asset.types";
 import { ServiceStatus } from "../constants/service.constants";
+
+export interface CreateServiceRequest {
+  name: string;
+  slug: string;
+  shortDescription?: string | null;
+  description?: string | null;
+  
+  featuredImageId?: number | null;
+  bannerImageId?: number | null;
+
+  visualType: VisualType;
+  iconName: string | null;
+  imageId: number | null;
+
+  keyFeatures?: string[] | null;
+  benefits?: string[] | null;
+  faq?: { question: string; answer: string }[] | null;
+
+  ctaTitle?: string | null;
+  ctaDescription?: string | null;
+  ctaButtonText?: string | null;
+  ctaButtonUrl?: string | null;
+
+  seoTitle?: string | null;
+  metaDescription?: string | null;
+  metaKeywords?: string | null;
+  canonicalUrl?: string | null;
+
+  openGraphTitle?: string | null;
+  openGraphDescription?: string | null;
+  openGraphImageId?: number | null;
+
+  twitterTitle?: string | null;
+  twitterDescription?: string | null;
+  twitterImageId?: number | null;
+
+  schemaMarkup?: JsonObject | null;
+
+  status?: ServiceStatus;
+  isFeatured?: boolean;
+  sortOrder?: number;
+}
+
+export type UpdateServiceRequest = Partial<CreateServiceRequest>;
 
 export interface CreateServiceResponse {
   service: {
@@ -17,9 +62,9 @@ export interface ServiceListItem {
   slug: string;
   shortDescription: string | null;
   featuredImageId: number | null;
-  iconType: "library" | "image";
+  visualType: VisualType;
   iconName: string | null;
-  iconImageId: number | null;
+  imageId: number | null;
   ctaButtonText: string | null;
   status: ServiceStatus;
   isFeatured: boolean;
@@ -42,9 +87,9 @@ export interface ServiceDetailsResponse {
   
   featuredImageId: number | null;
   bannerImageId: number | null;
-  iconType: "library" | "image";
+  visualType: VisualType;
   iconName: string | null;
-  iconImageId: number | null;
+  imageId: number | null;
 
   keyFeatures: string[] | null;
   benefits: string[] | null;
@@ -90,9 +135,9 @@ export interface CreateServicePayload {
 
   featured_image_id: number | null;
   banner_image_id: number | null;
-  icon_type: "library" | "image";
+  visual_type: VisualType;
   icon_name: string | null;
-  icon_image_id: number | null;
+  image_id: number | null;
 
   key_features: string | null; // stored as JSON string
   benefits: string | null;     // stored as JSON string

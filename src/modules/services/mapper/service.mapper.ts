@@ -48,9 +48,9 @@ export function toCreateServicePayload(
     featured_image_id: serviceData.featuredImageId,
     banner_image_id: serviceData.bannerImageId,
 
-    icon_type: serviceData.iconType,
+    visual_type: serviceData.visualType,
     icon_name: serviceData.iconName,
-    icon_image_id: serviceData.iconImageId,
+    image_id: serviceData.imageId,
 
     key_features: JSON.stringify(serviceData.keyFeatures),
     benefits: JSON.stringify(serviceData.benefits),
@@ -102,12 +102,12 @@ export function toUpdateServicePayload(
   if (updates.bannerImageId !== undefined)
     payload.banner_image_id = updates.bannerImageId;
 
-  if (updates.iconType !== undefined)
-    payload.icon_type = updates.iconType;
+  if (updates.visualType !== undefined)
+    payload.visual_type = updates.visualType;
   if (updates.iconName !== undefined)
     payload.icon_name = updates.iconName;
-  if (updates.iconImageId !== undefined)
-    payload.icon_image_id = updates.iconImageId;
+  if (updates.imageId !== undefined)
+    payload.image_id = updates.imageId;
 
   if (updates.keyFeatures !== undefined) {
     payload.key_features = updates.keyFeatures
@@ -184,9 +184,9 @@ export function toServiceDetailsResponse(
     featuredImageId: service.featured_image_id,
     bannerImageId: service.banner_image_id,
 
-    iconType: service.icon_type,
+    visualType: service.visual_type,
     iconName: service.icon_name,
-    iconImageId: service.icon_image_id,
+    imageId: service.image_id,
 
     keyFeatures: service.key_features as string[] | null,
     benefits: service.benefits as string[] | null,
@@ -241,9 +241,9 @@ export function toServiceListItem(service: ServiceListRow): ServiceListItem {
     name: service.name,
     slug: service.slug,
     shortDescription: service.short_description,
-    iconType: service.icon_type,
+    visualType: service.visual_type,
     iconName: service.icon_name,
-    iconImageId: service.icon_image_id,
+    imageId: service.image_id,
     featuredImageId: service.featured_image_id,
     ctaButtonText: service.cta_button_text,
     status: service.status,

@@ -1,6 +1,7 @@
 import { JsonObject } from "@/shared/types/json";
 import { PaginationQuery } from "@/shared/types/pagination";
 import { RowDataPacket } from "mysql2";
+import { VisualType } from "@/shared/types/visual-asset.types";
 import { ServiceStatus } from "../constants/service.constants";
 
 export interface ServiceSlugRow extends RowDataPacket {
@@ -42,9 +43,9 @@ export interface ServiceListRow extends RowDataPacket {
   name: string;
   slug: string;
   short_description: string | null;
-  icon_type: "library" | "image";
+  visual_type: VisualType;
   icon_name: string | null;
-  icon_image_id: number | null;
+  image_id: number | null;
   featured_image_id: number | null;
   cta_button_text: string | null;
   status: ServiceStatus;
@@ -72,9 +73,9 @@ export interface ServiceDetailsRow extends RowDataPacket {
 
   featured_image_id: number | null;
   banner_image_id: number | null;
-  icon_type: "library" | "image";
+  visual_type: VisualType;
   icon_name: string | null;
-  icon_image_id: number | null;
+  image_id: number | null;
 
   key_features: JsonObject | null;
   benefits: JsonObject | null;

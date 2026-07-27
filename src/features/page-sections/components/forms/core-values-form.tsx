@@ -9,7 +9,7 @@ import {
   TextField,
   TextareaField,
   RepeaterField,
-  MediaPickerField,
+  VisualPickerField,
 } from "../fields";
 
 type FormShape = { content: CoreValuesContentValues };
@@ -50,7 +50,9 @@ export function CoreValuesContentForm({ disabled }: { disabled?: boolean }) {
         defaultItem={{
           title: "",
           description: "",
-          iconId: null,
+          visualType: "none",
+          iconName: null,
+          imageId: null,
           linkText: "",
           linkUrl: "",
         }}
@@ -68,9 +70,10 @@ export function CoreValuesContentForm({ disabled }: { disabled?: boolean }) {
               placeholder="Write description here..."
               disabled={disabled}
             />
-            <MediaPickerField
-              name={`content.values.${index}.iconId`}
-              disabled={disabled}
+            <VisualPickerField
+              name={`content.values.${index}`}
+              label="Core Value Visual"
+              description="Select an icon or image for this core value."
             />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <TextField

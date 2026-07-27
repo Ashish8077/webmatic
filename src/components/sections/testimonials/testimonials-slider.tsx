@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Star, Quote, User } from "lucide-react";
-import { TestimonialItem } from "./types";
+import { TestimonialItem } from "@/modules/testimonials/types/service.types";
 
 interface TestimonialsSliderProps {
   items: TestimonialItem[];
@@ -23,7 +23,7 @@ export function TestimonialsSlider({ items }: TestimonialsSliderProps) {
     },
     [items.length, isAnimating],
   );
-  
+
   const prev = () => goTo(current - 1);
   const next = useCallback(() => goTo(current + 1), [current, goTo]);
 
@@ -52,7 +52,7 @@ export function TestimonialsSlider({ items }: TestimonialsSliderProps) {
             <Quote size={24} className="text-white fill-white" />
           </div>
 
-          <div 
+          <div
             className={`transition-opacity duration-500 ${isAnimating ? "opacity-0" : "opacity-100"}`}
           >
             <div className="flex items-center justify-center gap-1 mb-6">
@@ -60,29 +60,35 @@ export function TestimonialsSlider({ items }: TestimonialsSliderProps) {
                 <Star
                   key={i}
                   size={20}
-                  className={t.rating > i ? "text-orange-500 fill-orange-500" : "text-slate-200 fill-slate-200"}
+                  className={
+                    t.rating > i
+                      ? "text-orange-500 fill-orange-500"
+                      : "text-slate-200 fill-slate-200"
+                  }
                 />
               ))}
             </div>
 
             {/* Title */}
-            {t.testimonialTitle && (
+            {t.title && (
               <h3 className="text-2xl sm:text-3xl font-bold text-navy leading-tight mb-4">
-                &quot;{t.testimonialTitle}&quot;
+                {t.title}
               </h3>
             )}
 
             {/* Description */}
-            <p className={`text-lg sm:text-xl leading-relaxed text-slate-600 max-w-2xl mx-auto font-medium italic ${!t.testimonialTitle ? 'mt-4' : ''}`}>
-              &quot;{t.testimonialDescription}&quot;
+            <p
+              className={`text-lg sm:text-xl leading-relaxed text-slate-600 max-w-2xl mx-auto font-medium italic ${!t.title ? "mt-4" : ""}`}
+            >
+              &quot;{t.description}&quot;
             </p>
 
             {/* Author */}
             <div className="mt-10 flex flex-col items-center justify-center gap-4">
               <div className="relative h-16 w-16 shrink-0 rounded-full bg-slate-100 border-2 border-slate-200 overflow-hidden flex items-center justify-center shadow-sm">
-                {t.imageId ? (
+                {t.profileImageId ? (
                   <Image
-                    src={`/api/media/${t.imageId}`}
+                    src={`/api/media/${t.profileImageId}`}
                     alt={t.clientName}
                     fill
                     className="object-cover"
@@ -96,14 +102,16 @@ export function TestimonialsSlider({ items }: TestimonialsSliderProps) {
                 )}
               </div>
               <div className="text-center">
-                <p className="text-base font-bold text-navy">
-                  {t.clientName}
-                </p>
-                {(t.clientDesignation || t.companyName) && (
+                <p className="text-base font-bold text-navy">{t.clientName}</p>
+                {(t.designation || t.companyName) && (
                   <p className="text-sm text-slate-500 mt-1 font-medium">
-                    {t.clientDesignation}
-                    {t.clientDesignation && t.companyName && <span className="mx-1.5 opacity-50">•</span>}
-                    {t.companyName && <span className="text-orange-600">{t.companyName}</span>}
+                    {t.designation}
+                    {t.designation && t.companyName && (
+                      <span className="mx-1.5 opacity-50">•</span>
+                    )}
+                    {t.companyName && (
+                      <span className="text-orange-600">{t.companyName}</span>
+                    )}
                   </p>
                 )}
               </div>

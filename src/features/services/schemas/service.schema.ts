@@ -8,6 +8,7 @@ import {
 } from "@/shared/utils/validators/zod-helpers";
 import { z } from "zod";
 import type { JsonObject } from "@/shared/types/json";
+import { visualAssetSchema } from "@/shared/schemas/visual-asset.schema";
 
 export const SERVICE_STATUS = ["draft", "published"] as const;
 
@@ -37,9 +38,9 @@ export const serviceSchema = z
 
     bannerImageId: nullablePositiveInt.optional(),
 
-    iconType: z.enum(["library", "image"]).optional(),
-    iconName: emptyStringToNull(100).optional(),
-    iconImageId: nullablePositiveInt.optional(),
+    visualType: visualAssetSchema.shape.visualType.optional(),
+    iconName: visualAssetSchema.shape.iconName.optional(),
+    imageId: visualAssetSchema.shape.imageId.optional(),
 
     keyFeatures: stringArray(255).optional(),
 
@@ -84,6 +85,21 @@ export const serviceSchema = z
     sortOrder: nonNegativeInt.optional(),
   })
   .superRefine((data, ctx) => {
+    if (data.visualType) {
+      const isIconNull = data.iconName === null || data.iconName === undefined;
+      const isImageNull = data.imageId === null || data.imageId === undefined;
+
+      if (data.visualType === "none" && (!isIconNull || !isImageNull)) {
+        ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+      }
+      if (data.visualType === "icon" && (isIconNull || !isImageNull)) {
+        ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+      }
+      if (data.visualType === "image" && (isImageNull || !isIconNull)) {
+        ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+      }
+    }
+
     if (data.status === "published") {
       if (!data.description) {
         ctx.addIssue({

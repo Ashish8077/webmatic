@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Users, Award, LifeBuoy } from "lucide-react";
+import { VisualRenderer } from "@/components/ui/visual-renderer";
 import { type CoreValuesContentValues } from "@/features/page-sections/schemas/core-values.schema";
 
 interface Props {
@@ -7,8 +7,7 @@ interface Props {
   settings?: Record<string, unknown>;
 }
 
-/** Maps value index to a lucide icon for visual variety when no CMS image is set. */
-const FALLBACK_ICONS = [Users, Award, LifeBuoy] as const;
+
 
 export function CoreValuesSection({ content }: Props) {
   const data = content as unknown as CoreValuesContentValues;
@@ -31,8 +30,6 @@ export function CoreValuesSection({ content }: Props) {
         {/* ── Values grid ─────────────────────────────────── */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {values.map((item, index) => {
-            const Icon = FALLBACK_ICONS[index % FALLBACK_ICONS.length];
-
             return (
               <div
                 key={index}
@@ -46,7 +43,18 @@ export function CoreValuesSection({ content }: Props) {
 
                 {/* Icon */}
                 <div className="relative mb-8 w-20 h-20 rounded-2xl bg-orange-50 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-orange-500 group-hover:shadow-[0_8px_20px_rgba(249,115,22,0.3)]">
-                  <Icon className="w-9 h-9 text-orange-500 transition-colors duration-500 group-hover:text-white" strokeWidth={1.5} />
+                  {item.visualType === "none" && !item.imageId ? (
+                    <div className="w-9 h-9 text-orange-500 transition-colors duration-500 group-hover:text-white rounded-full border-2 border-current flex items-center justify-center">
+                       {/* Fallback default icon */}
+                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                  ) : (
+                    <VisualRenderer
+                      asset={item}
+                      className="w-full h-full rounded-2xl"
+                      iconClassName="w-9 h-9 text-orange-500 transition-colors duration-500 group-hover:text-white"
+                    />
+                  )}
                 </div>
 
                 <h3 className="relative text-xl font-bold text-navy mb-4 group-hover:text-orange-500 transition-colors duration-300">

@@ -117,9 +117,9 @@ export async function findServices(
       name,
       slug,
       short_description,
-      icon_type,
+      visual_type,
       icon_name,
-      icon_image_id,
+      image_id,
       featured_image_id,
       cta_button_text,
       status,
@@ -155,9 +155,9 @@ export async function findServiceById(
       description,
       featured_image_id,
       banner_image_id,
-      icon_type,
+      visual_type,
       icon_name,
-      icon_image_id,
+      image_id,
       key_features,
       benefits,
       faq,
@@ -245,9 +245,9 @@ export async function createService(
       description,
       featured_image_id,
       banner_image_id,
-      icon_type,
+      visual_type,
       icon_name,
-      icon_image_id,
+      image_id,
       key_features,
       benefits,
       faq,
@@ -282,9 +282,9 @@ export async function createService(
       service.description,
       service.featured_image_id,
       service.banner_image_id,
-      service.icon_type,
+      service.visual_type,
       service.icon_name,
-      service.icon_image_id,
+      service.image_id,
       service.key_features,
       service.benefits,
       service.faq,
@@ -356,9 +356,9 @@ export async function updateService(
     values.push(updateData.banner_image_id);
   }
 
-  if (updateData.icon_type !== undefined) {
-    updates.push("icon_type = ?");
-    values.push(updateData.icon_type);
+  if (updateData.visual_type !== undefined) {
+    updates.push("visual_type = ?");
+    values.push(updateData.visual_type);
   }
 
   if (updateData.icon_name !== undefined) {
@@ -366,9 +366,9 @@ export async function updateService(
     values.push(updateData.icon_name);
   }
 
-  if (updateData.icon_image_id !== undefined) {
-    updates.push("icon_image_id = ?");
-    values.push(updateData.icon_image_id);
+  if (updateData.image_id !== undefined) {
+    updates.push("image_id = ?");
+    values.push(updateData.image_id);
   }
 
   if (updateData.key_features !== undefined) {
