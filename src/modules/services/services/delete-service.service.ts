@@ -1,5 +1,8 @@
 import { AppError } from "@/shared/utils/errors/app-error";
-import { findServiceById, softDeleteService } from "../repositories/service.repository";
+import {
+  findServiceById,
+  softDeleteService,
+} from "../repositories/service.repository";
 import { AuthUser } from "@/modules/auth/types/auth-user";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";

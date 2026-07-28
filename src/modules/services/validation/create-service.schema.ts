@@ -88,13 +88,25 @@ export const createServiceSchema = z
     const isImageNull = data.imageId === null || data.imageId === undefined;
 
     if (data.visualType === "none" && (!isIconNull || !isImageNull)) {
-      ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["visualType"],
+        message: "Invalid visual asset configuration.",
+      });
     }
     if (data.visualType === "icon" && (isIconNull || !isImageNull)) {
-      ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["visualType"],
+        message: "Invalid visual asset configuration.",
+      });
     }
     if (data.visualType === "image" && (isImageNull || !isIconNull)) {
-      ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["visualType"],
+        message: "Invalid visual asset configuration.",
+      });
     }
 
     if (data.status !== "published") return;

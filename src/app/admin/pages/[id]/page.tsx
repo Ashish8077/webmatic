@@ -23,7 +23,6 @@ export default function EditPagePage({
   const updatePageMutation = useUpdatePage(pageId);
   const page = data?.data;
 
-  console.log(page);
 
   const formValues = useMemo(() => {
     return page

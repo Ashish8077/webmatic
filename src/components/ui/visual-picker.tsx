@@ -32,14 +32,14 @@ export function VisualPicker({
     } else if (newType === "icon") {
       onChange({
         visualType: "icon",
-        iconName: value?.iconName || null,
+        iconName: value?.iconName ?? null,
         imageId: null,
       });
     } else if (newType === "image") {
       onChange({
         visualType: "image",
         iconName: null,
-        imageId: value?.imageId || null,
+        imageId: value?.imageId ?? null,
       });
     }
   };
@@ -113,7 +113,7 @@ export function VisualPicker({
               Select Icon
             </label>
             <IconPicker
-              value={value?.iconName || null}
+              value={value?.iconName ?? null}
               onChange={handleIconChange}
             />
           </div>
@@ -122,7 +122,7 @@ export function VisualPicker({
         {value.visualType === "image" && (
           <div className="space-y-2">
             <ImagePicker
-              value={value?.imageId || null}
+              value={value?.imageId ?? null}
               onChange={handleImageChange}
             />
           </div>

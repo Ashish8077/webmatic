@@ -5,6 +5,7 @@ import { ServiceForm } from "@/features/services/components";
 import { useService } from "@/features/services/hooks/use-service";
 import { useUpdateService } from "@/features/services/hooks/use-update-service";
 import { useServiceForm } from "@/features/services/hooks/use-service-form";
+import { getDirtyValues } from "@/features/services/utils/get-dirty-values";
 import { notFound } from "next/navigation";
 import { ApiError } from "@/lib/api/errors";
 import { applyServerErrors } from "@/shared/utils/form/apply-server-errors";
@@ -19,7 +20,7 @@ export default function EditServicePage({
 
   const { data, isLoading, isError } = useService(serviceId, !isNaN(serviceId));
   const updateMutation = useUpdateService();
-  
+
   const form = useServiceForm(data?.data);
 
   if (isError || isNaN(serviceId)) {
@@ -48,9 +49,15 @@ export default function EditServicePage({
         form={form}
         onSubmit={async (formData) => {
           try {
+            const dirtyFields = form.formState.dirtyFields;
+            const changedData = getDirtyValues(
+              dirtyFields as Record<string, unknown>,
+              formData,
+            );
+
             await updateMutation.mutateAsync({
               id: serviceId,
-              data: formData,
+              data: changedData,
             });
           } catch (error) {
             if (error instanceof ApiError) {

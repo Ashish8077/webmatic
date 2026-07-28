@@ -33,9 +33,9 @@ export function VisualPickerField({
   const imageId = watch(getFieldName("imageId"));
 
   const value: VisualAsset = {
-    visualType: visualType || "none",
-    iconName: iconName || null,
-    imageId: imageId || null,
+    visualType: visualType ?? "none",
+    iconName: iconName ?? null,
+    imageId: imageId ?? null,
   };
 
   const handleChange = (newValue: VisualAsset) => {

@@ -10,6 +10,7 @@ import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { AuthUser } from "@/modules/auth/types/auth-user";
 import { toUpdateServicePayload } from "../mapper/service.mapper";
+import { revalidatePath } from "next/cache";
 
 export async function updateServiceService(
   serviceId: number,
@@ -54,7 +55,7 @@ export async function updateServiceService(
     }
 
     const updatePayload = toUpdateServicePayload(serviceData);
-
+ 
     const updatedServiceCount = await updateService(
       serviceId,
       updatePayload,
@@ -64,6 +65,10 @@ export async function updateServiceService(
     if (updatedServiceCount === 0) {
       throw new AppError("Service not found", 404);
     }
+
+    revalidatePath("/");
+    revalidatePath("/services");
+    revalidatePath(`/services/${serviceData.slug}`);
   } catch (error) {
     handleDuplicateConstraint(error, {
       uk_services_slug: {

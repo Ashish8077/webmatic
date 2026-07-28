@@ -38,9 +38,9 @@ export const updateServiceSchema = z
 
     bannerImageId: nullablePositiveInt.optional(),
 
-    visualType: visualAssetSchema.shape.visualType.optional(),
-    iconName: visualAssetSchema.shape.iconName.optional(),
-    imageId: visualAssetSchema.shape.imageId.optional(),
+    visualType: z.enum(["none", "icon", "image"]).optional(),
+    iconName: emptyStringToNull(100).optional(),
+    imageId: nullablePositiveInt.optional(),
 
     keyFeatures: stringArray(255).optional(),
 
@@ -95,13 +95,25 @@ export const updateServiceSchema = z
       const isImageNull = data.imageId === null || data.imageId === undefined;
 
       if (data.visualType === "none" && (!isIconNull || !isImageNull)) {
-        ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+        ctx.addIssue({
+          code: "custom",
+          path: ["visualType"],
+          message: "Invalid visual asset configuration.",
+        });
       }
       if (data.visualType === "icon" && (isIconNull || !isImageNull)) {
-        ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+        ctx.addIssue({
+          code: "custom",
+          path: ["visualType"],
+          message: "Invalid visual asset configuration.",
+        });
       }
       if (data.visualType === "image" && (isImageNull || !isIconNull)) {
-        ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+        ctx.addIssue({
+          code: "custom",
+          path: ["visualType"],
+          message: "Invalid visual asset configuration.",
+        });
       }
     }
 
@@ -116,7 +128,7 @@ export const updateServiceSchema = z
           message: "Description is required when publishing.",
         });
       }
-      
+
       if (data.featuredImageId === null) {
         ctx.addIssue({
           code: "custom",
@@ -124,7 +136,7 @@ export const updateServiceSchema = z
           message: "Featured image is required when publishing.",
         });
       }
-      
+
       if (data.seoTitle === null || data.seoTitle === "") {
         ctx.addIssue({
           code: "custom",
@@ -132,7 +144,7 @@ export const updateServiceSchema = z
           message: "SEO title is required when publishing.",
         });
       }
-      
+
       if (data.metaDescription === null || data.metaDescription === "") {
         ctx.addIssue({
           code: "custom",

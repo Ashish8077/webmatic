@@ -15,6 +15,7 @@ import {
   toCreateServiceResponse,
 } from "../mapper/service.mapper";
 import { CreateServiceResponse } from "../types/service.types";
+import { revalidatePath } from "next/cache";
 
 export async function createServiceService(
   serviceData: CreateServiceInput,
@@ -48,6 +49,9 @@ export async function createServiceService(
     const createServiceRequest = toCreateServicePayload(serviceData);
     const serviceId = await createService(createServiceRequest, user.userId);
 
+    revalidatePath("/");
+    revalidatePath("/services");
+
     return toCreateServiceResponse({
       id: serviceId,
       name: createServiceRequest.name,
@@ -56,8 +60,14 @@ export async function createServiceService(
     });
   } catch (error) {
     handleDuplicateConstraint(error, {
-      uk_services_slug: { field: "slug", message: "Service slug already exists." },
-      uk_services_name: { field: "name", message: "Service name already exists." },
+      uk_services_slug: {
+        field: "slug",
+        message: "Service slug already exists.",
+      },
+      uk_services_name: {
+        field: "name",
+        message: "Service name already exists.",
+      },
     });
     throw error;
   }

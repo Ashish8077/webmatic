@@ -58,7 +58,6 @@ export default async function AboutUsPage() {
 
   const sectionRows = await findPageActiveSectionsByPageId(page.id);
 
-  console.log(sectionRows);
 
   const sections = sectionRows.map((row) => ({
     id: row.id,

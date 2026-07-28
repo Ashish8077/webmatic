@@ -15,7 +15,6 @@ import {
   UpdateServicePayload,
 } from "../types/service.types";
 
-
 type SortBy = NonNullable<GetServicesQuery["sortBy"]>;
 
 export const SORT_COLUMNS: Record<SortBy, string> = {
@@ -491,6 +490,8 @@ export async function updateService(
   values.push(userId);
 
   values.push(serviceId);
+
+  console.log(updates, values);
 
   const [result] = await db.execute<ResultSetHeader>(
     `
