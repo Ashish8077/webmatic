@@ -46,7 +46,7 @@ export const imageIdSchema = z
   .positive("Invalid image ID.")
   .nullable();
 
-export const requiredImageIdSchema = (label: string) => z
+export const requiredImageIdSchema = (_label: string) => z
   .number()
   .int()
   .positive("Invalid image ID.");

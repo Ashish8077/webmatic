@@ -46,7 +46,7 @@ export function TestimonialsSlider({ items }: TestimonialsSliderProps) {
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
-        <div className="relative rounded-3xl bg-white border border-slate-100 px-6 sm:px-16 py-12 sm:py-16 text-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-500 hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)]">
+        <div className="relative rounded-2xl bg-slate-50 border border-slate-200 px-6 sm:px-16 py-12 sm:py-16 text-center shadow-sm hover:shadow-md transition-all duration-500">
           {/* Quote icon */}
           <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex h-14 w-14 items-center justify-center rounded-full bg-primary shadow-lg shadow-primary/30 ring-4 ring-white">
             <Quote size={24} className="text-white fill-white" />

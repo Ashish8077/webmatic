@@ -22,7 +22,7 @@ export async function TestimonialsSection({ content }: SectionProps) {
 
   return (
     <section 
-      className={`relative py-20 lg:py-28 overflow-hidden ${!data.backgroundColor && !data.backgroundImageId ? "bg-slate-50" : ""}`}
+      className={`relative py-20 lg:py-28 overflow-hidden ${!data.backgroundColor && !data.backgroundImageId ? "bg-white" : ""}`}
       style={bgStyle}
     >
       {/* Background Image */}

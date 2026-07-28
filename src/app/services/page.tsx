@@ -5,6 +5,7 @@ import { ServicesFaq } from "./_components/services-faq";
 import { getServiceListPageData } from "@/modules/pages/services/get-public-page";
 import { ContactCtaSection } from "@/components/home/sections/contact-cta-section/contact-cta-section";
 import { TestimonialsSection } from "@/components/sections/testimonials/testimonials-section";
+import { DevelopmentProcessSection } from "./_components/development-process";
 import { ServiceSection } from "@/components/sections/services/services-section";
 import type { ServicesHeroContentValues } from "@/features/page-sections/schemas/services-hero.schema";
 
@@ -58,6 +59,7 @@ export default async function ServicesPage() {
         {testimonialsSection && (
           <TestimonialsSection content={testimonialsSection.content} />
         )}
+        <DevelopmentProcessSection />
         <ServicesFaq />
         {contactCtaSection && (
           <ContactCtaSection content={contactCtaSection.content} />

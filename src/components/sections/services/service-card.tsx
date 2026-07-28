@@ -18,7 +18,7 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
   const theme = COLOR_THEMES[themeIndex];
 
   return (
-    <article className={`group flex flex-col gap-5 rounded-2xl bg-white p-7 border border-slate-100 ${theme.border} shadow-sm hover:shadow-lg ${theme.shadow} hover:-translate-y-1 transition-all duration-300`}>
+    <article className={`group flex flex-col gap-5 rounded-2xl bg-slate-50 p-7 border border-slate-200 ${theme.border} shadow-sm hover:shadow-md ${theme.shadow} hover:-translate-y-1 transition-all duration-300`}>
       {/* Icon */}
       <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${theme.bg} ${theme.text} ${theme.hoverBg} group-hover:text-white transition-all duration-300 overflow-hidden`}>
         {service.visualType === "icon" && service.iconName ? (
