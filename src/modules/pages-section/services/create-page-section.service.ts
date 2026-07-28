@@ -1,7 +1,7 @@
 import { findPageById } from "@/modules/pages/repositories/page.repository";
 import { CreatePageSectionInput } from "../validation/create-page-section.schema";
 import { AppError } from "@/shared/utils/errors/app-error";
-import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
+import { handleDuplicateConstraint } from "@/shared/utils/errors/database-error.util";
 import { PageSectionResponse } from "../types/api.types";
 import {
   createPageSection,
@@ -11,7 +11,7 @@ import { AuthUser } from "@/modules/auth/types/auth-user";
 import { toCreatePageSectionResponse } from "../mapper/page-section.mapper";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
-import { PAGE_STATUS } from "@/modules/pages/constants/page.constants";
+
 import {
   SECTION_STATUS,
   SectionStatus,
@@ -47,15 +47,12 @@ export async function createPageSectionService(
 
     return toCreatePageSectionResponse(pageSection);
   } catch (error) {
-    if (isDuplicateKeyError(error)) {
-      throw new AppError(
-        "A section of this type already exists on this page.",
-        409,
-        {
-          sectionType: ["Duplicate section type."],
-        },
-      );
-    }
+    handleDuplicateConstraint(error, {
+      uk_page_section_type_per_page: {
+        field: "sectionType",
+        message: "A section of this type already exists on this page.",
+      },
+    });
     throw error;
   }
 }

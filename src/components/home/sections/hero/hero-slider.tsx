@@ -1,7 +1,6 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { SectionProps } from "../types";
-import { AUTOPLAY_DELAY } from "./hero.constants";
 import { normaliseHeroSlides } from "./hero.normalizers";
 import BackgroundRings from "./background-rings";
 import DecorativeShapes from "./decorative-shapes";
@@ -13,7 +12,7 @@ import { parseHeroSettingsDefaults } from "@/features/page-sections/components/f
 export function HeroSlider({ content, settings }: SectionProps) {
   const slides = useMemo(() => normaliseHeroSlides(content), [content]);
   const parsedSettings = useMemo(
-    () => parseHeroSettingsDefaults(settings as any),
+    () => parseHeroSettingsDefaults(settings as Record<string, unknown>),
     [settings],
   );
 

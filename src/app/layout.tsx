@@ -21,11 +21,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark h-full antialiased ${inter.className}`}
+      className="dark h-full antialiased scroll-smooth"
       style={{ colorScheme: "dark" }}
     >
-      <head></head>
-      <body className="min-h-full flex flex-col">
+      <body className={`min-h-full flex flex-col ${inter.className}`}>
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>

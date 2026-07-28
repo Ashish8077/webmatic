@@ -6,6 +6,8 @@ export function applyServerErrors<T extends FieldValues>(
 ) {
   if (!errors) return;
 
+  console.log(errors);
+
   for (const field in errors) {
     const message = errors[field as Path<T>];
 

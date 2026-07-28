@@ -1,7 +1,6 @@
 import { paginationSchema } from "@/shared/schemas/pagination";
 import z from "zod";
 import { PAGE_STATUS } from "../constants/page.constants";
-import { customPageTemplateSchema } from "../constants/page-templates";
 
 export const getPagesQuerySchema = paginationSchema
   .extend({
@@ -17,8 +16,6 @@ export const getPagesQuerySchema = paginationSchema
         "published_at",
       ])
       .default("updated_at"),
-
-    sortOrder: z.enum(["asc", "desc"]).default("desc"),
   })
   .strict();
 

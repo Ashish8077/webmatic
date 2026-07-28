@@ -6,6 +6,12 @@ export const HOME_SECTION_TYPES = [
   "testimonials",
   "faq",
   "contact-cta",
+  "about-hero",
+  "company-statistics",
+  "company-overview",
+  "core-values",
+  "mission-vision",
+  "team-members",
 ] as const;
 
 export type HomeSectionType = (typeof HOME_SECTION_TYPES)[number];

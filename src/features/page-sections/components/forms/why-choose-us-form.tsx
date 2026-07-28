@@ -13,6 +13,7 @@ import {
   ButtonFields,
   SectionHeadingFields,
   RepeaterField,
+  VisualPickerField,
 } from "../fields";
 
 type FormShape = {
@@ -46,6 +47,9 @@ export function parseWhyChooseUsContentDefaults(
         key: reason.key ?? "",
         title: reason.title ?? "",
         description: reason.description ?? "",
+        visualType: reason.visualType ?? "none",
+        iconName: reason.iconName ?? null,
+        imageId: reason.imageId ?? null,
         button: {
           text: reason.button?.text ?? "",
           url: reason.button?.url ?? "",
@@ -54,9 +58,7 @@ export function parseWhyChooseUsContentDefaults(
   };
 }
 
-export function parseWhyChooseUsSettingsDefaults(
-  settings: JsonObject | undefined | null,
-): WhyChooseUsSettingsValues {
+export function parseWhyChooseUsSettingsDefaults(): WhyChooseUsSettingsValues {
   return DEFAULT_WHY_CHOOSE_US_SETTINGS;
 }
 
@@ -93,6 +95,9 @@ export function WhyChooseUsContentForm({ disabled }: { disabled?: boolean }) {
           key: "",
           title: "",
           description: "",
+          visualType: "none",
+          iconName: null,
+          imageId: null,
           button: { text: "", url: "" },
         }}
         disabled={disabled}
@@ -121,6 +126,11 @@ export function WhyChooseUsContentForm({ disabled }: { disabled?: boolean }) {
               label="Button"
               disabled={disabled}
             />
+            <VisualPickerField
+              name={`content.reasons.${index}`}
+              label="Reason Visual"
+              description="Select an icon or image for this reason."
+            />
           </div>
         )}
       />
@@ -128,7 +138,7 @@ export function WhyChooseUsContentForm({ disabled }: { disabled?: boolean }) {
   );
 }
 
-export function WhyChooseUsSettingsForm({ disabled }: { disabled?: boolean }) {
+export function WhyChooseUsSettingsForm() {
   return (
     <div className="flex min-h-[100px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center animate-in fade-in-50">
       <p className="text-sm text-muted-foreground">

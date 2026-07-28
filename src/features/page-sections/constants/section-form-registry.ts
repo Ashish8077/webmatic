@@ -1,4 +1,4 @@
-import type { z } from "zod";
+import { z } from "zod";
 import type { PageSectionType } from "@/modules/pages-section/validation/page-section.schema";
 import type {
   SectionFieldComponent,
@@ -25,11 +25,16 @@ import {
   testimonialsContentSchema,
   testimonialsSettingsSchema,
 } from "../schemas/testimonials.schema";
-import { faqContentSchema, faqSettingsSchema } from "../schemas/faq.schema";
+import { faqContentSchema } from "../schemas/faq.schema";
 import {
   contactCtaContentSchema,
-  contactCtaSettingsSchema,
 } from "../schemas/contact-cta.schema";
+import { aboutHeroContentSchema } from "../schemas/about-hero.schema";
+import { companyStatisticsContentSchema } from "../schemas/company-statistics.schema";
+import { companyOverviewContentSchema } from "../schemas/company-overview.schema";
+import { coreValuesContentSchema } from "../schemas/core-values.schema";
+import { missionVisionContentSchema } from "../schemas/mission-vision.schema";
+import { teamMembersContentSchema } from "../schemas/team-members.schema";
 
 import {
   HeroContentForm,
@@ -53,14 +58,35 @@ import {
   parseTestimonialsContentDefaults,
   parseTestimonialsSettingsDefaults,
   FaqContentForm,
-  FaqSettingsForm,
   parseFaqContentDefaults,
-  parseFaqSettingsDefaults,
   ContactCtaContentForm,
-  ContactCtaSettingsForm,
   parseContactCtaContentDefaults,
-  parseContactCtaSettingsDefaults,
 } from "../components/forms";
+
+import {
+  AboutHeroContentForm,
+  parseAboutHeroContentDefaults,
+} from "../components/forms/about-hero-form";
+import {
+  CompanyStatisticsContentForm,
+  parseCompanyStatisticsContentDefaults,
+} from "../components/forms/company-statistics-form";
+import {
+  CompanyOverviewContentForm,
+  parseCompanyOverviewContentDefaults,
+} from "../components/forms/company-overview-form";
+import {
+  CoreValuesContentForm,
+  parseCoreValuesContentDefaults,
+} from "../components/forms/core-values-form";
+import {
+  MissionVisionContentForm,
+  parseMissionVisionContentDefaults,
+} from "../components/forms/mission-vision-form";
+import {
+  TeamMembersContentForm,
+  parseTeamMembersContentDefaults,
+} from "../components/forms/team-members-form";
 
 // ─── Content Registries ───────────────────────────────────────────────────────
 
@@ -72,6 +98,12 @@ export const SECTION_CONTENT_SCHEMA_MAP: Record<PageSectionType, z.ZodTypeAny> =
   testimonials: testimonialsContentSchema,
   faq: faqContentSchema,
   "contact-cta": contactCtaContentSchema,
+  "about-hero": aboutHeroContentSchema,
+  "company-statistics": companyStatisticsContentSchema,
+  "company-overview": companyOverviewContentSchema,
+  "core-values": coreValuesContentSchema,
+  "mission-vision": missionVisionContentSchema,
+  "team-members": teamMembersContentSchema,
 };
 
 export const SECTION_CONTENT_FORM_MAP: Record<PageSectionType, SectionFieldComponent> = {
@@ -82,9 +114,15 @@ export const SECTION_CONTENT_FORM_MAP: Record<PageSectionType, SectionFieldCompo
   testimonials: TestimonialsContentForm,
   faq: FaqContentForm,
   "contact-cta": ContactCtaContentForm,
+  "about-hero": AboutHeroContentForm,
+  "company-statistics": CompanyStatisticsContentForm,
+  "company-overview": CompanyOverviewContentForm,
+  "core-values": CoreValuesContentForm,
+  "mission-vision": MissionVisionContentForm,
+  "team-members": TeamMembersContentForm,
 };
 
-export const SECTION_CONTENT_DEFAULTS_MAP: Record<PageSectionType, ParseDefaultsFn<any>> = {
+export const SECTION_CONTENT_DEFAULTS_MAP: Record<PageSectionType, ParseDefaultsFn<unknown>> = {
   hero: parseHeroContentDefaults,
   about: parseAboutContentDefaults,
   services: parseServicesContentDefaults,
@@ -92,6 +130,12 @@ export const SECTION_CONTENT_DEFAULTS_MAP: Record<PageSectionType, ParseDefaults
   testimonials: parseTestimonialsContentDefaults,
   faq: parseFaqContentDefaults,
   "contact-cta": parseContactCtaContentDefaults,
+  "about-hero": parseAboutHeroContentDefaults,
+  "company-statistics": parseCompanyStatisticsContentDefaults,
+  "company-overview": parseCompanyOverviewContentDefaults,
+  "core-values": parseCoreValuesContentDefaults,
+  "mission-vision": parseMissionVisionContentDefaults,
+  "team-members": parseTeamMembersContentDefaults,
 };
 
 // ─── Settings Registries ──────────────────────────────────────────────────────
@@ -102,8 +146,14 @@ export const SECTION_SETTINGS_SCHEMA_MAP: Record<PageSectionType, z.ZodTypeAny> 
   services: servicesSettingsSchema,
   "why-choose-us": whyChooseUsSettingsSchema,
   testimonials: testimonialsSettingsSchema,
-  faq: faqSettingsSchema,
-  "contact-cta": contactCtaSettingsSchema,
+  faq: z.object({}),
+  "contact-cta": z.object({}),
+  "about-hero": z.object({}),
+  "company-statistics": z.object({}),
+  "company-overview": z.object({}),
+  "core-values": z.object({}),
+  "mission-vision": z.object({}),
+  "team-members": z.object({}),
 };
 
 export const SECTION_SETTINGS_FORM_MAP: Record<PageSectionType, SectionFieldComponent> = {
@@ -112,16 +162,28 @@ export const SECTION_SETTINGS_FORM_MAP: Record<PageSectionType, SectionFieldComp
   services: ServicesSettingsForm,
   "why-choose-us": WhyChooseUsSettingsForm,
   testimonials: TestimonialsSettingsForm,
-  faq: FaqSettingsForm,
-  "contact-cta": ContactCtaSettingsForm,
+  faq: () => null,
+  "contact-cta": () => null,
+  "about-hero": () => null,
+  "company-statistics": () => null,
+  "company-overview": () => null,
+  "core-values": () => null,
+  "mission-vision": () => null,
+  "team-members": () => null,
 };
 
-export const SECTION_SETTINGS_DEFAULTS_MAP: Record<PageSectionType, ParseDefaultsFn<any>> = {
+export const SECTION_SETTINGS_DEFAULTS_MAP: Record<PageSectionType, ParseDefaultsFn<unknown>> = {
   hero: parseHeroSettingsDefaults,
   about: parseAboutSettingsDefaults,
   services: parseServicesSettingsDefaults,
   "why-choose-us": parseWhyChooseUsSettingsDefaults,
   testimonials: parseTestimonialsSettingsDefaults,
-  faq: parseFaqSettingsDefaults,
-  "contact-cta": parseContactCtaSettingsDefaults,
+  faq: () => ({}),
+  "contact-cta": () => ({}),
+  "about-hero": () => ({}),
+  "company-statistics": () => ({}),
+  "company-overview": () => ({}),
+  "core-values": () => ({}),
+  "mission-vision": () => ({}),
+  "team-members": () => ({}),
 };

@@ -5,9 +5,9 @@ import { Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup } from "@/components/ui/toggle-group";
-import { Select } from "@/components/ui/select";
+
 import { usePageForm } from "@/features/pages/hooks/use-page-form";
-import SeoFields from "./seo-fields";
+import SeoFields from "@/components/shared/seo/seo-fields";
 import type { CreatePageInput } from "@/features/pages/schemas/create-page.schema";
 
 const STATUS_OPTIONS = [

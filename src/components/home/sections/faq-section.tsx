@@ -19,16 +19,24 @@ interface FaqItem {
  */
 export function FaqSection({ content, title }: SectionProps) {
   const heading = str(content.heading, title ?? "Frequently Asked Questions");
+  
   const items = arr<FaqItem>(content.items);
 
   return (
-    <section id="faq" aria-labelledby="faq-heading" className="bg-white py-20 sm:py-28">
+    <section
+      id="faq"
+      aria-labelledby="faq-heading"
+      className="bg-white py-20 sm:py-28"
+    >
       <div className="mx-auto max-w-[1170px] px-5 sm:px-8">
         <div className="text-center mb-14">
           <span className="inline-block mb-4 text-xs font-bold uppercase tracking-[0.2em] text-orange-500">
             FAQ
           </span>
-          <h2 id="faq-heading" className="text-3xl sm:text-4xl font-bold text-[#081a4b]">
+          <h2
+            id="faq-heading"
+            className="text-3xl sm:text-4xl font-bold text-[#081a4b]"
+          >
             {heading}
           </h2>
         </div>
@@ -41,7 +49,9 @@ export function FaqSection({ content, title }: SectionProps) {
                 className="group bg-white border border-slate-200 open:border-orange-500/30 rounded-2xl overflow-hidden transition-all duration-200 shadow-sm hover:shadow-md"
               >
                 <summary className="flex items-center justify-between px-6 py-5 cursor-pointer select-none list-none font-semibold text-[#081a4b] hover:bg-slate-50 transition-colors duration-150">
-                  <dt className="text-left text-sm sm:text-base">{str(item.question)}</dt>
+                  <dt className="text-left text-sm sm:text-base">
+                    {str(item.question)}
+                  </dt>
 
                   {/* Chevron — rotates via group-open in Tailwind v4 */}
                   <span

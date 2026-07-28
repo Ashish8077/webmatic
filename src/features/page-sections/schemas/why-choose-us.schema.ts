@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { visualAssetSchema } from "@/shared/schemas/visual-asset.schema";
 import {
   requiredString,
   optionalString,
@@ -13,6 +14,19 @@ const reasonSchema = z.object({
   title: requiredString("Title"),
   description: optionalString(1000),
   button: optionalButtonSchema,
+  visualType: visualAssetSchema.shape.visualType,
+  iconName: visualAssetSchema.shape.iconName,
+  imageId: visualAssetSchema.shape.imageId,
+}).superRefine((data, ctx) => {
+  if (data.visualType === "none" && (data.iconName !== null || data.imageId !== null)) {
+    ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+  }
+  if (data.visualType === "icon" && (data.iconName === null || data.imageId !== null)) {
+    ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+  }
+  if (data.visualType === "image" && (data.imageId === null || data.iconName !== null)) {
+    ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+  }
 });
 
 // ─── Why Choose Us content schema ─────────────────────────────────────────────

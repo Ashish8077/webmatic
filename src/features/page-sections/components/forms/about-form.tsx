@@ -11,7 +11,7 @@ import {
   TextField,
   TextareaField,
   ButtonFields,
-  ImageIdField,
+  MediaPickerField,
   SectionHeadingFields,
   RepeaterField,
 } from "../fields";
@@ -51,9 +51,7 @@ export function parseAboutContentDefaults(
   };
 }
 
-export function parseAboutSettingsDefaults(
-  settings: JsonObject | undefined | null,
-): AboutSettingsValues {
+export function parseAboutSettingsDefaults(): AboutSettingsValues {
   return DEFAULT_ABOUT_SETTINGS;
 }
 
@@ -66,6 +64,18 @@ export function AboutContentForm({ disabled }: { disabled?: boolean }) {
         disabled={disabled}
       />
 
+      <div className="grid gap-3 sm:grid-cols-2">
+        <MediaPickerField
+          name="content.image1Id"
+          label="Main Image"
+          disabled={disabled}
+        />
+        <MediaPickerField
+          name="content.image2Id"
+          label="Secondary Image"
+          disabled={disabled}
+        />
+      </div>
       <ButtonFields
         name="content.primaryButton"
         label="Primary Button"
@@ -119,7 +129,7 @@ export function AboutContentForm({ disabled }: { disabled?: boolean }) {
               label="Button"
               disabled={disabled}
             />
-            <ImageIdField
+            <MediaPickerField
               name={`content.cards.${index}.imageId`}
               disabled={disabled}
             />
@@ -130,7 +140,7 @@ export function AboutContentForm({ disabled }: { disabled?: boolean }) {
   );
 }
 
-export function AboutSettingsForm({ disabled }: { disabled?: boolean }) {
+export function AboutSettingsForm() {
   return (
     <div className="flex min-h-[100px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center animate-in fade-in-50">
       <p className="text-sm text-muted-foreground">

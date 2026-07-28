@@ -1,18 +1,16 @@
 import { useRouter } from "next/navigation";
-
-import { useMutation } from "@tanstack/react-query";
-
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { login } from "../api/login";
-import { queryClient } from "@/lib/query";
 
 export function useLogin() {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: login,
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["current-user"] });
-      router.replace("/dashboard");
+      router.replace("/admin/dashboard");
     },
   });
 }

@@ -13,7 +13,7 @@ export function FaqSection({ content }: SectionProps) {
       <div className="mx-auto max-w-[1170px] px-5 sm:px-8">
         {/* ── Section Header ──────────────────────────────── */}
         <div className="mb-16 text-center">
-          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-orange-500 mb-3">
+          <span className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em] text-orange-500 mb-3">
             <span className="h-px w-6 bg-orange-500 rounded-full" />
             {faqData.badge}
             <span className="h-px w-6 bg-orange-500 rounded-full" />

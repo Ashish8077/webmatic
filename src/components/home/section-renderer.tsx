@@ -3,12 +3,18 @@ import { HomeSectionType } from "@/modules/home/constants/home-section-types";
 import {
   AboutSection,
   HeroSection,
-  ServiceSection,
   WhyChooseUsSection,
-  TestimonialsSection,
   ContactCtaSection,
 } from "./sections";
+import { ServiceSection } from "@/components/sections/services/services-section";
+import { TestimonialsSection } from "@/components/sections/testimonials/testimonials-section";
 import { FaqSection } from "@/components/sections/faq";
+import { AboutHeroSection } from "@/components/sections/about-hero/about-hero-section";
+import { CompanyStatisticsSection } from "@/components/sections/company-statistics/company-statistics-section";
+import { CompanyOverviewSection } from "@/components/sections/company-overview/company-overview-section";
+import { CoreValuesSection } from "@/components/sections/core-values/core-values-section";
+import { MissionVisionSection } from "@/components/sections/mission-vision/mission-vision-section";
+import { TeamMembersSection } from "@/components/sections/team-members/team-members-section";
 import type { SectionProps } from "./sections/types";
 
 // ─── Section component contract ───────────────────────────────────────────────
@@ -31,6 +37,12 @@ const SECTION_MAP: Readonly<
   testimonials: TestimonialsSection,
   faq: FaqSection,
   "contact-cta": ContactCtaSection,
+  "about-hero": AboutHeroSection as unknown as SectionComponent,
+  "company-statistics": CompanyStatisticsSection as unknown as SectionComponent,
+  "company-overview": CompanyOverviewSection as unknown as SectionComponent,
+  "core-values": CoreValuesSection as unknown as SectionComponent,
+  "mission-vision": MissionVisionSection as unknown as SectionComponent,
+  "team-members": TeamMembersSection as unknown as SectionComponent,
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -45,13 +57,18 @@ interface SectionRendererProps {
  * can be introduced in the CMS without causing a runtime error.
  */
 export function SectionRenderer({ section }: SectionRendererProps) {
-  const Component = SECTION_MAP[section.sectionType];
+  const Component = SECTION_MAP[section.sectionType as HomeSectionType];
 
   if (!Component) {
     if (process.env.NODE_ENV === "development") {
-      console.warn(
-        `[SectionRenderer] No component registered for sectionType: "${section.sectionType}". ` +
-          `Add it to SECTION_MAP in section-renderer.tsx.`,
+      return (
+        <div className="p-4 border border-dashed border-red-500 text-red-500 bg-red-50 m-4 rounded">
+          <p className="font-bold">Unknown Section Type</p>
+          <p className="text-sm mt-1">
+            The section type <code>{section.sectionType}</code> is not registered
+            in the section renderer.
+          </p>
+        </div>
       );
     }
     return null;

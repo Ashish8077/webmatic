@@ -14,7 +14,7 @@ export const systemPages: readonly {
   },
   {
     title: "About",
-    slug: "about",
+    slug: "about-us",
     template: "about",
     status: "published" as const,
   },

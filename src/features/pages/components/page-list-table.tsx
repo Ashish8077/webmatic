@@ -72,8 +72,8 @@ function PageListTable({
               >
                 <td className="px-5 py-4">
                   <Link
-                    href={`/pages/${page.id}`}
-                    className="hover:text-accent transition-colors"
+                    href={`/admin/pages/${page.id}`}
+                    className="inline-flex items-center gap-1.5 text-accent hover:text-accent/80 transition-colors font-medium text-sm"
                   >
                     <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
                       {page.title}
@@ -110,7 +110,7 @@ function PageListTable({
                 <td className="px-5 py-4">
                   <div className="flex items-center justify-end gap-1">
                     {/* Sections */}
-                    <Link href={`/pages/${page.id}/sections`}>
+                    <Link href={`/admin/pages/${page.id}/sections`}>
                       <button
                         title="Manage Sections"
                         className="p-2 rounded-lg text-muted-foreground hover:text-accent hover:bg-accent/10 transition-all cursor-pointer"
@@ -120,7 +120,7 @@ function PageListTable({
                     </Link>
 
                     {/* Edit */}
-                    <Link href={`/pages/${page.id}`}>
+                    <Link href={`/admin/pages/${page.id}`}>
                       <button
                         title="Edit"
                         className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-surface-hover transition-all cursor-pointer"

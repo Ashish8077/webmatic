@@ -7,6 +7,7 @@ import {
   stringArray,
 } from "@/shared/utils/validators/zod-helpers";
 import { z } from "zod";
+import { visualAssetSchema } from "@/shared/schemas/visual-asset.schema";
 import { SERVICE_STATUS } from "../constants/service.constants";
 
 export const createServiceSchema = z
@@ -27,57 +28,87 @@ export const createServiceSchema = z
           "Slug may contain only lowercase letters, numbers, and hyphens",
       }),
 
-    shortDescription: emptyStringToNull(2000).optional(),
+    shortDescription: emptyStringToNull(2000).default(null),
 
-    description: emptyStringToNull(50000).optional(),
+    description: emptyStringToNull(50000).default(null),
 
     featuredImageId: nullablePositiveInt,
 
     bannerImageId: nullablePositiveInt,
 
-    keyFeatures: stringArray(255).optional(),
+    visualType: visualAssetSchema.shape.visualType,
+    iconName: visualAssetSchema.shape.iconName,
+    imageId: visualAssetSchema.shape.imageId,
 
-    benefits: stringArray(255).optional(),
+    keyFeatures: stringArray(255).default([]),
 
-    faq: z.array(faqItemSchema).nullable().optional(),
+    benefits: stringArray(255).default([]),
 
-    ctaTitle: emptyStringToNull(255).optional(),
+    faq: z.array(faqItemSchema).default([]),
 
-    ctaDescription: emptyStringToNull(5000).optional(),
+    ctaTitle: emptyStringToNull(255).default(null),
 
-    ctaButtonText: emptyStringToNull(100).optional(),
+    ctaDescription: emptyStringToNull(5000).default(null),
 
-    ctaButtonUrl: nullableUrl("Invalid URL").optional(),
+    ctaButtonText: emptyStringToNull(100).default(null),
 
-    seoTitle: emptyStringToNull(255).optional(),
+    ctaButtonUrl: nullableUrl("Invalid URL").default(null),
 
-    metaDescription: emptyStringToNull(500).optional(),
+    seoTitle: emptyStringToNull(255).default(null),
 
-    metaKeywords: emptyStringToNull(500).optional(),
+    metaDescription: emptyStringToNull(500).default(null),
 
-    canonicalUrl: nullableUrl("Invalid URL").optional(),
+    metaKeywords: emptyStringToNull(500).default(null),
 
-    openGraphTitle: emptyStringToNull(255).optional(),
+    canonicalUrl: nullableUrl("Invalid URL").default(null),
 
-    openGraphDescription: emptyStringToNull(500).optional(),
+    openGraphTitle: emptyStringToNull(255).default(null),
+
+    openGraphDescription: emptyStringToNull(500).default(null),
 
     openGraphImageId: nullablePositiveInt,
 
-    twitterTitle: emptyStringToNull(255).optional(),
+    twitterTitle: emptyStringToNull(255).default(null),
 
-    twitterDescription: emptyStringToNull(500).optional(),
+    twitterDescription: emptyStringToNull(500).default(null),
 
     twitterImageId: nullablePositiveInt,
 
-    schemaMarkup: z.json().nullable().optional(),
+    schemaMarkup: z.json().nullable().default(null),
 
-    status: z.enum(SERVICE_STATUS).optional(),
+    status: z.enum(SERVICE_STATUS).default("draft"),
 
-    isFeatured: z.boolean().optional(),
+    isFeatured: z.boolean().default(false),
 
-    sortOrder: nonNegativeInt.optional(),
+    sortOrder: nonNegativeInt.default(0),
   })
   .superRefine((data, ctx) => {
+    // Run the visualAssetSchema superRefine rules manually here since we merged the shapes
+    const isIconNull = data.iconName === null || data.iconName === undefined;
+    const isImageNull = data.imageId === null || data.imageId === undefined;
+
+    if (data.visualType === "none" && (!isIconNull || !isImageNull)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["visualType"],
+        message: "Invalid visual asset configuration.",
+      });
+    }
+    if (data.visualType === "icon" && (isIconNull || !isImageNull)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["visualType"],
+        message: "Invalid visual asset configuration.",
+      });
+    }
+    if (data.visualType === "image" && (isImageNull || !isIconNull)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["visualType"],
+        message: "Invalid visual asset configuration.",
+      });
+    }
+
     if (data.status !== "published") return;
 
     if (!data.description) {

@@ -4,14 +4,13 @@ import type { JsonObject } from "@/shared/types/json";
 import {
   DEFAULT_HERO_CONTENT,
   type HeroContentValues,
-  DEFAULT_HERO_SETTINGS,
   type HeroSettingsValues,
 } from "../../schemas/hero.schema";
 import {
   TextField,
   TextareaField,
   ButtonFields,
-  ImageIdField,
+  MediaPickerField,
   RepeaterField,
   SliderSettingsFields,
 } from "../fields";
@@ -56,6 +55,11 @@ export function HeroContentForm({ disabled }: { disabled?: boolean }) {
         disabled={disabled}
         renderItem={(index) => (
           <div className="space-y-3">
+            <MediaPickerField
+              name={`content.slides.${index}.backgroundImageId`}
+              label="Background Image"
+              disabled={disabled}
+            />
             <TextField
               name={`content.slides.${index}.badge`}
               label="Badge"
@@ -92,11 +96,7 @@ export function HeroContentForm({ disabled }: { disabled?: boolean }) {
               label="Secondary Button"
               disabled={disabled}
             />
-            <ImageIdField
-              name={`content.slides.${index}.backgroundImageId`}
-              label="Background Image ID"
-              disabled={disabled}
-            />
+
           </div>
         )}
       />

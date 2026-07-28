@@ -1,5 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/lib/query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updatePageSection } from "../api/update-page-section";
 import type { UpdatePageSectionRequest } from "../types/page-section.types";
 import { pageSectionKeys } from "./query-keys";
@@ -10,6 +9,7 @@ interface UpdatePageSectionVariables {
 }
 
 export function useUpdatePageSection(pageId: number) {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ sectionId, data }: UpdatePageSectionVariables) =>
       updatePageSection(sectionId, data),

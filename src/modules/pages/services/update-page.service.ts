@@ -5,7 +5,7 @@ import {
   updatePage,
 } from "../repositories/page.repository";
 import { UpdatePageInput } from "../validation/update-page.schema";
-import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
+import { handleDuplicateConstraint } from "@/shared/utils/errors/database-error.util";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { AuthUser } from "@/modules/auth/types/auth-user";
@@ -59,11 +59,9 @@ export async function updatePageService(
       throw new AppError("Page not found", 404);
     }
   } catch (error) {
-    if (isDuplicateKeyError(error)) {
-      throw new AppError("Page slug already exists", 409, {
-        slug: ["Page slug already exists."],
-      });
-    }
+    handleDuplicateConstraint(error, {
+      slug: { field: "slug", message: "Page slug already exists." },
+    });
     throw error;
   }
 }

@@ -2,42 +2,27 @@ import { z } from "zod";
 import {
   requiredString,
   optionalString,
-  buttonSchema,
-  optionalButtonSchema,
-  imageIdSchema,
+  optionalUrl,
 } from "./common.schema";
-import { numberSetting } from "./common-settings.schema";
 
 // ─── Contact CTA content schema ──────────────────────────────────────────────
 
 export const contactCtaContentSchema = z.object({
-  badge: optionalString(),
   heading: requiredString("Heading"),
   description: optionalString(2000),
-  primaryButton: buttonSchema,
-  secondaryButton: optionalButtonSchema,
-  backgroundImageId: imageIdSchema,
+  privacyNote: optionalString(500),
+  buttonText: requiredString("Button text"),
+  buttonUrl: optionalUrl(),
 });
 
 export type ContactCtaContentValues = z.infer<typeof contactCtaContentSchema>;
 
 export const DEFAULT_CONTACT_CTA_CONTENT: ContactCtaContentValues = {
-  badge: "",
-  heading: "",
+  heading: "Ready to start your next project?",
   description: "",
-  primaryButton: { text: "", url: "" },
-  secondaryButton: { text: "", url: "" },
-  backgroundImageId: null,
+  privacyNote: "Note: Your details are kept strictly confidential as per our Privacy Policy.",
+  buttonText: "Request a Demo",
+  buttonUrl: "",
 };
 
-// ─── Contact CTA settings schema ──────────────────────────────────────────────
 
-export const contactCtaSettingsSchema = z.object({
-  overlayOpacity: numberSetting(0, 100).default(50),
-});
-
-export type ContactCtaSettingsValues = z.infer<typeof contactCtaSettingsSchema>;
-
-export const DEFAULT_CONTACT_CTA_SETTINGS: ContactCtaSettingsValues = {
-  overlayOpacity: 50,
-};

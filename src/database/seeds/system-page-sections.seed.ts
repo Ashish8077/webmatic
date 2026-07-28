@@ -4,8 +4,8 @@ import { RowDataPacket } from "mysql2/promise";
 
 import db from "../connection";
 
-import { homeSections } from "../data/home-sections";
 import { toJson } from "@/shared/utils/database/json";
+import { homeSections } from "../data/home-sections";
 import { aboutSections } from "../data/about-sections";
 import { contactSections } from "../data/contact-sections";
 import { blogListSections } from "../data/blog-list-sections";

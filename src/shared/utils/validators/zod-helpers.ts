@@ -16,7 +16,22 @@ export const nullableUrl = (message = "Invalid URL") =>
     }
 
     return value;
-  }, z.url({ message }).nullable());
+  }, z
+    .string()
+    .trim()
+    .max(2048)
+    .refine(
+      (val) => {
+        try {
+          new URL(val, "http://localhost");
+          return true;
+        } catch {
+          return false;
+        }
+      },
+      { message },
+    )
+    .nullable());
 
 export const nullablePositiveInt = z.preprocess((value) => {
   if (value === "" || value === null || value === undefined) {

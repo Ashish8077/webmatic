@@ -4,7 +4,7 @@
 // All dummy data in one place. Matches the API response shapes
 // so you can swap in fetch() calls later with minimal changes.
 
-import { HomeSectionData } from "@/modules/home/types/home.types";
+
 
 export interface DummyUser {
   id: number;
@@ -217,18 +217,6 @@ export const dummySections: DummySection[] = [
     sectionType: "testimonials",
     title: "What Our Clients Say",
     content: {
-      testimonials: [
-        {
-          name: "John Doe",
-          role: "CEO",
-          quote: "Outstanding service and results.",
-        },
-        {
-          name: "Jane Smith",
-          role: "CTO",
-          quote: "Transformed our business completely.",
-        },
-      ],
     },
     sortOrder: 2,
     isActive: true,
@@ -274,14 +262,6 @@ export const dummySections: DummySection[] = [
     sectionType: "services",
     title: "What We Offer",
     content: {
-      services: [
-        {
-          title: "Web Development",
-          description: "Full-stack web applications",
-        },
-        { title: "Mobile Apps", description: "iOS and Android development" },
-        { title: "Cloud Solutions", description: "AWS, GCP, Azure services" },
-      ],
     },
     sortOrder: 0,
     isActive: true,

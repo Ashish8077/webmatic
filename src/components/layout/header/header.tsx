@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
-import { usePathname } from "next/navigation";
+
 import TopHeader from "./top-header";
 import { Logo } from "./logo";
 import { DesktopNavigation } from "./desktop-navigation";

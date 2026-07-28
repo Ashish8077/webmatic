@@ -6,18 +6,6 @@ import {
 } from "./common.schema";
 import { sliderSettingsSchema, DEFAULT_SLIDER_SETTINGS, type SliderSettings } from "./common-settings.schema";
 
-// ─── Testimonial item schema ─────────────────────────────────────────────────
-
-const testimonialItemSchema = z.object({
-  title: requiredString("Title"),
-  description: requiredString("Description").max(2000, {
-    message: "Description must not exceed 2000 characters.",
-  }),
-  authorName: requiredString("Author name"),
-  authorDesignation: optionalString(),
-  authorImageId: imageIdSchema,
-});
-
 // ─── Testimonials content schema ──────────────────────────────────────────────
 
 export const testimonialsContentSchema = z.object({
@@ -25,7 +13,8 @@ export const testimonialsContentSchema = z.object({
   heading: requiredString("Heading"),
   highlight: optionalString(),
   description: optionalString(2000),
-  testimonials: z.array(testimonialItemSchema),
+  backgroundColor: optionalString(),
+  backgroundImageId: imageIdSchema,
 });
 
 export type TestimonialsContentValues = z.infer<typeof testimonialsContentSchema>;
@@ -35,7 +24,8 @@ export const DEFAULT_TESTIMONIALS_CONTENT: TestimonialsContentValues = {
   heading: "",
   highlight: "",
   description: "",
-  testimonials: [],
+  backgroundColor: "",
+  backgroundImageId: null,
 };
 
 // ─── Testimonials settings schema ─────────────────────────────────────────────
