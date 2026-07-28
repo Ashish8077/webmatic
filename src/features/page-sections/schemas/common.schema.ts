@@ -23,10 +23,7 @@ export const requiredUrl = (label: string) =>
     .max(2048, { message: `${label} must not exceed 2048 characters.` });
 
 export const optionalUrl = () =>
-  z
-    .string()
-    .trim()
-    .max(2048, { message: "Must not exceed 2048 characters." });
+  z.string().trim().max(2048, { message: "Must not exceed 2048 characters." });
 
 // ─── Composite field schemas ──────────────────────────────────────────────────
 
@@ -48,3 +45,8 @@ export const imageIdSchema = z
   .int()
   .positive("Invalid image ID.")
   .nullable();
+
+export const requiredImageIdSchema = (label: string) => z
+  .number()
+  .int()
+  .positive("Invalid image ID.");

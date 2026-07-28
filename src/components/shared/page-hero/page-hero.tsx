@@ -1,39 +1,52 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import React from "react";
 
-export interface HeroBannerProps {
-  badge?: string;
-  heading: string;
-  highlight?: string;
-  description?: string;
-  ctaLabel?: string;
-  ctaTarget?: string;
-  backgroundImageUrl?: string | null;
+export interface CtaLink {
+  text: string;
+  href: string;
+}
+
+export interface PageHeroProps {
+  /** The main title content. Pass a ReactNode for custom styling (e.g., spans for highlights). */
+  title: React.ReactNode;
+  /** Optional secondary description text. */
+  description?: React.ReactNode;
+  /** Optional background image URL. If missing, a gradient geometric pattern is shown. */
+  bannerImage?: string | null;
+  /** Navigation breadcrumbs component (e.g. <Breadcrumbs />). */
+  breadcrumbs?: React.ReactNode;
+  /** Primary call to action button. */
+  primaryCta?: CtaLink;
+  /** Secondary call to action button. */
+  secondaryCta?: CtaLink;
+  /** Overall color theme. */
   theme?: "light" | "dark";
 }
 
-export function HeroBanner({
-  badge,
-  heading,
-  highlight,
+export function PageHero({
+  title,
   description,
-  ctaLabel,
-  ctaTarget,
-  backgroundImageUrl,
-  theme = "light",
-}: HeroBannerProps) {
-  const isDark = theme === "dark";
+  bannerImage,
+  breadcrumbs,
+  primaryCta,
+  secondaryCta,
+  theme,
+}: PageHeroProps) {
+  // Infer theme if not explicitly provided: dark for images, light for colors
+  const activeTheme = theme || (bannerImage ? "dark" : "light");
+  const isDark = activeTheme === "dark";
 
   return (
-    <section className="relative overflow-hidden min-h-[60vh] lg:min-h-[580px] flex items-center py-16 sm:py-24">
+    <section className="relative overflow-hidden min-h-[50vh] lg:min-h-[480px] flex items-center py-16 sm:py-24">
       {/* --- BACKGROUND MODES --- */}
-      {backgroundImageUrl ? (
+      {bannerImage ? (
         // Mode 1: Image Background with Overlay
         <div className="absolute inset-0 pointer-events-none z-0">
           <Image
-            src={backgroundImageUrl}
-            alt={heading}
+            src={bannerImage}
+            alt="Page hero background"
             fill
             priority
             className="object-cover object-center"
@@ -100,25 +113,9 @@ export function HeroBanner({
       {/* --- CONTENT LAYER --- */}
       <div className="relative z-10 w-full mx-auto max-w-[1170px] px-5 sm:px-8">
         <div className="max-w-2xl lg:max-w-[800px]">
-          {/* Badge */}
-          {badge && (
-            <div
-              className={`inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full border backdrop-blur-sm mb-8 shadow-sm animate-fade-in ${
-                isDark
-                  ? "bg-white/10 border-white/20"
-                  : "bg-white/80 border-slate-200"
-              }`}
-            >
-              <span className="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.8)] animate-pulse" />
-              <span
-                className={`text-xs font-bold uppercase tracking-widest ${
-                  isDark ? "text-white" : "text-[#0A1F44]"
-                }`}
-              >
-                {badge}
-              </span>
-            </div>
-          )}
+          
+          {/* Breadcrumbs */}
+          {breadcrumbs}
 
           {/* Main Heading */}
           <h1
@@ -127,46 +124,51 @@ export function HeroBanner({
             }`}
             style={{ animationDelay: "100ms" }}
           >
-            {heading}{" "}
-            {highlight && (
-              <span className="relative whitespace-nowrap">
-                <span className="relative z-10 text-orange-500">
-                  {highlight}
-                </span>
-                {/* Refined underline accent */}
-                <span className="absolute bottom-1.5 sm:bottom-2 left-0 w-full h-3 sm:h-4 bg-orange-500/10 -z-10 rounded-sm" />
-              </span>
-            )}
+            {title}
           </h1>
 
           {/* Description */}
           {description && (
-            <p
+            <div
               className={`text-lg sm:text-xl max-w-xl mb-10 leading-relaxed font-medium animate-fade-in ${
                 isDark ? "text-slate-200" : "text-slate-600"
               }`}
               style={{ animationDelay: "200ms" }}
             >
               {description}
-            </p>
+            </div>
           )}
 
           {/* CTA Area */}
-          {ctaLabel && (
+          {(primaryCta || secondaryCta) && (
             <div
-              className="flex flex-col sm:flex-row items-start gap-4 animate-fade-in"
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-4 animate-fade-in"
               style={{ animationDelay: "300ms" }}
             >
-              <Link
-                href={ctaTarget ? (ctaTarget.startsWith("#") ? ctaTarget : `#${ctaTarget}`) : "#"}
-                className="group inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-orange-500 text-white rounded-lg font-semibold text-base hover:bg-orange-600 transition-all duration-200 shadow-md shadow-orange-500/20 hover:shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 active:translate-y-0"
-              >
-                {ctaLabel}
-                <ArrowRight
-                  size={18}
-                  className="transition-transform duration-200 group-hover:translate-x-1"
-                />
-              </Link>
+              {primaryCta && (
+                <Link
+                  href={primaryCta.href}
+                  className="group inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-primary text-white rounded-lg font-semibold text-base hover:bg-primary-hover transition-all duration-200 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0"
+                >
+                  {primaryCta.text}
+                  <ArrowRight
+                    size={18}
+                    className="transition-transform duration-200 group-hover:translate-x-1"
+                  />
+                </Link>
+              )}
+              {secondaryCta && (
+                <Link
+                  href={secondaryCta.href}
+                  className={`inline-flex items-center justify-center px-7 py-3.5 rounded-lg font-semibold text-base transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 ${
+                    isDark 
+                      ? "bg-white/10 text-white hover:bg-white/20" 
+                      : "bg-slate-100 text-[#0A1F44] hover:bg-slate-200"
+                  }`}
+                >
+                  {secondaryCta.text}
+                </Link>
+              )}
             </div>
           )}
         </div>

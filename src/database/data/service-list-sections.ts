@@ -1,24 +1,11 @@
 export const serviceListSections = [
   {
-    sectionType: "hero",
+    sectionType: "services-hero",
     sortOrder: 0,
     content: {
       headline: "",
       subheadline: "",
       backgroundImageId: null,
-    },
-    settings: {
-      isVisible: true,
-    },
-  },
-
-  {
-    sectionType: "introduction",
-    sortOrder: 1,
-    content: {
-      heading: "",
-      subheading: "",
-      description: "",
     },
     settings: {
       isVisible: true,

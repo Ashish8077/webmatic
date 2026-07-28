@@ -1,5 +1,4 @@
 import { RawCMSButton } from "@/components/home/sections/types";
-import type { VisualAsset } from "@/shared/types/visual-asset.types";
 
 export interface RawServiceContent {
   badge: string;

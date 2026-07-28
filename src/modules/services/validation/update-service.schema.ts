@@ -6,9 +6,8 @@ import {
   nullableUrl,
   stringArray,
 } from "@/shared/utils/validators/zod-helpers";
-import { z } from "zod";
-import { visualAssetSchema } from "@/shared/schemas/visual-asset.schema";
 import { SERVICE_STATUS } from "../constants/service.constants";
+import { z } from "zod";
 
 export const updateServiceSchema = z
   .object({

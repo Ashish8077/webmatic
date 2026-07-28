@@ -2,10 +2,6 @@
 
 import { ImagePicker } from "@/components/shared/media";
 import { IconPicker } from "./icon-picker";
-import { Button } from "./button";
-import Image from "next/image";
-import { getIconComponent } from "./icon-registry";
-import { X, Image as ImageIcon, Sparkles, Ban } from "lucide-react";
 import { VisualAsset, VisualType } from "@/shared/types/visual-asset.types";
 
 interface VisualPickerProps {

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { visualAssetSchema } from "@/shared/schemas/visual-asset.schema";
-import { requiredString, optionalString, imageIdSchema } from "./common.schema";
+import { requiredString, optionalString } from "./common.schema";
 import { numberSetting } from "./common-settings.schema";
 
 // ─── Company Statistics Item Schema ─────────────────────────────────────────────

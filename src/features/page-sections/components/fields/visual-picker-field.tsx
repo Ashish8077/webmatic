@@ -3,7 +3,7 @@
 import { useFormContext, useController } from "react-hook-form";
 import { VisualPicker } from "@/components/ui/visual-picker";
 import { VisualAsset } from "@/shared/types/visual-asset.types";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 
 interface VisualPickerFieldProps {
   name: string;
@@ -17,8 +17,10 @@ export function VisualPickerField({
   description,
 }: VisualPickerFieldProps) {
   const { control, setValue, watch, register } = useFormContext();
-  
-  const getFieldName = (field: string) => name ? `${name}.${field}` : field;
+  const getFieldName = useCallback(
+    (field: string) => (name ? `${name}.${field}` : field),
+    [name]
+  );
 
   // Explicitly register the fields so react-hook-form tracks them for submission
   useEffect(() => {

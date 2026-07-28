@@ -6,25 +6,52 @@ import { getServiceListPageData } from "@/modules/pages/services/get-public-page
 import { ContactCtaSection } from "@/components/home/sections/contact-cta-section/contact-cta-section";
 import { TestimonialsSection } from "@/components/sections/testimonials/testimonials-section";
 import { ServiceSection } from "@/components/sections/services/services-section";
+import type { ServicesHeroContentValues } from "@/features/page-sections/schemas/services-hero.schema";
 
 import { homeSections } from "@/database/data/home-sections";
 
 export const metadata: Metadata = {
   title: "Services | CMS Admin",
-  description: "Explore our comprehensive range of services tailored to elevate your business.",
+  description:
+    "Explore our comprehensive range of services tailored to elevate your business.",
 };
 
 export default async function ServicesPage() {
   const pageData = await getServiceListPageData();
-  const contactCtaSection = pageData?.sections.find((s) => s.sectionType === "contact-cta");
-  const testimonialsSection = pageData?.sections.find((s) => s.sectionType === "testimonials") ?? homeSections.find((s) => s.sectionType === "testimonials");
-  const servicesSection = pageData?.sections.find((s) => s.sectionType === "services");
+  const heroSection = pageData?.sections.find(
+    (s) => s.sectionType === "services-hero",
+  );
+  const contactCtaSection = pageData?.sections.find(
+    (s) => s.sectionType === "contact-cta",
+  );
+  const testimonialsSection =
+    pageData?.sections.find((s) => s.sectionType === "testimonials") ??
+    homeSections.find((s) => s.sectionType === "testimonials");
+  const servicesSection = pageData?.sections.find(
+    (s) => s.sectionType === "services",
+  );
 
   return (
     <>
       <Header />
       <main className="pt-[104px]">
-        <ServicesHero />
+        {heroSection ? (
+          <ServicesHero content={heroSection.content as unknown as ServicesHeroContentValues} />
+        ) : (
+          <ServicesHero
+            content={{
+              badge: "Our Services",
+              heading: "Full-service Digital Marketing",
+              highlight: "Expert Solutions",
+              description: "Almost Overnight, the Internet's Gone From a Technical Wonder to a Business Must.",
+              ctaLabel: "Explore Our Services",
+              ctaTargetId: "services",
+              secondaryCtaLabel: "",
+              secondaryCtaTargetId: "",
+              imageId: null as unknown as number,
+            }}
+          />
+        )}
         {servicesSection && (
           <ServiceSection content={servicesSection.content} />
         )}

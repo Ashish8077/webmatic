@@ -6,6 +6,7 @@ export * from "./testimonials-form";
 export * from "./faq-form";
 export * from "./contact-cta-form";
 export * from "./about-hero-form";
+export * from "./services-hero-form";
 export * from "./company-statistics-form";
 export * from "./company-overview-form";
 export * from "./core-values-form";

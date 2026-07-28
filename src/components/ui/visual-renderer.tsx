@@ -25,11 +25,13 @@ export function VisualRenderer({
   }
 
   if (asset.visualType === "icon" && asset.iconName) {
-    const IconComponent = getIconComponent(asset.iconName);
-    if (!IconComponent) return null;
+    const icon = getIconComponent(asset.iconName);
+    if (!icon) return null;
     return (
       <div className={clsx("flex items-center justify-center", className)}>
-        <IconComponent className={clsx("w-full h-full", iconClassName)} />
+        {React.createElement(icon, {
+          className: clsx("w-full h-full", iconClassName),
+        })}
       </div>
     );
   }
