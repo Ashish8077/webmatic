@@ -5,11 +5,16 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight, Star, Quote, User } from "lucide-react";
 import { TestimonialItem } from "@/modules/testimonials/types/service.types";
 
+import { parseSliderSettingsDefaults } from "@/features/page-sections/schemas/common-settings.schema";
+
 interface TestimonialsSliderProps {
   items: TestimonialItem[];
+  settings?: Record<string, unknown> | null;
 }
 
-export function TestimonialsSlider({ items }: TestimonialsSliderProps) {
+export function TestimonialsSlider({ items, settings }: TestimonialsSliderProps) {
+  const parsedSettings = parseSliderSettingsDefaults(settings);
+
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -17,21 +22,28 @@ export function TestimonialsSlider({ items }: TestimonialsSliderProps) {
   const goTo = useCallback(
     (index: number) => {
       if (isAnimating) return;
+      
+      let nextIndex = index;
+      if (nextIndex < 0 || nextIndex >= items.length) {
+        if (!parsedSettings.loop) return;
+        nextIndex = (index + items.length) % items.length;
+      }
+      
       setIsAnimating(true);
-      setCurrent((index + items.length) % items.length);
+      setCurrent(nextIndex);
       setTimeout(() => setIsAnimating(false), 500); // match transition duration
     },
-    [items.length, isAnimating],
+    [items.length, isAnimating, parsedSettings.loop],
   );
 
   const prev = () => goTo(current - 1);
   const next = useCallback(() => goTo(current + 1), [current, goTo]);
 
   useEffect(() => {
-    if (paused || items.length === 0) return;
-    const timer = setInterval(next, 6000);
+    if (paused || items.length === 0 || !parsedSettings.autoplay) return;
+    const timer = setInterval(next, parsedSettings.autoplayDelay || 6000);
     return () => clearInterval(timer);
-  }, [next, paused, items.length]);
+  }, [next, paused, items.length, parsedSettings.autoplay, parsedSettings.autoplayDelay]);
 
   if (items.length === 0) {
     return null;
@@ -46,7 +58,9 @@ export function TestimonialsSlider({ items }: TestimonialsSliderProps) {
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
-        <div className="relative rounded-2xl bg-slate-50 border border-slate-200 px-6 sm:px-16 py-12 sm:py-16 text-center shadow-sm hover:shadow-md transition-all duration-500">
+        <div 
+          className="relative rounded-2xl bg-slate-50 border border-slate-200 px-6 sm:px-16 py-12 sm:py-16 text-center shadow-sm hover:shadow-md transition-all duration-500"
+        >
           {/* Quote icon */}
           <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex h-14 w-14 items-center justify-center rounded-full bg-primary shadow-lg shadow-primary/30 ring-4 ring-white">
             <Quote size={24} className="text-white fill-white" />
@@ -120,7 +134,7 @@ export function TestimonialsSlider({ items }: TestimonialsSliderProps) {
         </div>
 
         {/* Prev / Next arrows */}
-        {items.length > 1 && (
+        {items.length > 1 && parsedSettings.showNavigation && (
           <>
             <button
               onClick={prev}
@@ -141,7 +155,7 @@ export function TestimonialsSlider({ items }: TestimonialsSliderProps) {
       </div>
 
       {/* Dot indicators */}
-      {items.length > 1 && (
+      {items.length > 1 && parsedSettings.showPagination && (
         <div className="mt-10 flex items-center justify-center gap-2.5">
           {items.map((_, i) => (
             <button

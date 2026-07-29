@@ -1,0 +1,135 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { Header } from "@/components/layout/header";
+import { PageHero } from "@/components/shared/page-hero/page-hero";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { getPublicServiceBySlug } from "@/modules/services/services/get-public-service.service";
+import { KeyFeaturesSection } from "@/components/sections/key-features";
+import { BenefitsSection } from "@/components/sections/benefits";
+import { FaqSection } from "@/components/sections/faq/faq-section";
+import { ContactCta } from "@/components/sections/contact-cta";
+
+interface ServicePageProps {
+  params: Promise<{
+    slug: string;
+  }>;
+}
+
+export async function generateMetadata({ params }: ServicePageProps): Promise<Metadata> {
+  try {
+    const { slug } = await params;
+    const service = await getPublicServiceBySlug(slug);
+    
+    return {
+      title: service.seoTitle || `${service.name} | Services`,
+      description: service.metaDescription || service.shortDescription,
+      keywords: service.metaKeywords,
+      alternates: {
+        canonical: service.canonicalUrl,
+      },
+      openGraph: {
+        title: service.openGraphTitle || service.seoTitle || service.name,
+        description: service.openGraphDescription || service.metaDescription || service.shortDescription || "",
+        // Images would ideally be resolved to full URLs via a helper
+      },
+      twitter: {
+        title: service.twitterTitle || service.openGraphTitle || service.seoTitle || service.name,
+        description: service.twitterDescription || service.openGraphDescription || service.metaDescription || service.shortDescription || "",
+      },
+    };
+  } catch (error) {
+    console.error("Metadata Error:", error);
+    return {
+      title: "Service Not Found",
+    };
+  }
+}
+
+export default async function ServiceDetailsPage({ params }: ServicePageProps) {
+  let service;
+  
+  try {
+    const { slug } = await params;
+    service = await getPublicServiceBySlug(slug);
+  } catch (error) {
+    console.error("Page Error:", error);
+    notFound();
+  }
+
+  const heroImage = service.bannerImageId 
+    ? `/api/media/${service.bannerImageId}` 
+    : service.featuredImageId 
+      ? `/api/media/${service.featuredImageId}` 
+      : null;
+
+  return (
+    <>
+      <Header />
+      <main className="pt-[104px]">
+        {/* 1. Hero Banner */}
+        <PageHero
+          title={service.name}
+          description={service.shortDescription || ""}
+          bannerImage={heroImage}
+          breadcrumbs={
+            <Breadcrumbs
+              items={[
+                { label: "Home", href: "/" },
+                { label: "Services", href: "/services" },
+                { label: service.name },
+              ]}
+              theme="light"
+            />
+          }
+          theme="light"
+        />
+
+        {/* 2. Service Description */}
+        {service.description && (
+          <section className="bg-white py-16 lg:py-24">
+            <div className="mx-auto max-w-[900px] px-5 sm:px-8">
+              <div 
+                className="prose prose-lg mx-auto text-slate-600 marker:text-orange-500"
+                dangerouslySetInnerHTML={{ __html: service.description }}
+              />
+            </div>
+          </section>
+        )}
+
+        {/* 3. Key Features */}
+        {service.keyFeatures && service.keyFeatures.length > 0 && (
+          <KeyFeaturesSection features={service.keyFeatures} />
+        )}
+
+        {/* 4. Benefits */}
+        {service.benefits && service.benefits.length > 0 && (
+          <BenefitsSection benefits={service.benefits} />
+        )}
+
+        {/* 5. FAQ */}
+        {service.faq && Array.isArray(service.faq) && service.faq.length > 0 && (
+          <FaqSection 
+            content={{
+              badge: "FAQ",
+              heading: "Frequently Asked Questions",
+              highlight: "",
+              description: "Everything you need to know about this service.",
+              items: service.faq,
+            } as any}
+          />
+        )}
+
+        {/* 6. Contact CTA */}
+        <ContactCta
+          heading={service.ctaTitle || "Ready to get started?"}
+          description={service.ctaDescription || "Contact us today to learn more about how we can help your business grow."}
+          submitButtonText={service.ctaButtonText || "Send Message"}
+          backgroundVariant="slate"
+          showCompanyField={true}
+          showServiceField={true}
+          showMessageField={true}
+        />
+      </main>
+    </>
+  );
+}

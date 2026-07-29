@@ -2,22 +2,24 @@ import { PageHero } from "@/components/shared/page-hero/page-hero";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import type { ServicesHeroContentValues } from "@/features/page-sections/schemas/services-hero.schema";
 
+import { DEFAULT_SERVICES_HERO_CONTENT } from "@/features/page-sections/schemas/services-hero.schema";
+import type { JsonObject } from "@/shared/types/json";
+
 export interface ServicesHeroProps {
-  content: ServicesHeroContentValues;
+  content: JsonObject;
 }
 
 export function ServicesHero({ content }: ServicesHeroProps) {
-  const {
-    badge,
-    heading,
-    highlight,
-    description,
-    ctaLabel,
-    ctaTargetId,
-    secondaryCtaLabel,
-    secondaryCtaTargetId,
-    imageId,
-  } = content;
+  const raw = (content ?? {}) as Record<string, unknown>;
+  const badge = (raw.badge as string) ?? DEFAULT_SERVICES_HERO_CONTENT.badge;
+  const heading = (raw.heading as string) ?? DEFAULT_SERVICES_HERO_CONTENT.heading;
+  const highlight = (raw.highlight as string) ?? DEFAULT_SERVICES_HERO_CONTENT.highlight;
+  const description = (raw.description as string) ?? DEFAULT_SERVICES_HERO_CONTENT.description;
+  const ctaLabel = (raw.ctaLabel as string) ?? DEFAULT_SERVICES_HERO_CONTENT.ctaLabel;
+  const ctaTargetId = (raw.ctaTargetId as string) ?? DEFAULT_SERVICES_HERO_CONTENT.ctaTargetId;
+  const secondaryCtaLabel = (raw.secondaryCtaLabel as string) ?? DEFAULT_SERVICES_HERO_CONTENT.secondaryCtaLabel;
+  const secondaryCtaTargetId = (raw.secondaryCtaTargetId as string) ?? DEFAULT_SERVICES_HERO_CONTENT.secondaryCtaTargetId;
+  const imageId = (raw.imageId as number | null) ?? DEFAULT_SERVICES_HERO_CONTENT.imageId;
 
   const imageUrl = imageId ? `/api/media/${imageId}` : null;
 

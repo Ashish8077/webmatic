@@ -8,6 +8,7 @@ export const HOME_SECTION_TYPES = [
   "contact-cta",
   "about-hero",
   "services-hero",
+  "development-process",
   "company-statistics",
   "company-overview",
   "core-values",

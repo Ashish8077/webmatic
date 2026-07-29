@@ -1,8 +1,16 @@
 import { BaseResponse } from "@/shared/types/api.types";
 import { JsonObject } from "@/shared/types/json";
 import { PaginationMeta } from "@/shared/types/pagination";
+import { VisualType } from "@/shared/types/visual-asset.types";
 
 export type ServiceStatus = "draft" | "published";
+
+export interface ServiceBenefit {
+  title: string;
+  visualType: VisualType;
+  iconName?: string | null;
+  imageId?: number | null;
+}
 
 export interface CreateServiceRequest {
   name: string;
@@ -18,7 +26,7 @@ export interface CreateServiceRequest {
   imageId?: number | null;
 
   keyFeatures?: string[] | null;
-  benefits?: string[] | null;
+  benefits?: ServiceBenefit[] | null;
   faq?: { question: string; answer: string }[] | null;
 
   ctaTitle?: string | null;
@@ -84,7 +92,7 @@ export interface Service {
   imageId: number | null;
 
   keyFeatures: string[] | null;
-  benefits: string[] | null;
+  benefits: ServiceBenefit[] | null;
   faq: { question: string; answer: string }[] | null;
 
   ctaTitle: string | null;

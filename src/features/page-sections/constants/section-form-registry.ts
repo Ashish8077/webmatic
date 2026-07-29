@@ -31,6 +31,7 @@ import { companyOverviewContentSchema } from "../schemas/company-overview.schema
 import { coreValuesContentSchema } from "../schemas/core-values.schema";
 import { missionVisionContentSchema } from "../schemas/mission-vision.schema";
 import { teamMembersContentSchema } from "../schemas/team-members.schema";
+import { developmentProcessContentSchema } from "../schemas/development-process.schema";
 
 import {
   HeroContentForm,
@@ -87,6 +88,10 @@ import {
   TeamMembersContentForm,
   parseTeamMembersContentDefaults,
 } from "../components/forms/team-members-form";
+import {
+  DevelopmentProcessContentForm,
+  parseDevelopmentProcessContentDefaults,
+} from "../components/forms/development-process-form";
 
 // ─── Content Registries ───────────────────────────────────────────────────────
 
@@ -101,6 +106,7 @@ export const SECTION_CONTENT_SCHEMA_MAP: Record<PageSectionType, z.ZodTypeAny> =
     "contact-cta": contactCtaContentSchema,
     "about-hero": aboutHeroContentSchema,
     "services-hero": servicesHeroContentSchema,
+    "development-process": developmentProcessContentSchema,
     "company-statistics": companyStatisticsContentSchema,
     "company-overview": companyOverviewContentSchema,
     "core-values": coreValuesContentSchema,
@@ -121,6 +127,7 @@ export const SECTION_CONTENT_FORM_MAP: Record<
   "contact-cta": ContactCtaContentForm,
   "about-hero": AboutHeroContentForm,
   "services-hero": ServicesHeroContentForm,
+  "development-process": DevelopmentProcessContentForm,
   "company-statistics": CompanyStatisticsContentForm,
   "company-overview": CompanyOverviewContentForm,
   "core-values": CoreValuesContentForm,
@@ -141,6 +148,7 @@ export const SECTION_CONTENT_DEFAULTS_MAP: Record<
   "contact-cta": parseContactCtaContentDefaults,
   "about-hero": parseAboutHeroContentDefaults,
   "services-hero": parseServicesHeroContentDefaults,
+  "development-process": parseDevelopmentProcessContentDefaults,
   "company-statistics": parseCompanyStatisticsContentDefaults,
   "company-overview": parseCompanyOverviewContentDefaults,
   "core-values": parseCoreValuesContentDefaults,
@@ -163,6 +171,7 @@ export const SECTION_SETTINGS_SCHEMA_MAP: Record<
   "contact-cta": z.object({}),
   "about-hero": z.object({}),
   "services-hero": z.object({}),
+  "development-process": z.object({}),
   "company-statistics": z.object({}),
   "company-overview": z.object({}),
   "core-values": z.object({}),
@@ -183,6 +192,7 @@ export const SECTION_SETTINGS_FORM_MAP: Record<
   "contact-cta": () => null,
   "about-hero": () => null,
   "services-hero": () => null,
+  "development-process": () => null,
   "company-statistics": () => null,
   "company-overview": () => null,
   "core-values": () => null,
@@ -203,6 +213,7 @@ export const SECTION_SETTINGS_DEFAULTS_MAP: Record<
   "contact-cta": () => ({}),
   "about-hero": () => ({}),
   "services-hero": () => ({}),
+  "development-process": () => ({}),
   "company-statistics": () => ({}),
   "company-overview": () => ({}),
   "core-values": () => ({}),

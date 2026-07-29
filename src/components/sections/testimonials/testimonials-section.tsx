@@ -5,7 +5,7 @@ import { TestimonialsSlider } from "./testimonials-slider";
 import Image from "next/image";
 import { getTestimonialsService } from "@/modules/testimonials/services/get-testimonials.service";
 
-export async function TestimonialsSection({ content }: SectionProps) {
+export async function TestimonialsSection({ content, settings }: SectionProps) {
   const data = normaliseTestimonialContent(
     content as unknown as RawTestimonialContent,
   );
@@ -63,7 +63,7 @@ export async function TestimonialsSection({ content }: SectionProps) {
         </div>
 
         {/* ── Testimonials slider (Client Component) ──────── */}
-        <TestimonialsSlider items={testimonialsResponse.items} />
+        <TestimonialsSlider items={testimonialsResponse.items} settings={settings} />
       </div>
     </section>
   );

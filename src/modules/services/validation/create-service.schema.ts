@@ -10,6 +10,28 @@ import { z } from "zod";
 import { visualAssetSchema } from "@/shared/schemas/visual-asset.schema";
 import { SERVICE_STATUS } from "../constants/service.constants";
 
+export const serviceBenefitSchema = z.object({
+  title: z.string().trim().min(1, { message: "Benefit title is required" }).max(255),
+  visualType: visualAssetSchema.shape.visualType,
+  iconName: visualAssetSchema.shape.iconName.optional(),
+  imageId: visualAssetSchema.shape.imageId.optional(),
+}).superRefine((data, ctx) => {
+  if (data.visualType) {
+    const isIconNull = data.iconName === null || data.iconName === undefined;
+    const isImageNull = data.imageId === null || data.imageId === undefined;
+
+    if (data.visualType === "none" && (!isIconNull || !isImageNull)) {
+      ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+    }
+    if (data.visualType === "icon" && (isIconNull || !isImageNull)) {
+      ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+    }
+    if (data.visualType === "image" && (isImageNull || !isIconNull)) {
+      ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });
+    }
+  }
+});
+
 export const createServiceSchema = z
   .object({
     name: z
@@ -42,7 +64,7 @@ export const createServiceSchema = z
 
     keyFeatures: stringArray(255).default([]),
 
-    benefits: stringArray(255).default([]),
+    benefits: z.array(serviceBenefitSchema).default([]),
 
     faq: z.array(faqItemSchema).default([]),
 

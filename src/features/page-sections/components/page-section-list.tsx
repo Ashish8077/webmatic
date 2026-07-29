@@ -76,6 +76,8 @@ export function PageSectionList({
     <div className="space-y-3">
       {sections.map((section) => {
         const isUpdating = updatingSectionId === section.id;
+        const isReadOnly = section.sectionType === "contact-cta";
+        const ownerModule = section.sectionType === "contact-cta" ? "Contact Module" : "";
 
         return (
           <article
@@ -103,15 +105,21 @@ export function PageSectionList({
                   </Badge>
                 </div>
 
-                <div className="mt-3 overflow-hidden rounded-lg border border-card-border/60 bg-surface">
-                  <div className="flex items-center gap-2 border-b border-card-border/60 px-3 py-2 text-xs text-muted-foreground">
-                    <FileText size={13} />
-                    Content
+                {isReadOnly ? (
+                  <div className="mt-3 flex items-center p-3 text-sm font-medium text-amber-600 bg-amber-50 border border-amber-200/60 rounded-lg">
+                    Managed by {ownerModule}
                   </div>
-                  <pre className="max-h-[96px] overflow-hidden px-3 py-2 font-mono text-xs leading-5 text-muted-foreground/80">
-                    {getContentPreview(section)}
-                  </pre>
-                </div>
+                ) : (
+                  <div className="mt-3 overflow-hidden rounded-lg border border-card-border/60 bg-surface">
+                    <div className="flex items-center gap-2 border-b border-card-border/60 px-3 py-2 text-xs text-muted-foreground">
+                      <FileText size={13} />
+                      Content
+                    </div>
+                    <pre className="max-h-[96px] overflow-hidden px-3 py-2 font-mono text-xs leading-5 text-muted-foreground/80">
+                      {getContentPreview(section)}
+                    </pre>
+                  </div>
+                )}
               </div>
 
               <div className="flex shrink-0 items-center gap-1">
@@ -138,19 +146,19 @@ export function PageSectionList({
                 </button>
 
                 <button
-                  title="Edit"
-                  disabled={isUpdating}
+                  title={isReadOnly ? "Disabled (Read-only)" : "Edit"}
+                  disabled={isUpdating || isReadOnly}
                   onClick={() => onEdit(section)}
-                  className="rounded-lg p-2 text-muted-foreground transition-all hover:bg-surface-hover hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded-lg p-2 text-muted-foreground transition-all hover:bg-surface-hover hover:text-foreground disabled:cursor-not-allowed disabled:opacity-30"
                 >
                   <SquarePen size={15} strokeWidth={1.8} />
                 </button>
 
                 <button
-                  title="Delete"
-                  disabled={isUpdating}
+                  title={isReadOnly ? "Disabled (Read-only)" : "Delete"}
+                  disabled={isUpdating || isReadOnly}
                   onClick={() => onDelete(section)}
-                  className="rounded-lg p-2 text-muted-foreground transition-all hover:bg-danger/10 hover:text-danger disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded-lg p-2 text-muted-foreground transition-all hover:bg-danger/10 hover:text-danger disabled:cursor-not-allowed disabled:opacity-30"
                 >
                   <Trash2 size={15} strokeWidth={1.8} />
                 </button>

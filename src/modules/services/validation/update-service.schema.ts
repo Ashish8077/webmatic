@@ -7,6 +7,7 @@ import {
   stringArray,
 } from "@/shared/utils/validators/zod-helpers";
 import { SERVICE_STATUS } from "../constants/service.constants";
+import { serviceBenefitSchema } from "./create-service.schema";
 import { z } from "zod";
 
 export const updateServiceSchema = z
@@ -43,7 +44,7 @@ export const updateServiceSchema = z
 
     keyFeatures: stringArray(255).optional(),
 
-    benefits: stringArray(255).optional(),
+    benefits: z.array(serviceBenefitSchema).optional(),
 
     faq: z.array(faqItemSchema).nullable().optional(),
 
