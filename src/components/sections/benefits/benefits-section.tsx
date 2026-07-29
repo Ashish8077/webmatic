@@ -43,11 +43,15 @@ export function BenefitsSection({
               >
                 <div className="flex items-center">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 text-green-600 group-hover:bg-green-600 group-hover:text-white transition-all duration-300 overflow-hidden">
-                    {isString || benefit.visualType === "none" ? (
+                    {isString || (benefit as ServiceBenefit).visualType === "none" ? (
                       <ShieldCheck size={22} strokeWidth={1.75} />
                     ) : (
                       <VisualRenderer
-                        asset={benefit as ServiceBenefit}
+                        asset={{
+                          visualType: (benefit as ServiceBenefit).visualType,
+                          iconName: (benefit as ServiceBenefit).iconName ?? null,
+                          imageId: (benefit as ServiceBenefit).imageId ?? null,
+                        }}
                         className="w-[22px] h-[22px]"
                         iconClassName="w-full h-full"
                       />

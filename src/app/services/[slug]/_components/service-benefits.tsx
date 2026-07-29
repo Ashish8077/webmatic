@@ -32,10 +32,12 @@ export function ServiceBenefits({ benefits }: ServiceBenefitsProps) {
               <div className="flex items-center">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 text-green-600 group-hover:bg-green-600 group-hover:text-white transition-all duration-300 overflow-hidden">
                   <VisualRenderer
-                    visual={benefit}
+                    asset={{
+                      visualType: benefit.visualType,
+                      iconName: benefit.iconName ?? null,
+                      imageId: benefit.imageId ?? null,
+                    }}
                     className="w-[22px] h-[22px]"
-                    iconProps={{ size: 22, strokeWidth: 1.75 }}
-                    fallback={<ShieldCheck size={22} strokeWidth={1.75} />}
                   />
                 </div>
               </div>
