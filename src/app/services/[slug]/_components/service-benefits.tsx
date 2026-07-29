@@ -1,4 +1,4 @@
-import { ShieldCheck } from "lucide-react";
+
 import { ServiceBenefit } from "@/modules/services/types/service.types";
 import { VisualRenderer } from "@/components/ui/visual-renderer";
 

@@ -17,7 +17,7 @@ export function ServiceFeatures({ features }: ServiceFeaturesProps) {
             <span className="h-px w-6 bg-orange-500 rounded-full" />
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-[#081a4b]">
-            What's <span className="text-orange-500">Included</span>
+            What&apos;s <span className="text-orange-500">Included</span>
           </h2>
         </div>
 

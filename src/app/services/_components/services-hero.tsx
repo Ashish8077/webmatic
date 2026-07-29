@@ -1,6 +1,6 @@
 import { PageHero } from "@/components/shared/page-hero/page-hero";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
-import type { ServicesHeroContentValues } from "@/features/page-sections/schemas/services-hero.schema";
+
 
 import { DEFAULT_SERVICES_HERO_CONTENT } from "@/features/page-sections/schemas/services-hero.schema";
 import type { JsonObject } from "@/shared/types/json";

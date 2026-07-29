@@ -115,7 +115,7 @@ export default async function ServiceDetailsPage({ params }: ServicePageProps) {
               highlight: "",
               description: "Everything you need to know about this service.",
               items: service.faq,
-            } as any}
+            } as Record<string, unknown>}
           />
         )}
 
