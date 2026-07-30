@@ -25,6 +25,12 @@ export const Permission = {
   BLOG_DELETE: "blog.delete",
   BLOG_PUBLISH: "blog.publish",
 
+  // media permissions
+  MEDIA_VIEW: "media.view",
+  MEDIA_CREATE: "media.create",
+  MEDIA_UPDATE: "media.update",
+  MEDIA_DELETE: "media.delete",
+
   // Continue for the remaining permissions...
 } as const;
 
