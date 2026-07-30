@@ -7,10 +7,10 @@ CREATE TABLE IF NOT EXISTS services (
     short_description TEXT NULL,
     description LONGTEXT NULL,
 
-    -- Icon
-    icon_type ENUM('library', 'image') NOT NULL DEFAULT 'library',
+    -- Visual Asset
+    visual_type ENUM('none', 'icon', 'image') NOT NULL DEFAULT 'none',
     icon_name VARCHAR(100) NULL,
-    icon_image_id BIGINT UNSIGNED NULL,
+    image_id BIGINT UNSIGNED NULL,
 
     -- Images
     featured_image_id BIGINT UNSIGNED NULL,
