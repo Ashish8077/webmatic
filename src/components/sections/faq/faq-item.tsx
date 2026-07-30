@@ -13,7 +13,7 @@ export function FaqItemComponent({ item, isOpen, onToggle, index }: FaqItemProps
   const buttonId = `faq-button-${index}`;
 
   return (
-    <div className="group rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+    <div className="group rounded-xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
       <button
         id={buttonId}
         aria-expanded={isOpen}

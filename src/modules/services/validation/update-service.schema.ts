@@ -6,9 +6,9 @@ import {
   nullableUrl,
   stringArray,
 } from "@/shared/utils/validators/zod-helpers";
-import { z } from "zod";
-import { visualAssetSchema } from "@/shared/schemas/visual-asset.schema";
 import { SERVICE_STATUS } from "../constants/service.constants";
+import { serviceBenefitSchema } from "./create-service.schema";
+import { z } from "zod";
 
 export const updateServiceSchema = z
   .object({
@@ -44,7 +44,7 @@ export const updateServiceSchema = z
 
     keyFeatures: stringArray(255).optional(),
 
-    benefits: stringArray(255).optional(),
+    benefits: z.array(serviceBenefitSchema).optional(),
 
     faq: z.array(faqItemSchema).nullable().optional(),
 

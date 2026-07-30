@@ -1,9 +1,5 @@
 import { z } from "zod";
-import {
-  requiredString,
-  optionalString,
-  optionalUrl,
-} from "./common.schema";
+import { requiredString, optionalString, optionalUrl } from "./common.schema";
 
 // ─── Contact CTA content schema ──────────────────────────────────────────────
 
@@ -20,9 +16,8 @@ export type ContactCtaContentValues = z.infer<typeof contactCtaContentSchema>;
 export const DEFAULT_CONTACT_CTA_CONTENT: ContactCtaContentValues = {
   heading: "Ready to start your next project?",
   description: "",
-  privacyNote: "Note: Your details are kept strictly confidential as per our Privacy Policy.",
+  privacyNote:
+    "Note: Your details are kept strictly confidential as per our Privacy Policy.",
   buttonText: "Request a Demo",
   buttonUrl: "",
 };
-
-

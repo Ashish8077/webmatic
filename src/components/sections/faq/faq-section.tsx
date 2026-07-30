@@ -38,7 +38,7 @@ export function FaqSection({ content }: SectionProps) {
             </p>
             <Link
               href={faqData.primaryButton.to}
-              className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-orange-500 px-6 py-3 text-sm font-semibold text-white shadow-md shadow-orange-200 hover:bg-orange-600 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+              className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white shadow-md shadow-primary/20 hover:bg-primary-hover transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
             >
               {faqData.primaryButton.text}
               <ArrowRight size={14} />

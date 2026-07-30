@@ -194,6 +194,60 @@ export async function findServiceById(
   return rows[0] ?? null;
 }
 
+export async function findPublishedServiceBySlug(
+  slug: string,
+): Promise<ServiceDetailsRow | null> {
+  const [rows] = await db.execute<ServiceDetailsRow[]>(
+    `
+    SELECT
+      id,
+      name,
+      slug,
+      short_description,
+      description,
+      featured_image_id,
+      banner_image_id,
+      visual_type,
+      icon_name,
+      image_id,
+      key_features,
+      benefits,
+      faq,
+      cta_title,
+      cta_description,
+      cta_button_text,
+      cta_button_url,
+      seo_title,
+      meta_description,
+      meta_keywords,
+      canonical_url,
+      open_graph_title,
+      open_graph_description,
+      open_graph_image_id,
+      twitter_title,
+      twitter_description,
+      twitter_image_id,
+      schema_markup,
+      status,
+      is_featured,
+      sort_order,
+      published_at,
+      created_at,
+      updated_at,
+      created_by,
+      updated_by
+    FROM services
+    WHERE slug = ?
+      AND status = 'published'
+      AND deleted_at IS NULL
+    LIMIT 1
+    `,
+    [slug],
+  );
+
+  return rows[0] ?? null;
+}
+
 export async function countServices(
   options: GetServicesQuery,
 ): Promise<number> {

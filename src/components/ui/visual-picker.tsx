@@ -2,13 +2,10 @@
 
 import { ImagePicker } from "@/components/shared/media";
 import { IconPicker } from "./icon-picker";
-import { Button } from "./button";
-import Image from "next/image";
-import { getIconComponent } from "./icon-registry";
-import { X, Image as ImageIcon, Sparkles, Ban } from "lucide-react";
 import { VisualAsset, VisualType } from "@/shared/types/visual-asset.types";
+import { useId } from "react";
 
-interface VisualPickerProps {
+export interface VisualPickerProps {
   value: VisualAsset;
   onChange: (value: VisualAsset) => void;
   label?: string;
@@ -25,6 +22,7 @@ export function VisualPicker({
   error,
   disabled = false,
 }: VisualPickerProps) {
+  const radioGroupName = useId();
   const handleTypeChange = (val: string) => {
     const newType = val as VisualType;
     if (newType === "none") {
@@ -64,7 +62,7 @@ export function VisualPicker({
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="radio"
-              name="visualType"
+              name={radioGroupName}
               value="none"
               checked={value.visualType === "none"}
               onChange={(e) => handleTypeChange(e.target.value)}
@@ -76,7 +74,7 @@ export function VisualPicker({
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="radio"
-              name="visualType"
+              name={radioGroupName}
               value="icon"
               checked={value.visualType === "icon"}
               onChange={(e) => handleTypeChange(e.target.value)}
@@ -88,7 +86,7 @@ export function VisualPicker({
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="radio"
-              name="visualType"
+              name={radioGroupName}
               value="image"
               checked={value.visualType === "image"}
               onChange={(e) => handleTypeChange(e.target.value)}

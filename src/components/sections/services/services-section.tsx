@@ -20,7 +20,7 @@ export const ServiceSection = async ({ content }: SectionProps) => {
   });
 
   return (
-    <section className="bg-slate-50 py-20 lg:py-28">
+    <section className="bg-white py-20 lg:py-28">
       <div className="mx-auto max-w-[1170px] px-5 sm:px-8">
         {/* ── Section header ──────────────────────────────── */}
         <div className="mb-14 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">

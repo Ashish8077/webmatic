@@ -99,6 +99,11 @@ export default function ServiceForm({
     name: "faq",
   });
 
+  const benefitsField = useFieldArray({
+    control: form.control,
+    name: "benefits",
+  });
+
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -278,9 +283,9 @@ export default function ServiceForm({
         </div>
 
         {/* Key Features & Benefits */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-card-border">
-          <div>
-            <h4 className="font-medium text-foreground mb-4">Key Features</h4>
+        <div className="pt-4 border-t border-card-border">
+          <h4 className="font-medium text-foreground mb-4">Key Features</h4>
+          <div className="md:w-1/2">
             <Controller
               name="keyFeatures"
               control={form.control}
@@ -299,25 +304,70 @@ export default function ServiceForm({
               </p>
             )}
           </div>
-          <div>
-            <h4 className="font-medium text-foreground mb-4">Benefits</h4>
-            <Controller
-              name="benefits"
-              control={form.control}
-              render={({ field }) => (
-                <StringArrayField
-                  label="Benefits"
+        </div>
+
+        {/* Benefits Section */}
+        <div className="space-y-4 pt-4 border-t border-card-border">
+          <div className="flex items-center justify-between">
+            <h4 className="font-medium text-foreground">Benefits</h4>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                benefitsField.append({
+                  title: "",
+                  visualType: "none",
+                  iconName: null,
+                  imageId: null,
+                })
+              }
+            >
+              <Plus size={14} className="mr-1" /> Add Benefit
+            </Button>
+          </div>
+          {benefitsField.fields.length === 0 && (
+            <p className="text-sm text-muted-foreground py-2">
+              No Benefits added.
+            </p>
+          )}
+          <div className="grid gap-4 md:grid-cols-2">
+            {benefitsField.fields.map((field, index) => (
+              <div
+                key={field.id}
+                className="space-y-4 p-4 border border-card-border rounded-xl bg-surface relative"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Benefit #{index + 1}
+                  </span>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0 text-muted-foreground hover:text-danger"
+                    onClick={() => benefitsField.remove(index)}
+                  >
+                    <Trash2 size={16} />
+                  </Button>
+                </div>
+                <Input
+                  label="Title"
                   placeholder="e.g. Increased ROI"
-                  value={field.value}
-                  onChange={field.onChange}
+                  {...form.register(`benefits.${index}.title` as const)}
+                  error={
+                    form.formState.errors.benefits?.[index]?.title?.message
+                  }
                 />
-              )}
-            />
-            {form.formState.errors.benefits?.message && (
-              <p className="text-sm text-danger mt-1">
-                {form.formState.errors.benefits?.message as string}
-              </p>
-            )}
+                <div className="p-3 border border-card-border rounded-lg bg-card-bg">
+                  <VisualPickerField
+                    name={`benefits.${index}`}
+                    label="Benefit Visual"
+                    description="Optional icon or image"
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -426,8 +476,8 @@ export default function ServiceForm({
             ogDescription: form.register("openGraphDescription"),
             twitterTitle: form.register("twitterTitle"),
             twitterDescription: form.register("twitterDescription"),
-            robotsIndex: form.register("name"), // mock registers
-            robotsFollow: form.register("name"),
+              robotsIndex: form.register("name"), // mock registers
+              robotsFollow: form.register("name"),
           }}
           errors={form.formState.errors}
           warnings={[]}

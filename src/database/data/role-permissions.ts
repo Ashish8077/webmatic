@@ -40,6 +40,7 @@ export const rolePermissions = {
     "media.update",
     "media.delete",
     "media.manage",
+    "media.restore",
   ],
 
   "marketing-manager": [
@@ -107,6 +108,7 @@ export const rolePermissions = {
     "media.update",
     "media.delete",
     "media.manage",
+    "media.restore",
   ],
 
   "sales-manager": [

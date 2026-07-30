@@ -1,6 +1,5 @@
 "use client";
-// React
-import { use, useEffect, useMemo, useState } from "react";
+import { use, useMemo, useState } from "react";
 
 // Next.js
 import Link from "next/link";
@@ -37,7 +36,6 @@ import {
 // Page Sections Hooks
 import { useCreatePageSection } from "@/features/page-sections/hooks/use-create-page-section";
 import { useDeletePageSection } from "@/features/page-sections/hooks/use-delete-page-section";
-import { usePageSection } from "@/features/page-sections/hooks/use-page-section";
 import { usePageSectionForm } from "@/features/page-sections/hooks/use-page-section-form";
 import { usePageSections } from "@/features/page-sections/hooks/use-page-sections";
 import { useUpdatePageSection } from "@/features/page-sections/hooks/use-update-page-section";
@@ -50,13 +48,10 @@ import {
 import {
   parseOptionalSectionContent,
   parseRequiredSectionContent,
-  stringifyOptionalSectionContent,
-  stringifySectionContent,
 } from "@/features/page-sections/schemas/page-section.utils";
 
 import type {
   CreatePageSectionRequest,
-  PageSection,
   PageSectionListItem,
 } from "@/features/page-sections/types/page-section.types";
 
@@ -87,7 +82,6 @@ export default function SectionsPage({
 
   const pageQuery = usePage(pageId);
   const sectionsQuery = usePageSections(pageId);
-  const sectionQuery = usePageSection(editingSectionId);
 
   const createSectionMutation = useCreatePageSection(pageId);
   const updateSectionMutation = useUpdatePageSection(pageId);
@@ -130,20 +124,6 @@ export default function SectionsPage({
     setIsContentModalOpen(false);
     setEditingSectionId(null);
   };
-
-  useEffect(() => {
-    const section = sectionQuery.data?.data.section;
-
-    if (!section || !isCreateModalOpen || !editingSectionId) return;
-
-    reset({
-      sectionType: section.sectionType,
-      content: stringifySectionContent(section.content),
-      settings: stringifyOptionalSectionContent(section.settings),
-      sortOrder: section.sortOrder,
-      status: section.status,
-    });
-  }, [editingSectionId, isCreateModalOpen, reset, sectionQuery.data]);
 
   const toCreateMutationPayload = (
     values: PageSectionFormValues,
@@ -239,15 +219,15 @@ export default function SectionsPage({
   const isContentSaving = updateSectionMutation.isPending;
 
   // Derive the editing section's data for the content modal
-  const editingSection: PageSection | null =
-    sectionQuery.data?.data.section ?? null;
+  const editingSection = useMemo(() => {
+    return sections.find((s) => s.id === editingSectionId) ?? null;
+  }, [sections, editingSectionId]);
+  
   const editingSectionContent: JsonObject =
     (editingSection?.content as JsonObject) ?? {};
   const editingSectionSettings: JsonObject =
     (editingSection?.settings as JsonObject) ?? {};
-  const isContentLoading = Boolean(
-    editingSectionId && sectionQuery.isPending,
-  );
+  const isContentLoading = false;
 
   // Invalid page id handler
   if (isInvalidPageId) {

@@ -10,9 +10,7 @@ interface ServiceCardProps {
   index: number;
 }
 
-export function WhyUsCards({ reason, index }: ServiceCardProps) {
-  const formattedIndex = index.toString().padStart(2, "0");
-
+export function WhyUsCards({ reason }: ServiceCardProps) {
   return (
     <article className="group flex flex-col gap-4 rounded-2xl bg-white ring-1 ring-green-100 p-7 shadow-lg shadow-green-100/80 hover:shadow-xl hover:shadow-green-200/60 hover:ring-green-300 hover:-translate-y-1 transition-all duration-300">
       {/* Icon */}

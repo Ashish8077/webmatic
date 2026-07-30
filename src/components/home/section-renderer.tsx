@@ -9,6 +9,8 @@ import {
 import { ServiceSection } from "@/components/sections/services/services-section";
 import { TestimonialsSection } from "@/components/sections/testimonials/testimonials-section";
 import { FaqSection } from "@/components/sections/faq";
+import { ServicesHero } from "@/app/services/_components/services-hero";
+import { DevelopmentProcessSection } from "@/app/services/_components/development-process";
 import { AboutHeroSection } from "@/components/sections/about-hero/about-hero-section";
 import { CompanyStatisticsSection } from "@/components/sections/company-statistics/company-statistics-section";
 import { CompanyOverviewSection } from "@/components/sections/company-overview/company-overview-section";
@@ -37,6 +39,8 @@ const SECTION_MAP: Readonly<
   testimonials: TestimonialsSection,
   faq: FaqSection,
   "contact-cta": ContactCtaSection,
+  "services-hero": ServicesHero as unknown as SectionComponent,
+  "development-process": DevelopmentProcessSection as unknown as SectionComponent,
   "about-hero": AboutHeroSection as unknown as SectionComponent,
   "company-statistics": CompanyStatisticsSection as unknown as SectionComponent,
   "company-overview": CompanyOverviewSection as unknown as SectionComponent,

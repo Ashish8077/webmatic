@@ -5,7 +5,7 @@ import { TestimonialsSlider } from "./testimonials-slider";
 import Image from "next/image";
 import { getTestimonialsService } from "@/modules/testimonials/services/get-testimonials.service";
 
-export async function TestimonialsSection({ content }: SectionProps) {
+export async function TestimonialsSection({ content, settings }: SectionProps) {
   const data = normaliseTestimonialContent(
     content as unknown as RawTestimonialContent,
   );
@@ -22,7 +22,7 @@ export async function TestimonialsSection({ content }: SectionProps) {
 
   return (
     <section 
-      className={`relative py-20 lg:py-28 overflow-hidden ${!data.backgroundColor && !data.backgroundImageId ? "bg-slate-50" : ""}`}
+      className={`relative py-20 lg:py-28 overflow-hidden ${!data.backgroundColor && !data.backgroundImageId ? "bg-white" : ""}`}
       style={bgStyle}
     >
       {/* Background Image */}
@@ -63,7 +63,7 @@ export async function TestimonialsSection({ content }: SectionProps) {
         </div>
 
         {/* ── Testimonials slider (Client Component) ──────── */}
-        <TestimonialsSlider items={testimonialsResponse.items} />
+        <TestimonialsSlider items={testimonialsResponse.items} settings={settings} />
       </div>
     </section>
   );

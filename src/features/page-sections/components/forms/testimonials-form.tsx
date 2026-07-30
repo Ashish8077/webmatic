@@ -25,16 +25,17 @@ export function parseTestimonialsContentDefaults(
     description:
       (raw.description as string) ?? DEFAULT_TESTIMONIALS_CONTENT.description,
     backgroundColor:
-      (raw.backgroundColor as string) ?? DEFAULT_TESTIMONIALS_CONTENT.backgroundColor,
+      (raw.backgroundColor as string) ??
+      DEFAULT_TESTIMONIALS_CONTENT.backgroundColor,
     backgroundImageId:
-      (raw.backgroundImageId as number | null) ?? DEFAULT_TESTIMONIALS_CONTENT.backgroundImageId,
+      (raw.backgroundImageId as number | null) ??
+      DEFAULT_TESTIMONIALS_CONTENT.backgroundImageId,
   };
 }
 
 export const parseTestimonialsSettingsDefaults = parseSliderSettingsDefaults;
 
 export function TestimonialsContentForm({ disabled }: { disabled?: boolean }) {
-
   return (
     <div className="space-y-5">
       <SectionHeadingFields
@@ -55,7 +56,6 @@ export function TestimonialsContentForm({ disabled }: { disabled?: boolean }) {
           disabled={disabled}
         />
       </div>
-
     </div>
   );
 }

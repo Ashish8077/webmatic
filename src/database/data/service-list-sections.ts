@@ -1,24 +1,11 @@
 export const serviceListSections = [
   {
-    sectionType: "hero",
+    sectionType: "services-hero",
     sortOrder: 0,
     content: {
       headline: "",
       subheadline: "",
       backgroundImageId: null,
-    },
-    settings: {
-      isVisible: true,
-    },
-  },
-
-  {
-    sectionType: "introduction",
-    sortOrder: 1,
-    content: {
-      heading: "",
-      subheading: "",
-      description: "",
     },
     settings: {
       isVisible: true,
@@ -40,12 +27,57 @@ export const serviceListSections = [
   },
 
   {
-    sectionType: "why-choose-us",
+    sectionType: "testimonials",
     sortOrder: 3,
     content: {
-      heading: "",
-      description: "",
-      items: [],
+      badge: "TESTIMONIALS",
+      heading: "What Our Clients Say",
+      description: "Don't just take our word for it.",
+    },
+    settings: {
+      isVisible: true,
+    },
+  },
+
+  {
+    sectionType: "development-process",
+    sortOrder: 4,
+    content: {
+      badge: "OUR DEVELOPMENT PROCESS",
+      heading: "Focusing on the 3 key elements of any successful ",
+      highlight: "marketing strategy.",
+      steps: [
+        {
+          key: "creative",
+          title: "1. Creative",
+          description:
+            "Create thumb-stopping ads that capture your prospects attention and get them interested in what you have to offer.",
+          visualType: "icon",
+          iconName: "PenTool",
+          imageId: null,
+        },
+        {
+          key: "targeting",
+          title: "2. Targeting",
+          description:
+            "Find your customers online, drive them to your website & then bring them back again with well designed retargeting ads.",
+          visualType: "icon",
+          iconName: "Target",
+          imageId: null,
+        },
+        {
+          key: "optimisation",
+          title: "3. Optimisation",
+          description:
+            "Our tech experts optimise every stage of your funnel to ensure that maximum ROI is being achieved.",
+          visualType: "icon",
+          iconName: "Settings",
+          imageId: null,
+        },
+      ],
+      bottomText:
+        "We Serve our Clients' Best Interests with the Best Marketing Solutions.",
+      primaryButton: { url: "/contact", text: "Find Out More" },
     },
     settings: {
       isVisible: true,
@@ -54,7 +86,7 @@ export const serviceListSections = [
 
   {
     sectionType: "faq",
-    sortOrder: 4,
+    sortOrder: 5,
     content: {
       heading: "",
       items: [],
@@ -66,7 +98,7 @@ export const serviceListSections = [
 
   {
     sectionType: "contact-cta",
-    sortOrder: 5,
+    sortOrder: 6,
     content: {
       heading: "",
       description: "",

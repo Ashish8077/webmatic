@@ -5,10 +5,7 @@ import {
   DEFAULT_CONTACT_CTA_CONTENT,
   type ContactCtaContentValues,
 } from "../../schemas/contact-cta.schema";
-import {
-  TextField,
-  TextareaField,
-} from "../fields";
+import { TextField, TextareaField } from "../fields";
 
 export function parseContactCtaContentDefaults(
   content: JsonObject | undefined | null,
@@ -16,10 +13,14 @@ export function parseContactCtaContentDefaults(
   const raw = (content ?? {}) as unknown as Partial<ContactCtaContentValues>;
   return {
     heading: (raw.heading as string) ?? DEFAULT_CONTACT_CTA_CONTENT.heading,
-    description: (raw.description as string) ?? DEFAULT_CONTACT_CTA_CONTENT.description,
-    privacyNote: (raw.privacyNote as string) ?? DEFAULT_CONTACT_CTA_CONTENT.privacyNote,
-    buttonText: (raw.buttonText as string) ?? DEFAULT_CONTACT_CTA_CONTENT.buttonText,
-    buttonUrl: (raw.buttonUrl as string) ?? DEFAULT_CONTACT_CTA_CONTENT.buttonUrl,
+    description:
+      (raw.description as string) ?? DEFAULT_CONTACT_CTA_CONTENT.description,
+    privacyNote:
+      (raw.privacyNote as string) ?? DEFAULT_CONTACT_CTA_CONTENT.privacyNote,
+    buttonText:
+      (raw.buttonText as string) ?? DEFAULT_CONTACT_CTA_CONTENT.buttonText,
+    buttonUrl:
+      (raw.buttonUrl as string) ?? DEFAULT_CONTACT_CTA_CONTENT.buttonUrl,
   };
 }
 

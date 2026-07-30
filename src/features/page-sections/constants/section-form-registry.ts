@@ -5,10 +5,7 @@ import type {
   ParseDefaultsFn,
 } from "../types/section-content.types";
 
-import {
-  heroContentSchema,
-  heroSettingsSchema,
-} from "../schemas/hero.schema";
+import { heroContentSchema, heroSettingsSchema } from "../schemas/hero.schema";
 import {
   aboutContentSchema,
   aboutSettingsSchema,
@@ -26,15 +23,15 @@ import {
   testimonialsSettingsSchema,
 } from "../schemas/testimonials.schema";
 import { faqContentSchema } from "../schemas/faq.schema";
-import {
-  contactCtaContentSchema,
-} from "../schemas/contact-cta.schema";
+import { contactCtaContentSchema } from "../schemas/contact-cta.schema";
 import { aboutHeroContentSchema } from "../schemas/about-hero.schema";
+import { servicesHeroContentSchema } from "../schemas/services-hero.schema";
 import { companyStatisticsContentSchema } from "../schemas/company-statistics.schema";
 import { companyOverviewContentSchema } from "../schemas/company-overview.schema";
 import { coreValuesContentSchema } from "../schemas/core-values.schema";
 import { missionVisionContentSchema } from "../schemas/mission-vision.schema";
 import { teamMembersContentSchema } from "../schemas/team-members.schema";
+import { developmentProcessContentSchema } from "../schemas/development-process.schema";
 
 import {
   HeroContentForm,
@@ -68,6 +65,10 @@ import {
   parseAboutHeroContentDefaults,
 } from "../components/forms/about-hero-form";
 import {
+  ServicesHeroContentForm,
+  parseServicesHeroContentDefaults,
+} from "../components/forms/services-hero-form";
+import {
   CompanyStatisticsContentForm,
   parseCompanyStatisticsContentDefaults,
 } from "../components/forms/company-statistics-form";
@@ -87,26 +88,36 @@ import {
   TeamMembersContentForm,
   parseTeamMembersContentDefaults,
 } from "../components/forms/team-members-form";
+import {
+  DevelopmentProcessContentForm,
+  parseDevelopmentProcessContentDefaults,
+} from "../components/forms/development-process-form";
 
 // ─── Content Registries ───────────────────────────────────────────────────────
 
-export const SECTION_CONTENT_SCHEMA_MAP: Record<PageSectionType, z.ZodTypeAny> = {
-  hero: heroContentSchema,
-  about: aboutContentSchema,
-  services: servicesContentSchema,
-  "why-choose-us": whyChooseUsContentSchema,
-  testimonials: testimonialsContentSchema,
-  faq: faqContentSchema,
-  "contact-cta": contactCtaContentSchema,
-  "about-hero": aboutHeroContentSchema,
-  "company-statistics": companyStatisticsContentSchema,
-  "company-overview": companyOverviewContentSchema,
-  "core-values": coreValuesContentSchema,
-  "mission-vision": missionVisionContentSchema,
-  "team-members": teamMembersContentSchema,
-};
+export const SECTION_CONTENT_SCHEMA_MAP: Record<PageSectionType, z.ZodTypeAny> =
+  {
+    hero: heroContentSchema,
+    about: aboutContentSchema,
+    services: servicesContentSchema,
+    "why-choose-us": whyChooseUsContentSchema,
+    testimonials: testimonialsContentSchema,
+    faq: faqContentSchema,
+    "contact-cta": contactCtaContentSchema,
+    "about-hero": aboutHeroContentSchema,
+    "services-hero": servicesHeroContentSchema,
+    "development-process": developmentProcessContentSchema,
+    "company-statistics": companyStatisticsContentSchema,
+    "company-overview": companyOverviewContentSchema,
+    "core-values": coreValuesContentSchema,
+    "mission-vision": missionVisionContentSchema,
+    "team-members": teamMembersContentSchema,
+  };
 
-export const SECTION_CONTENT_FORM_MAP: Record<PageSectionType, SectionFieldComponent> = {
+export const SECTION_CONTENT_FORM_MAP: Record<
+  PageSectionType,
+  SectionFieldComponent
+> = {
   hero: HeroContentForm,
   about: AboutContentForm,
   services: ServicesContentForm,
@@ -115,6 +126,8 @@ export const SECTION_CONTENT_FORM_MAP: Record<PageSectionType, SectionFieldCompo
   faq: FaqContentForm,
   "contact-cta": ContactCtaContentForm,
   "about-hero": AboutHeroContentForm,
+  "services-hero": ServicesHeroContentForm,
+  "development-process": DevelopmentProcessContentForm,
   "company-statistics": CompanyStatisticsContentForm,
   "company-overview": CompanyOverviewContentForm,
   "core-values": CoreValuesContentForm,
@@ -122,7 +135,10 @@ export const SECTION_CONTENT_FORM_MAP: Record<PageSectionType, SectionFieldCompo
   "team-members": TeamMembersContentForm,
 };
 
-export const SECTION_CONTENT_DEFAULTS_MAP: Record<PageSectionType, ParseDefaultsFn<unknown>> = {
+export const SECTION_CONTENT_DEFAULTS_MAP: Record<
+  PageSectionType,
+  ParseDefaultsFn<unknown>
+> = {
   hero: parseHeroContentDefaults,
   about: parseAboutContentDefaults,
   services: parseServicesContentDefaults,
@@ -131,6 +147,8 @@ export const SECTION_CONTENT_DEFAULTS_MAP: Record<PageSectionType, ParseDefaults
   faq: parseFaqContentDefaults,
   "contact-cta": parseContactCtaContentDefaults,
   "about-hero": parseAboutHeroContentDefaults,
+  "services-hero": parseServicesHeroContentDefaults,
+  "development-process": parseDevelopmentProcessContentDefaults,
   "company-statistics": parseCompanyStatisticsContentDefaults,
   "company-overview": parseCompanyOverviewContentDefaults,
   "core-values": parseCoreValuesContentDefaults,
@@ -140,7 +158,10 @@ export const SECTION_CONTENT_DEFAULTS_MAP: Record<PageSectionType, ParseDefaults
 
 // ─── Settings Registries ──────────────────────────────────────────────────────
 
-export const SECTION_SETTINGS_SCHEMA_MAP: Record<PageSectionType, z.ZodTypeAny> = {
+export const SECTION_SETTINGS_SCHEMA_MAP: Record<
+  PageSectionType,
+  z.ZodTypeAny
+> = {
   hero: heroSettingsSchema,
   about: aboutSettingsSchema,
   services: servicesSettingsSchema,
@@ -149,6 +170,8 @@ export const SECTION_SETTINGS_SCHEMA_MAP: Record<PageSectionType, z.ZodTypeAny> 
   faq: z.object({}),
   "contact-cta": z.object({}),
   "about-hero": z.object({}),
+  "services-hero": z.object({}),
+  "development-process": z.object({}),
   "company-statistics": z.object({}),
   "company-overview": z.object({}),
   "core-values": z.object({}),
@@ -156,7 +179,10 @@ export const SECTION_SETTINGS_SCHEMA_MAP: Record<PageSectionType, z.ZodTypeAny> 
   "team-members": z.object({}),
 };
 
-export const SECTION_SETTINGS_FORM_MAP: Record<PageSectionType, SectionFieldComponent> = {
+export const SECTION_SETTINGS_FORM_MAP: Record<
+  PageSectionType,
+  SectionFieldComponent
+> = {
   hero: HeroSettingsForm,
   about: AboutSettingsForm,
   services: ServicesSettingsForm,
@@ -165,6 +191,8 @@ export const SECTION_SETTINGS_FORM_MAP: Record<PageSectionType, SectionFieldComp
   faq: () => null,
   "contact-cta": () => null,
   "about-hero": () => null,
+  "services-hero": () => null,
+  "development-process": () => null,
   "company-statistics": () => null,
   "company-overview": () => null,
   "core-values": () => null,
@@ -172,7 +200,10 @@ export const SECTION_SETTINGS_FORM_MAP: Record<PageSectionType, SectionFieldComp
   "team-members": () => null,
 };
 
-export const SECTION_SETTINGS_DEFAULTS_MAP: Record<PageSectionType, ParseDefaultsFn<unknown>> = {
+export const SECTION_SETTINGS_DEFAULTS_MAP: Record<
+  PageSectionType,
+  ParseDefaultsFn<unknown>
+> = {
   hero: parseHeroSettingsDefaults,
   about: parseAboutSettingsDefaults,
   services: parseServicesSettingsDefaults,
@@ -181,6 +212,8 @@ export const SECTION_SETTINGS_DEFAULTS_MAP: Record<PageSectionType, ParseDefault
   faq: () => ({}),
   "contact-cta": () => ({}),
   "about-hero": () => ({}),
+  "services-hero": () => ({}),
+  "development-process": () => ({}),
   "company-statistics": () => ({}),
   "company-overview": () => ({}),
   "core-values": () => ({}),

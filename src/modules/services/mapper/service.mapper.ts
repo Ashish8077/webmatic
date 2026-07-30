@@ -4,6 +4,7 @@ import {
   CreateServicePayload,
   CreateServiceResponse,
   ServiceDetailsResponse,
+  ServiceBenefit,
   ServiceListItem,
   UpdateServicePayload,
 } from "../types/service.types";
@@ -189,7 +190,7 @@ export function toServiceDetailsResponse(
     imageId: service.image_id,
 
     keyFeatures: service.key_features as string[] | null,
-    benefits: service.benefits as string[] | null,
+    benefits: service.benefits as ServiceBenefit[] | null,
     faq: service.faq,
 
     ctaTitle: service.cta_title,

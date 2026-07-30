@@ -1,9 +1,5 @@
 import { z } from "zod";
-import {
-  requiredString,
-  optionalString,
-  imageIdSchema,
-} from "./common.schema";
+import { requiredString, optionalString, imageIdSchema } from "./common.schema";
 
 // ─── About Hero content schema ──────────────────────────────────────────────────
 
