@@ -5,11 +5,10 @@ import { MediaNotFoundError } from "../errors/media.errors";
 import { toJson } from "@/shared/utils/database/json";
 import { handleDuplicateConstraint } from "@/shared/utils/errors/database-error.util";
 import type { QueryValue } from "@/shared/types/database";
-import type { PaginatedResponse } from "@/shared/types/pagination";
 
 import { MEDIA_SORT_COLUMNS } from "../constants/media.constants";
 import { MEDIA_SELECT_COLUMNS } from "../constants/media-sql.constants";
-import { toMedia, toMediaList } from "../mappers/media.mapper";
+import { toMedia} from "../mappers/media.mapper";
 import type { MediaRow, CountRow } from "../types/media-repository.types";
 import type {
   CreateMediaInput,

@@ -9,7 +9,6 @@ import {
   InvalidMediaTypeError,
   FileTooLargeError,
 } from "@/modules/media/errors/media.errors";
-import type { MediaListQuery } from "@/modules/media/types/media-query.types";
 import {
   ALLOWED_UPLOAD_MIME_TYPES,
   MAX_FILE_SIZE,

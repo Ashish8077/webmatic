@@ -21,12 +21,10 @@ import {
 import { MediaChecksumService } from "./media-checksum.service";
 import { MediaMetadataService } from "./media-metadata.service";
 import {
-  DuplicateMediaError,
   MediaNotFoundError,
-  StorageDeleteError,
   UploadFailedError,
 } from "../errors/media.errors";
-import { MEDIA_TYPE, MediaType, MediaDisk } from "../constants/media.constants";
+import { MediaType } from "../constants/media.constants";
 import type { Media, UpdateMediaInput, MediaListResponse } from "../types/media.types";
 import type { MediaListQuery } from "../types/media-query.types";
 
