@@ -217,6 +217,11 @@ export const permissions = [
     slug: "media.manage",
     module: "media",
   },
+  {
+    name: "Restore Media",
+    slug: "media.restore",
+    module: "media",
+  },
 
   // ─────────────────────────────────────────────
   // Contact Forms

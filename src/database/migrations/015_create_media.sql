@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS media (
 
     -- Storage
     disk VARCHAR(50) NOT NULL DEFAULT 's3',
-    storage_path VARCHAR(1024) NOT NULL,
+    storage_path VARCHAR(512) NOT NULL,
     folder VARCHAR(255) DEFAULT NULL,
 
     -- Image Metadata

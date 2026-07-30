@@ -37,6 +37,14 @@ export const PERMISSIONS = {
   USER_CREATE: "user.create",
   USER_UPDATE: "user.update",
 
+  // Media permissions
+  MEDIA_VIEW: "media.view",
+  MEDIA_UPLOAD: "media.upload",
+  MEDIA_UPDATE: "media.update",
+  MEDIA_DELETE: "media.delete",
+  MEDIA_MANAGE: "media.manage",
+  MEDIA_RESTORE: "media.restore",
+
   AUDIT_LOG_VIEW: "audit-log.view",
 } as const;
 
