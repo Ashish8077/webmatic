@@ -8,3 +8,4 @@ export * from "./media-upload";
 export * from "./media-inspector";
 export * from "./media-picker";
 export * from "./media-field";
+export * from "./media-browser";

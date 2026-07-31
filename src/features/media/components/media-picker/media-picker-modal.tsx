@@ -1,13 +1,9 @@
-﻿"use client";
+"use client";
+
 import { useState } from "react";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
-import { MediaGrid } from "../media-grid";
-import { MediaToolbar } from "../media-toolbar";
-import { MediaPagination } from "../media-pagination";
-import { MediaUploadDialog } from "../media-upload";
-import { useMedia } from "../../hooks/use-media";
-import { useMediaFilters } from "../../hooks/use-media-filters";
+import { MediaBrowser } from "../media-browser";
 import { Media } from "../../types";
 
 interface MediaPickerModalProps {
@@ -17,39 +13,47 @@ interface MediaPickerModalProps {
   defaultFolder?: string;
 }
 
-export function MediaPickerModal({ isOpen, onClose, onSelect, defaultFolder }: MediaPickerModalProps) {
-  const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const [selectedMedia, setSelectedMedia] = useState<Media | null>(null);
+/**
+ * MediaPickerModal — thin composition wrapper.
+ *
+ * All orchestration (fetching, filtering, pagination) is delegated
+ * to MediaBrowser in "select" mode. This component only manages the
+ * modal shell and the select/cancel footer actions.
+ */
+export function MediaPickerModal({
+  isOpen,
+  onClose,
+  onSelect,
+  defaultFolder,
+}: MediaPickerModalProps) {
+  const [pendingMedia, setPendingMedia] = useState<Media | null>(null);
 
-  const {
-    query,
-    updateSearch,
-    updateFolder,
-    updateType,
-    updateSort,
-    updatePagination,
-  } = useMediaFilters({ folder: defaultFolder });
+  const handleSelect = (media: Media) => {
+    setPendingMedia(media);
+  };
 
-  // Only fetch when the modal is open
-  const { data, isLoading } = useMedia(query, { enabled: isOpen });
-
-  const handleSelect = () => {
-    if (selectedMedia) {
-      onSelect(selectedMedia);
-      onClose();
+  const handleConfirm = () => {
+    if (pendingMedia) {
+      onSelect(pendingMedia);
+      handleClose();
     }
   };
 
   const handleClose = () => {
-    setSelectedMedia(null);
+    setPendingMedia(null);
     onClose();
   };
 
   const footer = (
     <div className="flex items-center justify-between w-full">
       <div className="text-sm text-muted-foreground">
-        {selectedMedia ? (
-          <span>Selected: <span className="font-medium text-foreground">{selectedMedia.originalName}</span></span>
+        {pendingMedia ? (
+          <span>
+            Selected:{" "}
+            <span className="font-medium text-foreground">
+              {pendingMedia.originalName}
+            </span>
+          </span>
         ) : (
           <span>No media selected</span>
         )}
@@ -58,7 +62,7 @@ export function MediaPickerModal({ isOpen, onClose, onSelect, defaultFolder }: M
         <Button variant="secondary" onClick={handleClose}>
           Cancel
         </Button>
-        <Button onClick={handleSelect} disabled={!selectedMedia}>
+        <Button onClick={handleConfirm} disabled={!pendingMedia}>
           Select Media
         </Button>
       </div>
@@ -66,51 +70,22 @@ export function MediaPickerModal({ isOpen, onClose, onSelect, defaultFolder }: M
   );
 
   return (
-    <>
-      <Modal 
-        isOpen={isOpen} 
-        onClose={handleClose}
-        title="Select Media"
-        size="lg"
-        footer={footer}
-      >
-        <div className="flex flex-col min-h-0 gap-4 h-[60vh]">
-          <MediaToolbar
-            query={query}
-            onSearchChange={updateSearch}
-            onFolderChange={updateFolder}
-            onTypeChange={updateType}
-            onSortChange={updateSort}
-            onUploadClick={() => setIsUploadOpen(true)}
-          />
-
-          <div className="flex-1 overflow-y-auto min-h-0 pr-2">
-            <MediaGrid
-              media={data?.items || []}
-              isLoading={isLoading}
-              selectedId={selectedMedia?.id}
-              onSelect={setSelectedMedia}
-              onUploadClick={() => setIsUploadOpen(true)}
-              isFiltered={!!query.search || !!query.folder || !!query.type}
-            />
-          </div>
-
-          {data?.pagination && (
-            <div className="shrink-0 border-t border-card-border pt-4 mt-auto">
-              <MediaPagination
-                pagination={data.pagination}
-                onPaginationChange={updatePagination}
-              />
-            </div>
-          )}
-        </div>
-      </Modal>
-
-      <MediaUploadDialog
-        isOpen={isUploadOpen}
-        onClose={() => setIsUploadOpen(false)}
-        defaultFolder={query.folder}
-      />
-    </>
+    <Modal
+      isOpen={isOpen}
+      onClose={handleClose}
+      title="Select Media"
+      size="lg"
+      footer={footer}
+    >
+      <div className="h-[60vh]">
+        <MediaBrowser
+          mode="select"
+          selectionMode="single"
+          defaultFolder={defaultFolder}
+          onSelect={handleSelect}
+          enabled={isOpen}
+        />
+      </div>
+    </Modal>
   );
 }

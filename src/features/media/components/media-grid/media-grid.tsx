@@ -1,12 +1,12 @@
-﻿"use client";
+"use client";
 import { Media } from "../../types";
 import { MediaCard } from "../media-card";
 import { EmptyMediaState } from "../empty-media-state";
 
 interface MediaGridProps {
   media: Media[];
-  selectedId?: number | null;
-  onSelect?: (media: Media) => void;
+  selectedIds?: number[];
+  onMediaClick?: (media: Media) => void;
   isLoading?: boolean;
   onUploadClick: () => void;
   isFiltered?: boolean;
@@ -14,8 +14,8 @@ interface MediaGridProps {
 
 export function MediaGrid({
   media,
-  selectedId,
-  onSelect,
+  selectedIds = [],
+  onMediaClick,
   isLoading,
   onUploadClick,
   isFiltered,
@@ -35,10 +35,7 @@ export function MediaGrid({
 
   if (media.length === 0) {
     return (
-      <EmptyMediaState 
-        onUploadClick={onUploadClick} 
-        isFiltered={isFiltered} 
-      />
+      <EmptyMediaState onUploadClick={onUploadClick} isFiltered={isFiltered} />
     );
   }
 
@@ -48,8 +45,8 @@ export function MediaGrid({
         <MediaCard
           key={item.id}
           media={item}
-          isSelected={selectedId === item.id}
-          onClick={onSelect}
+          isSelected={selectedIds.includes(item.id)}
+          onClick={onMediaClick}
         />
       ))}
     </div>
