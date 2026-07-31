@@ -17,6 +17,7 @@ const reasonSchema = z.object({
   visualType: visualAssetSchema.shape.visualType,
   iconName: visualAssetSchema.shape.iconName,
   imageId: visualAssetSchema.shape.imageId,
+  image: z.any().nullable().optional(),
 }).superRefine((data, ctx) => {
   if (data.visualType === "none" && (data.iconName !== null || data.imageId !== null)) {
     ctx.addIssue({ code: "custom", path: ["visualType"], message: "Invalid visual asset configuration." });

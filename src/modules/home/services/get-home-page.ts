@@ -5,6 +5,7 @@ import { HomePageData, HomeSectionData } from "../types/home.types";
 
 import { findServices } from "@/modules/services/repositories/service.repository";
 import { findTestimonials } from "@/modules/testimonials/repositories/testimonial.repository";
+import { hydrateJsonMedia } from "@/modules/media/services/hydrate-json-media.service";
 
 // ─── Data fetcher ─────────────────────────────────────────────────────────────
 
@@ -73,6 +74,8 @@ export async function getHomePageData(): Promise<HomePageData | null> {
           })),
         };
       }
+
+      content = (await hydrateJsonMedia(content)) as Record<string, unknown>;
 
       return {
         id: row.id,

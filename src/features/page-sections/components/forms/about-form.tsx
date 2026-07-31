@@ -38,8 +38,6 @@ export function parseAboutContentDefaults(
       url: raw.learnMoreButton?.url ?? "",
     },
     bottomText: (raw.bottomText as string) ?? DEFAULT_ABOUT_CONTENT.bottomText,
-    image1Id: (raw.image1Id as number | null) ?? DEFAULT_ABOUT_CONTENT.image1Id,
-    image2Id: (raw.image2Id as number | null) ?? DEFAULT_ABOUT_CONTENT.image2Id,
     cards:
       raw.cards?.map((card) => ({
         badge: card.badge ?? "",
@@ -69,18 +67,6 @@ export function AboutContentForm({ disabled }: { disabled?: boolean }) {
         disabled={disabled}
       />
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        <MediaPickerField
-          name="content.image1Id"
-          label="Main Image"
-          disabled={disabled}
-        />
-        <MediaPickerField
-          name="content.image2Id"
-          label="Secondary Image"
-          disabled={disabled}
-        />
-      </div>
       <ButtonFields
         name="content.primaryButton"
         label="Primary Button"

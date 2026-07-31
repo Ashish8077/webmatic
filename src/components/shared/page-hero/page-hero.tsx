@@ -52,14 +52,11 @@ export function PageHero({
             className="object-cover object-center"
             sizes="100vw"
           />
-          {/* Base darkening for image to improve overall contrast */}
-          <div className="absolute inset-0 bg-[#0A1F44]/5 mix-blend-multiply" />
-
-          {/* Overlay matching the theme */}
+          {/* Image mode uses transparent contrast overlays only. Fallback colors are reserved for no-image mode. */}
           {isDark ? (
-            <div className="absolute inset-0 bg-[#35465c]/90 lg:bg-gradient-to-r lg:from-[#35465c] lg:via-[#35465c]/80 lg:to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/45 to-black/25 lg:from-black/70 lg:via-black/35 lg:to-black/10" />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-r from-[#F4F7FB] via-[#F4F7FB]/95 to-[#F4F7FB]/80 lg:via-[#F4F7FB]/90 lg:to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-white/55 to-white/25 lg:from-white/80 lg:via-white/45 lg:to-white/10" />
           )}
         </div>
       ) : (

@@ -11,6 +11,7 @@ export const createTestimonialSchema = z.object({
   designation: emptyStringToNull(255).default(null),
   companyName: emptyStringToNull(255).default(null),
   profileImageId: nullablePositiveInt.default(null),
+  profileImage: z.any().nullable().optional(),
   title: emptyStringToNull(255).default(null),
   description: z.string().trim().min(1, "Description is required"),
   rating: z.number().int().min(1, "Rating must be at least 1").max(5, "Rating must be at most 5"),

@@ -1,5 +1,7 @@
 import { GetServicesQuery } from "../validation/get-services-query.schema";
 import { countServices, findServices } from "../repositories/service.repository";
+import { findMediaById } from "@/modules/media/repositories/media.repository";
+import { StorageFactory } from "@/shared/storage/storage-factory";
 
 import { AuthUser } from "@/modules/auth/types/auth-user";
 import { requirePermission } from "@/modules/auth/authorization/permission";
@@ -24,6 +26,19 @@ export async function getServicesService(
   ]);
 
   const items: ServiceListItem[] = toServiceListItems(rows);
+
+  // Hydrate images for the service list
+  const storage = StorageFactory.create();
+  await Promise.all(
+    items.map(async (item) => {
+      if (item.visualType === "image" && item.imageId) {
+        const media = await findMediaById(item.imageId);
+        if (media) {
+          item.image = { ...media, url: storage.getUrl(media.storagePath) };
+        }
+      }
+    })
+  );
 
   const totalPages = Math.ceil(totalItems / query.limit);
 

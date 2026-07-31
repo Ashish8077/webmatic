@@ -27,6 +27,7 @@ export function useTestimonialForm(initialData?: Testimonial): UseFormReturn<Tes
         designation: initialData.designation || "",
         companyName: initialData.companyName || "",
         profileImageId: initialData.profileImageId,
+        profileImage: initialData.profileImage,
         title: initialData.title || "",
         description: initialData.description || "",
         rating: initialData.rating,

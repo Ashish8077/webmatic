@@ -1,15 +1,22 @@
 import { VisualRenderer } from "@/components/ui/visual-renderer";
+import { getMediaUrl } from "@/features/media/utils/media-url";
 import { type TeamMembersContentValues } from "@/features/page-sections/schemas/team-members.schema";
+import type { Media } from "@/features/media/types";
+import type { VisualAsset } from "@/shared/types/visual-asset.types";
 
 interface Props {
   content: Record<string, unknown>;
   settings?: Record<string, unknown>;
 }
 
+type HydratedTeamMember = TeamMembersContentValues["members"][number] & {
+  image?: Media | null;
+};
+
 export function TeamMembersSection({ content }: Props) {
   const data = content as unknown as TeamMembersContentValues;
 
-  const members = [...(data.members || [])].sort(
+  const members = ([...(data.members || [])] as HydratedTeamMember[]).sort(
     (a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0),
   );
 
@@ -39,6 +46,17 @@ export function TeamMembersSection({ content }: Props) {
         {/* ── Team grid ───────────────────────────────────── */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {members.map((member, index) => {
+            const profileImageUrl = getMediaUrl(member.image);
+            const profileVisual = profileImageUrl && member.image
+              ? ({
+                  ...member,
+                  visualType: "image",
+                  iconName: null,
+                  imageId: member.imageId ?? member.image.id,
+                  image: member.image,
+                } satisfies VisualAsset)
+              : null;
+
             return (
               <div
                 key={index}
@@ -46,22 +64,15 @@ export function TeamMembersSection({ content }: Props) {
               >
                 {/* Profile image */}
                 <div className="relative w-full aspect-[4/5] bg-slate-100 overflow-hidden">
-                  {member.visualType === "none" && !member.imageId ? (
-                    <div className="absolute inset-0 flex items-center justify-center bg-slate-50 group-hover:bg-slate-100 transition-colors duration-500">
-                      <div className="w-20 h-20 text-slate-300 group-hover:text-slate-400 transition-colors duration-500 rounded-full border-2 border-current flex items-center justify-center">
-                         {/* Fallback default icon */}
-                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                      </div>
-                    </div>
-                  ) : (
+                  {profileVisual ? (
                     <VisualRenderer
-                      asset={member}
+                      asset={profileVisual}
                       className="absolute inset-0"
                       imageClassName="object-cover object-center transition-transform duration-700 group-hover:scale-110"
                       iconClassName="w-20 h-20 text-slate-400 transition-colors duration-500"
                       alt={member.name}
                     />
-                  )}
+                  ) : null}
                   {/* Subtle overlay gradient on image */}
                   <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 </div>

@@ -33,6 +33,7 @@ export interface Media {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
+  url?: string;
 }
 
 // ─── Create Input ────────────────────────────────────────────────────────────

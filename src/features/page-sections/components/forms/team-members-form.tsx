@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
 import type { JsonObject } from "@/shared/types/json";
 import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
@@ -10,17 +12,58 @@ import {
   TextField,
   TextareaField,
   RepeaterField,
-  VisualPickerField,
+  MediaPickerField,
   NumberField,
 } from "../fields";
 
 type FormShape = { content: TeamMembersContentValues };
 
+function TeamMemberImageField({
+  index,
+  disabled,
+}: {
+  index: number;
+  disabled?: boolean;
+}) {
+  const { control, register, setValue } = useFormContext<FormShape>();
+  const imageIdName = `content.members.${index}.imageId` as const;
+  const visualTypeName = `content.members.${index}.visualType` as const;
+  const iconNameName = `content.members.${index}.iconName` as const;
+  const imageId = useWatch({ control, name: imageIdName });
+
+  useEffect(() => {
+    register(visualTypeName);
+    register(iconNameName);
+  }, [iconNameName, register, visualTypeName]);
+
+  useEffect(() => {
+    setValue(visualTypeName, imageId ? "image" : "none", {
+      shouldDirty: false,
+      shouldValidate: true,
+      shouldTouch: false,
+    });
+    setValue(iconNameName, null, {
+      shouldDirty: false,
+      shouldValidate: true,
+      shouldTouch: false,
+    });
+  }, [iconNameName, imageId, setValue, visualTypeName]);
+
+  return (
+    <MediaPickerField
+      name={imageIdName}
+      label="Profile Image"
+      description="Select a profile image for this member."
+      disabled={disabled}
+    />
+  );
+}
+
 export function parseTeamMembersContentDefaults(
   content: JsonObject | undefined | null,
 ): TeamMembersContentValues {
   const raw = (content ?? {}) as unknown as Partial<TeamMembersContentValues>;
-  return {
+  const parsed = {
     badge: raw.badge ?? DEFAULT_TEAM_MEMBERS_CONTENT.badge,
     heading: raw.heading ?? DEFAULT_TEAM_MEMBERS_CONTENT.heading,
     description: raw.description ?? DEFAULT_TEAM_MEMBERS_CONTENT.description,
@@ -35,6 +78,8 @@ export function parseTeamMembersContentDefaults(
         sortOrder: m.sortOrder ?? 0,
       })) ?? DEFAULT_TEAM_MEMBERS_CONTENT.members,
   };
+
+  return hydrateMediaRelations((content ?? {}) as JsonObject, parsed);
 }
 
 export function TeamMembersContentForm({
@@ -101,11 +146,7 @@ export function TeamMembersContentForm({
               disabled={disabled}
             />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <VisualPickerField
-                name={`content.members.${index}`}
-                label="Profile Visual"
-                description="Select an image or icon for this member."
-              />
+              <TeamMemberImageField index={index} disabled={disabled} />
               <NumberField
                 name={`content.members.${index}.sortOrder`}
                 label="Sort Order"

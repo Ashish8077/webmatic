@@ -15,5 +15,6 @@ export function normaliseTestimonialContent(
       typeof safeRaw.backgroundImageId === "number"
         ? safeRaw.backgroundImageId
         : null,
+    backgroundImage: safeRaw.backgroundImage,
   };
 }

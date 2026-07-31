@@ -10,6 +10,7 @@ export interface ServiceBenefit {
   visualType: VisualType;
   iconName?: string | null;
   imageId?: number | null;
+  image?: any;
 }
 
 export interface CreateServiceRequest {
@@ -85,11 +86,14 @@ export interface Service {
   description: string | null;
   
   featuredImageId: number | null;
+  featuredImage?: any;
   bannerImageId: number | null;
+  bannerImage?: any;
 
   visualType: "none" | "icon" | "image";
   iconName: string | null;
   imageId: number | null;
+  image?: any;
 
   keyFeatures: string[] | null;
   benefits: ServiceBenefit[] | null;
@@ -108,10 +112,12 @@ export interface Service {
   openGraphTitle: string | null;
   openGraphDescription: string | null;
   openGraphImageId: number | null;
+  openGraphImage?: any;
 
   twitterTitle: string | null;
   twitterDescription: string | null;
   twitterImageId: number | null;
+  twitterImage?: any;
 
   schemaMarkup: JsonObject | null;
 

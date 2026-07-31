@@ -11,14 +11,16 @@ interface VisualPickerFieldProps {
   name: string;
   label?: string;
   description?: string;
+  disabled?: boolean;
 }
 
 export function VisualPickerField({
   name,
   label = "Visual Asset",
   description,
+  disabled,
 }: VisualPickerFieldProps) {
-  const { control, setValue, watch, register } = useFormContext();
+  const { control, setValue, register } = useFormContext();
   const getFieldName = useCallback(
     (field: string) => (name ? `${name}.${field}` : field),
     [name]
@@ -35,11 +37,13 @@ export function VisualPickerField({
   }, [register, getFieldName]);
 
   // Watch the fields
-  const visualType = watch(getFieldName("visualType"));
-  const iconName = watch(getFieldName("iconName"));
-  const { field: imageField } = useController({ name: imageKey, control });
-  const image = imageField.value as Media | null | undefined;
-  const imageId = watch(getFieldName("imageId"));
+  const visualType = useWatch({ control, name: getFieldName("visualType") });
+  const iconName = useWatch({ control, name: getFieldName("iconName") });
+  const imageId = useWatch({ control, name: getFieldName("imageId") });
+  const image = useWatch({ control, name: imageKey }) as
+    | Media
+    | null
+    | undefined;
 
   const value: VisualAsset = {
     visualType: visualType ?? "none",
@@ -49,10 +53,19 @@ export function VisualPickerField({
   };
 
   const handleChange = (newValue: VisualAsset) => {
+    const nextImage =
+      newValue.visualType === "image"
+        ? newValue.image ?? (newValue.imageId === image?.id ? image : null)
+        : null;
+
     setValue(getFieldName("visualType"), newValue.visualType, { shouldDirty: true, shouldValidate: true, shouldTouch: true });
     setValue(getFieldName("iconName"), newValue.iconName, { shouldDirty: true, shouldValidate: true, shouldTouch: true });
     setValue(getFieldName("imageId"), newValue.imageId, { shouldDirty: true, shouldValidate: true, shouldTouch: true });
-    imageField.onChange(newValue.image ?? null);
+    setValue(imageKey, nextImage, {
+      shouldDirty: true,
+      shouldValidate: true,
+      shouldTouch: true,
+    });
   };
 
   const {
@@ -66,6 +79,7 @@ export function VisualPickerField({
       label={label}
       description={description}
       error={error?.message}
+      disabled={disabled}
     />
   );
 }

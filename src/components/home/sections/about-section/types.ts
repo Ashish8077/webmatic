@@ -1,10 +1,12 @@
 import type { RawCMSButton } from "../types";
+import type { Media } from "@/features/media/types";
 
 export type CardItem = {
   badge: string;
   title: string;
   button: RawCMSButton;
   imageId: number | null;
+  image?: Media | null;
   description: string;
 };
 

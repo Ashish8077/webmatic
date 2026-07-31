@@ -30,11 +30,16 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
       openGraph: {
         title: service.openGraphTitle || service.seoTitle || service.name,
         description: service.openGraphDescription || service.metaDescription || service.shortDescription || "",
-        // Images would ideally be resolved to full URLs via a helper
+        ...(service.openGraphImage?.url && {
+          images: [{ url: service.openGraphImage.url }],
+        }),
       },
       twitter: {
         title: service.twitterTitle || service.openGraphTitle || service.seoTitle || service.name,
         description: service.twitterDescription || service.openGraphDescription || service.metaDescription || service.shortDescription || "",
+        ...(service.twitterImage?.url && {
+          images: [service.twitterImage.url],
+        }),
       },
     };
   } catch (error) {
@@ -56,10 +61,10 @@ export default async function ServiceDetailsPage({ params }: ServicePageProps) {
     notFound();
   }
 
-  const heroImage = service.bannerImageId 
-    ? `/api/media/${service.bannerImageId}` 
-    : service.featuredImageId 
-      ? `/api/media/${service.featuredImageId}` 
+  const heroImage = service.bannerImage?.url
+    ? service.bannerImage.url
+    : service.featuredImage?.url
+      ? service.featuredImage.url
       : null;
 
   return (

@@ -4,6 +4,7 @@ import { getIconComponent } from "./icon-registry";
 import { VisualAsset } from "@/shared/types/visual-asset.types";
 import clsx from "clsx";
 import { Image as ImageIcon } from "lucide-react";
+import { getMediaUrl } from "@/features/media/utils/media-url";
 
 interface VisualRendererProps {
   asset: VisualAsset | null;
@@ -20,6 +21,10 @@ export function VisualRenderer({
   imageClassName,
   alt = "Visual Asset",
 }: VisualRendererProps) {
+  const hasPositionClass =
+    typeof className === "string" &&
+    /\b(absolute|fixed|relative|sticky)\b/.test(className);
+
   if (!asset || asset.visualType === "none") {
     return null;
   }
@@ -36,10 +41,18 @@ export function VisualRenderer({
     );
   }
 
-  if (asset.visualType === "image" && asset.imageId) {
-    const imageUrl = `/api/media/${asset.imageId}`;
+  if (asset.visualType === "image") {
+    const imageUrl = getMediaUrl(asset.image);
+    if (!imageUrl) return null;
+    
     return (
-      <div className={clsx("relative overflow-hidden", className)}>
+      <div
+        className={clsx(
+          "overflow-hidden",
+          !hasPositionClass && "relative",
+          className,
+        )}
+      >
         <Image
           src={imageUrl}
           alt={alt}

@@ -9,8 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { SeoFields } from "@/components/shared/seo";
 import { RichTextEditor } from "@/components/shared/editor";
-import { ImagePicker } from "@/components/shared/media";
-import { VisualPickerField } from "@/features/page-sections/components/fields";
+import { VisualPickerField, MediaPickerField } from "@/features/page-sections/components/fields";
 import type { ServiceFormValues } from "../schemas/service.schema";
 import { Star, Plus, Trash2 } from "lucide-react";
 import clsx from "clsx";
@@ -210,18 +209,10 @@ export default function ServiceForm({
           />
         </div>
 
-        <Controller
+        <MediaPickerField
           name="featuredImageId"
-          control={form.control}
-          render={({ field }) => (
-            <ImagePicker
-              label="Featured Image"
-              description="Used in service cards and grid listings."
-              value={field.value}
-              onChange={field.onChange}
-              error={form.formState.errors.featuredImageId?.message}
-            />
-          )}
+          label="Featured Image"
+          description="Used in service cards and grid listings."
         />
 
         <Textarea
@@ -247,17 +238,10 @@ export default function ServiceForm({
         {/* Banner */}
         <div className="space-y-4 pt-4 border-t border-card-border">
           <h4 className="font-medium text-foreground">Banner</h4>
-          <Controller
+          <MediaPickerField
             name="bannerImageId"
-            control={form.control}
-            render={({ field }) => (
-              <ImagePicker
-                description="Used as the hero background on the detail page."
-                value={field.value}
-                onChange={field.onChange}
-                error={form.formState.errors.bannerImageId?.message}
-              />
-            )}
+            label="Banner Image"
+            description="Used as the hero background on the detail page."
           />
         </div>
 

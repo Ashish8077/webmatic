@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { findPublishedPageBySlug } from "@/modules/pages/repositories/page.repository";
 import { findPageActiveSectionsByPageId } from "@/modules/pages-section/repositories/page-section.repository";
+import { hydrateJsonMedia } from "@/modules/media/services/hydrate-json-media.service";
 import { SectionRenderer } from "@/components/home/section-renderer";
 import { Header } from "@/components/layout/header";
 
@@ -59,14 +60,16 @@ export default async function AboutUsPage() {
   const sectionRows = await findPageActiveSectionsByPageId(page.id);
 
 
-  const sections = sectionRows.map((row) => ({
-    id: row.id,
-    sectionType: row.section_type,
-    title: row.title,
-    content: row.content,
-    settings: row.settings,
-    sortOrder: row.sort_order,
-  }));
+  const sections = await Promise.all(
+    sectionRows.map(async (row) => ({
+      id: row.id,
+      sectionType: row.section_type,
+      title: row.title,
+      content: (await hydrateJsonMedia(row.content)) as Record<string, unknown>,
+      settings: row.settings,
+      sortOrder: row.sort_order,
+    })),
+  );
 
   return (
     <>

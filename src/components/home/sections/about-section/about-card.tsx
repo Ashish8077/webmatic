@@ -3,12 +3,15 @@ import Link from "next/link";
 import type { CardItem } from "./types";
 
 import Image from "next/image";
+import { getMediaUrl } from "@/features/media/utils/media-url";
 
 interface AboutCardProps {
   card: CardItem;
 }
 
 const AboutCard = ({ card }: AboutCardProps) => {
+  const imageUrl = getMediaUrl(card.image);
+
   return (
     <Link
       href={card.button.url}
@@ -16,9 +19,9 @@ const AboutCard = ({ card }: AboutCardProps) => {
     >
       {/* Image Container */}
       <div className="relative h-44 overflow-hidden bg-slate-100">
-        {card.imageId ? (
+        {imageUrl ? (
           <Image
-            src={`/api/media/${card.imageId}`}
+            src={imageUrl}
             alt={card.title}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"

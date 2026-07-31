@@ -45,6 +45,7 @@ export interface Testimonial {
   designation: string | null;
   companyName: string | null;
   profileImageId: number | null;
+  profileImage?: any;
   title: string | null;
   description: string;
   rating: number;

@@ -30,15 +30,17 @@ export function MediaPickerField({
 
   // Derive the media object key from the ID key (e.g. backgroundImageId -> backgroundImage)
   const imageKey = getMediaFieldName(name);
-  
-  // Register the object so RHF explicitly tracks it
-  const { field: mediaField } = useController({ name: imageKey, control });
-  const media = mediaField.value as Media | null | undefined;
+  const media = useWatch({ control, name: imageKey }) as
+    | Media
+    | null
+    | undefined;
 
   const handleMediaChange = (newMedia: Media | null) => {
-    // Keep UI preview synchronized
-    mediaField.onChange(newMedia);
-    // Submit the ID
+    setValue(imageKey, newMedia, {
+      shouldDirty: true,
+      shouldValidate: true,
+      shouldTouch: true,
+    });
     fieldProps.onChange(newMedia?.id ?? null);
   };
 

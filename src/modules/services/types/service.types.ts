@@ -8,6 +8,7 @@ export interface ServiceBenefit {
   visualType: VisualType;
   iconName?: string | null;
   imageId?: number | null;
+  image?: any;
 }
 
 export interface CreateServiceRequest {
@@ -72,6 +73,7 @@ export interface ServiceListItem {
   visualType: VisualType;
   iconName: string | null;
   imageId: number | null;
+  image?: any;
   ctaButtonText: string | null;
   status: ServiceStatus;
   isFeatured: boolean;
@@ -93,10 +95,13 @@ export interface ServiceDetailsResponse {
   description: string | null;
   
   featuredImageId: number | null;
+  featuredImage?: any;
   bannerImageId: number | null;
+  bannerImage?: any;
   visualType: VisualType;
   iconName: string | null;
   imageId: number | null;
+  image?: any;
 
   keyFeatures: string[] | null;
   benefits: ServiceBenefit[] | null;
@@ -115,10 +120,12 @@ export interface ServiceDetailsResponse {
   openGraphTitle: string | null;
   openGraphDescription: string | null;
   openGraphImageId: number | null;
+  openGraphImage?: any;
 
   twitterTitle: string | null;
   twitterDescription: string | null;
   twitterImageId: number | null;
+  twitterImage?: any;
 
   schemaMarkup: JsonObject | null;
 

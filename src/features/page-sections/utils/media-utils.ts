@@ -1,4 +1,4 @@
-import type { JsonObject, JsonArray, JsonValue } from "@/shared/types/json";
+import type { JsonObject } from "@/shared/types/json";
 
 /**
  * Standardizes the CMS media field naming convention.
@@ -50,21 +50,21 @@ export function hydrateMediaRelations<T>(raw: JsonObject, parsed: T): T {
   let hasChanges = false;
   
   // Start with a shallow copy if we need to make changes, but we'll optimize by only doing it when necessary
-  let result: Record<string, any> = parsed;
+  let result = parsed as Record<string, unknown>;
 
-  for (const key of Object.keys(parsed as Record<string, any>)) {
-    const parsedValue = (parsed as Record<string, any>)[key];
+  for (const key of Object.keys(parsed as Record<string, unknown>)) {
+    const parsedValue = (parsed as Record<string, unknown>)[key];
 
     // If it's a media ID key (ends with Id), look for the corresponding media object in raw
     if (typeof key === "string" && key.endsWith("Id")) {
       const mediaKey = getMediaFieldName(key);
       // Only attach if raw actually contains the object, and parsed DOES NOT already have it
       // (We never overwrite existing values in parsed)
-      if (!(mediaKey in (parsed as Record<string, any>)) && mediaKey in rawObj) {
+      if (!(mediaKey in (parsed as Record<string, unknown>)) && mediaKey in rawObj) {
         const rawMediaObj = rawObj[mediaKey];
         if (rawMediaObj && typeof rawMediaObj === "object") {
           if (!hasChanges) {
-            result = { ...parsed };
+            result = { ...(parsed as Record<string, unknown>) };
             hasChanges = true;
           }
           result[mediaKey] = rawMediaObj;
@@ -80,7 +80,7 @@ export function hydrateMediaRelations<T>(raw: JsonObject, parsed: T): T {
       
       if (hydratedValue !== parsedValue) {
         if (!hasChanges) {
-          result = { ...parsed };
+          result = { ...(parsed as Record<string, unknown>) };
           hasChanges = true;
         }
         result[key] = hydratedValue;

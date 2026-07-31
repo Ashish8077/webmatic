@@ -16,7 +16,7 @@ export function parseServicesHeroContentDefaults(
   content: JsonObject | undefined | null,
 ): ServicesHeroContentValues {
   const raw = (content ?? {}) as unknown as Partial<ServicesHeroContentValues>;
-  return {
+  const parsed = {
     badge: raw.badge ?? DEFAULT_SERVICES_HERO_CONTENT.badge,
     heading: raw.heading ?? DEFAULT_SERVICES_HERO_CONTENT.heading,
     highlight: raw.highlight ?? DEFAULT_SERVICES_HERO_CONTENT.highlight,
@@ -27,6 +27,8 @@ export function parseServicesHeroContentDefaults(
     secondaryCtaTargetId: raw.secondaryCtaTargetId ?? DEFAULT_SERVICES_HERO_CONTENT.secondaryCtaTargetId,
     imageId: (raw.imageId as number | null) ?? DEFAULT_SERVICES_HERO_CONTENT.imageId,
   };
+
+  return hydrateMediaRelations((content ?? {}) as JsonObject, parsed);
 }
 
 export function ServicesHeroContentForm({ disabled }: { disabled?: boolean }) {

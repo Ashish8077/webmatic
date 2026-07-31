@@ -36,10 +36,14 @@ export function RepeaterField<T extends FieldValues>({
   max,
   disabled,
 }: RepeaterFieldProps<T>) {
-  const { control } = useFormContext<T>();
+  const { control, formState } = useFormContext<T>();
   const { fields, append, remove } = useFieldArray({ control, name });
 
   const canAdd = max === undefined || fields.length < max;
+  
+  // Extract array-level error (e.g. from `.max(3)`)
+  const arrayError = name.split(".").reduce((acc: any, part) => acc?.[part], formState.errors);
+  const errorMessage = arrayError?.message as string | undefined;
 
   return (
     <fieldset className="space-y-3">
@@ -60,6 +64,10 @@ export function RepeaterField<T extends FieldValues>({
           </Button>
         )}
       </div>
+      
+      {errorMessage && (
+        <p className="text-sm font-medium text-destructive">{errorMessage}</p>
+      )}
 
       {fields.length === 0 && (
         <p className="py-4 text-center text-sm text-muted-foreground">

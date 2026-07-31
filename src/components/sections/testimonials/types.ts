@@ -1,3 +1,5 @@
+import type { Media } from "@/features/media/types";
+
 export interface RawTestimonialContent {
   badge?: string;
   heading?: string;
@@ -5,6 +7,7 @@ export interface RawTestimonialContent {
   description?: string;
   backgroundColor?: string;
   backgroundImageId?: number | null;
+  backgroundImage?: Media | null;
 }
 
 export interface TestimonialContent {
@@ -14,4 +17,5 @@ export interface TestimonialContent {
   description: string;
   backgroundColor: string;
   backgroundImageId: number | null;
+  backgroundImage?: Media | null;
 }

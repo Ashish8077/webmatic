@@ -16,7 +16,7 @@ export function parseAboutHeroContentDefaults(
   content: JsonObject | undefined | null,
 ): AboutHeroContentValues {
   const raw = (content ?? {}) as unknown as Partial<AboutHeroContentValues>;
-  return {
+  const parsed = {
     badge: raw.badge ?? DEFAULT_ABOUT_HERO_CONTENT.badge,
     heading: raw.heading ?? DEFAULT_ABOUT_HERO_CONTENT.heading,
     highlight: raw.highlight ?? DEFAULT_ABOUT_HERO_CONTENT.highlight,
@@ -25,6 +25,8 @@ export function parseAboutHeroContentDefaults(
     ctaTargetId: raw.ctaTargetId ?? DEFAULT_ABOUT_HERO_CONTENT.ctaTargetId,
     imageId: (raw.imageId as number | null) ?? DEFAULT_ABOUT_HERO_CONTENT.imageId,
   };
+
+  return hydrateMediaRelations((content ?? {}) as JsonObject, parsed);
 }
 
 export function AboutHeroContentForm({ disabled }: { disabled?: boolean }) {

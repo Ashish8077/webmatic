@@ -1,5 +1,6 @@
 import { PaginationMeta } from "@/shared/types/pagination";
 import { TestimonialStatus } from "../constants/testimonial.constants";
+import { Media } from "@/modules/media/types";
 
 export interface CreateTestimonialResponse {
   testimonial: {
@@ -15,6 +16,7 @@ export interface TestimonialItem {
   designation: string | null;
   companyName: string | null;
   profileImageId: number | null;
+  profileImage?: Media | null;
   title: string | null;
   description: string;
   rating: number;

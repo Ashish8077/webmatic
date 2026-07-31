@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup } from "@/components/ui/toggle-group";
 import { Textarea } from "@/components/ui/textarea";
-import { ImagePicker } from "@/components/shared/media";
+import { MediaField } from "@/features/media/components/media-field/media-field";
 import type { TestimonialFormValues } from "../schemas/testimonial.schema";
 import type { UseFormReturn } from "react-hook-form";
 
@@ -101,16 +101,31 @@ export default function TestimonialForm({
         </div>
 
         <Controller
-          name="profileImageId"
+          name="profileImage"
           control={form.control}
           render={({ field }) => (
-            <ImagePicker
-              label="Profile Image"
-              description="Avatar of the person giving the testimonial (square aspect ratio recommended)."
-              value={field.value}
-              onChange={field.onChange}
-              error={form.formState.errors.profileImageId?.message}
-            />
+            <div>
+              <MediaField
+                label="Profile Image"
+                value={field.value}
+                onMediaChange={(media) => {
+                  field.onChange(media);
+                  form.setValue("profileImageId", media?.id ?? null, {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                    shouldTouch: true,
+                  });
+                }}
+              />
+              <p className="mt-1.5 text-sm text-muted-foreground">
+                Avatar of the person giving the testimonial (square aspect ratio recommended).
+              </p>
+              {form.formState.errors.profileImageId && (
+                <p className="mt-1.5 text-sm font-medium text-destructive">
+                  {form.formState.errors.profileImageId.message}
+                </p>
+              )}
+            </div>
           )}
         />
 

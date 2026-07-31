@@ -7,6 +7,7 @@ import { z } from "zod";
 import { Loader2 } from "lucide-react";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
+import { showToast } from "@/components/ui/toast";
 import type { JsonObject } from "@/shared/types/json";
 import type { PageSectionType } from "@/modules/pages-section/validation/page-section.schema";
 import {
@@ -19,6 +20,8 @@ import {
 } from "../constants/section-form-registry";
 
 const FORM_ID = "section-editor-form";
+
+
 
 interface SectionContentModalProps {
   isOpen: boolean;
@@ -128,12 +131,18 @@ function SectionEditorInner({
     });
   }, [content, settings, parseContent, parseSettings, form]);
 
-  const handleSubmit = form.handleSubmit((values) => {
-    return onSubmit({
-      content: values.content as JsonObject,
-      settings: values.settings as JsonObject,
-    });
-  });
+  const handleSubmit = form.handleSubmit(
+    (values) => {
+      return onSubmit({
+        content: values.content as JsonObject,
+        settings: values.settings as JsonObject,
+      });
+    },
+    (errors) => {
+      console.error("Form Validation Errors:", errors);
+      showToast("Please check the form for missing or invalid fields.", "error");
+    }
+  );
 
   if (!ContentForm || !SettingsForm) {
     return (
