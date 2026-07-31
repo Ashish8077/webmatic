@@ -66,7 +66,7 @@ export function RepeaterField<T extends FieldValues>({
       </div>
       
       {errorMessage && (
-        <p className="text-sm font-medium text-destructive">{errorMessage}</p>
+        <p className="text-sm font-medium text-danger">{errorMessage}</p>
       )}
 
       {fields.length === 0 && (
@@ -100,3 +100,4 @@ export function RepeaterField<T extends FieldValues>({
     </fieldset>
   );
 }
+

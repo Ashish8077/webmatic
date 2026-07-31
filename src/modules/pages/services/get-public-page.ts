@@ -3,6 +3,7 @@ import { findPublishedPageByTemplate } from "@/modules/pages/repositories/page.r
 import { PageSectionRow } from "@/modules/pages-section/types/repository.types";
 import { findServices } from "@/modules/services/repositories/service.repository";
 import { findTestimonials } from "@/modules/testimonials/repositories/testimonial.repository";
+import { hydrateJsonMedia } from "@/modules/media/services/hydrate-json-media.service";
 
 export async function getServiceListPageData() {
   const page = await findPublishedPageByTemplate("service-list");
@@ -61,6 +62,8 @@ export async function getServiceListPageData() {
           })),
         };
       }
+
+      content = (await hydrateJsonMedia(content)) as Record<string, unknown>;
 
       return {
         id: row.id,

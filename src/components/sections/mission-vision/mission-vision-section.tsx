@@ -1,5 +1,5 @@
-import { Target, Eye } from "lucide-react";
-import { type MissionVisionContentValues } from "@/features/page-sections/schemas/mission-vision.schema";
+import { VisualRenderer } from "@/components/ui/visual-renderer";
+import { mapMissionVisionContent } from "./mapper";
 
 interface Props {
   content: Record<string, unknown>;
@@ -7,22 +7,18 @@ interface Props {
 }
 
 export function MissionVisionSection({ content }: Props) {
-  const data = content as unknown as MissionVisionContentValues;
+  const data = mapMissionVisionContent(content);
 
   const cards = [
     {
-      icon: Target,
-      title: data.missionTitle,
-      description: data.missionDescription,
+      ...data.mission,
       accentColor: "text-hero-primary group-hover:bg-hero-primary group-hover:text-white group-hover:shadow-[0_8px_20px_rgba(10,152,212,0.3)]",
       bgHover: "from-hero-primary/5",
       bgBase: "bg-hero-primary/10",
       topAccent: "bg-hero-primary",
     },
     {
-      icon: Eye,
-      title: data.visionTitle,
-      description: data.visionDescription,
+      ...data.vision,
       accentColor: "text-orange-500 group-hover:bg-orange-500 group-hover:text-white group-hover:shadow-[0_8px_20px_rgba(249,115,22,0.3)]",
       bgHover: "from-orange-50/50",
       bgBase: "bg-orange-50",
@@ -36,8 +32,6 @@ export function MissionVisionSection({ content }: Props) {
       <div className="relative z-10 mx-auto max-w-[1170px] px-5 sm:px-8">
         <div className="grid gap-8 sm:grid-cols-2">
           {cards.map((card) => {
-            const Icon = card.icon;
-
             return (
               <div
                 key={card.title}
@@ -49,12 +43,18 @@ export function MissionVisionSection({ content }: Props) {
                 {/* Top accent line */}
                 <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-16 h-1 rounded-b-full transition-all duration-500 opacity-30 group-hover:opacity-100 group-hover:w-32 ${card.topAccent}`} />
 
-                {/* Icon */}
-                <div
-                  className={`mb-8 w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 ${card.bgBase} ${card.accentColor}`}
-                >
-                  <Icon className="w-9 h-9" strokeWidth={1.5} />
-                </div>
+                {/* Visual */}
+                {card.visual && card.visual.visualType !== "none" && (
+                  <div
+                    className={`mb-8 w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 overflow-hidden shrink-0 ${card.bgBase} ${card.accentColor}`}
+                  >
+                    <VisualRenderer 
+                      asset={card.visual} 
+                      className="w-full h-full flex items-center justify-center" 
+                      iconClassName="w-9 h-9"
+                    />
+                  </div>
+                )}
 
                 {/* Title */}
                 <h3 className="relative text-[26px] lg:text-[32px] font-extrabold text-navy mb-5 leading-tight tracking-tight">

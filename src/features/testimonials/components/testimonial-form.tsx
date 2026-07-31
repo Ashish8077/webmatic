@@ -121,7 +121,7 @@ export default function TestimonialForm({
                 Avatar of the person giving the testimonial (square aspect ratio recommended).
               </p>
               {form.formState.errors.profileImageId && (
-                <p className="mt-1.5 text-sm font-medium text-destructive">
+                <p className="mt-1.5 text-sm font-medium text-danger">
                   {form.formState.errors.profileImageId.message}
                 </p>
               )}
@@ -177,3 +177,4 @@ export default function TestimonialForm({
     </form>
   );
 }
+

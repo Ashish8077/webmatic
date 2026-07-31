@@ -64,7 +64,7 @@ export function MediaField({ value, onMediaChange, label, defaultFolder }: Media
             <button
               type="button"
               onClick={handleRemove}
-              className="absolute right-2 top-2 rounded-full bg-background/80 p-1.5 text-foreground backdrop-blur-sm transition-transform hover:scale-110 hover:bg-destructive hover:text-destructive-foreground"
+              className="absolute right-2 top-2 rounded-full bg-background/80 p-1.5 text-foreground backdrop-blur-sm transition-transform hover:scale-110 hover:bg-danger hover:text-white"
             >
               <X size={14} />
             </button>
@@ -86,3 +86,4 @@ export function MediaField({ value, onMediaChange, label, defaultFolder }: Media
     </div>
   );
 }
+

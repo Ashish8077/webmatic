@@ -3,7 +3,7 @@
 import { MediaField } from "@/features/media/components/media-field/media-field";
 import { IconPicker } from "./icon-picker";
 import { VisualAsset, VisualType } from "@/shared/types/visual-asset.types";
-import { useId } from "react";
+import React, { useId } from "react";
 import { Media } from "@/features/media/types";
 
 export interface VisualPickerProps {
@@ -24,30 +24,48 @@ export function VisualPicker({
   disabled = false,
 }: VisualPickerProps) {
   const radioGroupName = useId();
+
+  // Keep local state to preserve selections when toggling between types
+  const [lastIcon, setLastIcon] = React.useState<string | null>(value.iconName ?? null);
+  const [lastImageId, setLastImageId] = React.useState<number | null>(value.imageId ?? null);
+  const [lastImage, setLastImage] = React.useState<Media | null>(value.image ?? null);
+
+  // Sync external value changes into local state (if the form is reset or loaded)
+  React.useEffect(() => {
+    if (value.iconName) setLastIcon(value.iconName);
+    if (value.imageId) setLastImageId(value.imageId);
+    if (value.image) setLastImage(value.image);
+  }, [value.iconName, value.imageId, value.image]);
+
   const handleTypeChange = (val: string) => {
     const newType = val as VisualType;
     if (newType === "none") {
-      onChange({ visualType: "none", iconName: null, imageId: null });
+      onChange({ visualType: "none", iconName: null, imageId: null, image: null });
     } else if (newType === "icon") {
       onChange({
         visualType: "icon",
-        iconName: value?.iconName ?? null,
+        iconName: lastIcon,
         imageId: null,
+        image: null
       });
     } else if (newType === "image") {
       onChange({
         visualType: "image",
         iconName: null,
-        imageId: value?.imageId ?? null,
+        imageId: lastImageId,
+        image: lastImage,
       });
     }
   };
 
   const handleIconChange = (iconName: string | null) => {
-    onChange({ visualType: "icon", iconName, imageId: null });
+    setLastIcon(iconName);
+    onChange({ visualType: "icon", iconName, imageId: null, image: null });
   };
 
   const handleImageChange = (media: Media | null) => {
+    setLastImageId(media?.id ?? null);
+    setLastImage(media ?? null);
     onChange({ visualType: "image", iconName: null, imageId: media?.id ?? null, image: media });
   };
 
@@ -128,7 +146,8 @@ export function VisualPicker({
         )}
       </div>
 
-      {error && <p className="text-sm font-medium text-destructive">{error}</p>}
+      {error && <p className="text-sm font-medium text-danger">{error}</p>}
     </div>
   );
 }
+

@@ -54,7 +54,8 @@ export function MediaPickerField({
       {description && !error && (
         <p className="mt-1.5 text-sm text-muted-foreground">{description}</p>
       )}
-      {error && <p className="mt-1.5 text-sm font-medium text-destructive">{error.message}</p>}
+      {error && <p className="mt-1.5 text-sm font-medium text-danger">{error.message}</p>}
     </div>
   );
 }
+
