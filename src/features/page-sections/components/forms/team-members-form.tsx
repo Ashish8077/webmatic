@@ -1,6 +1,7 @@
 "use client";
 
 import type { JsonObject } from "@/shared/types/json";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
   DEFAULT_TEAM_MEMBERS_CONTENT,
   type TeamMembersContentValues,
@@ -117,3 +118,6 @@ export function TeamMembersContentForm({
     </div>
   );
 }
+
+
+

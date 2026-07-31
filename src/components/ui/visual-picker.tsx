@@ -1,9 +1,10 @@
 "use client";
 
-import { ImagePicker } from "@/components/shared/media";
+import { MediaField } from "@/features/media/components/media-field/media-field";
 import { IconPicker } from "./icon-picker";
 import { VisualAsset, VisualType } from "@/shared/types/visual-asset.types";
 import { useId } from "react";
+import { Media } from "@/features/media/types";
 
 export interface VisualPickerProps {
   value: VisualAsset;
@@ -46,8 +47,8 @@ export function VisualPicker({
     onChange({ visualType: "icon", iconName, imageId: null });
   };
 
-  const handleImageChange = (imageId: number | null) => {
-    onChange({ visualType: "image", iconName: null, imageId });
+  const handleImageChange = (media: Media | null) => {
+    onChange({ visualType: "image", iconName: null, imageId: media?.id ?? null, image: media });
   };
 
   return (
@@ -119,9 +120,9 @@ export function VisualPicker({
 
         {value.visualType === "image" && (
           <div className="space-y-2">
-            <ImagePicker
-              value={value?.imageId ?? null}
-              onChange={handleImageChange}
+            <MediaField
+              value={value?.image ?? null}
+              onMediaChange={handleImageChange}
             />
           </div>
         )}

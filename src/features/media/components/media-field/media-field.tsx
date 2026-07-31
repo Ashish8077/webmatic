@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { useState } from "react";
 import Image from "next/image";
 import { X, Image as ImageIcon } from "lucide-react";
@@ -8,21 +8,21 @@ import { Button } from "@/components/ui/button";
 
 interface MediaFieldProps {
   value: Media | null;
-  onChange: (mediaId: number | null) => void;
+  onMediaChange?: (media: Media | null) => void;
   label?: string;
   defaultFolder?: string;
 }
 
-export function MediaField({ value, onChange, label, defaultFolder }: MediaFieldProps) {
+export function MediaField({ value, onMediaChange, label, defaultFolder }: MediaFieldProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSelect = (media: Media) => {
-    onChange(media.id);
+    onMediaChange?.(media);
   };
 
   const handleRemove = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onChange(null);
+    onMediaChange?.(null);
   };
 
   const isImage = value?.type === "image";

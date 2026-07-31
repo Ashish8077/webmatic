@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -39,8 +39,8 @@ export function MediaFilters({
   ];
 
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-center w-full">
-      <div className="relative flex-1">
+    <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center w-full">
+      <div className="relative flex-1 min-w-[200px]">
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
           <Search size={16} className="text-muted-foreground" />
         </div>

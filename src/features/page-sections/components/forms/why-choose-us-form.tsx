@@ -1,6 +1,7 @@
 "use client";
 
 import type { JsonObject } from "@/shared/types/json";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
   DEFAULT_WHY_CHOOSE_US_CONTENT,
   type WhyChooseUsContentValues,
@@ -25,7 +26,7 @@ export function parseWhyChooseUsContentDefaults(
   content: JsonObject | undefined | null,
 ): WhyChooseUsContentValues {
   const raw = (content ?? {}) as unknown as Partial<WhyChooseUsContentValues>;
-  return {
+  const parsed = {
     badge: (raw.badge as string) ?? DEFAULT_WHY_CHOOSE_US_CONTENT.badge,
     heading: (raw.heading as string) ?? DEFAULT_WHY_CHOOSE_US_CONTENT.heading,
     highlight:
@@ -56,6 +57,8 @@ export function parseWhyChooseUsContentDefaults(
         },
       })) ?? DEFAULT_WHY_CHOOSE_US_CONTENT.reasons,
   };
+
+  return hydrateMediaRelations((content ?? {}) as JsonObject, parsed);
 }
 
 export function parseWhyChooseUsSettingsDefaults(): WhyChooseUsSettingsValues {
@@ -147,3 +150,6 @@ export function WhyChooseUsSettingsForm() {
     </div>
   );
 }
+
+
+

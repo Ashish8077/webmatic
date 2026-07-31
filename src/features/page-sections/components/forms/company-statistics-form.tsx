@@ -1,6 +1,7 @@
 "use client";
 
 import type { JsonObject } from "@/shared/types/json";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
   DEFAULT_COMPANY_STATISTICS_CONTENT,
   type CompanyStatisticsContentValues,
@@ -102,3 +103,6 @@ export function CompanyStatisticsContentForm({ disabled }: { disabled?: boolean 
     </div>
   );
 }
+
+
+

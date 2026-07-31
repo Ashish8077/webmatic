@@ -6,6 +6,7 @@ export const visualAssetSchema = z
     visualType: z.enum(["none", "icon", "image"]).default("none"),
     iconName: emptyStringToNull(100).default(null),
     imageId: z.number().int().positive().nullable().default(null),
+    image: z.any().nullable().optional(),
   })
   .refine(
     (data) => {

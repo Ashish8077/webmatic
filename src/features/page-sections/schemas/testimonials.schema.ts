@@ -15,6 +15,7 @@ export const testimonialsContentSchema = z.object({
   description: optionalString(2000),
   backgroundColor: optionalString(),
   backgroundImageId: imageIdSchema,
+  backgroundImage: z.any().nullable().optional(),
 });
 
 export type TestimonialsContentValues = z.infer<

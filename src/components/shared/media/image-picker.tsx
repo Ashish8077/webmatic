@@ -12,6 +12,10 @@ interface ImagePickerProps {
   description?: string;
 }
 
+/**
+ * @deprecated Existing modules outside Homepage may continue using it temporarily 
+ * until they are migrated to MediaField. Do not introduce any new usages.
+ */
 export default function ImagePicker({
   value,
   onChange,

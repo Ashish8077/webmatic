@@ -1,6 +1,7 @@
 "use client";
 
 import type { JsonObject } from "@/shared/types/json";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
   DEFAULT_SERVICES_CONTENT,
   type ServicesContentValues,
@@ -17,7 +18,7 @@ export function parseServicesContentDefaults(
   content: JsonObject | undefined | null,
 ): ServicesContentValues {
   const raw = (content ?? {}) as unknown as Partial<ServicesContentValues>;
-  return {
+  const parsed = {
     badge: (raw.badge as string) ?? DEFAULT_SERVICES_CONTENT.badge,
     heading: (raw.heading as string) ?? DEFAULT_SERVICES_CONTENT.heading,
     highlight: (raw.highlight as string) ?? DEFAULT_SERVICES_CONTENT.highlight,
@@ -32,6 +33,8 @@ export function parseServicesContentDefaults(
       url: raw.primaryButton?.url ?? "",
     },
   };
+
+  return hydrateMediaRelations((content ?? {}) as JsonObject, parsed);
 }
 
 export function parseServicesSettingsDefaults(): ServicesSettingsValues {
@@ -73,3 +76,6 @@ export function ServicesSettingsForm() {
     </div>
   );
 }
+
+
+

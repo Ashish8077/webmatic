@@ -16,6 +16,7 @@ export interface SlideType {
   primaryButton: SlideCTA;
   secondaryButton: SlideCTA;
   backgroundImageId: number | null;
+  backgroundImage?: any | null;
 }
 
 // ─── Raw CMS types (match the JSON stored in the database) ────────────────────
@@ -28,6 +29,7 @@ export interface RawCMSSlide {
   primaryButton: RawCMSButton;
   secondaryButton: RawCMSButton;
   backgroundImageId: number | null;
+  backgroundImage?: any | null; // Using any or Media type depending on what frontend uses
 }
 
 export interface RawHeroContent {

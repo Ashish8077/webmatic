@@ -1,6 +1,7 @@
 "use client";
 
 import type { JsonObject } from "@/shared/types/json";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
   DEFAULT_ABOUT_HERO_CONTENT,
   type AboutHeroContentValues,
@@ -79,3 +80,6 @@ export function AboutHeroContentForm({ disabled }: { disabled?: boolean }) {
     </div>
   );
 }
+
+
+

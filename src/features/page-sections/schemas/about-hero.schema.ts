@@ -11,6 +11,7 @@ export const aboutHeroContentSchema = z.object({
   ctaLabel: optionalString(50),
   ctaTargetId: optionalString(50),
   imageId: imageIdSchema, // Used for the background hero image
+  image: z.any().nullable().optional(),
 });
 
 export type AboutHeroContentValues = z.infer<typeof aboutHeroContentSchema>;

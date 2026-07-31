@@ -1,6 +1,7 @@
 "use client";
 
 import type { JsonObject } from "@/shared/types/json";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
   DEFAULT_CORE_VALUES_CONTENT,
   type CoreValuesContentValues,
@@ -95,3 +96,6 @@ export function CoreValuesContentForm({ disabled }: { disabled?: boolean }) {
     </div>
   );
 }
+
+
+

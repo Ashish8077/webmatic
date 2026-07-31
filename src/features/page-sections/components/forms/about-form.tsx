@@ -1,6 +1,7 @@
 "use client";
 
 import type { JsonObject } from "@/shared/types/json";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
   DEFAULT_ABOUT_CONTENT,
   type AboutContentValues,
@@ -22,7 +23,7 @@ export function parseAboutContentDefaults(
   content: JsonObject | undefined | null,
 ): AboutContentValues {
   const raw = (content ?? {}) as unknown as Partial<AboutContentValues>;
-  return {
+  const parsed = {
     badge: (raw.badge as string) ?? DEFAULT_ABOUT_CONTENT.badge,
     heading: (raw.heading as string) ?? DEFAULT_ABOUT_CONTENT.heading,
     highlight: (raw.highlight as string) ?? DEFAULT_ABOUT_CONTENT.highlight,
@@ -37,6 +38,8 @@ export function parseAboutContentDefaults(
       url: raw.learnMoreButton?.url ?? "",
     },
     bottomText: (raw.bottomText as string) ?? DEFAULT_ABOUT_CONTENT.bottomText,
+    image1Id: (raw.image1Id as number | null) ?? DEFAULT_ABOUT_CONTENT.image1Id,
+    image2Id: (raw.image2Id as number | null) ?? DEFAULT_ABOUT_CONTENT.image2Id,
     cards:
       raw.cards?.map((card) => ({
         badge: card.badge ?? "",
@@ -49,6 +52,8 @@ export function parseAboutContentDefaults(
         imageId: card.imageId ?? null,
       })) ?? DEFAULT_ABOUT_CONTENT.cards,
   };
+
+  return hydrateMediaRelations((content ?? {}) as JsonObject, parsed);
 }
 
 export function parseAboutSettingsDefaults(): AboutSettingsValues {

@@ -1,6 +1,7 @@
 "use client";
 
 import type { JsonObject } from "@/shared/types/json";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
   DEFAULT_COMPANY_OVERVIEW_CONTENT,
   type CompanyOverviewContentValues,
@@ -100,3 +101,6 @@ export function CompanyOverviewContentForm({ disabled }: { disabled?: boolean })
     </div>
   );
 }
+
+
+

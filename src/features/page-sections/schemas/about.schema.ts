@@ -15,6 +15,7 @@ const aboutCardSchema = z.object({
   description: optionalString(1000),
   button: optionalButtonSchema,
   imageId: imageIdSchema,
+  image: z.any().nullable().optional(),
 });
 
 // ─── About content schema ─────────────────────────────────────────────────────
@@ -27,7 +28,11 @@ export const aboutContentSchema = z.object({
   primaryButton: buttonSchema,
   learnMoreButton: optionalButtonSchema,
   bottomText: optionalString(500),
-  cards: z.array(aboutCardSchema),
+  image1Id: imageIdSchema,
+  image1: z.any().nullable().optional(),
+  image2Id: imageIdSchema,
+  image2: z.any().nullable().optional(),
+  cards: z.array(aboutCardSchema).max(2, { message: "Maximum 2 cards allowed." }),
 });
 
 export type AboutContentValues = z.infer<typeof aboutContentSchema>;
@@ -40,6 +45,8 @@ export const DEFAULT_ABOUT_CONTENT: AboutContentValues = {
   primaryButton: { text: "", url: "" },
   learnMoreButton: { text: "", url: "" },
   bottomText: "",
+  image1Id: null,
+  image2Id: null,
   cards: [],
 };
 

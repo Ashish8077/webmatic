@@ -1,6 +1,7 @@
 "use client";
 
 import type { JsonObject } from "@/shared/types/json";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
   DevelopmentProcessContentValues,
   DevelopmentProcessSettingsValues,
@@ -106,3 +107,6 @@ export const DevelopmentProcessContentForm: SectionFieldComponent = ({ disabled 
     </div>
   );
 };
+
+
+
