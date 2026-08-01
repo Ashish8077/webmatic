@@ -10,6 +10,7 @@ import {
   LeadListRow,
   LeadRepository,
   LeadRow,
+  LeadExportRow
 } from "../types/repository.types";
 
 
@@ -219,7 +220,7 @@ export const leadRepository: LeadRepository = {
     return Number(rows[0].total) > 0;
   },
 
-  async findBatchForExport(lastId: number, limit: number, filters: Omit<LeadFilters, "page" | "limit">): Promise<LeadRow[]> {
+  async findExportBatch(lastId: number, limit: number, filters: Omit<LeadFilters, "page" | "limit">): Promise<LeadExportRow[]> {
     const { search, status, fromDate, toDate } = filters;
     const where: string[] = ["deleted_at IS NULL", "id > ?"];
     const params: (string | number)[] = [lastId];
@@ -250,9 +251,9 @@ export const leadRepository: LeadRepository = {
       params.push(toDate);
     }
 
-    const [rows] = await db.query<LeadRow[]>(
+    const [rows] = await db.query<LeadExportRow[]>(
       `
-      SELECT *
+      SELECT id, name, email, phone, company, message, status, created_at AS createdAt
       FROM leads
       WHERE ${where.join(" AND ")}
       ORDER BY id ASC

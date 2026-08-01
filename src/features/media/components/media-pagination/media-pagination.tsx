@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Select } from "@/components/ui/select";
 import { PaginationMeta } from "../../types/media-query.types";
@@ -12,7 +12,7 @@ export function MediaPagination({
   pagination,
   onPaginationChange,
 }: MediaPaginationProps) {
-  const { currentPage, totalPages, totalItems, limit: pageSize } = pagination;
+  const { page: currentPage, totalPages, totalItems, limit: pageSize } = pagination;
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -31,7 +31,7 @@ export function MediaPagination({
     onPaginationChange(1, newLimit);
   };
 
-  const startRecord = (currentPage - 1) * pageSize + 1;
+  const startRecord = totalItems === 0 ? 0 : (currentPage - 1) * pageSize + 1;
   const endRecord = Math.min(currentPage * pageSize, totalItems);
 
   return (

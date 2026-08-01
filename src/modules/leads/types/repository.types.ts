@@ -83,6 +83,17 @@ export interface LeadListResult {
   totalPages: number;
 }
 
+export interface LeadExportRow extends RowDataPacket {
+  id: number;
+  name: string;
+  email: string;
+  phone: string | null;
+  company: string | null;
+  message: string;
+  status: LeadStatus;
+  createdAt: Date;
+}
+
 export interface LeadRepository {
   create(input: CreateLeadInput): Promise<CreatedLead>;
   findById(id: number): Promise<LeadRow | null>;
@@ -93,5 +104,5 @@ export interface LeadRepository {
   softDelete(id: number): Promise<number>;
   count(filters: Omit<LeadFilters, "page" | "limit">): Promise<number>;
   exists(id: number): Promise<boolean>;
-  findBatchForExport(lastId: number, limit: number, filters: Omit<LeadFilters, "page" | "limit">): Promise<LeadRow[]>;
+  findExportBatch(lastId: number, limit: number, filters: Omit<LeadFilters, "page" | "limit">): Promise<LeadExportRow[]>;
 }

@@ -1,8 +1,10 @@
 export interface PaginationMeta {
   totalItems: number;
   totalPages: number;
-  currentPage: number;
+  page: number;
   limit: number;
+  hasNextPage?: boolean;
+  hasPreviousPage?: boolean;
 }
 
 export interface MediaQuery {

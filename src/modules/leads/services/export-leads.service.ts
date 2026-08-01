@@ -3,6 +3,7 @@ import { LeadFilters } from "../types/repository.types";
 import { AuthUser } from "@/modules/auth/types/auth-user";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
+import { formatDateTime } from "@/shared/utils/date";
 
 export function exportLeadsService(filters: Omit<LeadFilters, "page" | "limit">, user: AuthUser): ReadableStream {
   requirePermission(user, PERMISSIONS.LEAD_EXPORT);
@@ -12,10 +13,9 @@ export function exportLeadsService(filters: Omit<LeadFilters, "page" | "limit">,
     "Email",
     "Phone",
     "Company",
+    "Message",
     "Status",
-    "Assigned Admin",
     "Created At",
-    "Updated At",
   ];
 
   const escapeCSV = (value: string | number | null | undefined | Date): string => {
@@ -39,7 +39,7 @@ export function exportLeadsService(filters: Omit<LeadFilters, "page" | "limit">,
 
       try {
         while (hasMore) {
-          const batch = await leadRepository.findBatchForExport(lastId, limit, filters);
+          const batch = await leadRepository.findExportBatch(lastId, limit, filters);
           
           if (batch.length === 0) {
             hasMore = false;
@@ -53,10 +53,9 @@ export function exportLeadsService(filters: Omit<LeadFilters, "page" | "limit">,
               lead.email,
               lead.phone,
               lead.company,
+              lead.message,
               lead.status,
-              lead.assigned_to, // Assigned Admin ID
-              lead.created_at,
-              lead.updated_at
+              formatDateTime(lead.createdAt, { timeZone: "Asia/Kolkata" })
             ].map(escapeCSV).join(",");
             chunk += row + "\n";
             lastId = lead.id;

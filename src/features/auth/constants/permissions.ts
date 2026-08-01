@@ -31,6 +31,12 @@ export const Permission = {
   MEDIA_UPDATE: "media.update",
   MEDIA_DELETE: "media.delete",
 
+  // lead permissions
+  LEAD_VIEW: "lead.view",
+  LEAD_UPDATE: "lead.update",
+  LEAD_DELETE: "lead.delete",
+  LEAD_EXPORT: "lead.export",
+
   // Continue for the remaining permissions...
 } as const;
 

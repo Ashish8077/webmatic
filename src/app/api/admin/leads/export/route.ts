@@ -16,11 +16,10 @@ export async function GET(request: Request): Promise<NextResponse> {
 
     const stream = exportLeadsService(filters, user);
     
-    // leads-export-YYYY-MM-DD-HHMMSS.csv
+    // leads-export-YYYY-MM-DD.csv
     const now = new Date();
     const dateStr = now.toISOString().split("T")[0];
-    const timeStr = now.toTimeString().split(" ")[0].replace(/:/g, "");
-    const filename = `leads-export-${dateStr}-${timeStr}.csv`;
+    const filename = `leads-export-${dateStr}.csv`;
 
     return new NextResponse(stream, {
       status: 200,

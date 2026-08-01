@@ -8,6 +8,7 @@ const inter = Inter({
 });
 import { QueryProvider } from "@/providers/QueryProvider";
 import { RecaptchaProvider } from "@/providers/RecaptchaProvider";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "CMS Admin",
@@ -29,6 +30,7 @@ export default function RootLayout({
         <RecaptchaProvider>
           <QueryProvider>{children}</QueryProvider>
         </RecaptchaProvider>
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );
