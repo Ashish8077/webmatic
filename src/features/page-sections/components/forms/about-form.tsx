@@ -1,6 +1,7 @@
 "use client";
 
 import type { JsonObject } from "@/shared/types/json";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
   DEFAULT_ABOUT_CONTENT,
   type AboutContentValues,
@@ -22,7 +23,7 @@ export function parseAboutContentDefaults(
   content: JsonObject | undefined | null,
 ): AboutContentValues {
   const raw = (content ?? {}) as unknown as Partial<AboutContentValues>;
-  return {
+  const parsed = {
     badge: (raw.badge as string) ?? DEFAULT_ABOUT_CONTENT.badge,
     heading: (raw.heading as string) ?? DEFAULT_ABOUT_CONTENT.heading,
     highlight: (raw.highlight as string) ?? DEFAULT_ABOUT_CONTENT.highlight,
@@ -49,6 +50,8 @@ export function parseAboutContentDefaults(
         imageId: card.imageId ?? null,
       })) ?? DEFAULT_ABOUT_CONTENT.cards,
   };
+
+  return hydrateMediaRelations((content ?? {}) as JsonObject, parsed);
 }
 
 export function parseAboutSettingsDefaults(): AboutSettingsValues {
@@ -64,18 +67,6 @@ export function AboutContentForm({ disabled }: { disabled?: boolean }) {
         disabled={disabled}
       />
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        <MediaPickerField
-          name="content.image1Id"
-          label="Main Image"
-          disabled={disabled}
-        />
-        <MediaPickerField
-          name="content.image2Id"
-          label="Secondary Image"
-          disabled={disabled}
-        />
-      </div>
       <ButtonFields
         name="content.primaryButton"
         label="Primary Button"

@@ -2,6 +2,7 @@ import { PageHero } from "@/components/shared/page-hero/page-hero";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import type { AboutHeroContentValues } from "@/features/page-sections/schemas/about-hero.schema";
 import type { SectionProps } from "@/components/home/sections/types";
+import { getMediaUrl } from "@/features/media/utils/media-url";
 
 export function AboutHeroSection({ content }: SectionProps) {
   const data = content as unknown as AboutHeroContentValues;
@@ -10,7 +11,8 @@ export function AboutHeroSection({ content }: SectionProps) {
   const heading = data.heading;
   const highlight = data.highlight;
   const description = data.description;
-  const imageUrl = data.imageId ? `/api/media/${data.imageId}` : null;
+  const imageUrl =
+    getMediaUrl(data.image) ?? (data.imageId ? `/api/media/${data.imageId}` : null);
 
   const titleNode = (
     <>

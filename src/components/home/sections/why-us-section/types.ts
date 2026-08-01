@@ -1,4 +1,5 @@
 import { RawCMSButton } from "../types";
+import type { Media } from "@/features/media/types";
 
 export interface RawWhyUsReason {
   key: string;
@@ -8,6 +9,7 @@ export interface RawWhyUsReason {
   visualType?: "none" | "icon" | "image";
   iconName?: string | null;
   imageId?: number | null;
+  image?: Media | null;
 }
 
 export interface RawWhyUsContent {
@@ -32,6 +34,7 @@ export interface WhyUsReason {
   visualType?: "none" | "icon" | "image";
   iconName?: string | null;
   imageId?: number | null;
+  image?: Media | null;
 }
 
 export interface WhyUsContent {

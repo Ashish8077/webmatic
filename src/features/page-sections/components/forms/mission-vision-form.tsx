@@ -5,24 +5,31 @@ import {
   DEFAULT_MISSION_VISION_CONTENT,
   type MissionVisionContentValues,
 } from "../../schemas/mission-vision.schema";
-import { TextField, TextareaField } from "../fields";
+import { TextField, TextareaField, VisualPickerField } from "../fields";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 
 export function parseMissionVisionContentDefaults(
   content: JsonObject | undefined | null,
 ): MissionVisionContentValues {
-  const raw = (content ?? {}) as unknown as Partial<MissionVisionContentValues>;
-  return {
-    missionTitle:
-      raw.missionTitle ?? DEFAULT_MISSION_VISION_CONTENT.missionTitle,
-    missionDescription:
-      raw.missionDescription ??
-      DEFAULT_MISSION_VISION_CONTENT.missionDescription,
-    visionTitle:
-      raw.visionTitle ?? DEFAULT_MISSION_VISION_CONTENT.visionTitle,
-    visionDescription:
-      raw.visionDescription ??
-      DEFAULT_MISSION_VISION_CONTENT.visionDescription,
+  const raw = (content ?? {}) as any;
+  
+  // Normalize legacy data into the current domain model in-memory
+  const mission = raw.mission ?? {
+    title: raw.missionTitle ?? DEFAULT_MISSION_VISION_CONTENT.mission.title,
+    description: raw.missionDescription ?? DEFAULT_MISSION_VISION_CONTENT.mission.description,
+    visual: DEFAULT_MISSION_VISION_CONTENT.mission.visual,
   };
+
+  const vision = raw.vision ?? {
+    title: raw.visionTitle ?? DEFAULT_MISSION_VISION_CONTENT.vision.title,
+    description: raw.visionDescription ?? DEFAULT_MISSION_VISION_CONTENT.vision.description,
+    visual: DEFAULT_MISSION_VISION_CONTENT.vision.visual,
+  };
+
+  const parsed = { mission, vision };
+  
+  // Hydrate to ensure existing image selections are populated for the visual fields
+  return hydrateMediaRelations(raw as JsonObject, parsed);
 }
 
 export function MissionVisionContentForm({
@@ -36,16 +43,21 @@ export function MissionVisionContentForm({
         <h3 className="text-sm font-semibold mb-3">Mission</h3>
         <div className="space-y-4">
           <TextField
-            name="content.missionTitle"
+            name="content.mission.title"
             label="Mission Title"
             placeholder="e.g., Our Mission"
             disabled={disabled}
           />
           <TextareaField
-            name="content.missionDescription"
+            name="content.mission.description"
             label="Mission Description"
             placeholder="Describe your company's mission..."
             disabled={disabled}
+          />
+          <VisualPickerField 
+            name="content.mission.visual" 
+            label="Mission Visual Asset" 
+            disabled={disabled} 
           />
         </div>
       </div>
@@ -54,16 +66,21 @@ export function MissionVisionContentForm({
         <h3 className="text-sm font-semibold mb-3">Vision</h3>
         <div className="space-y-4">
           <TextField
-            name="content.visionTitle"
+            name="content.vision.title"
             label="Vision Title"
             placeholder="e.g., Our Vision"
             disabled={disabled}
           />
           <TextareaField
-            name="content.visionDescription"
+            name="content.vision.description"
             label="Vision Description"
             placeholder="Describe your company's vision..."
             disabled={disabled}
+          />
+          <VisualPickerField 
+            name="content.vision.visual" 
+            label="Vision Visual Asset" 
+            disabled={disabled} 
           />
         </div>
       </div>

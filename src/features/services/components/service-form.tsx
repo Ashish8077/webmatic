@@ -9,8 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { SeoFields } from "@/components/shared/seo";
 import { RichTextEditor } from "@/components/shared/editor";
-import { ImagePicker } from "@/components/shared/media";
-import { VisualPickerField } from "@/features/page-sections/components/fields";
+import { VisualPickerField, MediaPickerField } from "@/features/page-sections/components/fields";
 import type { ServiceFormValues } from "../schemas/service.schema";
 import { Star, Plus, Trash2 } from "lucide-react";
 import clsx from "clsx";
@@ -44,12 +43,13 @@ function StringArrayField({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center gap-3">
         <label className="text-sm font-medium">{label}</label>
         <Button
           type="button"
-          variant="ghost"
+          variant="secondary"
           size="sm"
+          className="h-7 text-xs px-2"
           onClick={() => onChange([...items, ""])}
         >
           <Plus size={14} className="mr-1" /> Add
@@ -58,34 +58,38 @@ function StringArrayField({
       {items.length === 0 && (
         <p className="text-sm text-muted-foreground py-2">No items added.</p>
       )}
-      {items.map((item, index) => (
-        <div key={index} className="flex items-center gap-2">
-          <Input
-            value={item}
-            placeholder={placeholder}
-            onChange={(e) => {
-              const newItems = [...items];
-              newItems[index] = e.target.value;
-              onChange(newItems);
-            }}
-          />
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 shrink-0 text-muted-foreground hover:text-danger"
-            onClick={() => {
-              const newItems = items.filter((_, i) => i !== index);
-              onChange(newItems);
-            }}
-          >
-            <Trash2 size={16} />
-          </Button>
-        </div>
-      ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {items.map((item, index) => (
+          <div key={index} className="flex items-center gap-2">
+            <Input
+              value={item}
+              placeholder={placeholder}
+              onChange={(e) => {
+                const newItems = [...items];
+                newItems[index] = e.target.value;
+                onChange(newItems);
+              }}
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-10 w-10 shrink-0 text-muted-foreground hover:bg-danger/10 hover:text-danger rounded-md transition-colors"
+              onClick={() => {
+                const newItems = items.filter((_, i) => i !== index);
+                onChange(newItems);
+              }}
+            >
+              <Trash2 size={18} />
+            </Button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
+
+import { toast } from "sonner";
 
 export default function ServiceForm({
   form,
@@ -106,7 +110,13 @@ export default function ServiceForm({
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form 
+        onSubmit={form.handleSubmit(onSubmit, (errors) => {
+          console.error("Form Validation Errors:", errors);
+          toast.error("Please check the form for missing or invalid fields.");
+        })} 
+        className="space-y-6"
+      >
       {/* ────────────────────────────────────────────────────────────────────────
           SECTION 1 — BASIC INFORMATION
       ──────────────────────────────────────────────────────────────────────── */}
@@ -210,18 +220,10 @@ export default function ServiceForm({
           />
         </div>
 
-        <Controller
+        <MediaPickerField
           name="featuredImageId"
-          control={form.control}
-          render={({ field }) => (
-            <ImagePicker
-              label="Featured Image"
-              description="Used in service cards and grid listings."
-              value={field.value}
-              onChange={field.onChange}
-              error={form.formState.errors.featuredImageId?.message}
-            />
-          )}
+          label="Featured Image"
+          description="Used in service cards and grid listings."
         />
 
         <Textarea
@@ -247,17 +249,10 @@ export default function ServiceForm({
         {/* Banner */}
         <div className="space-y-4 pt-4 border-t border-card-border">
           <h4 className="font-medium text-foreground">Banner</h4>
-          <Controller
+          <MediaPickerField
             name="bannerImageId"
-            control={form.control}
-            render={({ field }) => (
-              <ImagePicker
-                description="Used as the hero background on the detail page."
-                value={field.value}
-                onChange={field.onChange}
-                error={form.formState.errors.bannerImageId?.message}
-              />
-            )}
+            label="Banner Image"
+            description="Used as the hero background on the detail page."
           />
         </div>
 
@@ -285,7 +280,7 @@ export default function ServiceForm({
         {/* Key Features & Benefits */}
         <div className="pt-4 border-t border-card-border">
           <h4 className="font-medium text-foreground mb-4">Key Features</h4>
-          <div className="md:w-1/2">
+          <div className="w-full">
             <Controller
               name="keyFeatures"
               control={form.control}
@@ -331,7 +326,7 @@ export default function ServiceForm({
               No Benefits added.
             </p>
           )}
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="flex flex-col gap-6">
             {benefitsField.fields.map((field, index) => (
               <div
                 key={field.id}
@@ -345,10 +340,10 @@ export default function ServiceForm({
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 text-muted-foreground hover:text-danger"
+                    className="h-10 w-10 shrink-0 text-muted-foreground hover:bg-danger/10 hover:text-danger rounded-md transition-colors"
                     onClick={() => benefitsField.remove(index)}
                   >
-                    <Trash2 size={16} />
+                    <Trash2 size={18} />
                   </Button>
                 </div>
                 <Input

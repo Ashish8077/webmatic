@@ -18,6 +18,7 @@ const heroSlideSchema = z.object({
   primaryButton: buttonSchema,
   secondaryButton: optionalButtonSchema,
   backgroundImageId: imageIdSchema,
+  backgroundImage: z.any().nullable().optional(),
 });
 
 // ─── Hero content schema ──────────────────────────────────────────────────────

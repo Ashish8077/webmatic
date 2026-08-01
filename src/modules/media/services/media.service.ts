@@ -179,13 +179,14 @@ export const MediaService = {
   /**
    * Retrieves a single media item.
    */
-  async getMedia(id: number, user?: AuthUser): Promise<Media> {
+  async getMedia(id: number, user?: AuthUser): Promise<Media & { url: string }> {
     if (user) {
       requirePermission(user, PERMISSIONS.MEDIA_VIEW);
     }
     const media = await findMediaById(id);
     if (!media) throw new MediaNotFoundError();
-    return media;
+    const storage = getStorageProvider();
+    return { ...media, url: storage.getUrl(media.storagePath) };
   },
 
   /**
@@ -206,8 +207,15 @@ export const MediaService = {
 
     const totalPages = Math.ceil(totalItems / query.limit);
 
+    // Resolve public URLs for each media item
+    const storage = getStorageProvider();
+    const enrichedItems = items.map((item) => ({
+      ...item,
+      url: storage.getUrl(item.storagePath),
+    }));
+
     return {
-      items,
+      items: enrichedItems,
       pagination: {
         page: query.page,
         limit: query.limit,

@@ -2,7 +2,6 @@ import { z } from "zod";
 import {
   requiredString,
   optionalString,
-  buttonSchema,
   optionalButtonSchema,
   imageIdSchema,
 } from "./common.schema";
@@ -15,6 +14,7 @@ const aboutCardSchema = z.object({
   description: optionalString(1000),
   button: optionalButtonSchema,
   imageId: imageIdSchema,
+  image: z.any().nullable().optional(),
 });
 
 // ─── About content schema ─────────────────────────────────────────────────────
@@ -24,10 +24,10 @@ export const aboutContentSchema = z.object({
   heading: requiredString("Heading"),
   highlight: optionalString(),
   description: optionalString(2000),
-  primaryButton: buttonSchema,
+  primaryButton: optionalButtonSchema,
   learnMoreButton: optionalButtonSchema,
   bottomText: optionalString(500),
-  cards: z.array(aboutCardSchema),
+  cards: z.array(aboutCardSchema).max(3, { message: "Maximum 3 cards allowed." }),
 });
 
 export type AboutContentValues = z.infer<typeof aboutContentSchema>;

@@ -26,6 +26,7 @@ function normaliseSlide(raw: RawCMSSlide, index: number): SlideType {
       to: raw.secondaryButton?.url ?? "#",
     },
     backgroundImageId: raw.backgroundImageId ?? null,
+    backgroundImage: raw.backgroundImage ?? null,
   };
 }
 

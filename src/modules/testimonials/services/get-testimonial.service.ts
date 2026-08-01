@@ -2,6 +2,8 @@ import { findTestimonialById } from "../repositories/testimonial.repository";
 import { mapTestimonialRowToItem } from "../mapper/testimonial.mapper";
 import { TestimonialItem } from "../types/service.types";
 import { AppError } from "@/shared/utils/errors/app-error";
+import { findMediaById } from "@/modules/media/repositories/media.repository";
+import { StorageFactory } from "@/shared/storage/storage-factory";
 
 export async function getTestimonialService(
   id: number,
@@ -12,5 +14,15 @@ export async function getTestimonialService(
     throw new AppError("Testimonial not found", 404);
   }
 
-  return mapTestimonialRowToItem(row);
+  const item = mapTestimonialRowToItem(row);
+
+  if (item.profileImageId) {
+    const media = await findMediaById(item.profileImageId);
+    if (media) {
+      const storage = StorageFactory.create();
+      item.profileImage = { ...media, url: storage.getUrl(media.storagePath) } as any;
+    }
+  }
+
+  return item;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import type { JsonObject } from "@/shared/types/json";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
   DEFAULT_CORE_VALUES_CONTENT,
   type CoreValuesContentValues,
@@ -18,11 +19,13 @@ export function parseCoreValuesContentDefaults(
   content: JsonObject | undefined | null,
 ): CoreValuesContentValues {
   const raw = (content ?? {}) as unknown as Partial<CoreValuesContentValues>;
-  return {
+  const parsed = {
     badge: raw.badge ?? DEFAULT_CORE_VALUES_CONTENT.badge,
     heading: raw.heading ?? DEFAULT_CORE_VALUES_CONTENT.heading,
     values: raw.values ?? DEFAULT_CORE_VALUES_CONTENT.values,
   };
+
+  return hydrateMediaRelations((content ?? {}) as JsonObject, parsed);
 }
 
 export function CoreValuesContentForm({ disabled }: { disabled?: boolean }) {
@@ -74,6 +77,7 @@ export function CoreValuesContentForm({ disabled }: { disabled?: boolean }) {
               name={`content.values.${index}`}
               label="Core Value Visual"
               description="Select an icon or image for this core value."
+              disabled={disabled}
             />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <TextField
@@ -95,3 +99,6 @@ export function CoreValuesContentForm({ disabled }: { disabled?: boolean }) {
     </div>
   );
 }
+
+
+

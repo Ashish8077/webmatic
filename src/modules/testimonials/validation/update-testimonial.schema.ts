@@ -12,6 +12,7 @@ export const updateTestimonialSchema = z
     designation: emptyStringToNull(255).optional(),
     companyName: emptyStringToNull(255).optional(),
     profileImageId: nullablePositiveInt.optional(),
+    profileImage: z.any().nullable().optional(),
     title: emptyStringToNull(255).optional(),
     description: z.string().trim().min(1, "Description is required").optional(),
     rating: z.number().int().min(1, "Rating must be at least 1").max(5, "Rating must be at most 5").optional(),

@@ -6,6 +6,7 @@ import { toPageSectionListItem } from "../mapper/page-section.mapper";
 import { PageSectionListItem } from "../types/api.types";
 import { findPageById } from "@/modules/pages/repositories/page.repository";
 import { AppError } from "@/shared/utils/errors/app-error";
+import { hydrateJsonMedia } from "@/modules/media/services/hydrate-json-media.service";
 
 export async function getPageSectionsService(
   pageId: number,
@@ -22,5 +23,14 @@ export async function getPageSectionsService(
 
   const pageSections = await findPageSectionsByPageId(pageId);
 
-  return pageSections.map(toPageSectionListItem);
+  const hydratedSections = await Promise.all(
+    pageSections.map(async (section) => {
+      return {
+        ...section,
+        content: (await hydrateJsonMedia(section.content)) as any,
+      };
+    })
+  );
+
+  return hydratedSections.map(toPageSectionListItem);
 }

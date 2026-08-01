@@ -1,6 +1,7 @@
 "use client";
 
 import type { JsonObject } from "@/shared/types/json";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
   DEFAULT_COMPANY_STATISTICS_CONTENT,
   type CompanyStatisticsContentValues,
@@ -19,7 +20,7 @@ export function parseCompanyStatisticsContentDefaults(
   content: JsonObject | undefined | null,
 ): CompanyStatisticsContentValues {
   const raw = (content ?? {}) as unknown as Partial<CompanyStatisticsContentValues>;
-  return {
+  const parsed = {
     items:
       raw.items?.map((item) => ({
         number: item.number ?? "",
@@ -32,6 +33,8 @@ export function parseCompanyStatisticsContentDefaults(
         sortOrder: item.sortOrder ?? 0,
       })) ?? DEFAULT_COMPANY_STATISTICS_CONTENT.items,
   };
+
+  return hydrateMediaRelations((content ?? {}) as JsonObject, parsed);
 }
 
 export function CompanyStatisticsContentForm({ disabled }: { disabled?: boolean }) {
@@ -94,6 +97,7 @@ export function CompanyStatisticsContentForm({ disabled }: { disabled?: boolean 
                 name={`content.items.${index}`}
                 label="Statistic Visual (Optional)"
                 description="Select an icon or image for this statistic."
+                disabled={disabled}
               />
             </div>
           </div>
@@ -102,3 +106,6 @@ export function CompanyStatisticsContentForm({ disabled }: { disabled?: boolean 
     </div>
   );
 }
+
+
+

@@ -17,6 +17,7 @@ export const servicesHeroContentSchema = z.object({
   secondaryCtaLabel: optionalString(50),
   secondaryCtaTargetId: optionalString(50),
   imageId: imageIdSchema,
+  image: z.any().nullable().optional(),
 });
 
 export type ServicesHeroContentValues = z.infer<

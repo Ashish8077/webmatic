@@ -23,6 +23,7 @@ export function normaliseWhyUsContent(raw: RawWhyUsContent): WhyUsContent {
       visualType: reason.visualType,
       iconName: reason.iconName,
       imageId: reason.imageId,
+      image: reason.image,
     })),
 
     bottomText: raw.bottomText,

@@ -17,6 +17,7 @@ export const serviceBenefitSchema = z.object({
   visualType: visualAssetSchema.shape.visualType,
   iconName: visualAssetSchema.shape.iconName.optional(),
   imageId: visualAssetSchema.shape.imageId.optional(),
+  image: z.any().optional(),
 }).superRefine((data, ctx) => {
   if (data.visualType) {
     const isIconNull = data.iconName === null || data.iconName === undefined;
@@ -57,12 +58,15 @@ export const serviceSchema = z
     description: emptyStringToNull(50000).optional(),
 
     featuredImageId: nullablePositiveInt.optional(),
+    featuredImage: z.any().optional(),
 
     bannerImageId: nullablePositiveInt.optional(),
+    bannerImage: z.any().optional(),
 
     visualType: visualAssetSchema.shape.visualType.optional(),
     iconName: visualAssetSchema.shape.iconName.optional(),
     imageId: visualAssetSchema.shape.imageId.optional(),
+    image: z.any().optional(),
 
     keyFeatures: stringArray(255).optional(),
 
@@ -91,12 +95,14 @@ export const serviceSchema = z
     openGraphDescription: emptyStringToNull(500).optional(),
 
     openGraphImageId: nullablePositiveInt.optional(),
+    openGraphImage: z.any().optional(),
 
     twitterTitle: emptyStringToNull(255).optional(),
 
     twitterDescription: emptyStringToNull(500).optional(),
 
     twitterImageId: nullablePositiveInt.optional(),
+    twitterImage: z.any().optional(),
 
     schemaMarkup: z.custom<JsonObject>().nullable().optional(),
 

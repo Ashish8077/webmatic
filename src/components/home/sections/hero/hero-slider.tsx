@@ -7,6 +7,8 @@ import DecorativeShapes from "./decorative-shapes";
 import SlideCounter from "./slide-counter";
 import HeroContent from "./hero-content";
 import BottomStrip from "./bottom-strip";
+import { getMediaUrl } from "@/features/media/utils/media-url";
+import Image from "next/image";
 import { parseHeroSettingsDefaults } from "@/features/page-sections/components/forms/hero-form";
 
 export function HeroSlider({ content, settings }: SectionProps) {
@@ -62,19 +64,23 @@ export function HeroSlider({ content, settings }: SectionProps) {
   if (slides.length === 0) return null;
 
   const slide = slides[current];
+  const backgroundUrl = getMediaUrl(slide.backgroundImage);
 
-  console.log(parsedSettings.showPagination);
 
   return (
     <section className="relative h-[calc(100vh-104px)] min-h-[500px] overflow-hidden bg-gradient-to-b from-[#f3f4f8] to-[#c7eef0] flex flex-col">
-      <BackgroundRings />
-      <DecorativeShapes current={current} slides={slides} />
-
-      {parsedSettings.showPagination && (
-        <SlideCounter current={current} slides={slides} />
+      {backgroundUrl && (
+        <Image src={backgroundUrl} fill className="object-cover absolute inset-0 z-0" alt={slide.backgroundImage?.altText ?? ""} />
       )}
+      <div className="z-10 relative flex flex-col h-full">
+        <BackgroundRings />
+        <DecorativeShapes current={current} slides={slides} />
 
-      <HeroContent slide={slide} />
+        {parsedSettings.showPagination && (
+          <SlideCounter current={current} slides={slides} />
+        )}
+
+        <HeroContent slide={slide} />
 
       {/* If showNavigation is toggled off, we could hide the bottom strip entirely or modify it. 
           Assuming BottomStrip houses the navigation arrows. */}
@@ -92,6 +98,7 @@ export function HeroSlider({ content, settings }: SectionProps) {
           showPagination={parsedSettings.showPagination}
         />
       )}
+      </div>
     </section>
   );
 }

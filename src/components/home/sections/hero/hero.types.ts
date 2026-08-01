@@ -1,4 +1,5 @@
 import type { RawCMSButton } from "../types";
+import type { Media } from "@/features/media/types";
 
 // ─── UI-facing types (used by all hero sub-components) ────────────────────────
 
@@ -16,6 +17,7 @@ export interface SlideType {
   primaryButton: SlideCTA;
   secondaryButton: SlideCTA;
   backgroundImageId: number | null;
+  backgroundImage?: Media | null;
 }
 
 // ─── Raw CMS types (match the JSON stored in the database) ────────────────────
@@ -28,6 +30,7 @@ export interface RawCMSSlide {
   primaryButton: RawCMSButton;
   secondaryButton: RawCMSButton;
   backgroundImageId: number | null;
+  backgroundImage?: Media | null;
 }
 
 export interface RawHeroContent {

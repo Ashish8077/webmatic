@@ -16,6 +16,7 @@ import {
 } from "../fields";
 
 import { parseSliderSettingsDefaults } from "../../schemas/common-settings.schema";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 
 type FormShape = { content: HeroContentValues; settings: HeroSettingsValues };
 
@@ -23,7 +24,7 @@ export function parseHeroContentDefaults(
   content: JsonObject | undefined | null,
 ): HeroContentValues {
   const raw = (content ?? {}) as unknown as Partial<HeroContentValues>;
-  return {
+  const parsed = {
     slides:
       raw.slides?.map((slide) => ({
         badge: slide.badge ?? "",
@@ -41,6 +42,7 @@ export function parseHeroContentDefaults(
         backgroundImageId: slide.backgroundImageId ?? null,
       })) ?? DEFAULT_HERO_CONTENT.slides,
   };
+  return hydrateMediaRelations(raw as JsonObject, parsed);
 }
 
 export const parseHeroSettingsDefaults = parseSliderSettingsDefaults;

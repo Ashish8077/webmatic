@@ -36,7 +36,9 @@ export function CompanyStatisticsSection({ content }: SectionProps) {
                   <VisualRenderer
                     asset={item as unknown as VisualAsset}
                     className="w-full h-full rounded-2xl"
+                    imageClassName="object-contain p-2"
                     iconClassName="w-8 h-8 text-orange-500"
+                    alt={str(item.title, "Company statistic visual")}
                   />
                 </div>
               )}

@@ -1,6 +1,7 @@
 "use client";
 
 import type { JsonObject } from "@/shared/types/json";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
   DevelopmentProcessContentValues,
   DevelopmentProcessSettingsValues,
@@ -23,7 +24,7 @@ export function parseDevelopmentProcessContentDefaults(
   content: JsonObject | undefined | null,
 ): DevelopmentProcessContentValues {
   const raw = (content ?? {}) as unknown as Partial<DevelopmentProcessContentValues>;
-  return {
+  const parsed = {
     badge: raw.badge ?? "OUR DEVELOPMENT PROCESS",
     heading: raw.heading ?? "Focusing on the 3 key elements of any successful ",
     highlight: raw.highlight ?? "marketing strategy.",
@@ -31,6 +32,8 @@ export function parseDevelopmentProcessContentDefaults(
     bottomText: raw.bottomText ?? "We Serve our Clients' Best Interests with the Best Marketing Solutions.",
     primaryButton: raw.primaryButton ?? { url: "/contact", text: "Find Out More" },
   };
+
+  return hydrateMediaRelations((content ?? {}) as JsonObject, parsed);
 }
 
 export const DevelopmentProcessContentForm: SectionFieldComponent = ({ disabled }) => {
@@ -85,6 +88,7 @@ export const DevelopmentProcessContentForm: SectionFieldComponent = ({ disabled 
             <VisualPickerField
               name={`content.steps.${index}`}
               label="Visual Asset"
+              disabled={disabled}
             />
           </div>
         )}
@@ -106,3 +110,6 @@ export const DevelopmentProcessContentForm: SectionFieldComponent = ({ disabled 
     </div>
   );
 };
+
+
+

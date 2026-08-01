@@ -100,9 +100,9 @@ export function TestimonialsSlider({ items, settings }: TestimonialsSliderProps)
             {/* Author */}
             <div className="mt-10 flex flex-col items-center justify-center gap-4">
               <div className="relative h-16 w-16 shrink-0 rounded-full bg-slate-100 border-2 border-slate-200 overflow-hidden flex items-center justify-center shadow-sm">
-                {t.profileImageId ? (
+                {t.profileImage && t.profileImage.url ? (
                   <Image
-                    src={`/api/media/${t.profileImageId}`}
+                    src={t.profileImage.url}
                     alt={t.clientName}
                     fill
                     className="object-cover"

@@ -3,6 +3,8 @@ import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 
 
 import { DEFAULT_SERVICES_HERO_CONTENT } from "@/features/page-sections/schemas/services-hero.schema";
+import { getMediaUrl } from "@/features/media/utils/media-url";
+import type { Media } from "@/features/media/types";
 import type { JsonObject } from "@/shared/types/json";
 
 export interface ServicesHeroProps {
@@ -21,7 +23,9 @@ export function ServicesHero({ content }: ServicesHeroProps) {
   const secondaryCtaTargetId = (raw.secondaryCtaTargetId as string) ?? DEFAULT_SERVICES_HERO_CONTENT.secondaryCtaTargetId;
   const imageId = (raw.imageId as number | null) ?? DEFAULT_SERVICES_HERO_CONTENT.imageId;
 
-  const imageUrl = imageId ? `/api/media/${imageId}` : null;
+  const imageUrl =
+    getMediaUrl(raw.image as Media | null | undefined) ??
+    (imageId ? `/api/media/${imageId}` : null);
 
   const titleNode = (
     <>

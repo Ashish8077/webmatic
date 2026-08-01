@@ -1,5 +1,7 @@
 "use client";
 
+import type { JsonObject } from "@/shared/types/json";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
   DEFAULT_TESTIMONIALS_CONTENT,
   type TestimonialsContentValues,
@@ -14,10 +16,10 @@ import {
 import { parseSliderSettingsDefaults } from "../../schemas/common-settings.schema";
 
 export function parseTestimonialsContentDefaults(
-  content: Record<string, unknown> | null | undefined,
+  content: JsonObject | null | undefined,
 ): TestimonialsContentValues {
-  const raw = (content || {}) as Partial<TestimonialsContentValues>;
-  return {
+  const raw = (content ?? {}) as Partial<TestimonialsContentValues>;
+  const parsed = {
     badge: (raw.badge as string) ?? DEFAULT_TESTIMONIALS_CONTENT.badge,
     heading: (raw.heading as string) ?? DEFAULT_TESTIMONIALS_CONTENT.heading,
     highlight:
@@ -31,6 +33,8 @@ export function parseTestimonialsContentDefaults(
       (raw.backgroundImageId as number | null) ??
       DEFAULT_TESTIMONIALS_CONTENT.backgroundImageId,
   };
+
+  return hydrateMediaRelations((content ?? {}) as JsonObject, parsed);
 }
 
 export const parseTestimonialsSettingsDefaults = parseSliderSettingsDefaults;
@@ -67,3 +71,6 @@ export function TestimonialsSettingsForm({ disabled }: { disabled?: boolean }) {
     </div>
   );
 }
+
+
+

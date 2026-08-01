@@ -51,6 +51,7 @@ export function BenefitsSection({
                           visualType: (benefit as ServiceBenefit).visualType,
                           iconName: (benefit as ServiceBenefit).iconName ?? null,
                           imageId: (benefit as ServiceBenefit).imageId ?? null,
+                          image: (benefit as ServiceBenefit).image ?? null,
                         }}
                         className="w-[22px] h-[22px]"
                         iconClassName="w-full h-full"

@@ -162,7 +162,7 @@ export default function RichTextEditor({ value, onChange, error }: RichTextEdito
     content: value,
     editorProps: {
       attributes: {
-        class: 'prose prose-sm dark:prose-invert max-w-none focus:outline-none min-h-[200px] p-4',
+        class: 'prose prose-sm dark:prose-invert max-w-none focus:outline-none min-h-[200px] p-4 text-foreground',
       },
     },
     onUpdate: ({ editor }) => {

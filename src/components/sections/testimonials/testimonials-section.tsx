@@ -4,6 +4,7 @@ import type { RawTestimonialContent } from "./types";
 import { TestimonialsSlider } from "./testimonials-slider";
 import Image from "next/image";
 import { getTestimonialsService } from "@/modules/testimonials/services/get-testimonials.service";
+import { getMediaUrl } from "@/features/media/utils/media-url";
 
 export async function TestimonialsSection({ content, settings }: SectionProps) {
   const data = normaliseTestimonialContent(
@@ -18,15 +19,33 @@ export async function TestimonialsSection({ content, settings }: SectionProps) {
     sortOrder: "asc",
   });
 
-  const bgStyle = data.backgroundColor ? { backgroundColor: data.backgroundColor } : {};
+  const backgroundImageUrl = getMediaUrl(data.backgroundImage);
+  const hasBackgroundImage = Boolean(backgroundImageUrl || data.backgroundImageId);
+  const bgStyle =
+    !hasBackgroundImage && data.backgroundColor
+      ? { backgroundColor: data.backgroundColor }
+      : {};
 
   return (
     <section 
-      className={`relative py-20 lg:py-28 overflow-hidden ${!data.backgroundColor && !data.backgroundImageId ? "bg-white" : ""}`}
+      className={`relative py-20 lg:py-28 overflow-hidden ${
+        !data.backgroundColor && !hasBackgroundImage ? "bg-white" : ""
+      }`}
       style={bgStyle}
     >
       {/* Background Image */}
-      {data.backgroundImageId && (
+      {backgroundImageUrl ? (
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={backgroundImageUrl}
+            alt="Testimonials Background"
+            fill
+            className="object-cover object-center opacity-10"
+            sizes="100vw"
+            unoptimized
+          />
+        </div>
+      ) : data.backgroundImageId ? (
         <div className="absolute inset-0 z-0">
           <Image
             src={`/api/media/${data.backgroundImageId}`}
@@ -35,9 +54,12 @@ export async function TestimonialsSection({ content, settings }: SectionProps) {
             className="object-cover object-center opacity-10"
             sizes="100vw"
             unoptimized
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
           />
         </div>
-      )}
+      ) : null}
 
       <div className="relative z-10 mx-auto max-w-[1170px] px-5 sm:px-8">
         {/* ── Section header ──────────────────────────────── */}
