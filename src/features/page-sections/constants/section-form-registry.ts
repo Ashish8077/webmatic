@@ -23,7 +23,11 @@ import {
   testimonialsSettingsSchema,
 } from "../schemas/testimonials.schema";
 import { faqContentSchema } from "../schemas/faq.schema";
-import { contactCtaContentSchema } from "../schemas/contact-cta.schema";
+import {
+  contactInformationContentSchema,
+  contactInformationSettingsSchema,
+} from "../schemas/contact-information.schema";
+import { contactCtaContentSchema, contactCtaSettingsSchema } from "../schemas/contact-cta.schema";
 import { aboutHeroContentSchema } from "../schemas/about-hero.schema";
 import { servicesHeroContentSchema } from "../schemas/services-hero.schema";
 import { companyStatisticsContentSchema } from "../schemas/company-statistics.schema";
@@ -57,7 +61,13 @@ import {
   FaqContentForm,
   parseFaqContentDefaults,
   ContactCtaContentForm,
+  ContactCtaSettingsForm,
   parseContactCtaContentDefaults,
+  parseContactCtaSettingsDefaults,
+  ContactInformationContentForm,
+  ContactInformationSettingsForm,
+  parseContactInformationContentDefaults,
+  parseContactInformationSettingsDefaults,
 } from "../components/forms";
 
 import {
@@ -104,6 +114,7 @@ export const SECTION_CONTENT_SCHEMA_MAP: Record<PageSectionType, z.ZodTypeAny> =
     testimonials: testimonialsContentSchema,
     faq: faqContentSchema,
     "contact-cta": contactCtaContentSchema,
+    "contact-information": contactInformationContentSchema,
     "about-hero": aboutHeroContentSchema,
     "services-hero": servicesHeroContentSchema,
     "development-process": developmentProcessContentSchema,
@@ -125,6 +136,7 @@ export const SECTION_CONTENT_FORM_MAP: Record<
   testimonials: TestimonialsContentForm,
   faq: FaqContentForm,
   "contact-cta": ContactCtaContentForm,
+  "contact-information": ContactInformationContentForm,
   "about-hero": AboutHeroContentForm,
   "services-hero": ServicesHeroContentForm,
   "development-process": DevelopmentProcessContentForm,
@@ -146,6 +158,7 @@ export const SECTION_CONTENT_DEFAULTS_MAP: Record<
   testimonials: parseTestimonialsContentDefaults,
   faq: parseFaqContentDefaults,
   "contact-cta": parseContactCtaContentDefaults,
+  "contact-information": parseContactInformationContentDefaults,
   "about-hero": parseAboutHeroContentDefaults,
   "services-hero": parseServicesHeroContentDefaults,
   "development-process": parseDevelopmentProcessContentDefaults,
@@ -168,7 +181,8 @@ export const SECTION_SETTINGS_SCHEMA_MAP: Record<
   "why-choose-us": whyChooseUsSettingsSchema,
   testimonials: testimonialsSettingsSchema,
   faq: z.object({}),
-  "contact-cta": z.object({}),
+  "contact-cta": contactCtaSettingsSchema,
+  "contact-information": contactInformationSettingsSchema,
   "about-hero": z.object({}),
   "services-hero": z.object({}),
   "development-process": z.object({}),
@@ -189,7 +203,8 @@ export const SECTION_SETTINGS_FORM_MAP: Record<
   "why-choose-us": WhyChooseUsSettingsForm,
   testimonials: TestimonialsSettingsForm,
   faq: () => null,
-  "contact-cta": () => null,
+  "contact-cta": ContactCtaSettingsForm,
+  "contact-information": ContactInformationSettingsForm,
   "about-hero": () => null,
   "services-hero": () => null,
   "development-process": () => null,
@@ -210,7 +225,8 @@ export const SECTION_SETTINGS_DEFAULTS_MAP: Record<
   "why-choose-us": parseWhyChooseUsSettingsDefaults,
   testimonials: parseTestimonialsSettingsDefaults,
   faq: () => ({}),
-  "contact-cta": () => ({}),
+  "contact-cta": parseContactCtaSettingsDefaults,
+  "contact-information": parseContactInformationSettingsDefaults,
   "about-hero": () => ({}),
   "services-hero": () => ({}),
   "development-process": () => ({}),

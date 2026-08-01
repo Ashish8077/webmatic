@@ -131,7 +131,6 @@ export default async function ServiceDetailsPage({ params }: ServicePageProps) {
           submitButtonText={service.ctaButtonText || "Send Message"}
           backgroundVariant="slate"
           showCompanyField={true}
-          showServiceField={true}
           showMessageField={true}
         />
       </main>

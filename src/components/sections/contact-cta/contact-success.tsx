@@ -2,9 +2,10 @@ import { Button } from "@/components/ui/button";
 
 export interface ContactSuccessProps {
   onReset: () => void;
+  successMessage?: string;
 }
 
-export function ContactSuccess({ onReset }: ContactSuccessProps) {
+export function ContactSuccess({ onReset, successMessage }: ContactSuccessProps) {
   return (
     <div className="flex flex-col items-center justify-center text-center h-full">
       <div className="h-16 w-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
@@ -26,7 +27,7 @@ export function ContactSuccess({ onReset }: ContactSuccessProps) {
         Message Sent!
       </h3>
       <p className="text-[15px] text-slate-500 mb-6">
-        We will get back to you shortly.
+        {successMessage || "We will get back to you shortly."}
       </p>
       <Button
         variant="primary"

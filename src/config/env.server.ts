@@ -22,6 +22,20 @@ const envSchema = z.object({
   JWT_REFRESH_EXPIRES_IN: z.string().min(1),
   REFRESH_TOKEN_DAYS: z.coerce.number(),
   NODE_ENV: z.enum(["development", "production"]),
+
+  SMTP_HOST: z.string().default(""),
+  SMTP_PORT: z.coerce.number().default(587),
+  SMTP_USER: z.string().default(""),
+  SMTP_PASSWORD: z.string().default(""),
+  SMTP_FROM: z.string().default(""),
+  EMAIL_FROM_NAME: z.string().min(1).default("System"),
+  EMAIL_REPLY_TO: z.string().optional(),
+  ADMIN_EMAIL: z.string().default(""),
+
+  RECAPTCHA_SECRET_KEY: z.string().default(""),
+
+  RATE_LIMIT_WINDOW_MS: z.coerce.number().default(900000),
+  RATE_LIMIT_MAX_REQUESTS: z.coerce.number().default(5),
 });
 
 export const env = envSchema.parse(process.env);

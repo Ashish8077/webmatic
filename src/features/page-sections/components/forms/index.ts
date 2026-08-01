@@ -12,3 +12,4 @@ export * from "./company-overview-form";
 export * from "./core-values-form";
 export * from "./mission-vision-form";
 export * from "./team-members-form";
+export * from "./contact-information-form";

@@ -32,6 +32,8 @@ export const PERMISSIONS = {
   SEO_MANAGE: "seo.manage",
 
   LEAD_VIEW: "lead.view",
+  LEAD_UPDATE: "lead.update",
+  LEAD_DELETE: "lead.delete",
   LEAD_EXPORT: "lead.export",
 
   USER_CREATE: "user.create",

@@ -2,10 +2,9 @@ import { z } from "zod";
 import { SECTION_STATUS } from "@/modules/pages-section/constants/page-section.constants";
 
 import { nonNegativeInt } from "@/shared/utils/validators/zod-helpers";
-import { HOME_SECTION_TYPES } from "@/modules/home/constants/home-section-types";
-
+import { PAGE_SECTION_TYPES } from "@/modules/pages-section/constants/page-section-types";
 // Page section type schema with custom error messages
-export const pageSectionTypeSchema = z.enum(HOME_SECTION_TYPES, {
+export const pageSectionTypeSchema = z.enum(PAGE_SECTION_TYPES, {
   error: (issue) => {
     if (issue.input === undefined) {
       return "Section type is required.";

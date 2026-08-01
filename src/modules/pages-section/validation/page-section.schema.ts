@@ -1,4 +1,4 @@
-import { HOME_SECTION_TYPES } from "@/modules/home/constants/home-section-types";
+import { PAGE_SECTION_TYPES } from "@/modules/pages-section/constants/page-section-types";
 import { z } from "zod";
 
 export const jsonObjectSchema = z
@@ -12,7 +12,7 @@ export const optionalJsonObjectSchema = z
   .nullable()
   .optional();
 
-export const pageSectionTypeSchema = z.enum(HOME_SECTION_TYPES);
+export const pageSectionTypeSchema = z.enum(PAGE_SECTION_TYPES);
 
 export const pageSectionStatusSchema = z.enum(["draft", "published"]);
 
