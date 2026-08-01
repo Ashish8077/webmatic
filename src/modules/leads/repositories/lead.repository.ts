@@ -217,5 +217,50 @@ export const leadRepository: LeadRepository = {
       [id]
     );
     return Number(rows[0].total) > 0;
+  },
+
+  async findBatchForExport(lastId: number, limit: number, filters: Omit<LeadFilters, "page" | "limit">): Promise<LeadRow[]> {
+    const { search, status, fromDate, toDate } = filters;
+    const where: string[] = ["deleted_at IS NULL", "id > ?"];
+    const params: (string | number)[] = [lastId];
+
+    if (search) {
+      where.push("(name LIKE ? OR email LIKE ? OR company LIKE ? OR phone LIKE ?)");
+      const searchParam = `%${search}%`;
+      params.push(searchParam, searchParam, searchParam, searchParam);
+    }
+
+    if (status) {
+      where.push("status = ?");
+      params.push(status);
+    }
+
+    if (filters.assignedTo) {
+      where.push("assigned_to = ?");
+      params.push(filters.assignedTo);
+    }
+
+    if (fromDate) {
+      where.push("created_at >= ?");
+      params.push(fromDate);
+    }
+
+    if (toDate) {
+      where.push("created_at <= ?");
+      params.push(toDate);
+    }
+
+    const [rows] = await db.query<LeadRow[]>(
+      `
+      SELECT *
+      FROM leads
+      WHERE ${where.join(" AND ")}
+      ORDER BY id ASC
+      LIMIT ?
+      `,
+      [...params, limit]
+    );
+
+    return rows;
   }
 };

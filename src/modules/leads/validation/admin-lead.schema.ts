@@ -21,11 +21,12 @@ export const leadIdParamSchema = z.object({
 
 export type LeadIdParamSchemaData = z.infer<typeof leadIdParamSchema>;
 
-export const updateLeadSchema = z.object({
+export const updateLeadCommandSchema = z.object({
   status: z.enum([LEAD_STATUS.NEW, LEAD_STATUS.IN_PROGRESS, LEAD_STATUS.CONTACTED, LEAD_STATUS.CLOSED, LEAD_STATUS.SPAM]).optional(),
   assignedTo: z.number().int().positive().nullable().optional(),
+  lastUpdatedAt: z.iso.datetime(),
 }).refine(data => data.status !== undefined || data.assignedTo !== undefined, {
   message: "At least one field (status or assignedTo) must be provided to update",
 });
 
-export type UpdateLeadSchemaData = z.infer<typeof updateLeadSchema>;
+export type UpdateLeadCommandData = z.infer<typeof updateLeadCommandSchema>;

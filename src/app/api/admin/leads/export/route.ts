@@ -4,7 +4,6 @@ import { validate } from "@/shared/utils/validators/validation";
 import { getLeadsQuerySchema } from "@/modules/leads/validation/admin-lead.schema";
 import { exportLeadsService } from "@/modules/leads/services/export-leads.service";
 import { handleApiError } from "@/shared/utils/http/handle-api-error";
-import { AppError } from "@/shared/utils/errors/app-error";
 
 export async function GET(request: Request): Promise<NextResponse> {
   try {
@@ -15,11 +14,15 @@ export async function GET(request: Request): Promise<NextResponse> {
 
     const filters = validate(getLeadsQuerySchema, queryParams);
 
-    const csvData = await exportLeadsService(filters, user);
-    const dateStr = new Date().toISOString().split("T")[0];
-    const filename = `leads_export_${dateStr}.csv`;
+    const stream = exportLeadsService(filters, user);
+    
+    // leads-export-YYYY-MM-DD-HHMMSS.csv
+    const now = new Date();
+    const dateStr = now.toISOString().split("T")[0];
+    const timeStr = now.toTimeString().split(" ")[0].replace(/:/g, "");
+    const filename = `leads-export-${dateStr}-${timeStr}.csv`;
 
-    return new NextResponse(csvData, {
+    return new NextResponse(stream, {
       status: 200,
       headers: {
         "Content-Type": "text/csv; charset=utf-8",

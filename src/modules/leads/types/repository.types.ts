@@ -93,4 +93,5 @@ export interface LeadRepository {
   softDelete(id: number): Promise<number>;
   count(filters: Omit<LeadFilters, "page" | "limit">): Promise<number>;
   exists(id: number): Promise<boolean>;
+  findBatchForExport(lastId: number, limit: number, filters: Omit<LeadFilters, "page" | "limit">): Promise<LeadRow[]>;
 }

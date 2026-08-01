@@ -1,20 +1,13 @@
 import { leadRepository } from "../repositories/lead.repository";
-import { UpdateLeadSchemaData } from "../validation/admin-lead.schema";
+import { UpdateLeadCommandData } from "../validation/admin-lead.schema";
 import { AppError } from "@/shared/utils/errors/app-error";
-import { LEAD_STATUS, LeadStatus } from "../constants/lead.constants";
+import { LEAD_STATUS } from "../constants/lead.constants";
 import { AuthUser } from "@/modules/auth/types/auth-user";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
+import { validateStatusTransition } from "./lead-transition.service";
 
-const VALID_TRANSITIONS: Record<LeadStatus, LeadStatus[]> = {
-  [LEAD_STATUS.NEW]: [LEAD_STATUS.IN_PROGRESS, LEAD_STATUS.CONTACTED, LEAD_STATUS.CLOSED, LEAD_STATUS.SPAM],
-  [LEAD_STATUS.IN_PROGRESS]: [LEAD_STATUS.CONTACTED, LEAD_STATUS.CLOSED, LEAD_STATUS.SPAM],
-  [LEAD_STATUS.CONTACTED]: [LEAD_STATUS.IN_PROGRESS, LEAD_STATUS.CLOSED],
-  [LEAD_STATUS.CLOSED]: [LEAD_STATUS.IN_PROGRESS], // Re-open
-  [LEAD_STATUS.SPAM]: [LEAD_STATUS.NEW], // Unmark spam
-};
-
-export async function updateLeadService(id: number, updateLeadData: UpdateLeadSchemaData, user: AuthUser): Promise<void> {
+export async function updateLeadService(id: number, updateLeadData: UpdateLeadCommandData, user: AuthUser): Promise<void> {
   requirePermission(user, PERMISSIONS.LEAD_UPDATE);
 
   const currentLead = await leadRepository.findById(id);
@@ -23,16 +16,13 @@ export async function updateLeadService(id: number, updateLeadData: UpdateLeadSc
     throw new AppError("Lead not found", 404, undefined, "NOT_FOUND");
   }
 
+  // Optimistic concurrency check
+  if (currentLead.updated_at.toISOString() !== updateLeadData.lastUpdatedAt) {
+    throw new AppError("Lead has been modified by another user since it was last fetched. Please refresh and try again.", 409, undefined, "CONFLICT");
+  }
+
   if (updateLeadData.status && updateLeadData.status !== currentLead.status) {
-    const allowedNextStates = VALID_TRANSITIONS[currentLead.status];
-    if (!allowedNextStates.includes(updateLeadData.status)) {
-      throw new AppError(
-        `Invalid status transition from '${currentLead.status}' to '${updateLeadData.status}'`,
-        400,
-        undefined,
-        "INVALID_STATE_TRANSITION"
-      );
-    }
+    validateStatusTransition(currentLead.status, updateLeadData.status);
 
     const resolvedBy = updateLeadData.status === LEAD_STATUS.CLOSED ? user.userId : null;
     await leadRepository.updateStatus(id, updateLeadData.status, user.userId, resolvedBy);
