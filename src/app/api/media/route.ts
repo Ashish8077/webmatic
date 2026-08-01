@@ -23,7 +23,6 @@ export async function POST(req: Request): Promise<NextResponse> {
     const folderRaw = formData.get("folder");
     const folder = typeof folderRaw === "string" ? folderRaw : null;
 
-    console.log(file, folder);
 
     if (!file || !(file instanceof File)) {
       throw new InvalidMediaTypeError("No valid file uploaded");

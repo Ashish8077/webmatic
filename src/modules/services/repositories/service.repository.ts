@@ -545,7 +545,6 @@ export async function updateService(
 
   values.push(serviceId);
 
-  console.log(updates, values);
 
   const [result] = await db.execute<ResultSetHeader>(
     `

@@ -66,7 +66,6 @@ export function HeroSlider({ content, settings }: SectionProps) {
   const slide = slides[current];
   const backgroundUrl = getMediaUrl(slide.backgroundImage);
 
-  console.log(parsedSettings.showPagination);
 
   return (
     <section className="relative h-[calc(100vh-104px)] min-h-[500px] overflow-hidden bg-gradient-to-b from-[#f3f4f8] to-[#c7eef0] flex flex-col">
