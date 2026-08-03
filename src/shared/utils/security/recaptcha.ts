@@ -43,7 +43,7 @@ export async function verifyRecaptcha(token: string): Promise<void> {
   } catch (error) {
     clearTimeout(timeoutId);
     
-    if (error instanceof RecaptchaVerificationError) {
+    if (error instanceof Error && error.name === "RecaptchaVerificationError") {
       throw error;
     }
     
