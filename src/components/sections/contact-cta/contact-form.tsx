@@ -16,7 +16,10 @@ export interface ContactFormProps {
   submitButtonText?: string;
   showCompanyField?: boolean;
   showMessageField?: boolean;
-  onSuccess: () => void;
+  successMessage?: string;
+  errorMessage?: string;
+  privacyText?: string;
+  onSuccess?: () => void;
   onSubmitProp?: (data: ContactFormData) => Promise<void>;
 }
 
@@ -24,6 +27,9 @@ export function ContactForm({
   submitButtonText = "Send",
   showCompanyField = false,
   showMessageField = true,
+  successMessage = "Thank you! We have received your message and will get back to you shortly.",
+  errorMessage = CONTACT_ERROR_MESSAGES.UNEXPECTED,
+  privacyText,
   onSuccess,
   onSubmitProp,
 }: ContactFormProps) {
@@ -77,7 +83,7 @@ export function ContactForm({
         await mutateAsync(payload);
         reset(); // reset RHF
       }
-      onSuccess();
+      onSuccess?.();
     } catch (err) {
       console.error("Failed to submit contact form", err);
     }
@@ -104,13 +110,13 @@ export function ContactForm({
           aria-live="polite"
           className="p-4 bg-green-50 text-green-700 text-[14px] font-medium border border-green-200 rounded-lg outline-none focus:ring-2 focus:ring-green-500"
         >
-          Thank you! We have received your message and will get back to you shortly.
+          {successMessage}
         </div>
       )}
 
       {isError && (
         <div aria-live="polite" className="p-3 bg-red-50 text-red-600 text-[14px] font-medium border border-red-100 rounded-lg">
-          {error?.message || CONTACT_ERROR_MESSAGES.UNEXPECTED}
+          {error?.message || errorMessage}
         </div>
       )}
 
@@ -229,6 +235,12 @@ export function ContactForm({
               {errors.message.message}
             </p>
           )}
+        </div>
+      )}
+
+      {privacyText && (
+        <div className="text-[13px] text-gray-500 mt-4 leading-relaxed">
+          {privacyText}
         </div>
       )}
 

@@ -2,13 +2,14 @@
 
 import { useFormContext } from "react-hook-form";
 import type { JsonObject } from "@/shared/types/json";
+import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
   DEFAULT_CONTACT_INFORMATION_CONTENT,
   type ContactInformationContentValues,
   DEFAULT_CONTACT_INFORMATION_SETTINGS,
   type ContactInformationSettingsValues,
 } from "../../schemas/contact-information.schema";
-import { TextField, SwitchField } from "../fields";
+import { TextField, SwitchField, TextareaField, VisualPickerField } from "../fields";
 import { RepeaterField } from "../fields/repeater-field";
 import { SettingsForm } from "./settings-form";
 
@@ -16,11 +17,22 @@ export function parseContactInformationContentDefaults(
   content: JsonObject | undefined | null,
 ): ContactInformationContentValues {
   const raw = (content ?? {}) as unknown as Partial<ContactInformationContentValues>;
-  return {
+  const parsed = {
     items: Array.isArray(raw.items)
-      ? raw.items
+      ? raw.items.map(item => ({
+          title: item.title ?? "",
+          value: item.value ?? "",
+          visualType: item.visualType ?? "none",
+          iconName: item.iconName ?? null,
+          imageId: typeof item.imageId === "number" ? item.imageId : null,
+          image: item.image ?? null,
+          href: item.href ?? "",
+          openInNewTab: item.openInNewTab ?? false,
+          sortOrder: item.sortOrder ?? 0,
+        }))
       : DEFAULT_CONTACT_INFORMATION_CONTENT.items,
   };
+  return hydrateMediaRelations((content ?? {}) as JsonObject, parsed);
 }
 
 export function parseContactInformationSettingsDefaults(
@@ -45,35 +57,23 @@ export function ContactInformationContentForm({ disabled }: { disabled?: boolean
         label="Contact Information Items"
         disabled={disabled}
         defaultItem={{
-          label: "",
+          title: "",
           value: "",
-          icon: { type: "lucide", value: "MapPin" },
+          visualType: "none",
+          iconName: null,
+          imageId: null,
+          image: null,
           href: "",
           openInNewTab: false,
-          order: 0, // In standard implementation, order is managed by the repeater or backend, but we'll include it here
+          sortOrder: 0,
         }}
         renderItem={(index) => (
           <div className="space-y-4">
             <div className="grid gap-3 sm:grid-cols-2">
               <TextField
-                name={`content.items.${index}.label`}
-                label="Label"
+                name={`content.items.${index}.title`}
+                label="Title"
                 placeholder="e.g. Office, Phone, Email"
-                disabled={disabled}
-              />
-              <TextField
-                name={`content.items.${index}.value`}
-                label="Value"
-                placeholder="e.g. 123 Main St, +1 234 567 8900"
-                disabled={disabled}
-              />
-            </div>
-            
-            <div className="grid gap-3 sm:grid-cols-2">
-              <TextField
-                name={`content.items.${index}.icon.value`}
-                label="Icon Name (Lucide)"
-                placeholder="e.g. MapPin, Phone, Mail"
                 disabled={disabled}
               />
               <TextField
@@ -84,11 +84,35 @@ export function ContactInformationContentForm({ disabled }: { disabled?: boolean
               />
             </div>
 
-            <SwitchField
-              name={`content.items.${index}.openInNewTab`}
-              label="Open in new tab"
+            <TextareaField
+              name={`content.items.${index}.value`}
+              label="Value"
+              placeholder="e.g. 123 Main St, +1 234 567 8900"
               disabled={disabled}
             />
+            
+            <VisualPickerField
+              name={`content.items.${index}`}
+              label="Contact Icon/Image"
+              description="Select an icon or image for this contact method."
+            />
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <TextField
+                name={`content.items.${index}.sortOrder`}
+                label="Sort Order"
+                type="number"
+                placeholder="0"
+                disabled={disabled}
+              />
+              <div className="pt-8">
+                <SwitchField
+                  name={`content.items.${index}.openInNewTab`}
+                  label="Open in new tab"
+                  disabled={disabled}
+                />
+              </div>
+            </div>
           </div>
         )}
       />

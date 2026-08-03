@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { findPublishedPageBySlug } from "@/modules/pages/repositories/page.repository";
 import { findPageActiveSectionsByPageId } from "@/modules/pages-section/repositories/page-section.repository";
@@ -8,13 +9,19 @@ import type { PageSectionType } from "@/modules/pages-section/constants/page-sec
 
 export const revalidate = 60;
 
-export async function generateMetadata(): Promise<Metadata> {
-  const page = await findPublishedPageBySlug("contact");
+interface PageProps {
+  params: Promise<{
+    slug: string;
+  }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const page = await findPublishedPageBySlug(slug);
 
   if (!page) {
     return {
-      title: "Contact Us",
-      description: "Get in touch with us.",
+      title: "Page Not Found",
     };
   }
 
@@ -31,30 +38,12 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function ContactPage() {
-  const page = await findPublishedPageBySlug("contact");
+export default async function DynamicPage({ params }: PageProps) {
+  const { slug } = await params;
+  const page = await findPublishedPageBySlug(slug);
 
   if (!page) {
-    return (
-      <main className="min-h-screen flex flex-col items-center justify-center px-4 text-center">
-        <div className="relative">
-          <div
-            className="absolute inset-0 blur-3xl opacity-20 pointer-events-none"
-            aria-hidden="true"
-            style={{
-              background:
-                "radial-gradient(circle, #6366f1 0%, transparent 70%)",
-            }}
-          />
-          <h1 className="relative text-5xl sm:text-6xl font-extrabold gradient-text mb-4">
-            Contact Us Coming Soon
-          </h1>
-          <p className="relative text-muted-foreground text-lg">
-            Please create a page with slug &quot;contact&quot; in the CMS.
-          </p>
-        </div>
-      </main>
-    );
+    notFound();
   }
 
   const sectionRows = await findPageActiveSectionsByPageId(page.id);

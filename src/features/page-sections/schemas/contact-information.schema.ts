@@ -1,18 +1,17 @@
 import { z } from "zod";
 import { requiredString, optionalString } from "./common.schema";
-
-const iconSchema = z.object({
-  type: requiredString("Icon Type"),
-  value: requiredString("Icon Value"),
-});
+import { visualAssetSchema } from "@/shared/schemas/visual-asset.schema";
 
 const contactInfoItemSchema = z.object({
-  label: requiredString("Label"),
+  title: requiredString("Title"),
   value: requiredString("Value"),
-  icon: iconSchema,
+  visualType: visualAssetSchema.shape.visualType,
+  iconName: visualAssetSchema.shape.iconName,
+  imageId: visualAssetSchema.shape.imageId,
+  image: z.any().nullable().optional(),
   href: optionalString(),
   openInNewTab: z.boolean().default(false),
-  order: z.number().int().default(0),
+  sortOrder: z.number().int().default(0),
 });
 
 export const contactInformationContentSchema = z.object({
@@ -24,12 +23,14 @@ export type ContactInformationContentValues = z.infer<typeof contactInformationC
 export const DEFAULT_CONTACT_INFORMATION_CONTENT: ContactInformationContentValues = {
   items: [
     {
-      label: "",
+      title: "",
       value: "",
-      icon: { type: "lucide", value: "MapPin" },
+      visualType: "icon",
+      iconName: "MapPin",
+      imageId: null,
       href: "",
       openInNewTab: false,
-      order: 0,
+      sortOrder: 0,
     },
   ],
 };
