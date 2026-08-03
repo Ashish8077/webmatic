@@ -1,31 +1,22 @@
 "use client";
 
-import Link from "next/link";
-import { desktopLinkClass } from "./styles";
-import { usePathname } from "next/navigation";
-import { NAV_LINKS } from "./nav-links";
+import { NavigationItem } from "./navigation-item";
+import { MenuNode } from "@/modules/menus/types/menu.types";
 
-export function DesktopNavigation() {
-  const pathname = usePathname();
+interface DesktopNavigationProps {
+  navLinks: MenuNode[];
+}
+
+export function DesktopNavigation({ navLinks }: DesktopNavigationProps) {
   return (
     <>
       <nav
         className="hidden md:flex items-center gap-1"
         aria-label="Main navigation"
       >
-        {NAV_LINKS.map(({ label, href }) => {
-          const isActive = pathname === href;
-
-          return (
-            <Link
-              key={label}
-              href={href}
-              className={desktopLinkClass(isActive)}
-            >
-              {label}
-            </Link>
-          );
-        })}
+        {navLinks.map((node) => (
+          <NavigationItem key={node.id} node={node} />
+        ))}
       </nav>
     </>
   );

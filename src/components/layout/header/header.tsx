@@ -9,7 +9,13 @@ import { DesktopNavigation } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
 import useHeader from "./use-header";
 
-const Header = () => {
+import { MenuNode } from "@/modules/menus/types/menu.types";
+
+interface HeaderProps {
+  navLinks: MenuNode[];
+}
+
+const Header = ({ navLinks = [] }: HeaderProps) => {
  
 
   const { menuOpen, setMenuOpen, scrolled, visible } = useHeader();
@@ -34,7 +40,7 @@ const Header = () => {
           <Logo />
 
           {/* Desktop nav */}
-          <DesktopNavigation />
+          <DesktopNavigation navLinks={navLinks} />
 
           {/* Desktop CTA */}
           <Link
@@ -59,6 +65,7 @@ const Header = () => {
       <MobileNavigation
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
+        navLinks={navLinks}
       />
     </header>
   );

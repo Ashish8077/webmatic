@@ -27,6 +27,7 @@ export function TextareaField({
   return (
     <Textarea
       {...field}
+      value={field.value ?? ""}
       label={label}
       placeholder={placeholder}
       disabled={disabled}

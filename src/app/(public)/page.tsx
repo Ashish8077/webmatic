@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { getHomePageData } from "@/modules/home/services/get-home-page";
 import { SectionRenderer } from "@/components/home/section-renderer";
-import { Header } from "@/components/layout/header";
 
 /**
  * ISR: revalidate the page every 60 seconds so content changes in the CMS
@@ -67,7 +66,6 @@ export default async function HomePage() {
 
   return (
     <>
-      <Header />
       <main className="pt-[104px]">
         {data.sections.map((section) => (
           <SectionRenderer key={section.id} section={section} />

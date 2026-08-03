@@ -9,6 +9,8 @@ import { seedSystemPages } from "./seeds/system-pages.seed";
 import { seedTestUsers } from "./seeds/test-users.seed";
 import { seedUserRoles } from "./seeds/user-roles.seed";
 import { seedServices } from "./seeds/services.seed";
+import { seedMenus } from "./seeds/menus.seed";
+import { seedSiteSettings } from "./seeds/site-settings.seed";
 
 async function seedDatabase() {
   try {
@@ -81,6 +83,16 @@ async function seedDatabase() {
      * Seed services.
      */
     await seedServices();
+
+    /**
+     * Seed menus.
+     */
+    await seedMenus();
+
+    /**
+     * Seed site settings (global configurations).
+     */
+    await seedSiteSettings();
 
     console.log("\nDatabase seeding completed successfully");
   } catch (error) {

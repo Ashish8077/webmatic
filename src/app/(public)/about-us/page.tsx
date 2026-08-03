@@ -3,7 +3,6 @@ import { findPublishedPageBySlug } from "@/modules/pages/repositories/page.repos
 import { findPageActiveSectionsByPageId } from "@/modules/pages-section/repositories/page-section.repository";
 import { hydrateJsonMedia } from "@/modules/media/services/hydrate-json-media.service";
 import { SectionRenderer } from "@/components/home/section-renderer";
-import { Header } from "@/components/layout/header";
 
 export const revalidate = 60;
 
@@ -73,7 +72,6 @@ export default async function AboutUsPage() {
 
   return (
     <>
-      <Header />
       <main className="pt-[104px]">
         {sections.map((section) => (
           <SectionRenderer key={section.id} section={section as unknown as React.ComponentProps<typeof SectionRenderer>["section"]} />

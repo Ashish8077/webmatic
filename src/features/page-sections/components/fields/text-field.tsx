@@ -27,6 +27,7 @@ export function TextField({
   return (
     <Input
       {...field}
+      value={field.value ?? ""}
       type={type}
       label={label}
       placeholder={placeholder}
