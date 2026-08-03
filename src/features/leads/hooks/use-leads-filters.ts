@@ -1,7 +1,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { GetLeadsQuerySchemaData } from "@/modules/leads/validation/admin-lead.schema";
-import { LEAD_STATUS } from "@/modules/leads/constants/lead.constants";
+import { LeadStatus } from "@/modules/leads/constants/lead.constants";
 
 export function useLeadsFilters() {
   const router = useRouter();
@@ -14,9 +14,9 @@ export function useLeadsFilters() {
       page: Number(searchParams.get("page")) || 1,
       limit: Number(searchParams.get("limit")) || 10,
       search: searchParams.get("search") || undefined,
-      status: (searchParams.get("status") as any) || undefined,
+      status: (searchParams.get("status") as LeadStatus) || undefined,
       assignedTo: searchParams.get("assignedTo") ? Number(searchParams.get("assignedTo")) : undefined,
-      sortBy: (searchParams.get("sortBy") as any) || "created_at",
+      sortBy: (searchParams.get("sortBy") as GetLeadsQuerySchemaData["sortBy"]) || "created_at",
       sortOrder: (searchParams.get("sortOrder") as "asc" | "desc") || "desc",
       fromDate: searchParams.get("fromDate") || undefined,
       toDate: searchParams.get("toDate") || undefined,

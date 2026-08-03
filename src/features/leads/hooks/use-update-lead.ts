@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateLead } from "../api/update-lead";
-import { LEAD_STATUS } from "@/modules/leads/constants/lead.constants";
+import { LEAD_STATUS, LeadStatus } from "@/modules/leads/constants/lead.constants";
 import { toast } from "sonner";
+import { LeadDetailsResponse, LeadListResponse, LeadListItem } from "@/modules/leads/types/lead.types";
 
 export function useUpdateLead() {
   const queryClient = useQueryClient();
@@ -11,8 +12,7 @@ export function useUpdateLead() {
     
     // Conditional optimistic update
     onMutate: async ({ id, data }) => {
-      // Only do optimistic updates for safe transitions
-      const isSafeTransition = data.status && [LEAD_STATUS.IN_PROGRESS, LEAD_STATUS.CONTACTED].includes(data.status as any);
+      const isSafeTransition = data.status && ([LEAD_STATUS.IN_PROGRESS, LEAD_STATUS.CONTACTED] as LeadStatus[]).includes(data.status as LeadStatus);
       
       if (!isSafeTransition) return;
       
@@ -23,12 +23,12 @@ export function useUpdateLead() {
       const previousLead = queryClient.getQueryData(["admin-lead", id]);
       
       if (data.status) {
-        queryClient.setQueryData(["admin-lead", id], (old: any) => {
+        queryClient.setQueryData(["admin-lead", id], (old: { data?: LeadDetailsResponse } | undefined) => {
           if (!old?.data) return old;
           return { ...old, data: { ...old.data, status: data.status } };
         });
         
-        queryClient.setQueryData(["admin-leads"], (old: any) => {
+        queryClient.setQueryData(["admin-leads"], (old: { data?: LeadListResponse } | undefined) => {
            // We might have a complex paginated shape depending on how we cache
            // assuming structure: { data: { items: [...] } }
            if (!old?.data?.items) return old;
@@ -36,7 +36,7 @@ export function useUpdateLead() {
              ...old,
              data: {
                ...old.data,
-               items: old.data.items.map((lead: any) => 
+               items: old.data.items.map((lead: LeadListItem) => 
                  lead.id === id ? { ...lead, status: data.status } : lead
                )
              }
@@ -46,7 +46,7 @@ export function useUpdateLead() {
       
       return { previousLeads, previousLead };
     },
-    onError: (error: any, variables, context) => {
+    onError: (error: Error, variables, context) => {
       if (context?.previousLeads) {
         queryClient.setQueryData(["admin-leads"], context.previousLeads);
       }

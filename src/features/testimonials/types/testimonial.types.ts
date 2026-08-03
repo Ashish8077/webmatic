@@ -1,5 +1,6 @@
 import { BaseResponse } from "@/shared/types/api.types";
 import { PaginationMeta } from "@/shared/types/pagination";
+import { Media } from "@/modules/media/types/media.types";
 
 export type TestimonialStatus = "draft" | "published";
 
@@ -45,7 +46,7 @@ export interface Testimonial {
   designation: string | null;
   companyName: string | null;
   profileImageId: number | null;
-  profileImage?: any;
+  profileImage?: Media;
   title: string | null;
   description: string;
   rating: number;

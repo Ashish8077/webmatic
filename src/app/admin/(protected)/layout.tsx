@@ -7,6 +7,8 @@ import { Topbar } from "@/components/layout/topbar";
 import { ToastContainer } from "@/components/ui/toast";
 import { useCurrentUser } from "@/features/auth/hooks/use-current-user";
 
+import { AUTH_ROUTES } from "@/modules/auth/constants/routes";
+
 function DashboardShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
@@ -14,7 +16,7 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!isLoading && isError) {
-      router.replace("/login");
+      router.replace(AUTH_ROUTES.LOGIN);
     }
   }, [isLoading, isError, router]);
 

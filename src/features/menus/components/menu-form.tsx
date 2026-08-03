@@ -37,7 +37,7 @@ export function MenuForm({ initialData, onSuccess, onCancel }: MenuFormProps) {
       
       showToast(`Menu ${initialData ? "updated" : "created"} successfully`, "success");
       onSuccess();
-    } catch (error) {
+    } catch {
       showToast("An error occurred", "error");
     } finally {
       setIsSubmitting(false);

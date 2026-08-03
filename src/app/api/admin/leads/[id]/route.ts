@@ -8,7 +8,6 @@ import { deleteLeadService } from "@/modules/leads/services/delete-lead.service"
 import { successResponse } from "@/shared/utils/http/success-response";
 import { handleApiError } from "@/shared/utils/http/handle-api-error";
 import { IdRouteParams } from "@/shared/types/route-params";
-import { AppError } from "@/shared/utils/errors/app-error";
 
 export async function GET(
   request: Request,

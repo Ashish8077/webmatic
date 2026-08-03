@@ -15,9 +15,9 @@ export interface MenuItemRow extends RowDataPacket {
   url: string | null;
   target: string | null;
   rel: string | null;
-  icon: any; // JSON
+  icon: unknown; // JSON
   description: string | null;
-  settings: any; // JSON
+  settings: unknown; // JSON
   sort_order: number;
   is_active: boolean;
   created_by: number | null;
@@ -90,6 +90,7 @@ export const menuItemRepository = {
 
   async update(id: number, data: UpdateMenuItemDTO, adminId: number): Promise<MenuItem | null> {
     const updates: string[] = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const params: any[] = [];
 
     if (data.title !== undefined) { updates.push("title = ?"); params.push(data.title); }

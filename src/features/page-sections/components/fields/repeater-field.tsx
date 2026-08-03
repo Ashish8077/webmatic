@@ -42,8 +42,13 @@ export function RepeaterField<T extends FieldValues>({
   const canAdd = max === undefined || fields.length < max;
   
   // Extract array-level error (e.g. from `.max(3)`)
-  const arrayError = name.split(".").reduce((acc: any, part) => acc?.[part], formState.errors);
-  const errorMessage = arrayError?.message as string | undefined;
+  const arrayError = name.split(".").reduce((acc: unknown, part) => {
+    if (acc && typeof acc === "object") {
+      return (acc as Record<string, unknown>)[part];
+    }
+    return undefined;
+  }, formState.errors);
+  const errorMessage = (arrayError as { message?: string })?.message;
 
   return (
     <fieldset className="space-y-3">

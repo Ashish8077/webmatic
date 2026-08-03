@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormContext } from "react-hook-form";
+
 import type { JsonObject } from "@/shared/types/json";
 import { hydrateMediaRelations } from "../../utils/media-utils";
 import {
@@ -48,8 +48,6 @@ export function parseContactInformationSettingsDefaults(
 }
 
 export function ContactInformationContentForm({ disabled }: { disabled?: boolean }) {
-  const form = useFormContext<ContactInformationContentValues>();
-
   return (
     <div className="space-y-5">
       <RepeaterField

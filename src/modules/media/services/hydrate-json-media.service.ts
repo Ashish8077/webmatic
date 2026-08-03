@@ -1,4 +1,4 @@
-import { JsonObject } from "@/shared/types/json";
+
 import { findMediaById } from "../repositories/media.repository";
 import { StorageFactory } from "@/shared/storage/storage-factory";
 
@@ -10,7 +10,7 @@ import { StorageFactory } from "@/shared/storage/storage-factory";
  * Note: This implementation fetches sequentially/concurrently. For a huge tree,
  * a batch fetch is better, but since sections are small, Promise.all is fine.
  */
-export async function hydrateJsonMedia(content: any): Promise<any> {
+export async function hydrateJsonMedia(content: unknown): Promise<unknown> {
   if (!content || typeof content !== "object") {
     return content;
   }
@@ -19,7 +19,7 @@ export async function hydrateJsonMedia(content: any): Promise<any> {
     return Promise.all(content.map(item => hydrateJsonMedia(item)));
   }
 
-  const result = { ...content };
+  const result = { ...content } as Record<string, unknown>;
   const storage = StorageFactory.create();
   const keys = Object.keys(result);
 
@@ -52,7 +52,7 @@ export async function hydrateJsonMedia(content: any): Promise<any> {
               url: storage.getUrl(media.storagePath)
             };
           }
-        } catch (e) {
+        } catch {
           // Ignore fetch errors for missing media
         }
       }

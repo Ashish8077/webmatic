@@ -5,6 +5,7 @@ import { findPageActiveSectionsByPageId } from "@/modules/pages-section/reposito
 import { hydrateJsonMedia } from "@/modules/media/services/hydrate-json-media.service";
 import { SectionRenderer } from "@/components/home/section-renderer";
 import type { PageSectionType } from "@/modules/pages-section/constants/page-section-types";
+import type { HomeSectionData } from "@/modules/home/types/home.types";
 
 export const revalidate = 60;
 
@@ -63,7 +64,7 @@ export default async function DynamicPage({ params }: PageProps) {
     <>
       <main className="pt-[104px]">
         {sections.map((section) => (
-          <SectionRenderer key={section.id} section={section as any} />
+          <SectionRenderer key={section.id} section={section as unknown as HomeSectionData} />
         ))}
       </main>
     </>

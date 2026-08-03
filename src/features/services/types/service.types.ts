@@ -2,6 +2,7 @@ import { BaseResponse } from "@/shared/types/api.types";
 import { JsonObject } from "@/shared/types/json";
 import { PaginationMeta } from "@/shared/types/pagination";
 import { VisualType } from "@/shared/types/visual-asset.types";
+import { Media } from "@/features/media/types";
 
 export type ServiceStatus = "draft" | "published";
 
@@ -10,7 +11,7 @@ export interface ServiceBenefit {
   visualType: VisualType;
   iconName?: string | null;
   imageId?: number | null;
-  image?: any;
+  image?: Media;
 }
 
 export interface CreateServiceRequest {
@@ -86,14 +87,14 @@ export interface Service {
   description: string | null;
   
   featuredImageId: number | null;
-  featuredImage?: any;
+  featuredImage?: Media;
   bannerImageId: number | null;
-  bannerImage?: any;
+  bannerImage?: Media;
 
   visualType: "none" | "icon" | "image";
   iconName: string | null;
   imageId: number | null;
-  image?: any;
+  image?: Media;
 
   keyFeatures: string[] | null;
   benefits: ServiceBenefit[] | null;
@@ -112,12 +113,12 @@ export interface Service {
   openGraphTitle: string | null;
   openGraphDescription: string | null;
   openGraphImageId: number | null;
-  openGraphImage?: any;
+  openGraphImage?: Media;
 
   twitterTitle: string | null;
   twitterDescription: string | null;
   twitterImageId: number | null;
-  twitterImage?: any;
+  twitterImage?: Media;
 
   schemaMarkup: JsonObject | null;
 

@@ -5,7 +5,6 @@ import { getLeadsQuerySchema } from "@/modules/leads/validation/admin-lead.schem
 import { getLeadsService } from "@/modules/leads/services/get-leads.service";
 import { successResponse } from "@/shared/utils/http/success-response";
 import { handleApiError } from "@/shared/utils/http/handle-api-error";
-import { AppError } from "@/shared/utils/errors/app-error";
 
 export async function GET(request: Request): Promise<NextResponse> {
   try {

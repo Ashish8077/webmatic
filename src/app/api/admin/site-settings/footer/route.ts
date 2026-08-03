@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { siteSettingsService } from "@/modules/site-settings/services/site-settings.service";
 import { requireAuth } from "@/modules/auth/lib/get-auth-user";
-import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 
 export async function GET() {
   try {
@@ -34,9 +33,9 @@ export async function PUT(request: Request) {
     await siteSettingsService.updateFooterSettings(body, user.userId);
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error) {
     console.error("[Footer Settings PUT]", error);
-    if (error.name === "ZodError") {
+    if (error && typeof error === "object" && "name" in error && error.name === "ZodError") {
       return new NextResponse("Invalid data", { status: 422 });
     }
     return new NextResponse("Internal error", { status: 500 });

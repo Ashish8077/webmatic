@@ -25,16 +25,16 @@ export function VisualPicker({
 }: VisualPickerProps) {
   const radioGroupName = useId();
 
-  // Keep local state to preserve selections when toggling between types
-  const [lastIcon, setLastIcon] = React.useState<string | null>(value.iconName ?? null);
-  const [lastImageId, setLastImageId] = React.useState<number | null>(value.imageId ?? null);
-  const [lastImage, setLastImage] = React.useState<Media | null>(value.image ?? null);
+  // Use refs to preserve selections when toggling between types without causing cascading renders
+  const lastIconRef = React.useRef<string | null>(value.iconName ?? null);
+  const lastImageIdRef = React.useRef<number | null>(value.imageId ?? null);
+  const lastImageRef = React.useRef<Media | null>(value.image ?? null);
 
-  // Sync external value changes into local state (if the form is reset or loaded)
+  // Sync external value changes into refs
   React.useEffect(() => {
-    if (value.iconName) setLastIcon(value.iconName);
-    if (value.imageId) setLastImageId(value.imageId);
-    if (value.image) setLastImage(value.image);
+    if (value.iconName) lastIconRef.current = value.iconName;
+    if (value.imageId) lastImageIdRef.current = value.imageId;
+    if (value.image) lastImageRef.current = value.image;
   }, [value.iconName, value.imageId, value.image]);
 
   const handleTypeChange = (val: string) => {
@@ -44,7 +44,7 @@ export function VisualPicker({
     } else if (newType === "icon") {
       onChange({
         visualType: "icon",
-        iconName: lastIcon,
+        iconName: lastIconRef.current,
         imageId: null,
         image: null
       });
@@ -52,20 +52,20 @@ export function VisualPicker({
       onChange({
         visualType: "image",
         iconName: null,
-        imageId: lastImageId,
-        image: lastImage,
+        imageId: lastImageIdRef.current,
+        image: lastImageRef.current,
       });
     }
   };
 
   const handleIconChange = (iconName: string | null) => {
-    setLastIcon(iconName);
+    lastIconRef.current = iconName;
     onChange({ visualType: "icon", iconName, imageId: null, image: null });
   };
 
   const handleImageChange = (media: Media | null) => {
-    setLastImageId(media?.id ?? null);
-    setLastImage(media ?? null);
+    lastImageIdRef.current = media?.id ?? null;
+    lastImageRef.current = media ?? null;
     onChange({ visualType: "image", iconName: null, imageId: media?.id ?? null, image: media });
   };
 

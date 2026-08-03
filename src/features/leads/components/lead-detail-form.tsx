@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+
 import { useForm } from "react-hook-form";
 import { User, Mail, Building, Clock } from "lucide-react";
 import { LeadDetailsResponse as Lead } from "@/modules/leads/types/lead.types";

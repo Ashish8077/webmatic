@@ -8,7 +8,6 @@ import {
   Contact, 
   Menu,
   Settings,
-  Users
 } from "lucide-react";
 import { Permission } from "@/features/auth/constants/permissions";
 

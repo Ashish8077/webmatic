@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { requireAuth } from "@/modules/auth/lib/get-auth-user";
+import { AUTH_ROUTES } from "@/modules/auth/constants/routes";
 import Link from "next/link";
 
 export default async function SiteSettingsLayout({
@@ -10,12 +11,12 @@ export default async function SiteSettingsLayout({
   let user;
   try {
     user = await requireAuth();
-  } catch (error) {
-    redirect("/login");
+  } catch {
+    redirect(AUTH_ROUTES.LOGIN);
   }
   
   if (!user || (!user.roles.includes("super-admin") && !user.roles.includes("admin"))) {
-    redirect("/login");
+    redirect(AUTH_ROUTES.LOGIN);
   }
 
   const tabs = [

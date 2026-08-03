@@ -29,7 +29,7 @@ export interface MenuItem {
   rel: string | null;
   icon: VisualAssetDTO | null;
   description: string | null;
-  settings: Record<string, any> | null;
+  settings: Record<string, unknown> | null;
   sortOrder: number;
   isActive: boolean;
   createdBy: number | null;

@@ -38,7 +38,7 @@ export function MenuBuilder({ menu, initialItems }: MenuBuilderProps) {
       showToast("Menu order saved successfully", "success");
       setHasChanges(false);
       router.refresh();
-    } catch (error) {
+    } catch {
       showToast("Failed to save menu order", "error");
     } finally {
       setIsSaving(false);
@@ -53,7 +53,7 @@ export function MenuBuilder({ menu, initialItems }: MenuBuilderProps) {
       setItems(items.filter((i) => i.id !== id && i.parentId !== id));
       showToast("Item deleted", "success");
       router.refresh();
-    } catch (error) {
+    } catch {
       showToast("Failed to delete item. It may have children.", "error");
     }
   };

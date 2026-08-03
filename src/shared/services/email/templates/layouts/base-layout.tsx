@@ -11,6 +11,7 @@ interface BaseLayoutProps {
 export function BaseLayout({ title, children }: BaseLayoutProps) {
   return (
     <html lang="en">
+      {/* eslint-disable-next-line @next/next/no-head-element */}
       <head>
         <title>{title}</title>
         <style>{`

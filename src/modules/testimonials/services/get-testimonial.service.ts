@@ -4,6 +4,7 @@ import { TestimonialItem } from "../types/service.types";
 import { AppError } from "@/shared/utils/errors/app-error";
 import { findMediaById } from "@/modules/media/repositories/media.repository";
 import { StorageFactory } from "@/shared/storage/storage-factory";
+import { Media } from "@/modules/media/types/media.types";
 
 export async function getTestimonialService(
   id: number,
@@ -20,7 +21,7 @@ export async function getTestimonialService(
     const media = await findMediaById(item.profileImageId);
     if (media) {
       const storage = StorageFactory.create();
-      item.profileImage = { ...media, url: storage.getUrl(media.storagePath) } as any;
+      item.profileImage = { ...media, url: storage.getUrl(media.storagePath) } as unknown as Media;
     }
   }
 

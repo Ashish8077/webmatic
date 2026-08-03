@@ -7,6 +7,7 @@ import { PageSectionListItem } from "../types/api.types";
 import { findPageById } from "@/modules/pages/repositories/page.repository";
 import { AppError } from "@/shared/utils/errors/app-error";
 import { hydrateJsonMedia } from "@/modules/media/services/hydrate-json-media.service";
+import { JsonObject } from "@/shared/types/json";
 
 export async function getPageSectionsService(
   pageId: number,
@@ -27,7 +28,7 @@ export async function getPageSectionsService(
     pageSections.map(async (section) => {
       return {
         ...section,
-        content: (await hydrateJsonMedia(section.content)) as any,
+        content: (await hydrateJsonMedia(section.content)) as JsonObject,
       };
     })
   );
