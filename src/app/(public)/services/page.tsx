@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Header } from "@/components/layout/header";
 import { getServiceListPageData } from "@/modules/pages/services/get-public-page";
 import { SectionRenderer } from "@/components/home/section-renderer";
 
@@ -28,7 +27,6 @@ export default async function ServicesPage() {
 
   return (
     <>
-      <Header />
       <main className="pt-[104px]">
         {sortedSections.map((section) => (
           <SectionRenderer key={section.id} section={section} />

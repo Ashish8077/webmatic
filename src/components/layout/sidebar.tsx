@@ -2,15 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { navItems } from "./navigation";
+import { navGroups } from "./navigation";
 import { usePermissions } from "@/features/auth/api/use-has-permission";
 
 export function Sidebar() {
   const pathname = usePathname();
-
   const { has } = usePermissions();
-
-  const visibleNavItems = navItems.filter((item) => has(item.permission));
 
   return (
     <aside className="fixed left-0 top-0 bottom-0 w-[260px] glass z-40 flex flex-col">
@@ -68,40 +65,51 @@ export function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
-        <p className="px-3 mb-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">
-          Menu
-        </p>
-        {visibleNavItems.map((item) => {
-          const Icon = item.icon;
+      <nav className="flex-1 px-3 py-4 overflow-y-auto space-y-6">
+        {navGroups.map((group) => {
+          // Filter items by permission
+          const visibleItems = group.items.filter((item) => {
+            if (item.permission) return has(item.permission);
+            return true; // if no permission required
+          });
 
-          const isActive =
-            pathname === item.href || pathname?.startsWith(item.href + "/");
+          if (visibleItems.length === 0) return null;
 
           return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`
-                flex items-center gap-3 px-3 py-2.5 rounded-xl
-                text-sm font-medium transition-all duration-200
-                group relative
-                ${
-                  isActive
-                    ? "bg-accent/12 text-accent"
-                    : "text-muted-foreground hover:text-foreground hover:bg-surface-hover"
-                }
-              `}
-            >
-              {/* Active indicator */}
-              {isActive && (
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-accent rounded-r-full" />
-              )}
-              <Icon
-                className={`transition-colors ${isActive ? "text-accent" : "text-muted-foreground group-hover:text-foreground"}`}
-              />
-              {item.label}
-            </Link>
+            <div key={group.title} className="space-y-1">
+              <p className="px-3 mb-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">
+                {group.title}
+              </p>
+              {visibleItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = pathname === item.href || pathname?.startsWith(item.href + "/");
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`
+                      flex items-center gap-3 px-3 py-2.5 rounded-xl
+                      text-sm font-medium transition-all duration-200
+                      group relative
+                      ${
+                        isActive
+                          ? "bg-accent/12 text-accent"
+                          : "text-muted-foreground hover:text-foreground hover:bg-surface-hover"
+                      }
+                    `}
+                  >
+                    {isActive && (
+                      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-accent rounded-r-full" />
+                    )}
+                    <Icon
+                      className={`transition-colors ${isActive ? "text-accent" : "text-muted-foreground group-hover:text-foreground"}`}
+                    />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
           );
         })}
       </nav>

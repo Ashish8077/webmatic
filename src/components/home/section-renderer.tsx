@@ -10,8 +10,8 @@ import { ServiceSection } from "@/components/sections/services/services-section"
 import { TestimonialsSection } from "@/components/sections/testimonials/testimonials-section";
 import { FaqSection } from "@/components/sections/faq";
 import { ContactInfoCardsSection } from "@/components/sections/contact-information/contact-info-cards-section";
-import { ServicesHero } from "@/app/services/_components/services-hero";
-import { DevelopmentProcessSection } from "@/app/services/_components/development-process";
+import { ServicesHero } from "@/app/(public)/services/_components/services-hero";
+import { DevelopmentProcessSection } from "@/app/(public)/services/_components/development-process";
 import { AboutHeroSection } from "@/components/sections/about-hero/about-hero-section";
 import { CompanyStatisticsSection } from "@/components/sections/company-statistics/company-statistics-section";
 import { CompanyOverviewSection } from "@/components/sections/company-overview/company-overview-section";

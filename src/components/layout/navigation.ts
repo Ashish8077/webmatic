@@ -1,49 +1,97 @@
 import type { LucideIcon } from "lucide-react";
-import { Briefcase, LayoutDashboard, StickyNotePlus, MessageSquareQuote, Images, Contact } from "lucide-react";
+import { 
+  Briefcase, 
+  LayoutDashboard, 
+  StickyNotePlus, 
+  MessageSquareQuote, 
+  Images, 
+  Contact, 
+  Menu,
+  Settings,
+  Users
+} from "lucide-react";
 import { Permission } from "@/features/auth/constants/permissions";
 
-type NavItem = {
+export type NavItem = {
   label: string;
   href: string;
-  permission: Permission;
+  permission?: Permission; // Optional: if missing, check children
   icon: LucideIcon;
+  children?: { label: string; href: string; permission: Permission }[];
 };
 
-export const navItems: NavItem[] = [
+export type NavGroup = {
+  title: string;
+  items: NavItem[];
+};
+
+export const navGroups: NavGroup[] = [
   {
-    label: "Dashboard",
-    href: "/admin/dashboard",
-    permission: Permission.DASHBOARD_VIEW,
-    icon: LayoutDashboard,
+    title: "Overview",
+    items: [
+      {
+        label: "Dashboard",
+        href: "/admin/dashboard",
+        permission: Permission.DASHBOARD_VIEW,
+        icon: LayoutDashboard,
+      },
+    ]
   },
   {
-    label: "Pages",
-    href: "/admin/pages",
-    permission: Permission.PAGE_VIEW,
-    icon: StickyNotePlus,
+    title: "Content",
+    items: [
+      {
+        label: "Pages",
+        href: "/admin/pages",
+        permission: Permission.PAGE_VIEW,
+        icon: StickyNotePlus,
+      },
+      {
+        label: "Services",
+        href: "/admin/services",
+        permission: Permission.PAGE_VIEW,
+        icon: Briefcase,
+      },
+      {
+        label: "Testimonials",
+        href: "/admin/testimonials",
+        permission: Permission.PAGE_VIEW,
+        icon: MessageSquareQuote,
+      },
+      {
+        label: "Media",
+        href: "/admin/media",
+        permission: Permission.MEDIA_VIEW,
+        icon: Images,
+      },
+    ]
   },
   {
-    label: "Services",
-    href: "/admin/services",
-    permission: Permission.PAGE_VIEW,
-    icon: Briefcase,
+    title: "Marketing",
+    items: [
+      {
+        label: "Leads",
+        href: "/admin/leads",
+        permission: Permission.LEAD_VIEW,
+        icon: Contact,
+      }
+    ]
   },
   {
-    label: "Testimonials",
-    href: "/admin/testimonials",
-    permission: Permission.PAGE_VIEW,
-    icon: MessageSquareQuote,
-  },
-  {
-    label: "Media",
-    href: "/admin/media",
-    permission: Permission.MEDIA_VIEW,
-    icon: Images,
-  },
-  {
-    label: "Leads",
-    href: "/admin/leads",
-    permission: Permission.LEAD_VIEW,
-    icon: Contact,
-  },
+    title: "Appearance",
+    items: [
+      {
+        label: "Menus",
+        href: "/admin/menus",
+        permission: Permission.MENUS_VIEW,
+        icon: Menu,
+      },
+      {
+        label: "Site Settings",
+        href: "/admin/site-settings/footer", // default to footer for now
+        permission: Permission.MENUS_VIEW, // Reuse menus permission temporarily or remove
+        icon: Settings,
+      }
+    ]
+  }
 ];

@@ -14,6 +14,12 @@ export const PERMISSIONS = {
   PAGE_SECTIONS_UPDATE: "page-section.update",
   PAGE_SECTIONS_DELETE: "page-section.delete",
 
+  // Menus permissions
+  MENUS_CREATE: "menu.create",
+  MENUS_VIEW: "menu.view",
+  MENUS_UPDATE: "menu.update",
+  MENUS_DELETE: "menu.delete",
+
   //service permissions
   SERVICES_CREATE: "service.create",
   SERVICES_VIEW: "service.view",

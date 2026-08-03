@@ -12,6 +12,8 @@ export const Permission = {
   PAGE_SECTION_UPDATE: "page-section.update",
   PAGE_SECTION_DELETE: "page-section.delete",
 
+  MENUS_VIEW: "menu.view",
+
   //service permissions
   SERVICES_CREATE: "service.create",
   SERVICES_VIEW: "service.view",
