@@ -8,3 +8,4 @@ export { SwitchField } from "./switch-field";
 export { NumberField } from "./number-field";
 export { SliderSettingsFields } from "./slider-settings-fields";
 export { VisualPickerField } from "./visual-picker-field";
+export { SelectField } from "./select-field";

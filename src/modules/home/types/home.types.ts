@@ -1,5 +1,4 @@
-import { HomeSectionType } from "../constants/home-section-types";
-
+import { PageSectionType } from "@/modules/pages-section/constants/page-section-types";
 export interface HomePageMeta {
   title: string;
 
@@ -24,7 +23,7 @@ export interface HomePageMeta {
 
 export interface HomeSectionData {
   id: number;
-  sectionType: HomeSectionType;
+  sectionType: PageSectionType;
   title: string | null;
   /** Raw JSON content stored in the database. */
   content: Record<string, unknown>;

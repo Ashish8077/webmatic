@@ -12,7 +12,6 @@ export function ContactCta({
   privacyNote,
   submitButtonText = "Send",
   showCompanyField = false,
-  showServiceField = true,
   showMessageField = true,
   className = "",
   onSubmit,
@@ -35,7 +34,6 @@ export function ContactCta({
               <ContactForm
                 submitButtonText={submitButtonText}
                 showCompanyField={showCompanyField}
-                showServiceField={showServiceField}
                 showMessageField={showMessageField}
                 onSuccess={() => setIsSuccess(true)}
                 onSubmitProp={onSubmit}

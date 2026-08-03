@@ -5,31 +5,38 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   contactFormSchema,
-  serviceOptions,
   useSubmitContact,
   type ContactFormData,
 } from "@/features/contact";
+import { CONTACT_ERROR_MESSAGES } from "@/features/contact/constants/error-messages";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useState, useRef, useEffect } from "react";
 
 export interface ContactFormProps {
   submitButtonText?: string;
   showCompanyField?: boolean;
-  showServiceField?: boolean;
   showMessageField?: boolean;
-  onSuccess: () => void;
+  successMessage?: string;
+  errorMessage?: string;
+  privacyText?: string;
+  onSuccess?: () => void;
   onSubmitProp?: (data: ContactFormData) => Promise<void>;
 }
 
 export function ContactForm({
   submitButtonText = "Send",
   showCompanyField = false,
-  showServiceField = true,
   showMessageField = true,
+  successMessage = "Thank you! We have received your message and will get back to you shortly.",
+  errorMessage = CONTACT_ERROR_MESSAGES.UNEXPECTED,
+  privacyText,
   onSuccess,
   onSubmitProp,
 }: ContactFormProps) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
@@ -37,24 +44,56 @@ export function ContactForm({
       name: "",
       email: "",
       phone: "",
-      service: "",
       company: "",
       message: "",
     },
   });
 
-  const { mutateAsync, isPending, isError } = useSubmitContact();
+  const { mutateAsync, isPending, isError, error, isSuccess, reset: resetMutation } = useSubmitContact();
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const [recaptchaError, setRecaptchaError] = useState("");
+  const successRef = useRef<HTMLDivElement>(null);
+  
+  // Focus success message on successful submission
+  useEffect(() => {
+    if (isSuccess && successRef.current) {
+      successRef.current.focus();
+    }
+  }, [isSuccess]);
 
   const onSubmit = async (data: ContactFormData) => {
+    setRecaptchaError("");
+    resetMutation(); // Clear previous mutation state
+
+    if (!executeRecaptcha) {
+      setRecaptchaError("Security verification is still loading. Please try again in a moment.");
+      return;
+    }
+
     try {
+      const token = await executeRecaptcha("contact_form_submit");
+      
+      const payload = { ...data, recaptchaToken: token };
+
       if (onSubmitProp) {
+        // Typically this is only used if the parent completely overrides behavior,
+        // but since we are migrating to API, we'll keep the prop intact.
         await onSubmitProp(data);
       } else {
-        await mutateAsync(data);
+        await mutateAsync(payload);
+        reset(); // reset RHF
       }
-      onSuccess();
-    } catch (error) {
-      console.error("Failed to submit contact form", error);
+      onSuccess?.();
+    } catch (err) {
+      console.error("Failed to submit contact form", err);
+    }
+  };
+
+  // Clear success/error states when user starts editing again
+  const handleInputInteraction = () => {
+    if (isSuccess || isError || recaptchaError) {
+      resetMutation();
+      setRecaptchaError("");
     }
   };
 
@@ -62,10 +101,28 @@ export function ContactForm({
     "w-full bg-white border border-transparent focus:border-orange-500 focus:ring-0 px-4 py-3 text-[14px] text-slate-700 outline-none transition-colors shadow-sm placeholder-slate-300  rounded-lg ";
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" aria-busy={isPending} onChange={handleInputInteraction}>
+      
+      {isSuccess && (
+        <div 
+          ref={successRef}
+          tabIndex={-1}
+          aria-live="polite"
+          className="p-4 bg-green-50 text-green-700 text-[14px] font-medium border border-green-200 rounded-lg outline-none focus:ring-2 focus:ring-green-500"
+        >
+          {successMessage}
+        </div>
+      )}
+
       {isError && (
-        <div className="p-3 bg-red-50 text-red-600 text-[14px] font-medium border border-red-100">
-          Something went wrong. Please try again.
+        <div aria-live="polite" className="p-3 bg-red-50 text-red-600 text-[14px] font-medium border border-red-100 rounded-lg">
+          {error?.message || errorMessage}
+        </div>
+      )}
+
+      {recaptchaError && (
+        <div aria-live="polite" className="p-3 bg-yellow-50 text-yellow-700 text-[14px] font-medium border border-yellow-200 rounded-lg">
+          {recaptchaError}
         </div>
       )}
 
@@ -89,36 +146,7 @@ export function ContactForm({
         )}
       </div>
 
-      {showServiceField && (
-        <div className="space-y-1.5">
-          <label
-            htmlFor="service"
-            className="text-[14px] font-medium text-[#4a5568]"
-          >
-            What services can we provide you?
-          </label>
-          <select
-            {...register("service")}
-            id="service"
-            disabled={isPending}
-            className={`font-semibold text-[#1a233a] appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231a233a%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_1rem_center] ${inputClasses} ${
-              errors.service ? "border-red-500" : ""
-            }`}
-          >
-            <option value="">What services can we provide you?</option>
-            {serviceOptions.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-          {errors.service && (
-            <p className="text-xs text-red-500 mt-1">
-              {errors.service.message}
-            </p>
-          )}
-        </div>
-      )}
+
 
       <div className="space-y-1.5">
         <label
@@ -210,11 +238,18 @@ export function ContactForm({
         </div>
       )}
 
+      {privacyText && (
+        <div className="text-[13px] text-gray-500 mt-4 leading-relaxed">
+          {privacyText}
+        </div>
+      )}
+
       <div className="pt-2 text-left">
         <button
           type="submit"
-          disabled={isPending}
-          className="bg-primary text-white px-10 py-3 text-[15px] font-semibold rounded-xl hover:bg-primary-hover transition-all duration-200 shadow-md shadow-primary/20 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:hover:translate-y-0 cursor-pointer"
+          disabled={isPending || isSuccess}
+          aria-disabled={isPending || isSuccess}
+          className="bg-primary text-white px-10 py-3 text-[15px] flex items-center justify-center gap-2 font-semibold rounded-xl hover:bg-primary-hover transition-all duration-200 shadow-md shadow-primary/20 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:hover:translate-y-0 cursor-pointer"
         >
           {isPending ? (
             <>

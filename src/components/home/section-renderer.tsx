@@ -1,5 +1,5 @@
 import type { HomeSectionData } from "@/modules/home/types/home.types";
-import { HomeSectionType } from "@/modules/home/constants/home-section-types";
+import { PageSectionType } from "@/modules/pages-section/constants/page-section-types";
 import {
   AboutSection,
   HeroSection,
@@ -9,6 +9,7 @@ import {
 import { ServiceSection } from "@/components/sections/services/services-section";
 import { TestimonialsSection } from "@/components/sections/testimonials/testimonials-section";
 import { FaqSection } from "@/components/sections/faq";
+import { ContactInfoCardsSection } from "@/components/sections/contact-information/contact-info-cards-section";
 import { ServicesHero } from "@/app/services/_components/services-hero";
 import { DevelopmentProcessSection } from "@/app/services/_components/development-process";
 import { AboutHeroSection } from "@/components/sections/about-hero/about-hero-section";
@@ -30,7 +31,7 @@ type SectionComponent = React.ComponentType<SectionProps>;
  * Unknown names are silently skipped (no error thrown in production).
  */
 const SECTION_MAP: Readonly<
-  Partial<Record<HomeSectionType, SectionComponent>>
+  Partial<Record<PageSectionType, SectionComponent>>
 > = {
   hero: HeroSection,
   about: AboutSection,
@@ -47,6 +48,7 @@ const SECTION_MAP: Readonly<
   "core-values": CoreValuesSection as unknown as SectionComponent,
   "mission-vision": MissionVisionSection as unknown as SectionComponent,
   "team-members": TeamMembersSection as unknown as SectionComponent,
+  "contact-information": ContactInfoCardsSection as unknown as SectionComponent,
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -61,7 +63,7 @@ interface SectionRendererProps {
  * can be introduced in the CMS without causing a runtime error.
  */
 export function SectionRenderer({ section }: SectionRendererProps) {
-  const Component = SECTION_MAP[section.sectionType as HomeSectionType];
+  const Component = SECTION_MAP[section.sectionType as PageSectionType];
 
   if (!Component) {
     if (process.env.NODE_ENV === "development") {

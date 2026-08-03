@@ -8,7 +8,7 @@ export function Logo() {
       <Image
         src="/images/webmatic-logo.png"
         alt="WebMatic Technology"
-        className="h-10 w-auto object-contain"
+        className="object-contain"
         width={160}
         height={40}
       />

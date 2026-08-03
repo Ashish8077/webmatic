@@ -1,4 +1,4 @@
-export const HOME_SECTION_TYPES = [
+export const PAGE_SECTION_TYPES = [
   "hero",
   "about",
   "services",
@@ -14,6 +14,7 @@ export const HOME_SECTION_TYPES = [
   "core-values",
   "mission-vision",
   "team-members",
+  "contact-information",
 ] as const;
 
-export type HomeSectionType = (typeof HOME_SECTION_TYPES)[number];
+export type PageSectionType = (typeof PAGE_SECTION_TYPES)[number];
