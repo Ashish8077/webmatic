@@ -1,4 +1,4 @@
-import { CreateLeadInput, CreatedLead } from "../types/repository.types";
+import { CreateLeadInput } from "../types/repository.types";
 import { leadRepository } from "../repositories/lead.repository";
 import { EmailService } from "@/shared/services/email/email.service";
 import { AdminNotificationEmail } from "../email/admin-notification";

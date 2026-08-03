@@ -1,4 +1,4 @@
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { siteSettingsRepository } from "../repositories/site-settings.repository";
 import { FooterSettings } from "../types/footer.types";
 import { footerSettingsSchema } from "../schemas/footer.schema";
@@ -11,10 +11,10 @@ export const siteSettingsService = {
     const data = await siteSettingsRepository.getByKey("layout.footer");
     
     if (!data) {
-      return defaultFooterSettings as FooterSettings;
+      return defaultFooterSettings as unknown as FooterSettings;
     }
 
-    return data as FooterSettings;
+    return data as unknown as FooterSettings;
   },
 
   async updateFooterSettings(data: unknown, adminId: number): Promise<void> {

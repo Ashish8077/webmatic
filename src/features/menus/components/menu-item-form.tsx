@@ -31,7 +31,7 @@ export function MenuItemForm({ menuId, initialData, onSuccess, onCancel }: MenuI
     setIsSubmitting(true);
     
     try {
-      const payload: any = {
+      const payload: Record<string, unknown> = {
         menuId,
         title: formData.title,
         itemType: formData.itemType,
@@ -53,7 +53,7 @@ export function MenuItemForm({ menuId, initialData, onSuccess, onCancel }: MenuI
       
       showToast(`Item ${initialData ? "updated" : "created"} successfully`, "success");
       onSuccess();
-    } catch (error) {
+    } catch {
       showToast("An error occurred", "error");
     } finally {
       setIsSubmitting(false);

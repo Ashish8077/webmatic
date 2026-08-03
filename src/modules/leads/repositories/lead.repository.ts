@@ -103,7 +103,7 @@ export const leadRepository: LeadRepository = {
     }
 
     // Safely parse the sort column against the whitelisted sort columns
-    const sortCol = LEAD_SORT_COLUMNS.includes(sortBy as any) ? sortBy : "created_at";
+    const sortCol = LEAD_SORT_COLUMNS.includes(sortBy as (typeof LEAD_SORT_COLUMNS)[number]) ? sortBy : "created_at";
     const order = sortOrder === "asc" ? "ASC" : "DESC";
 
     const [rows] = await db.query<LeadListRow[]>(

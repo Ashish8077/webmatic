@@ -1,7 +1,6 @@
 "use client";
 
-import { useFormContext } from "react-hook-form";
-import { FooterSettings } from "@/modules/site-settings/types/footer.types";
+
 import { 
   TextField, 
   TextareaField, 

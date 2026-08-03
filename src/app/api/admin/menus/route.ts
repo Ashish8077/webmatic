@@ -8,7 +8,7 @@ import { menuService } from "@/modules/menus/services/menu.service";
 import { successResponse } from "@/shared/utils/http/success-response";
 import { handleApiError } from "@/shared/utils/http/handle-api-error";
 
-export async function GET(request: Request): Promise<NextResponse> {
+export async function GET(): Promise<NextResponse> {
   try {
     const user = await requireAuth();
     requirePermission(user, PERMISSIONS.MENUS_VIEW);

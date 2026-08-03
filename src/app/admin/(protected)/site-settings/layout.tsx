@@ -11,7 +11,7 @@ export default async function SiteSettingsLayout({
   let user;
   try {
     user = await requireAuth();
-  } catch (error) {
+  } catch {
     redirect(AUTH_ROUTES.LOGIN);
   }
   

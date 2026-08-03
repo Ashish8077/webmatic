@@ -4,6 +4,7 @@ import { mapTestimonialRowToItem } from "../mapper/testimonial.mapper";
 import { TestimonialListResponse } from "../types/service.types";
 import { findMediaById } from "@/modules/media/repositories/media.repository";
 import { StorageFactory } from "@/shared/storage/storage-factory";
+import { Media } from "@/modules/media/types/media.types";
 
 export async function getTestimonialsService(
   query: GetTestimonialsQueryInput,
@@ -22,7 +23,7 @@ export async function getTestimonialsService(
       if (item.profileImageId) {
         const media = await findMediaById(item.profileImageId);
         if (media) {
-          item.profileImage = { ...media, url: storage.getUrl(media.storagePath) } as any;
+          item.profileImage = { ...media, url: storage.getUrl(media.storagePath) } as unknown as Media;
         }
       }
     })

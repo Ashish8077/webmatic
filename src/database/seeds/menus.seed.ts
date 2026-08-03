@@ -1,6 +1,6 @@
 import db from "../connection";
 import { findPageSlug } from "@/modules/pages/repositories/page.repository";
-import { findServiceSlug } from "@/modules/services/repositories/service.repository";
+import { ResultSetHeader } from "mysql2/promise";
 
 export async function seedMenus() {
   console.log("Seeding menus...");
@@ -14,14 +14,14 @@ export async function seedMenus() {
   await db.execute("SET FOREIGN_KEY_CHECKS=1");
 
   // Create Header Menu
-  const [headerMenuRes] = await db.execute<any>(
+  const [headerMenuRes] = await db.execute<ResultSetHeader>(
     `INSERT INTO menus (name, slug, location, is_active, created_by) VALUES (?, ?, ?, ?, ?)`,
     ["Main Navigation", "header", "header", true, adminId]
   );
   const headerMenuId = headerMenuRes.insertId;
 
   // Create Footer Menu
-  const [footerMenuRes] = await db.execute<any>(
+  const [footerMenuRes] = await db.execute<ResultSetHeader>(
     `INSERT INTO menus (name, slug, location, is_active, created_by) VALUES (?, ?, ?, ?, ?)`,
     ["Footer Navigation", "footer", "footer", true, adminId]
   );
@@ -43,7 +43,7 @@ export async function seedMenus() {
   }
 
   // Create Services Dropdown Group
-  const [servicesGroupRes] = await db.execute<any>(
+  const [servicesGroupRes] = await db.execute<ResultSetHeader>(
     `INSERT INTO menu_items (menu_id, title, item_type, sort_order, is_active, created_by)
      VALUES (?, ?, ?, ?, ?, ?)`,
     [headerMenuId, "Services", "group", 3, true, adminId]
@@ -51,7 +51,7 @@ export async function seedMenus() {
   const servicesGroupId = servicesGroupRes.insertId;
 
   // Create Column 1: Brand Strategy
-  const [brandStrategyRes] = await db.execute<any>(
+  const [brandStrategyRes] = await db.execute<ResultSetHeader>(
     `INSERT INTO menu_items (menu_id, parent_id, title, item_type, sort_order, is_active, created_by) VALUES (?, ?, ?, ?, ?, ?, ?)`,
     [headerMenuId, servicesGroupId, "Brand Strategy", "group", 1, true, adminId]
   );
@@ -66,7 +66,7 @@ export async function seedMenus() {
   }
 
   // Create Column 2: Website Design
-  const [websiteDesignRes] = await db.execute<any>(
+  const [websiteDesignRes] = await db.execute<ResultSetHeader>(
     `INSERT INTO menu_items (menu_id, parent_id, title, item_type, sort_order, is_active, created_by) VALUES (?, ?, ?, ?, ?, ?, ?)`,
     [headerMenuId, servicesGroupId, "Website Design", "group", 2, true, adminId]
   );
@@ -81,7 +81,7 @@ export async function seedMenus() {
   }
 
   // Create Column 3: Digital Marketing
-  const [digitalMarketingRes] = await db.execute<any>(
+  const [digitalMarketingRes] = await db.execute<ResultSetHeader>(
     `INSERT INTO menu_items (menu_id, parent_id, title, item_type, sort_order, is_active, created_by) VALUES (?, ?, ?, ?, ?, ?, ?)`,
     [headerMenuId, servicesGroupId, "Digital Marketing", "group", 3, true, adminId]
   );

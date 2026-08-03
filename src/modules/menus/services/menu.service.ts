@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { menuRepository } from "../repositories/menu.repository";
 import { menuItemRepository } from "../repositories/menu-item.repository";
 import { Menu, MenuItem, MenuLocation, MenuNode, ReorderMenuItemPayload } from "../types/menu.types";
@@ -135,11 +135,12 @@ export const menuService = {
     revalidatePath("/", "layout");
     
     // Also revalidate by tag for more granular layout components
-    const { revalidateTag } = require("next/cache");
+    // @ts-expect-error next/cache types mismatch
     revalidateTag(`menu-${location}`);
   },
 
-  validateTarget(data: Partial<CreateMenuItemDTO>) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  validateTarget(_data: Partial<CreateMenuItemDTO>) {
     // Basic structural validation handled by Zod
   },
 

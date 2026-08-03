@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Download, Search, X } from "lucide-react";
 import { useLeadsFilters } from "../hooks/use-leads-filters";
 import { useExportLeads } from "../hooks/use-export-leads";
+import { LeadStatus } from "@/modules/leads/constants/lead.constants";
 
 const STATUS_OPTIONS = [
   { label: "All Statuses", value: "" },
@@ -21,10 +22,12 @@ export function LeadsFilters() {
   
   // Local state for debounced search
   const [localSearch, setLocalSearch] = useState(query.search || "");
+  const [prevQuerySearch, setPrevQuerySearch] = useState(query.search || "");
 
-  useEffect(() => {
+  if ((query.search || "") !== prevQuerySearch) {
+    setPrevQuerySearch(query.search || "");
     setLocalSearch(query.search || "");
-  }, [query.search]);
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -36,7 +39,8 @@ export function LeadsFilters() {
   }, [localSearch, query.search, updateFilters]);
 
   const handleExport = () => {
-    const { page, limit, ...exportParams } = query;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { page: _page, limit: _limit, ...exportParams } = query;
     exportLeads(exportParams);
   };
 
@@ -65,7 +69,7 @@ export function LeadsFilters() {
           <Select
             options={STATUS_OPTIONS}
             value={query.status || ""}
-            onChange={(e) => updateFilters({ status: e.target.value as any })}
+            onChange={(e) => updateFilters({ status: e.target.value as LeadStatus })}
           />
         </div>
       </div>

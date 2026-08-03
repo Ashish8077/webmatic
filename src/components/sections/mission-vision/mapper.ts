@@ -1,6 +1,15 @@
 import { DEFAULT_MISSION_VISION_CONTENT, type MissionVisionContentValues } from "@/features/page-sections/schemas/mission-vision.schema";
 
-export function mapMissionVisionContent(data: any): MissionVisionContentValues {
+interface LegacyMissionVisionContent {
+  mission?: MissionVisionContentValues['mission'];
+  vision?: MissionVisionContentValues['vision'];
+  missionTitle?: string;
+  missionDescription?: string;
+  visionTitle?: string;
+  visionDescription?: string;
+}
+
+export function mapMissionVisionContent(data: LegacyMissionVisionContent | null | undefined): MissionVisionContentValues {
   // Gracefully map legacy structure to the new domain model
   const mission = data?.mission ?? {
     title: data?.missionTitle ?? DEFAULT_MISSION_VISION_CONTENT.mission.title,

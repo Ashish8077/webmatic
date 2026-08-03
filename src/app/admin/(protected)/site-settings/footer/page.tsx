@@ -29,7 +29,7 @@ export default function FooterSettingsPage() {
       contactInfo: { phone: { phones: [] }, email: {} },
       socialLinks: [],
       copyright: {}
-    } as any,
+    } as unknown as FooterSettings,
   });
 
   // Reset form when data is loaded
@@ -47,7 +47,7 @@ export default function FooterSettingsPage() {
       toast.success("Footer settings updated successfully");
       queryClient.invalidateQueries({ queryKey: ["site-settings", "footer"] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || "Failed to update footer settings");
     },
   });

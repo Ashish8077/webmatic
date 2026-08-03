@@ -1,13 +1,14 @@
 import db from "@/database/connection";
 import { RowDataPacket } from "mysql2/promise";
 import { toJson } from "@/shared/utils/database/json";
+import { JsonObject } from "@/shared/types/json";
 
 interface SiteSettingRow extends RowDataPacket {
-  setting_value: any;
+  setting_value: JsonObject;
 }
 
 export const siteSettingsRepository = {
-  async getByKey(key: string): Promise<any | null> {
+  async getByKey(key: string): Promise<JsonObject | null> {
     const [rows] = await db.execute<SiteSettingRow[]>(
       `
       SELECT setting_value 
@@ -25,7 +26,7 @@ export const siteSettingsRepository = {
     return rows[0].setting_value;
   },
 
-  async upsert(key: string, value: any, isPublic: boolean, adminId: number): Promise<void> {
+  async upsert(key: string, value: JsonObject, isPublic: boolean, adminId: number): Promise<void> {
     await db.execute(
       `
       INSERT INTO site_settings (

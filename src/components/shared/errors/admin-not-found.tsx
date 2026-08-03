@@ -19,7 +19,7 @@ export function AdminNotFound() {
           Admin page not found
         </h2>
         <p className="text-muted-foreground mb-8">
-          The management page you are looking for does not exist or you don't have permission to access it.
+          The management page you are looking for does not exist or you don&apos;t have permission to access it.
         </p>
         
         <Link href={AUTH_ROUTES.DASHBOARD}>

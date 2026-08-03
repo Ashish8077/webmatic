@@ -47,6 +47,7 @@ export const menuRepository = {
 
   async update(id: number, data: UpdateMenuDTO, adminId: number): Promise<Menu | null> {
     const updates: string[] = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const params: any[] = [];
 
     if (data.name !== undefined) {

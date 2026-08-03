@@ -8,10 +8,19 @@ import {
 import { TextField, TextareaField, VisualPickerField } from "../fields";
 import { hydrateMediaRelations } from "../../utils/media-utils";
 
+interface LegacyMissionVisionContent extends Record<string, unknown> {
+  mission?: MissionVisionContentValues['mission'];
+  vision?: MissionVisionContentValues['vision'];
+  missionTitle?: string;
+  missionDescription?: string;
+  visionTitle?: string;
+  visionDescription?: string;
+}
+
 export function parseMissionVisionContentDefaults(
   content: JsonObject | undefined | null,
 ): MissionVisionContentValues {
-  const raw = (content ?? {}) as any;
+  const raw = (content ?? {}) as LegacyMissionVisionContent;
   
   // Normalize legacy data into the current domain model in-memory
   const mission = raw.mission ?? {

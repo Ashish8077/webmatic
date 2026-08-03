@@ -2,13 +2,14 @@ import { JsonObject } from "@/shared/types/json";
 import { PaginationMeta } from "@/shared/types/pagination";
 import { VisualType } from "@/shared/types/visual-asset.types";
 import { ServiceStatus } from "../constants/service.constants";
+import { Media } from "@/features/media/types";
 
 export interface ServiceBenefit {
   title: string;
   visualType: VisualType;
   iconName?: string | null;
   imageId?: number | null;
-  image?: any;
+  image?: Media;
 }
 
 export interface CreateServiceRequest {
@@ -73,7 +74,7 @@ export interface ServiceListItem {
   visualType: VisualType;
   iconName: string | null;
   imageId: number | null;
-  image?: any;
+  image?: Media;
   ctaButtonText: string | null;
   status: ServiceStatus;
   isFeatured: boolean;
@@ -95,13 +96,13 @@ export interface ServiceDetailsResponse {
   description: string | null;
   
   featuredImageId: number | null;
-  featuredImage?: any;
+  featuredImage?: Media;
   bannerImageId: number | null;
-  bannerImage?: any;
+  bannerImage?: Media;
   visualType: VisualType;
   iconName: string | null;
   imageId: number | null;
-  image?: any;
+  image?: Media;
 
   keyFeatures: string[] | null;
   benefits: ServiceBenefit[] | null;
@@ -120,12 +121,12 @@ export interface ServiceDetailsResponse {
   openGraphTitle: string | null;
   openGraphDescription: string | null;
   openGraphImageId: number | null;
-  openGraphImage?: any;
+  openGraphImage?: Media;
 
   twitterTitle: string | null;
   twitterDescription: string | null;
   twitterImageId: number | null;
-  twitterImage?: any;
+  twitterImage?: Media;
 
   schemaMarkup: JsonObject | null;
 

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { User, Mail, Building, Clock } from "lucide-react";
+
 import { useLead } from "../hooks/use-lead";
 import { Modal } from "@/components/ui/modal";
 import { LeadDetailForm } from "./lead-detail-form";
@@ -35,7 +34,7 @@ export function LeadDetailDrawer({ leadId, onClose }: LeadDetailDrawerProps) {
           onSuccessClose={onClose}
         />
       ) : (
-        <p className="text-sm text-danger">Lead not found or you don't have access.</p>
+        <p className="text-sm text-danger">Lead not found or you don&apos;t have access.</p>
       )}
     </Modal>
   );

@@ -24,7 +24,7 @@ export function MenuList({ menus }: MenuListProps) {
       
       showToast("Menu deleted successfully", "success");
       router.refresh();
-    } catch (error) {
+    } catch {
       showToast("Failed to delete menu. Ensure it has no items.", "error");
     } finally {
       setDeletingId(null);

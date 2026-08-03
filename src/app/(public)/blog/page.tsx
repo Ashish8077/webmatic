@@ -26,7 +26,7 @@ export default function BlogPage() {
         </h1>
         
         <p className="text-slate-500 text-lg mb-10 max-w-lg leading-relaxed animate-slide-up" style={{ animationDelay: "200ms" }}>
-          We're working hard to bring you amazing content. Check back shortly for insightful articles, company news, and industry updates!
+          We&apos;re working hard to bring you amazing content. Check back shortly for insightful articles, company news, and industry updates!
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 items-center animate-slide-up" style={{ animationDelay: "300ms" }}>
