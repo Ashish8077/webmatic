@@ -1,0 +1,12 @@
+"use client";
+import React from "react";
+
+import LoginForm from "@/features/auth/components/LoginForm";
+
+export default function LoginPage() {
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <LoginForm />
+    </React.Suspense>
+  );
+}

@@ -45,7 +45,7 @@ const Header = ({ navLinks = [] }: HeaderProps) => {
           {/* Desktop CTA */}
           <Link
             href="/contact"
-            className="hidden md:inline-flex px-5 py-2 text-sm font-semibold text-white bg-orange-500 hover:bg-orange-600 active:bg-orange-700 rounded-lg transition-colors duration-200"
+            className="hidden md:inline-flex px-5 py-2 text-sm font-semibold text-white bg-hero-primary hover:bg-hero-primary-hover active:bg-hero-primary-active rounded-lg transition-all duration-200 shadow-sm"
           >
             Get in Touch
           </Link>
