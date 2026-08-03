@@ -1,13 +1,13 @@
 import { z } from "zod";
 import { requiredString, optionalString } from "./common.schema";
-import { visualAssetSchema } from "@/shared/schemas/visual-asset.schema";
+import { baseVisualAssetSchema } from "@/shared/schemas/visual-asset.schema";
 
 const contactInfoItemSchema = z.object({
   title: requiredString("Title"),
   value: requiredString("Value"),
-  visualType: visualAssetSchema.shape.visualType,
-  iconName: visualAssetSchema.shape.iconName,
-  imageId: visualAssetSchema.shape.imageId,
+  visualType: baseVisualAssetSchema.shape.visualType,
+  iconName: baseVisualAssetSchema.shape.iconName,
+  imageId: baseVisualAssetSchema.shape.imageId,
   image: z.any().nullable().optional(),
   href: optionalString(),
   openInNewTab: z.boolean().default(false),
