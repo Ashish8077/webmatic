@@ -74,7 +74,7 @@ export default async function AboutUsPage() {
     <>
       <main className="pt-[104px]">
         {sections.map((section) => (
-          <SectionRenderer key={section.id} section={section as unknown as React.ComponentProps<typeof SectionRenderer>["section"]} />
+          <SectionRenderer key={section.id} section={section as unknown as React.ComponentProps<typeof SectionRenderer>["section"]} pageTitle={page.title} />
         ))}
       </main>
     </>

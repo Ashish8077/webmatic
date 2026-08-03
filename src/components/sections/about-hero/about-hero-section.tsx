@@ -4,7 +4,7 @@ import type { AboutHeroContentValues } from "@/features/page-sections/schemas/ab
 import type { SectionProps } from "@/components/home/sections/types";
 import { getMediaUrl } from "@/features/media/utils/media-url";
 
-export function AboutHeroSection({ content }: SectionProps) {
+export function AboutHeroSection({ content, pageTitle }: SectionProps) {
   const data = content as unknown as AboutHeroContentValues;
 
   const badge = data.badge;
@@ -47,7 +47,7 @@ export function AboutHeroSection({ content }: SectionProps) {
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
-            { label: "About Us" }
+            { label: pageTitle || "About Us" }
           ]}
           theme="dark"
         />

@@ -64,7 +64,7 @@ export default async function DynamicPage({ params }: PageProps) {
     <>
       <main className="pt-[104px]">
         {sections.map((section) => (
-          <SectionRenderer key={section.id} section={section as unknown as HomeSectionData} />
+          <SectionRenderer key={section.id} section={section as unknown as HomeSectionData} pageTitle={page.title} />
         ))}
       </main>
     </>

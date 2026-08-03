@@ -7,6 +7,7 @@
 export interface SectionProps {
   content: Record<string, unknown>;
   settings?: Record<string, unknown> | null;
+  pageTitle?: string;
 }
 
 /**

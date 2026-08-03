@@ -29,7 +29,7 @@ export default async function ServicesPage() {
     <>
       <main className="pt-[104px]">
         {sortedSections.map((section) => (
-          <SectionRenderer key={section.id} section={section} />
+          <SectionRenderer key={section.id} section={section} pageTitle={pageData.meta.title} />
         ))}
       </main>
     </>

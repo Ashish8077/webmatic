@@ -55,6 +55,7 @@ const SECTION_MAP: Readonly<
 
 interface SectionRendererProps {
   section: HomeSectionData;
+  pageTitle?: string;
 }
 
 /**
@@ -62,7 +63,7 @@ interface SectionRendererProps {
  * renders it. Returns null for unrecognised section types so new section types
  * can be introduced in the CMS without causing a runtime error.
  */
-export function SectionRenderer({ section }: SectionRendererProps) {
+export function SectionRenderer({ section, pageTitle }: SectionRendererProps) {
   const Component = SECTION_MAP[section.sectionType as PageSectionType];
 
   if (!Component) {
@@ -80,5 +81,5 @@ export function SectionRenderer({ section }: SectionRendererProps) {
     return null;
   }
 
-  return <Component content={section.content} settings={section.settings} />;
+  return <Component content={section.content} settings={section.settings} pageTitle={pageTitle} />;
 }
