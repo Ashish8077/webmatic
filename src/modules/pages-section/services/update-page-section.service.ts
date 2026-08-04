@@ -12,7 +12,7 @@ export async function updatePageSectionService(
   sectionData: UpdatePageSectionInput,
   user: AuthUser,
 ): Promise<void> {
-  requirePermission(user, PERMISSIONS.PAGES_UPDATE);
+  requirePermission(user, PERMISSIONS.PAGE_SECTIONS_UPDATE);
 
   try {
     const updatedRowCount = await updatePageSection(

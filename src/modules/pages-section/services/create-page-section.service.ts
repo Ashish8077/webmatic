@@ -22,7 +22,7 @@ export async function createPageSectionService(
   sectionData: CreatePageSectionInput,
   user: AuthUser,
 ): Promise<PageSectionResponse> {
-  requirePermission(user, PERMISSIONS.PAGES_CREATE);
+  requirePermission(user, PERMISSIONS.PAGE_SECTIONS_CREATE);
 
   try {
     const page = await findPageById(pageId);

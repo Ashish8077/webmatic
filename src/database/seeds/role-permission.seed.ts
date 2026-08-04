@@ -9,6 +9,9 @@ type DatabaseRow = {
 export async function seedRolePermissions() {
   console.log("Seeding role permissions...");
 
+  // Clear existing role permissions to ensure idempotency
+  await db.execute(`DELETE FROM role_permissions`);
+
   /**
    * Load all roles once.
    *

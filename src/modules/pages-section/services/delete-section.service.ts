@@ -8,7 +8,7 @@ export async function deleteSectionService(
   sectionId: number,
   user: AuthUser,
 ): Promise<void> {
-  requirePermission(user, PERMISSIONS.PAGES_DELETE);
+  requirePermission(user, PERMISSIONS.PAGE_SECTIONS_DELETE);
 
   const deletedSectionCount = await softDeleteSection(sectionId, user.userId);
 

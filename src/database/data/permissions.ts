@@ -37,6 +37,12 @@ export const permissions = [
     module: "pages",
   },
 
+  {
+    name: "Restore Page",
+    slug: "page.restore",
+    module: "pages",
+  },
+
   // ─────────────────────────────────────────────
   // Page Sections
   // ─────────────────────────────────────────────
@@ -59,18 +65,6 @@ export const permissions = [
     name: "Delete Page Section",
     slug: "page-section.delete",
     module: "pages-sections",
-  },
-
-  // Page Builder
-  {
-    name: "View Page Builder",
-    slug: "page-builder.view",
-    module: "pages",
-  },
-  {
-    name: "Manage Page Builder",
-    slug: "page-builder.manage",
-    module: "pages",
   },
 
   // ─────────────────────────────────────────────
@@ -183,9 +177,22 @@ export const permissions = [
     slug: "menu.view",
     module: "menus",
   },
+
   {
-    name: "Manage Menus",
-    slug: "menu.manage",
+    name: "Create Menu",
+    slug: "menu.create",
+    module: "menus",
+  },
+
+  {
+    name: "Update Menu",
+    slug: "menu.update",
+    module: "menus",
+  },
+
+  {
+    name: "Delete Menu",
+    slug: "menu.delete",
     module: "menus",
   },
 
@@ -213,11 +220,6 @@ export const permissions = [
     module: "media",
   },
   {
-    name: "Manage Media Library",
-    slug: "media.manage",
-    module: "media",
-  },
-  {
     name: "Restore Media",
     slug: "media.restore",
     module: "media",
@@ -234,6 +236,12 @@ export const permissions = [
   {
     name: "Export Contact Submissions",
     slug: "contact.export",
+    module: "contact",
+  },
+
+  {
+    name: "Delete Contact",
+    slug: "contact.delete",
     module: "contact",
   },
 
@@ -271,7 +279,7 @@ export const permissions = [
   },
   {
     name: "Manage SEO",
-    slug: "seo.manage",
+    slug: "seo.update",
     module: "seo",
   },
 
@@ -281,21 +289,22 @@ export const permissions = [
     slug: "redirect.view",
     module: "seo",
   },
+
   {
-    name: "Manage Redirects",
-    slug: "redirect.manage",
+    name: "Create Redirect",
+    slug: "redirect.create",
     module: "seo",
   },
 
-  // Sitemap
   {
-    name: "View Sitemap",
-    slug: "sitemap.view",
+    name: "Update Redirect",
+    slug: "redirect.update",
     module: "seo",
   },
+
   {
-    name: "Manage Sitemap",
-    slug: "sitemap.manage",
+    name: "Delete Redirect",
+    slug: "redirect.delete",
     module: "seo",
   },
 
@@ -309,14 +318,7 @@ export const permissions = [
   },
   {
     name: "Manage Settings",
-    slug: "settings.manage",
-    module: "settings",
-  },
-
-  // Analytics
-  {
-    name: "Manage Analytics",
-    slug: "analytics.manage",
+    slug: "settings.update",
     module: "settings",
   },
 
@@ -344,28 +346,50 @@ export const permissions = [
     module: "users",
   },
 
+  {
+    name: "Reset User Password",
+    slug: "user.reset-password",
+    module: "users",
+  },
+
   // ─────────────────────────────────────────────
   // Roles & Permissions
   // ─────────────────────────────────────────────
   {
     name: "View Roles",
-    slug: "role.view",
+    slug: "roles.view",
     module: "roles",
   },
   {
     name: "Create Role",
-    slug: "role.create",
+    slug: "roles.create",
     module: "roles",
   },
   {
     name: "Update Role",
-    slug: "role.update",
+    slug: "roles.update",
     module: "roles",
   },
   {
     name: "Delete Role",
-    slug: "role.delete",
+    slug: "roles.delete",
     module: "roles",
+  },
+
+  // ─────────────────────────────────────────────
+  // Profile
+  // ─────────────────────────────────────────────
+
+  {
+    name: "Update Profile",
+    slug: "profile.update",
+    module: "profile",
+  },
+
+  {
+    name: "Change Password",
+    slug: "profile.change-password",
+    module: "profile",
   },
 
   // ─────────────────────────────────────────────

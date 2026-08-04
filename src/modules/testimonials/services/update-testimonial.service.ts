@@ -6,12 +6,16 @@ import {
 } from "../repositories/testimonial.repository";
 import { toUpdateTestimonialPayload } from "../mapper/testimonial.mapper";;
 import { AppError } from "@/shared/utils/errors/app-error";
+import { requirePermission } from "@/modules/auth/authorization/permission";
+import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 
 export async function updateTestimonialService(
   id: number,
   testimonialData: UpdateTestimonialInput,
   user: AuthUser,
 ): Promise<void> {
+  requirePermission(user, PERMISSIONS.PAGE_SECTIONS_UPDATE);
+
   const existing = await findTestimonialById(id);
 
   if (!existing) {
