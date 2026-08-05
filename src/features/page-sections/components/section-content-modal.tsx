@@ -139,7 +139,7 @@ function SectionEditorInner({
       });
     },
     (errors) => {
-      console.error("Form Validation Errors:", errors);
+      console.error("Form Validation Errors:", JSON.stringify(errors, null, 2));
       showToast("Please check the form for missing or invalid fields.", "error");
     }
   );

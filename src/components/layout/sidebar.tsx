@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navGroups } from "./navigation";
 import { usePermissions } from "@/features/auth/api/use-has-permission";
+import { useState } from "react";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -80,35 +81,9 @@ export function Sidebar() {
               <p className="px-3 mb-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">
                 {group.title}
               </p>
-              {visibleItems.map((item) => {
-                const Icon = item.icon;
-                const isActive = pathname === item.href || pathname?.startsWith(item.href + "/");
-
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`
-                      flex items-center gap-3 px-3 py-2.5 rounded-xl
-                      text-sm font-medium transition-all duration-200
-                      group relative
-                      ${
-                        isActive
-                          ? "bg-accent/12 text-accent"
-                          : "text-muted-foreground hover:text-foreground hover:bg-surface-hover"
-                      }
-                    `}
-                  >
-                    {isActive && (
-                      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-accent rounded-r-full" />
-                    )}
-                    <Icon
-                      className={`transition-colors ${isActive ? "text-accent" : "text-muted-foreground group-hover:text-foreground"}`}
-                    />
-                    {item.label}
-                  </Link>
-                );
-              })}
+              {visibleItems.map((item) => (
+                <SidebarItem key={item.label} item={item} pathname={pathname} has={has} />
+              ))}
             </div>
           );
         })}
@@ -121,5 +96,127 @@ export function Sidebar() {
         </p>
       </div>
     </aside>
+  );
+}
+
+function SidebarItem({
+  item,
+  pathname,
+  has,
+}: {
+  item: any;
+  pathname: string;
+  has: (permission: any) => boolean;
+}) {
+  const Icon = item.icon;
+  const hasChildren = item.children && item.children.length > 0;
+  
+  const isChildActive = hasChildren
+    ? item.children.some((child: any) => pathname === child.href)
+    : false;
+
+  const isActive = pathname === item.href || pathname.startsWith(item.href + "/") || isChildActive;
+
+  const [isExpanded, setIsExpanded] = useState(isActive || false);
+
+  if (hasChildren) {
+    return (
+      <div className="space-y-1">
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className={`
+            w-full flex items-center justify-between px-3 py-2.5 rounded-xl
+            text-sm font-medium transition-all duration-200
+            group relative
+            ${
+              isActive
+                ? "bg-accent/12 text-accent"
+                : "text-muted-foreground hover:text-foreground hover:bg-surface-hover"
+            }
+          `}
+        >
+          {isActive && (
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-accent rounded-r-full" />
+          )}
+          <div className="flex items-center gap-3">
+            <Icon
+              className={`transition-colors ${isActive ? "text-accent" : "text-muted-foreground group-hover:text-foreground"}`}
+            />
+            {item.label}
+          </div>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={`transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+
+        <div
+          className={`grid transition-all duration-200 ease-in-out ${
+            isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+          }`}
+        >
+          <div className="overflow-hidden">
+            <div className="pl-9 space-y-1 mt-1">
+              {item.children.map((child: any) => {
+                const isChildCurrent = pathname === child.href;
+                if (child.permission && !has(child.permission)) return null;
+
+                return (
+                  <Link
+                    key={child.href}
+                    href={child.href}
+                    className={`
+                      block px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200
+                      ${
+                        isChildCurrent
+                          ? "bg-accent/10 text-accent"
+                          : "text-muted-foreground hover:text-foreground hover:bg-surface-hover"
+                      }
+                    `}
+                  >
+                    {child.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-1">
+      <Link
+        href={item.href}
+        className={`
+          flex items-center gap-3 px-3 py-2.5 rounded-xl
+          text-sm font-medium transition-all duration-200
+          group relative
+          ${
+            isActive
+              ? "bg-accent/12 text-accent"
+              : "text-muted-foreground hover:text-foreground hover:bg-surface-hover"
+          }
+        `}
+      >
+        {isActive && (
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-accent rounded-r-full" />
+        )}
+        <Icon
+          className={`transition-colors ${isActive ? "text-accent" : "text-muted-foreground group-hover:text-foreground"}`}
+        />
+        {item.label}
+      </Link>
+    </div>
   );
 }

@@ -8,7 +8,9 @@ import {
   Rows3,
   SquarePen,
   Trash2,
+  ChevronDown,
 } from "lucide-react";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { stringifySectionContent } from "../schemas/page-section.utils";
 import type { PageSectionListItem } from "../types/page-section.types";
@@ -74,99 +76,136 @@ export function PageSectionList({
 
   return (
     <div className="space-y-3">
-      {sections.map((section) => {
-        const isUpdating = updatingSectionId === section.id;
-        const isReadOnly = section.sectionType === "contact-cta";
-        const ownerModule = section.sectionType === "contact-cta" ? "Contact Module" : "";
+      {sections.map((section) => (
+        <SectionItem
+          key={section.id}
+          section={section}
+          isUpdating={updatingSectionId === section.id}
+          onToggleStatus={onToggleStatus}
+          onEdit={onEdit}
+          onDelete={onDelete}
+        />
+      ))}
+    </div>
+  );
+}
 
-        return (
-          <article
-            key={section.id}
-            className={`
-              rounded-2xl border bg-card-bg p-5 transition-all duration-200 hover:border-accent/20
-              ${section.status === "published" ? "border-card-border" : "border-card-border/50 opacity-70"}
-            `}
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="min-w-0 flex-1">
-                <div className="mb-1 flex flex-wrap items-center gap-2.5">
-                  <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-md bg-accent/10 px-1.5 text-xs font-bold text-accent">
-                    {section.sortOrder}
-                  </span>
-                  <div className="font-medium text-foreground">
-                    {section.sectionType}
-                  </div>
-                  <Badge
-                    variant={
-                      section.status === "published" ? "active" : "inactive"
-                    }
-                  >
-                    {section.status === "published" ? "Published" : "Draft"}
-                  </Badge>
+interface SectionItemProps {
+  section: PageSectionListItem;
+  isUpdating: boolean;
+  onToggleStatus: (section: PageSectionListItem) => void;
+  onEdit: (section: PageSectionListItem) => void;
+  onDelete: (section: PageSectionListItem) => void;
+}
+
+function SectionItem({
+  section,
+  isUpdating,
+  onToggleStatus,
+  onEdit,
+  onDelete,
+}: SectionItemProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const isReadOnly = section.sectionType === "contact-cta";
+  const ownerModule = section.sectionType === "contact-cta" ? "Contact Module" : "";
+
+  return (
+    <article
+      className={`
+        rounded-2xl border bg-card-bg p-5 transition-all duration-200 hover:border-accent/20
+        ${section.status === "published" ? "border-card-border" : "border-card-border/50 opacity-70"}
+      `}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0 flex-1">
+          <div className="mb-1 flex flex-wrap items-center gap-2.5">
+            <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-md bg-accent/10 px-1.5 text-xs font-bold text-accent">
+              {section.sortOrder}
+            </span>
+            <div className="font-medium text-foreground">
+              {section.sectionType}
+            </div>
+            <Badge
+              variant={section.status === "published" ? "active" : "inactive"}
+            >
+              {section.status === "published" ? "Published" : "Draft"}
+            </Badge>
+          </div>
+
+          {isReadOnly ? (
+            <div className="mt-3 flex items-center p-3 text-sm font-medium text-amber-600 bg-amber-50 border border-amber-200/60 rounded-lg">
+              Managed by {ownerModule}
+            </div>
+          ) : (
+            <div className="mt-3 overflow-hidden rounded-lg border border-card-border/60 bg-surface">
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="flex w-full items-center justify-between border-b border-card-border/60 px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-surface-hover"
+              >
+                <div className="flex items-center gap-2">
+                  <FileText size={13} />
+                  Content
                 </div>
-
-                {isReadOnly ? (
-                  <div className="mt-3 flex items-center p-3 text-sm font-medium text-amber-600 bg-amber-50 border border-amber-200/60 rounded-lg">
-                    Managed by {ownerModule}
-                  </div>
-                ) : (
-                  <div className="mt-3 overflow-hidden rounded-lg border border-card-border/60 bg-surface">
-                    <div className="flex items-center gap-2 border-b border-card-border/60 px-3 py-2 text-xs text-muted-foreground">
-                      <FileText size={13} />
-                      Content
-                    </div>
-                    <pre className="max-h-[96px] overflow-hidden px-3 py-2 font-mono text-xs leading-5 text-muted-foreground/80">
-                      {getContentPreview(section)}
-                    </pre>
-                  </div>
-                )}
-              </div>
-
-              <div className="flex shrink-0 items-center gap-1">
-                <button
-                  title={
-                    section.status === "published" ? "Move to Draft" : "Publish"
-                  }
-                  disabled={isUpdating}
-                  onClick={() => onToggleStatus(section)}
-                  className={`
-                    rounded-lg p-2 transition-all disabled:cursor-not-allowed disabled:opacity-50
-                    ${
-                      section.status === "published"
-                        ? "text-success hover:bg-success/10"
-                        : "text-muted-foreground hover:bg-success/10 hover:text-success"
-                    }
-                  `}
-                >
-                  {section.status === "published" ? (
-                    <Eye size={15} strokeWidth={1.8} />
-                  ) : (
-                    <EyeOff size={15} strokeWidth={1.8} />
-                  )}
-                </button>
-
-                <button
-                  title={isReadOnly ? "Disabled (Read-only)" : "Edit"}
-                  disabled={isUpdating || isReadOnly}
-                  onClick={() => onEdit(section)}
-                  className="rounded-lg p-2 text-muted-foreground transition-all hover:bg-surface-hover hover:text-foreground disabled:cursor-not-allowed disabled:opacity-30"
-                >
-                  <SquarePen size={15} strokeWidth={1.8} />
-                </button>
-
-                <button
-                  title={isReadOnly ? "Disabled (Read-only)" : "Delete"}
-                  disabled={isUpdating || isReadOnly}
-                  onClick={() => onDelete(section)}
-                  className="rounded-lg p-2 text-muted-foreground transition-all hover:bg-danger/10 hover:text-danger disabled:cursor-not-allowed disabled:opacity-30"
-                >
-                  <Trash2 size={15} strokeWidth={1.8} />
-                </button>
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
+                />
+              </button>
+              <div
+                className={`grid transition-all duration-200 ease-in-out ${
+                  isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                }`}
+              >
+                <div className="overflow-hidden">
+                  <pre className="px-3 py-2 font-mono text-xs leading-5 text-muted-foreground/80 max-h-[300px] overflow-auto">
+                    {getContentPreview(section)}
+                  </pre>
+                </div>
               </div>
             </div>
-          </article>
-        );
-      })}
-    </div>
+          )}
+        </div>
+
+        <div className="flex shrink-0 items-center gap-1">
+          <button
+            title={section.status === "published" ? "Move to Draft" : "Publish"}
+            disabled={isUpdating}
+            onClick={() => onToggleStatus(section)}
+            className={`
+              rounded-lg p-2 transition-all disabled:cursor-not-allowed disabled:opacity-50
+              ${
+                section.status === "published"
+                  ? "text-success hover:bg-success/10"
+                  : "text-muted-foreground hover:bg-success/10 hover:text-success"
+              }
+            `}
+          >
+            {section.status === "published" ? (
+              <Eye size={15} strokeWidth={1.8} />
+            ) : (
+              <EyeOff size={15} strokeWidth={1.8} />
+            )}
+          </button>
+
+          <button
+            title={isReadOnly ? "Disabled (Read-only)" : "Edit"}
+            disabled={isUpdating || isReadOnly}
+            onClick={() => onEdit(section)}
+            className="rounded-lg p-2 text-muted-foreground transition-all hover:bg-surface-hover hover:text-foreground disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            <SquarePen size={15} strokeWidth={1.8} />
+          </button>
+
+          <button
+            title={isReadOnly ? "Disabled (Read-only)" : "Delete"}
+            disabled={isUpdating || isReadOnly}
+            onClick={() => onDelete(section)}
+            className="rounded-lg p-2 text-muted-foreground transition-all hover:bg-danger/10 hover:text-danger disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            <Trash2 size={15} strokeWidth={1.8} />
+          </button>
+        </div>
+      </div>
+    </article>
   );
 }

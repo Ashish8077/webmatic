@@ -36,6 +36,7 @@ import { coreValuesContentSchema } from "../schemas/core-values.schema";
 import { missionVisionContentSchema } from "../schemas/mission-vision.schema";
 import { teamMembersContentSchema } from "../schemas/team-members.schema";
 import { developmentProcessContentSchema } from "../schemas/development-process.schema";
+import { blogListContentSchema, blogListSettingsSchema } from "../schemas/blog-list.schema";
 
 import {
   HeroContentForm,
@@ -68,6 +69,8 @@ import {
   ContactInformationSettingsForm,
   parseContactInformationContentDefaults,
   parseContactInformationSettingsDefaults,
+  BlogListContentForm,
+  BlogListSettingsForm,
 } from "../components/forms";
 
 import {
@@ -102,6 +105,7 @@ import {
   DevelopmentProcessContentForm,
   parseDevelopmentProcessContentDefaults,
 } from "../components/forms/development-process-form";
+import { parseBlogListContentDefaults, parseBlogListSettingsDefaults } from "../schemas/blog-list.schema";
 
 // ─── Content Registries ───────────────────────────────────────────────────────
 
@@ -123,6 +127,7 @@ export const SECTION_CONTENT_SCHEMA_MAP: Record<PageSectionType, z.ZodTypeAny> =
     "core-values": coreValuesContentSchema,
     "mission-vision": missionVisionContentSchema,
     "team-members": teamMembersContentSchema,
+    "blog-list": blogListContentSchema,
   };
 
 export const SECTION_CONTENT_FORM_MAP: Record<
@@ -145,6 +150,7 @@ export const SECTION_CONTENT_FORM_MAP: Record<
   "core-values": CoreValuesContentForm,
   "mission-vision": MissionVisionContentForm,
   "team-members": TeamMembersContentForm,
+  "blog-list": BlogListContentForm,
 };
 
 export const SECTION_CONTENT_DEFAULTS_MAP: Record<
@@ -167,6 +173,7 @@ export const SECTION_CONTENT_DEFAULTS_MAP: Record<
   "core-values": parseCoreValuesContentDefaults,
   "mission-vision": parseMissionVisionContentDefaults,
   "team-members": parseTeamMembersContentDefaults,
+  "blog-list": parseBlogListContentDefaults,
 };
 
 // ─── Settings Registries ──────────────────────────────────────────────────────
@@ -191,6 +198,7 @@ export const SECTION_SETTINGS_SCHEMA_MAP: Record<
   "core-values": z.object({}),
   "mission-vision": z.object({}),
   "team-members": z.object({}),
+  "blog-list": blogListSettingsSchema,
 };
 
 export const SECTION_SETTINGS_FORM_MAP: Record<
@@ -213,6 +221,7 @@ export const SECTION_SETTINGS_FORM_MAP: Record<
   "core-values": () => null,
   "mission-vision": () => null,
   "team-members": () => null,
+  "blog-list": BlogListSettingsForm,
 };
 
 export const SECTION_SETTINGS_DEFAULTS_MAP: Record<
@@ -235,4 +244,5 @@ export const SECTION_SETTINGS_DEFAULTS_MAP: Record<
   "core-values": () => ({}),
   "mission-vision": () => ({}),
   "team-members": () => ({}),
+  "blog-list": parseBlogListSettingsDefaults,
 };

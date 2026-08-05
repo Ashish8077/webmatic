@@ -34,6 +34,8 @@ export const PERMISSIONS = {
   BLOG_DELETE: "blog.delete",
   BLOG_PUBLISH: "blog.publish",
   BLOG_UNPUBLISH: "blog.unpublish",
+  BLOG_CATEGORY_MANAGE: "blog-category.manage",
+  BLOG_TAG_MANAGE: "blog-tag.manage",
 
   SEO_MANAGE: "seo.manage",
 

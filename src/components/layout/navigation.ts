@@ -8,6 +8,7 @@ import {
   Contact, 
   Menu,
   Settings,
+  FileText
 } from "lucide-react";
 import { Permission } from "@/features/auth/constants/permissions";
 
@@ -56,6 +57,16 @@ export const navGroups: NavGroup[] = [
         href: "/admin/testimonials",
         permission: Permission.PAGE_VIEW,
         icon: MessageSquareQuote,
+      },
+      {
+        label: "Blogs",
+        href: "/admin/blogs",
+        icon: FileText,
+        children: [
+          { label: "All Blogs", href: "/admin/blogs", permission: Permission.BLOG_VIEW },
+          { label: "Categories", href: "/admin/blogs/categories", permission: Permission.BLOG_VIEW },
+          { label: "Tags", href: "/admin/blogs/tags", permission: Permission.BLOG_VIEW },
+        ]
       },
       {
         label: "Media",
