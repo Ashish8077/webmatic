@@ -13,7 +13,7 @@ export async function getPageSectionsService(
   pageId: number,
   user: AuthUser,
 ): Promise<PageSectionListItem[]> {
-  requirePermission(user, PERMISSIONS.PAGES_VIEW);
+  requirePermission(user, PERMISSIONS.PAGE_SECTIONS_VIEW);
 
   const page = await findPageById(pageId);
 

@@ -179,10 +179,9 @@ export const MediaService = {
   /**
    * Retrieves a single media item.
    */
-  async getMedia(id: number, user?: AuthUser): Promise<Media & { url: string }> {
-    if (user) {
-      requirePermission(user, PERMISSIONS.MEDIA_VIEW);
-    }
+  async getMedia(id: number, user: AuthUser): Promise<Media & { url: string }> {
+    requirePermission(user, PERMISSIONS.MEDIA_VIEW);
+
     const media = await findMediaById(id);
     if (!media) throw new MediaNotFoundError();
     const storage = getStorageProvider();
@@ -194,11 +193,9 @@ export const MediaService = {
    */
   async getMediaList(
     query: MediaListQuery,
-    user?: AuthUser,
+    user: AuthUser,
   ): Promise<MediaListResponse> {
-    if (user) {
-      requirePermission(user, PERMISSIONS.MEDIA_VIEW);
-    }
+    requirePermission(user, PERMISSIONS.MEDIA_VIEW);
 
     const [items, totalItems] = await Promise.all([
       findAllMedia(query),

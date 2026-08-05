@@ -18,11 +18,11 @@ export async function GET(
   { params }: IdRouteParams,
 ): Promise<NextResponse> {
   try {
-    await requireAuth();
+    const user = await requireAuth();
 
     const { id: testimonialId } = validate(idParamSchema, await params);
 
-    const testimonialData = await getTestimonialService(testimonialId);
+    const testimonialData = await getTestimonialService(testimonialId, user);
 
     return successResponse({
       message: "Testimonial fetched successfully",

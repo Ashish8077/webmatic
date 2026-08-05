@@ -3,7 +3,7 @@ import { normaliseTestimonialContent } from "./mapper";
 import type { RawTestimonialContent } from "./types";
 import { TestimonialsSlider } from "./testimonials-slider";
 import Image from "next/image";
-import { getTestimonialsService } from "@/modules/testimonials/services/get-testimonials.service";
+import { getPublicTestimonialsService } from "@/modules/testimonials/services/get-testimonials.service";
 import { getMediaUrl } from "@/features/media/utils/media-url";
 
 export async function TestimonialsSection({ content, settings }: SectionProps) {
@@ -11,7 +11,7 @@ export async function TestimonialsSection({ content, settings }: SectionProps) {
     content as unknown as RawTestimonialContent,
   );
 
-  const testimonialsResponse = await getTestimonialsService({
+  const testimonialsResponse = await getPublicTestimonialsService({
     page: 1,
     limit: 100,
     status: "published",

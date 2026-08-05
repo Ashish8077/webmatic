@@ -5,7 +5,7 @@ import { AuthUser } from "../types/auth-user";
 
 export async function findPermissionsByUserId(
   userId: number,
-): Promise<string[]> {
+): Promise<Permission[]> {
   const [rows] = await db.execute<PermissionRow[]>(
     `
       SELECT DISTINCT p.slug
@@ -22,7 +22,7 @@ export async function findPermissionsByUserId(
     [userId],
   );
 
-  return rows.map((permission) => permission.slug);
+  return rows.map((permission) => permission.slug as Permission);
 }
 
 export async function hasPermission(
@@ -49,6 +49,8 @@ export async function hasPermission(
 
   return Array.isArray(rows) && rows.length > 0;
 }
+
+import { Permission } from "../constants/permissions";
 
 export async function findAuthUserById(
   userId: number,
@@ -92,7 +94,7 @@ export async function findAuthUserById(
   const roles = [...new Set(permissionRows.map((row) => row.role_slug))];
 
   const permissions = [
-    ...new Set(permissionRows.map((row) => row.permission_slug)),
+    ...new Set(permissionRows.map((row) => row.permission_slug as Permission)),
   ];
 
   return {

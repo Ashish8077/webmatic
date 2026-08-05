@@ -10,7 +10,7 @@ export async function getSectionById(
   sectionId: number,
   user: AuthUser,
 ): Promise<PageSectionResponse> {
-  requirePermission(user, PERMISSIONS.PAGES_VIEW);
+  requirePermission(user, PERMISSIONS.PAGE_SECTIONS_VIEW);
 
   const pageSection = await findSectionById(sectionId);
 

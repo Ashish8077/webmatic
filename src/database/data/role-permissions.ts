@@ -4,16 +4,22 @@ export const rolePermissions = {
   ],
 
   editor: [
+    // Dashboard
+    "dashboard.view",
+
     // Pages
     "page.view",
     "page.create",
     "page.update",
     "page.delete",
     "page.publish",
+    "page.restore",
 
-    // Page Builder
-    "page-builder.view",
-    "page-builder.manage",
+    // Page Sections
+    "page-section.view",
+    "page-section.create",
+    "page-section.update",
+    "page-section.delete",
 
     // Blogs
     "blog.view",
@@ -39,11 +45,23 @@ export const rolePermissions = {
     "media.upload",
     "media.update",
     "media.delete",
-    "media.manage",
     "media.restore",
+
+    //Menu
+    "menu.view",
+    "menu.create",
+    "menu.update",
+    "menu.delete",
   ],
 
   "marketing-manager": [
+    // Dashboard
+    "dashboard.view",
+
+    // SEO
+    "seo.view",
+    "seo.update",
+
     // Blogs
     "blog.view",
     "blog.create",
@@ -62,64 +80,16 @@ export const rolePermissions = {
     "blog-tag.create",
     "blog-tag.update",
     "blog-tag.delete",
-
-    // SEO
-    "seo.view",
-    "seo.manage",
-
-    // Redirects
-    "redirect.view",
-    "redirect.manage",
-
-    // Sitemap
-    "sitemap.view",
-    "sitemap.manage",
-
-    // Leads
-    "lead.view",
-    "lead.export",
-
-    // Analytics
-    "analytics.manage",
-  ],
-
-  "content-manager": [
-    // Pages
-    "page.view",
-    "page.create",
-    "page.update",
-    "page.delete",
-    "page.publish",
-
-    // Page Builder
-    "page-builder.view",
-    "page-builder.manage",
-
-    // Services
-    "service.view",
-    "service.create",
-    "service.update",
-    "service.delete",
-    "service.publish",
-
-    // Media
-    "media.view",
-    "media.upload",
-    "media.update",
-    "media.delete",
-    "media.manage",
-    "media.restore",
-  ],
-
-  "sales-manager": [
-    // Contact Forms
-    "contact.view",
-    "contact.export",
 
     // Leads
     "lead.view",
     "lead.update",
     "lead.export",
     "lead.delete",
+
+    // Contact Forms
+    "contact.view",
+    "contact.export",
+    "contact.delete",
   ],
 };
