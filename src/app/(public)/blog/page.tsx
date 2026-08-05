@@ -1,48 +1,85 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { Metadata } from "next";
+import { ChevronRight } from "lucide-react";
+import { getBlogsService } from "@/modules/blogs/services/get-blogs.service";
+import { BlogCard } from "./_components/blog-card";
+import { PublicPagination } from "./_components/public-pagination";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { getBlogListPageData } from "@/modules/pages/services/get-public-page";
+import type { BlogListContent } from "@/features/page-sections/schemas/blog-list.schema";
 
 export const metadata: Metadata = {
-  title: "Blog - Coming Soon | Webmatic Technology",
-  description: "Our blog is currently under construction. Stay tuned for insightful articles, news, and updates!",
+  title: "Blog | Webmatic Technology",
+  description: "Check out the resources below for more proof on how we help brands grow to their fullest potential",
 };
 
-export default function BlogPage() {
+interface BlogPageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function BlogPage(props: BlogPageProps) {
+  const searchParams = await props.searchParams;
+  const pageParam = typeof searchParams.page === "string" ? searchParams.page : Array.isArray(searchParams.page) ? searchParams.page[0] : "1";
+  const page = parseInt(pageParam, 10);
+  const validPage = isNaN(page) || page < 1 ? 1 : page;
+
+  const pageData = await getBlogListPageData();
+  const blogListSection = pageData?.sections.find((s) => s.sectionType === "blog-list");
+  const blogListContent = blogListSection?.content as BlogListContent | undefined;
+
+  const title = blogListContent?.heading || "Webmatic Technology Blog";
+  const subtitle = blogListContent?.subheading || "Check out the resources below for more proof on how we help brands grow to their fullest potential";
+
+  const blogsResponse = await getBlogsService({
+    page: validPage,
+    limit: 9, // 3x3 grid
+    status: "published",
+    sortBy: "published_at",
+    sortOrder: "desc",
+  });
+
   return (
-    <main className="min-h-screen flex items-center justify-center pt-[160px] md:pt-[180px] pb-16 bg-slate-50 relative overflow-hidden">
-      {/* Subtle Light Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-50" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-hero-primary/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-hero-accent/5 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-2xl mx-auto animate-fade-in">
-        {/* Badge */}
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-hero-accent/20 bg-white/80 backdrop-blur-md px-4 py-2 text-sm font-semibold tracking-wide text-hero-accent shadow-sm animate-slide-up">
-          <span className="h-2 w-2 rounded-full bg-hero-accent animate-pulse" />
-          <span>Under Construction</span>
+    <main className="pt-[104px] bg-white min-h-screen">
+      <div className="mx-auto max-w-[1170px] px-5 sm:px-8 py-12 lg:py-16">
+        
+        {/* Header Section */}
+        <div className="flex flex-col items-center text-center mb-16">
+          {/* Breadcrumb */}
+          <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Blog" }]} />
+          
+          {/* Title & Subtitle */}
+          <h1 className="text-[32px] md:text-[40px] font-bold text-navy leading-tight mb-4">
+            {title}
+          </h1>
+          <p className="text-[16px] text-slate-500 max-w-2xl mx-auto">
+            {subtitle}
+          </p>
         </div>
 
-        <h1 className="text-5xl md:text-6xl font-extrabold text-hero-navy mb-6 tracking-tight animate-slide-up" style={{ animationDelay: "100ms" }}>
-          Our Blog is <span className="text-hero-accent">Coming Soon</span>
-        </h1>
-        
-        <p className="text-slate-500 text-lg mb-10 max-w-lg leading-relaxed animate-slide-up" style={{ animationDelay: "200ms" }}>
-          We&apos;re working hard to bring you amazing content. Check back shortly for insightful articles, company news, and industry updates!
-        </p>
-        
-        <div className="flex flex-col sm:flex-row gap-4 items-center animate-slide-up" style={{ animationDelay: "300ms" }}>
-          <Link 
-            href="/"
-            className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-hero-primary px-7 py-3.5 text-[14px] font-semibold text-white shadow-[0_6px_18px_rgba(10,152,212,0.2)] transition-all duration-200 hover:bg-hero-primary-hover hover:-translate-y-0.5 active:translate-y-0"
-          >
-            Return Home
-          </Link>
-          <Link 
-            href="/contact"
-            className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/70 backdrop-blur-sm px-7 py-3.5 text-[14px] font-semibold text-hero-navy transition-all duration-200 hover:bg-white hover:border-slate-400 hover:-translate-y-0.5 active:translate-y-0"
-          >
-            Contact Us
-          </Link>
-        </div>
+        {/* Blog Grid */}
+        {blogsResponse.items.length > 0 ? (
+          <>
+            <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+              {blogsResponse.items.map((blog) => (
+                <BlogCard key={blog.id} blog={blog} />
+              ))}
+            </div>
+
+            {/* Pagination */}
+            <PublicPagination
+              currentPage={blogsResponse.pagination.page}
+              totalPages={blogsResponse.pagination.totalPages}
+              basePath="/blog"
+            />
+          </>
+        ) : (
+          /* Empty State */
+          <div className="flex flex-col items-center justify-center py-20 text-center border border-slate-200 border-dashed rounded-2xl bg-slate-50">
+            <h3 className="text-xl font-bold text-navy mb-2">No blogs found</h3>
+            <p className="text-slate-500">Check back later for new articles and resources.</p>
+          </div>
+        )}
+
       </div>
     </main>
   );

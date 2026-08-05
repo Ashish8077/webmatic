@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useDebounce } from "@/shared/hooks/use-debounce";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import type { GetServicesQuery } from "../api/get-services";
@@ -25,21 +26,16 @@ export function ServiceListFilters({
   onSortChange,
 }: ServiceListFiltersProps) {
   const [localSearch, setLocalSearch] = useState(query.search || "");
+  const debouncedSearch = useDebounce(localSearch, 500);
 
-  // Debounce search effect
   useEffect(() => {
-    const handler = setTimeout(() => {
-      // Only call update if trimmed search changed to avoid unnecessary re-fetches
-      const trimmedLocal = localSearch.trim();
-      const currentQuerySearch = query.search || "";
-      if (trimmedLocal !== currentQuerySearch) {
-        onSearchChange(trimmedLocal);
-      }
-    }, 500);
-
-    return () => clearTimeout(handler);
+    const trimmedLocal = debouncedSearch.trim();
+    const currentQuerySearch = query.search || "";
+    if (trimmedLocal !== currentQuerySearch) {
+      onSearchChange(trimmedLocal);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localSearch, onSearchChange]); // intentionally omitted `query.search` to prevent circular re-trigger
+  }, [debouncedSearch, onSearchChange]);
 
   return (
     <div className="flex flex-col sm:flex-row gap-3 mb-6">

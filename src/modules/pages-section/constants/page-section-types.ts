@@ -15,6 +15,7 @@ export const PAGE_SECTION_TYPES = [
   "mission-vision",
   "team-members",
   "contact-information",
+  "blog-list",
 ] as const;
 
 export type PageSectionType = (typeof PAGE_SECTION_TYPES)[number];

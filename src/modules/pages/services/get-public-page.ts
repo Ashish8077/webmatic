@@ -86,3 +86,39 @@ export async function getServiceListPageData() {
     sections,
   };
 }
+
+export async function getBlogListPageData() {
+  const page = await findPublishedPageByTemplate("blog-list");
+
+  if (!page) return null;
+
+  const sectionRows: PageSectionRow[] = await findPageActiveSectionsByPageId(
+    page.id,
+  );
+
+  const sections = await Promise.all(
+    sectionRows.map(async (row) => {
+      let content = row.content as Record<string, unknown>;
+      content = (await hydrateJsonMedia(content)) as Record<string, unknown>;
+
+      return {
+        id: row.id,
+        sectionType: row.section_type,
+        title: row.title,
+        content,
+        settings: row.settings,
+        sortOrder: row.sort_order,
+      };
+    })
+  );
+
+  return {
+    meta: {
+      title: page.title,
+      seoTitle: page.seo_title,
+      metaDescription: page.meta_description,
+      metaKeywords: page.meta_keywords,
+    },
+    sections,
+  };
+}

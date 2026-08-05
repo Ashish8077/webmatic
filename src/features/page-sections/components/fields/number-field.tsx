@@ -32,7 +32,7 @@ export function NumberField({
       value={fieldProps.value ?? ""}
       onChange={(e) => {
         const raw = e.target.value;
-        fieldProps.onChange(raw === "" ? null : Number(raw));
+        fieldProps.onChange(raw === "" ? undefined : Number(raw));
       }}
       onBlur={fieldProps.onBlur}
       ref={fieldRef}
