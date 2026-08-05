@@ -5,10 +5,16 @@ import { AppError } from "@/shared/utils/errors/app-error";
 import { findMediaById } from "@/modules/media/repositories/media.repository";
 import { StorageFactory } from "@/shared/storage/storage-factory";
 import { Media } from "@/modules/media/types/media.types";
+import { AuthUser } from "@/modules/auth/types/auth-user";
+import { requirePermission } from "@/modules/auth/authorization/permission";
+import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 
 export async function getTestimonialService(
   id: number,
+  user: AuthUser,
 ): Promise<TestimonialItem> {
+  requirePermission(user, PERMISSIONS.PAGE_SECTIONS_VIEW);
+  
   const row = await findTestimonialById(id);
 
   if (!row) {

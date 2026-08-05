@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/modules/auth/lib/get-auth-user";
-import { requirePermission } from "@/modules/auth/authorization/permission";
-import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { validate } from "@/shared/utils/validators/validation";
 import { updateMenuItemSchema } from "@/modules/menus/schemas/update-menu-item.schema";
 import { menuService } from "@/modules/menus/services/menu.service";
@@ -15,12 +13,11 @@ export async function PUT(
   try {
     const { id } = await params;
     const user = await requireAuth();
-    requirePermission(user, PERMISSIONS.MENUS_UPDATE);
 
     const body = await request.json();
     const data = validate(updateMenuItemSchema, body);
 
-    const result = await menuService.updateMenuItem(Number(id), data, user.userId);
+    const result = await menuService.updateMenuItem(Number(id), data, user);
 
     return successResponse({
       data: result,
@@ -38,9 +35,8 @@ export async function DELETE(
   try {
     const { id } = await params;
     const user = await requireAuth();
-    requirePermission(user, PERMISSIONS.MENUS_UPDATE);
 
-    await menuService.deleteMenuItem(Number(id), user.userId);
+    await menuService.deleteMenuItem(Number(id), user);
 
     return successResponse({
       data: null,

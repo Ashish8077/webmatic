@@ -3,10 +3,6 @@ import { Permission } from "../constants/permissions";
 import { AuthUser } from "../types/auth-user";
 
 export function hasPermission(user: AuthUser, permission: Permission): boolean {
-  if (user.roles.includes("super-admin")) {
-    return true;
-  }
-
   return user.permissions.includes(permission);
 }
 

@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/modules/auth/lib/get-auth-user";
-import { requirePermission } from "@/modules/auth/authorization/permission";
-import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { validate } from "@/shared/utils/validators/validation";
 import { updateMenuSchema } from "@/modules/menus/schemas/update-menu.schema";
 import { menuService } from "@/modules/menus/services/menu.service";
@@ -15,9 +13,8 @@ export async function GET(
   try {
     const { id } = await params;
     const user = await requireAuth();
-    requirePermission(user, PERMISSIONS.MENUS_VIEW);
 
-    const { menu, items } = await menuService.getAdminMenu(Number(id));
+    const { menu, items } = await menuService.getAdminMenu(Number(id), user);
 
     return successResponse({
       data: { menu, items },
@@ -35,12 +32,11 @@ export async function PUT(
   try {
     const { id } = await params;
     const user = await requireAuth();
-    requirePermission(user, PERMISSIONS.MENUS_UPDATE);
 
     const body = await request.json();
     const data = validate(updateMenuSchema, body);
 
-    const result = await menuService.updateMenu(Number(id), data, user.userId);
+    const result = await menuService.updateMenu(Number(id), data, user);
 
     return successResponse({
       data: result,
@@ -58,9 +54,8 @@ export async function DELETE(
   try {
     const { id } = await params;
     const user = await requireAuth();
-    requirePermission(user, PERMISSIONS.MENUS_DELETE);
 
-    await menuService.deleteMenu(Number(id), user.userId);
+    await menuService.deleteMenu(Number(id), user);
 
     return successResponse({
       data: null,

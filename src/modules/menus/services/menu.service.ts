@@ -1,13 +1,22 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { menuRepository } from "../repositories/menu.repository";
 import { menuItemRepository } from "../repositories/menu-item.repository";
-import { Menu, MenuItem, MenuLocation, MenuNode, ReorderMenuItemPayload } from "../types/menu.types";
+import {
+  Menu,
+  MenuItem,
+  MenuLocation,
+  MenuNode,
+  ReorderMenuItemPayload,
+} from "../types/menu.types";
 import { CreateMenuDTO } from "../schemas/create-menu.schema";
 import { UpdateMenuDTO } from "../schemas/update-menu.schema";
 import { CreateMenuItemDTO } from "../schemas/create-menu-item.schema";
 import { UpdateMenuItemDTO } from "../schemas/update-menu-item.schema";
 import { findPageById } from "@/modules/pages/repositories/page.repository";
 import { findServiceById } from "@/modules/services/repositories/service.repository";
+import { AuthUser } from "@/modules/auth/types/auth-user";
+import { requirePermission } from "@/modules/auth/authorization/permission";
+import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 
 interface ResolvedTarget {
   href: string;
@@ -16,69 +25,92 @@ interface ResolvedTarget {
 
 export const menuService = {
   // --- MENU CRUD ---
-  
-  async createMenu(data: CreateMenuDTO, adminId: number): Promise<Menu> {
-    return menuRepository.create(data, adminId);
+
+  async createMenu(data: CreateMenuDTO, user: AuthUser): Promise<Menu> {
+    requirePermission(user, PERMISSIONS.MENUS_CREATE);
+    return menuRepository.create(data, user.userId);
   },
 
-  async updateMenu(id: number, data: UpdateMenuDTO, adminId: number): Promise<Menu | null> {
-    const menu = await menuRepository.update(id, data, adminId);
+  async updateMenu(
+    id: number,
+    data: UpdateMenuDTO,
+    user: AuthUser,
+  ): Promise<Menu | null> {
+    requirePermission(user, PERMISSIONS.MENUS_UPDATE);
+    const menu = await menuRepository.update(id, data, user.userId);
     if (menu) this.invalidateCache(menu.location);
     return menu;
   },
 
-  async deleteMenu(id: number, adminId: number): Promise<boolean> {
+  async deleteMenu(id: number, user: AuthUser): Promise<boolean> {
+    requirePermission(user, PERMISSIONS.MENUS_DELETE);
     const menu = await menuRepository.findById(id);
     if (!menu) return false;
-    
+
     // Check if it has items
     const items = await menuItemRepository.findByMenuId(id);
     if (items.length > 0) {
       throw new Error("Cannot delete menu with existing items.");
     }
 
-    const deleted = await menuRepository.softDelete(id, adminId);
+    const deleted = await menuRepository.softDelete(id, user.userId);
     if (deleted) this.invalidateCache(menu.location);
     return deleted;
   },
 
-  async getAdminMenu(id: number): Promise<{ menu: Menu; items: MenuItem[] }> {
+  async getAdminMenu(
+    id: number,
+    user: AuthUser,
+  ): Promise<{ menu: Menu; items: MenuItem[] }> {
+    requirePermission(user, PERMISSIONS.MENUS_VIEW);
     const menu = await menuRepository.findById(id);
     if (!menu) throw new Error("Menu not found");
-    
+
     const items = await menuItemRepository.findByMenuId(id);
     return { menu, items };
   },
 
-  async getMenus(): Promise<Menu[]> {
+  async getMenus(user: AuthUser): Promise<Menu[]> {
+    requirePermission(user, PERMISSIONS.MENUS_VIEW);
     return menuRepository.findAll();
   },
 
-  async getMenuById(id: number): Promise<Menu | null> {
+  async getMenuById(id: number, user: AuthUser): Promise<Menu | null> {
+    requirePermission(user, PERMISSIONS.MENUS_VIEW);
     return menuRepository.findById(id);
   },
 
   // --- MENU ITEM CRUD ---
 
-  async createMenuItem(data: CreateMenuItemDTO, adminId: number): Promise<MenuItem> {
+  async createMenuItem(
+    data: CreateMenuItemDTO,
+    user: AuthUser,
+  ): Promise<MenuItem> {
+    requirePermission(user, PERMISSIONS.MENUS_UPDATE);
     this.validateTarget(data);
-    const item = await menuItemRepository.create(data, adminId);
+    const item = await menuItemRepository.create(data, user.userId);
     const menu = await menuRepository.findById(data.menuId);
     if (menu) this.invalidateCache(menu.location);
     return item;
   },
 
-  async updateMenuItem(id: number, data: UpdateMenuItemDTO, adminId: number): Promise<MenuItem | null> {
+  async updateMenuItem(
+    id: number,
+    data: UpdateMenuItemDTO,
+    user: AuthUser,
+  ): Promise<MenuItem | null> {
+    requirePermission(user, PERMISSIONS.MENUS_UPDATE);
     const existing = await menuItemRepository.findById(id);
     if (!existing) return null;
 
-    const item = await menuItemRepository.update(id, data, adminId);
+    const item = await menuItemRepository.update(id, data, user.userId);
     const menu = await menuRepository.findById(existing.menuId);
     if (menu) this.invalidateCache(menu.location);
     return item;
   },
 
-  async deleteMenuItem(id: number, adminId: number): Promise<boolean> {
+  async deleteMenuItem(id: number, user: AuthUser): Promise<boolean> {
+    requirePermission(user, PERMISSIONS.MENUS_UPDATE);
     const existing = await menuItemRepository.findById(id);
     if (!existing) return false;
 
@@ -87,21 +119,26 @@ export const menuService = {
       throw new Error("Cannot delete menu item that has children.");
     }
 
-    const deleted = await menuItemRepository.softDelete(id, adminId);
+    const deleted = await menuItemRepository.softDelete(id, user.userId);
     const menu = await menuRepository.findById(existing.menuId);
     if (menu) this.invalidateCache(menu.location);
     return deleted;
   },
 
-  async reorderMenuItems(menuId: number, items: ReorderMenuItemPayload[], adminId: number): Promise<void> {
+  async reorderMenuItems(
+    menuId: number,
+    items: ReorderMenuItemPayload[],
+    user: AuthUser,
+  ): Promise<void> {
+    requirePermission(user, PERMISSIONS.MENUS_UPDATE);
     // Validate circular references
     const idMap = new Map<number, number | null>();
-    items.forEach(i => idMap.set(i.id, i.parentId));
+    items.forEach((i) => idMap.set(i.id, i.parentId));
 
     for (const item of items) {
       let currentParent = item.parentId;
       const visited = new Set<number>([item.id]);
-      
+
       while (currentParent) {
         if (visited.has(currentParent)) {
           throw new Error("Circular reference detected.");
@@ -111,8 +148,8 @@ export const menuService = {
       }
     }
 
-    await menuItemRepository.reorder(items, adminId);
-    
+    await menuItemRepository.reorder(items, user.userId);
+
     const menu = await menuRepository.findById(menuId);
     if (menu) this.invalidateCache(menu.location);
   },
@@ -124,7 +161,7 @@ export const menuService = {
     if (!menu || !menu.isActive) return [];
 
     const items = await menuItemRepository.findByMenuId(menu.id);
-    const activeItems = items.filter(item => item.isActive);
+    const activeItems = items.filter((item) => item.isActive);
 
     return this.buildMenuTree(activeItems, null);
   },
@@ -133,7 +170,7 @@ export const menuService = {
 
   invalidateCache(location: MenuLocation) {
     revalidatePath("/", "layout");
-    
+
     // Also revalidate by tag for more granular layout components
     // @ts-expect-error next/cache types mismatch
     revalidateTag(`menu-${location}`);
@@ -145,7 +182,11 @@ export const menuService = {
   },
 
   async resolveTarget(item: MenuItem): Promise<ResolvedTarget> {
-    if (item.itemType === 'group' || item.itemType === 'separator' || item.itemType === 'heading') {
+    if (
+      item.itemType === "group" ||
+      item.itemType === "separator" ||
+      item.itemType === "heading"
+    ) {
       return { href: "#", exists: true };
     }
 
@@ -155,13 +196,18 @@ export const menuService = {
 
     if (item.targetType === "page" && item.referenceId) {
       const page = await findPageById(item.referenceId);
-      if (!page || page.status !== 'published') return { href: "", exists: false };
-      return { href: `/${page.slug === 'home' ? '' : page.slug}`, exists: true };
+      if (!page || page.status !== "published")
+        return { href: "", exists: false };
+      return {
+        href: `/${page.slug === "home" ? "" : page.slug}`,
+        exists: true,
+      };
     }
 
     if (item.targetType === "service" && item.referenceId) {
       const service = await findServiceById(item.referenceId);
-      if (!service || service.status !== 'published') return { href: "", exists: false };
+      if (!service || service.status !== "published")
+        return { href: "", exists: false };
       return { href: `/services/${service.slug}`, exists: true };
     }
 
@@ -173,26 +219,29 @@ export const menuService = {
     return { href: "#", exists: false };
   },
 
-  async buildMenuTree(items: MenuItem[], parentId: number | null): Promise<MenuNode[]> {
-    const children = items.filter(i => i.parentId === parentId);
+  async buildMenuTree(
+    items: MenuItem[],
+    parentId: number | null,
+  ): Promise<MenuNode[]> {
+    const children = items.filter((i) => i.parentId === parentId);
     const nodes: MenuNode[] = [];
 
     for (const child of children) {
       const target = await this.resolveTarget(child);
-      if (!target.exists && child.itemType === 'link') {
+      if (!target.exists && child.itemType === "link") {
         continue; // Skip broken links
       }
 
       const nodeChildren = await this.buildMenuTree(items, child.id);
-      
-      const rawChildren = items.filter(i => i.parentId === child.id);
+
+      const rawChildren = items.filter((i) => i.parentId === child.id);
       let layout: "link" | "dropdown" | "mega" = "link";
 
       if (rawChildren.length > 0) {
-        const hasGroup = rawChildren.some(c => c.itemType === "group");
+        const hasGroup = rawChildren.some((c) => c.itemType === "group");
         layout = hasGroup ? "mega" : "dropdown";
       }
-      
+
       nodes.push({
         id: child.id,
         title: child.title,
@@ -207,5 +256,5 @@ export const menuService = {
     }
 
     return nodes;
-  }
+  },
 };

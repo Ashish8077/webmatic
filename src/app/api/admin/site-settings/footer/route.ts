@@ -6,17 +6,13 @@ export async function GET() {
   try {
     const user = await requireAuth();
     
-    // We can reuse the CAN_READ_MENUS permission for now or add a CAN_MANAGE_SETTINGS permission later.
-    // For this migration, we check if they are logged in and have admin access.
-    if (!user || (!user.roles.includes("super-admin") && !user.roles.includes("admin"))) { 
-       // If you have a specific permission for settings, use it. For now, admin is safe.
-       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
-
-    const settings = await siteSettingsService.getFooterSettings();
+    const settings = await siteSettingsService.getFooterSettings(user);
     return NextResponse.json(settings);
   } catch (error) {
     console.error("[Footer Settings GET]", error);
+    if (error && typeof error === "object" && "name" in error && error.name === "ZodError") {
+      return new NextResponse("Invalid data", { status: 422 });
+    }
     return new NextResponse("Internal error", { status: 500 });
   }
 }
@@ -25,12 +21,8 @@ export async function PUT(request: Request) {
   try {
     const user = await requireAuth();
     
-    if (!user || (!user.roles.includes("super-admin") && !user.roles.includes("admin"))) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
-
     const body = await request.json();
-    await siteSettingsService.updateFooterSettings(body, user.userId);
+    await siteSettingsService.updateFooterSettings(body, user);
 
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -14,6 +14,8 @@ export interface RefreshTokenResponse {
   accessToken: string;
 }
 
+import { Permission } from "../constants/permissions";
+
 export interface PermissionsResponse {
-  permissions: string[];
+  permissions: Permission[];
 }

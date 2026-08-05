@@ -3,13 +3,18 @@ import { siteSettingsRepository } from "../repositories/site-settings.repository
 import { FooterSettings } from "../types/footer.types";
 import { footerSettingsSchema } from "../schemas/footer.schema";
 import { defaultFooterSettings } from "@/database/data/footer-settings";
+import { AuthUser } from "@/modules/auth/types/auth-user";
+import { requirePermission } from "@/modules/auth/authorization/permission";
+import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 
 export const siteSettingsService = {
   // --- Footer Settings ---
 
-  async getFooterSettings(): Promise<FooterSettings> {
+  async getFooterSettings(user: AuthUser): Promise<FooterSettings> {
+    requirePermission(user, PERMISSIONS.SETTINGS_VIEW);
+
     const data = await siteSettingsRepository.getByKey("layout.footer");
-    
+
     if (!data) {
       return defaultFooterSettings as unknown as FooterSettings;
     }
@@ -17,14 +22,26 @@ export const siteSettingsService = {
     return data as unknown as FooterSettings;
   },
 
-  async updateFooterSettings(data: unknown, adminId: number): Promise<void> {
+  async getPublicFooterSettings(): Promise<FooterSettings> {
+    const data = await siteSettingsRepository.getByKey("layout.footer");
+
+    if (!data) {
+      return defaultFooterSettings as unknown as FooterSettings;
+    }
+
+    return data as unknown as FooterSettings;
+  },
+
+  async updateFooterSettings(data: unknown, user: AuthUser): Promise<void> {
+    requirePermission(user, PERMISSIONS.SETTINGS_UPDATE);
+
     const validatedData = footerSettingsSchema.parse(data);
-    
+
     await siteSettingsRepository.upsert(
-      "layout.footer", 
-      validatedData, 
+      "layout.footer",
+      validatedData,
       true, // is_public = true for layout.footer
-      adminId
+      user.userId,
     );
 
     // Invalidate caches

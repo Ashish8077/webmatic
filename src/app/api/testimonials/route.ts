@@ -32,7 +32,7 @@ export async function POST(req: Request): Promise<NextResponse> {
 
 export async function GET(request: Request): Promise<NextResponse> {
   try {
-    await requireAuth();
+    const user = await requireAuth();
     const { searchParams } = new URL(request.url);
 
     const query = validate(
@@ -40,7 +40,7 @@ export async function GET(request: Request): Promise<NextResponse> {
       Object.fromEntries(searchParams.entries()),
     );
 
-    const testimonialsData = await getTestimonialsService(query);
+    const testimonialsData = await getTestimonialsService(query, user);
 
     return successResponse({
       message: "Testimonials fetched successfully",
