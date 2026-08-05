@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { JsonObject } from "@/shared/types/json";
 
 export const blogListContentSchema = z.object({
   heading: z.string().optional(),

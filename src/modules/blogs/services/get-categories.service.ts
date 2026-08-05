@@ -3,7 +3,6 @@ import { requirePermission } from "@/modules/auth/authorization/permission";
 import { AuthUser } from "@/modules/auth/types/auth-user";
 import { countCategories, findAllCategories } from "../repositories/blog-category.repository";
 import { toBlogCategoryListResponse } from "../mapper/blog-category.mapper";
-import { BlogCategory } from "../types/blog.types";
 import { GetCategoriesQuery } from "../validation/get-categories-query.schema";
 
 export async function getBlogCategoriesService(

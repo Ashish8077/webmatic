@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { FileText, Rows3, SquarePen, Pause, Play, Trash2, CalendarClock } from "lucide-react";
+import { FileText,  SquarePen, Pause, Play, Trash2, CalendarClock } from "lucide-react";
 import type { BlogListItem } from "../types/blog.types";
 
 interface BlogListTableProps {
