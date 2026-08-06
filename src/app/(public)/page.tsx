@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getHomePageData } from "@/modules/home/services/get-home-page";
 import { SectionRenderer } from "@/components/home/section-renderer";
+import { buildPageMetadata, serializeSchemaMarkup } from "@/lib/seo/build-page-metadata";
 
 /**
  * ISR: revalidate the page every 60 seconds so content changes in the CMS
@@ -17,22 +18,11 @@ export async function generateMetadata(): Promise<Metadata> {
     return {
       title: "Home",
       description: "Welcome to our website.",
+      robots: { index: false, follow: false },
     };
   }
 
-  const { meta } = data;
-
-  return {
-    title: meta.seoTitle ?? meta.title,
-    description: meta.metaDescription ?? undefined,
-    ...(meta.canonicalUrl && {
-      alternates: { canonical: meta.canonicalUrl },
-    }),
-    robots: {
-      index: meta.robotsIndex,
-      follow: meta.robotsFollow,
-    },
-  };
+  return buildPageMetadata(data.meta);
 }
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -64,8 +54,16 @@ export default async function HomePage() {
     );
   }
 
+  const jsonLd = serializeSchemaMarkup(data.meta.schemaMarkup);
+
   return (
     <>
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd }}
+        />
+      )}
       <main className="pt-[104px]">
         {data.sections.map((section) => (
           <SectionRenderer key={section.id} section={section} pageTitle={data.meta.title} />

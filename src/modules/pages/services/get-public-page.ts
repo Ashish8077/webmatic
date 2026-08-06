@@ -1,9 +1,33 @@
+import { cache } from "react";
 import { findPageActiveSectionsByPageId } from "@/modules/pages-section/repositories/page-section.repository";
-import { findPublishedPageByTemplate } from "@/modules/pages/repositories/page.repository";
+import { findPublishedPageByTemplate, findPublishedPageBySlug } from "@/modules/pages/repositories/page.repository";
 import { PageSectionRow } from "@/modules/pages-section/types/repository.types";
 import { findServices } from "@/modules/services/repositories/service.repository";
 import { findTestimonials } from "@/modules/testimonials/repositories/testimonial.repository";
 import { hydrateJsonMedia } from "@/modules/media/services/hydrate-json-media.service";
+import { resolveMediaUrl } from "@/modules/media/services/resolve-media-url";
+
+/**
+ * Cached wrapper around findPublishedPageBySlug so that generateMetadata()
+ * and the Page component share the same data within a single request.
+ */
+export const getCachedPublishedPageBySlug = cache(
+  async (slug: string) => {
+    const page = await findPublishedPageBySlug(slug);
+    if (!page) return null;
+
+    const [ogImage, twitterImage] = await Promise.all([
+      resolveMediaUrl(page.og_image_id),
+      resolveMediaUrl(page.twitter_image_id),
+    ]);
+
+    return {
+      ...page,
+      ogImageUrl: ogImage?.url ?? null,
+      twitterImageUrl: twitterImage?.url ?? null,
+    };
+  },
+);
 
 export async function getServiceListPageData() {
   const page = await findPublishedPageByTemplate("service-list");
@@ -76,12 +100,28 @@ export async function getServiceListPageData() {
     })
   );
 
+  // Resolve OG and Twitter image IDs into public URLs
+  const [ogImage, twitterImage] = await Promise.all([
+    resolveMediaUrl(page.og_image_id),
+    resolveMediaUrl(page.twitter_image_id),
+  ]);
+
   return {
     meta: {
       title: page.title,
       seoTitle: page.seo_title,
       metaDescription: page.meta_description,
       metaKeywords: page.meta_keywords,
+      canonicalUrl: page.canonical_url,
+      ogTitle: page.og_title,
+      ogDescription: page.og_description,
+      ogImageUrl: ogImage?.url ?? null,
+      twitterTitle: page.twitter_title,
+      twitterDescription: page.twitter_description,
+      twitterImageUrl: twitterImage?.url ?? null,
+      robotsIndex: Boolean(page.robots_index),
+      robotsFollow: Boolean(page.robots_follow),
+      schemaMarkup: page.schema_markup,
     },
     sections,
   };
@@ -112,12 +152,28 @@ export async function getBlogListPageData() {
     })
   );
 
+  // Resolve OG and Twitter image IDs into public URLs
+  const [ogImage, twitterImage] = await Promise.all([
+    resolveMediaUrl(page.og_image_id),
+    resolveMediaUrl(page.twitter_image_id),
+  ]);
+
   return {
     meta: {
       title: page.title,
       seoTitle: page.seo_title,
       metaDescription: page.meta_description,
       metaKeywords: page.meta_keywords,
+      canonicalUrl: page.canonical_url,
+      ogTitle: page.og_title,
+      ogDescription: page.og_description,
+      ogImageUrl: ogImage?.url ?? null,
+      twitterTitle: page.twitter_title,
+      twitterDescription: page.twitter_description,
+      twitterImageUrl: twitterImage?.url ?? null,
+      robotsIndex: Boolean(page.robots_index),
+      robotsFollow: Boolean(page.robots_follow),
+      schemaMarkup: page.schema_markup,
     },
     sections,
   };

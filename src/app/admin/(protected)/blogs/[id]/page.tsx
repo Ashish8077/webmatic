@@ -5,6 +5,7 @@ import { BlogHeader, BlogForm } from "@/features/blog/components";
 import { useBlog } from "@/features/blog/hooks/use-blog";
 import { useUpdateBlog } from "@/features/blog/hooks/use-update-blog";
 import { useBlogForm } from "@/features/blog/hooks/use-blog-form";
+import type { CreateBlogInput } from "@/features/blog/schemas/create-blog.schema";
 import { ApiError } from "@/lib/api/errors";
 import { applyServerErrors } from "@/shared/utils/form/apply-server-errors";
 import { useRouter } from "next/navigation";
@@ -42,12 +43,12 @@ export default function EditBlogPage({
           canonicalUrl: blog.canonicalUrl ?? undefined,
           ogTitle: blog.ogTitle ?? undefined,
           ogDescription: blog.ogDescription ?? undefined,
-          ogImageId: blog.ogImageId ?? undefined,
-          ogImage: blog.ogImage ?? undefined,
+          ogImageId: blog.ogImageId ?? null,
+          ogImage: blog.ogImage ?? null,
           twitterTitle: blog.twitterTitle ?? undefined,
           twitterDescription: blog.twitterDescription ?? undefined,
-          twitterImageId: blog.twitterImageId ?? undefined,
-          twitterImage: blog.twitterImage ?? undefined,
+          twitterImageId: blog.twitterImageId ?? null,
+          twitterImage: blog.twitterImage ?? null,
           robotsIndex: blog.robotsIndex ?? true,
           robotsFollow: blog.robotsFollow ?? true,
         }
@@ -56,7 +57,7 @@ export default function EditBlogPage({
 
   const form = useBlogForm({ values: formValues });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: CreateBlogInput) => {
     try {
       await updateBlogMutation.mutateAsync(data);
       showToast("Blog updated successfully", "success");

@@ -2,6 +2,7 @@ import { JsonObject } from "@/shared/types/json";
 import { PaginationMeta } from "@/shared/types/pagination";
 import { PageStatus } from "../constants/page.constants";
 import { PageTemplate } from "../constants/page-templates";
+import { Media } from "@/features/media/types";
 
 export interface CreatePageResponse {
   page: {
@@ -42,9 +43,11 @@ export interface PageDetailsResponse {
   ogTitle: string | null;
   ogDescription: string | null;
   ogImageId: number | null;
+  ogImage?: Media | null;
   twitterTitle: string | null;
   twitterDescription: string | null;
   twitterImageId: number | null;
+  twitterImage?: Media | null;
   robotsIndex: boolean;
   robotsFollow: boolean;
   schemaMarkup: JsonObject | null;

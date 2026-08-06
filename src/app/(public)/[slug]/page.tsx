@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { findPublishedPageBySlug } from "@/modules/pages/repositories/page.repository";
+import { getCachedPublishedPageBySlug } from "@/modules/pages/services/get-public-page";
 import { findPageActiveSectionsByPageId } from "@/modules/pages-section/repositories/page-section.repository";
 import { hydrateJsonMedia } from "@/modules/media/services/hydrate-json-media.service";
 import { SectionRenderer } from "@/components/home/section-renderer";
+import { buildPageMetadata, serializeSchemaMarkup } from "@/lib/seo/build-page-metadata";
 import type { PageSectionType } from "@/modules/pages-section/constants/page-section-types";
 import type { HomeSectionData } from "@/modules/home/types/home.types";
 
@@ -17,30 +18,36 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const page = await findPublishedPageBySlug(slug);
+  const page = await getCachedPublishedPageBySlug(slug);
 
   if (!page) {
     return {
       title: "Page Not Found",
+      robots: { index: false, follow: false },
     };
   }
 
-  return {
-    title: page.seo_title ?? page.title,
-    description: page.meta_description ?? undefined,
-    ...(page.canonical_url && {
-      alternates: { canonical: page.canonical_url },
-    }),
-    robots: {
-      index: Boolean(page.robots_index),
-      follow: Boolean(page.robots_follow),
-    },
-  };
+  return buildPageMetadata({
+    title: page.title,
+    seoTitle: page.seo_title,
+    metaDescription: page.meta_description,
+    metaKeywords: page.meta_keywords,
+    canonicalUrl: page.canonical_url,
+    ogTitle: page.og_title,
+    ogDescription: page.og_description,
+    ogImageUrl: page.ogImageUrl,
+    twitterTitle: page.twitter_title,
+    twitterDescription: page.twitter_description,
+    twitterImageUrl: page.twitterImageUrl,
+    robotsIndex: Boolean(page.robots_index),
+    robotsFollow: Boolean(page.robots_follow),
+    schemaMarkup: page.schema_markup,
+  });
 }
 
 export default async function DynamicPage({ params }: PageProps) {
   const { slug } = await params;
-  const page = await findPublishedPageBySlug(slug);
+  const page = await getCachedPublishedPageBySlug(slug);
 
   if (!page) {
     notFound();
@@ -60,9 +67,17 @@ export default async function DynamicPage({ params }: PageProps) {
     })),
   );
 
+  const jsonLd = serializeSchemaMarkup(page.schema_markup);
+
   return (
     <>
-      <main className="pt-[104px]">
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd }}
+        />
+      )}
+      <main className="pt-26">
         {sections.map((section) => (
           <SectionRenderer key={section.id} section={section as unknown as HomeSectionData} pageTitle={page.title} />
         ))}

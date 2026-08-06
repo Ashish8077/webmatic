@@ -18,7 +18,20 @@ export async function seedServices() {
 
     for (const service of servicesData) {
       if (existingSlugs.has(service.slug)) {
-        console.log(`Service '${service.slug}' already exists. Skipping...`);
+        console.log(`Service '${service.slug}' already exists. Updating...`);
+        await connection.execute(
+          `
+          UPDATE services SET
+            name = ?, short_description = ?, description = ?, key_features = ?, benefits = ?, faq = ?,
+            seo_title = ?, meta_description = ?, visual_type = ?, icon_name = ?, cta_button_text = ?
+          WHERE slug = ?
+          `,
+          [
+            service.name, service.short_description, service.description, service.key_features, service.benefits, service.faq,
+            service.seo_title, service.meta_description, service.visual_type, service.icon_name, service.cta_button_text,
+            service.slug
+          ]
+        );
         continue;
       }
 
@@ -26,9 +39,9 @@ export async function seedServices() {
         `
         INSERT INTO services (
           name, slug, short_description, description, key_features, benefits, faq,
-          seo_title, meta_description, visual_type, icon_name,
+          seo_title, meta_description, visual_type, icon_name, cta_button_text,
           status, published_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'published', CURRENT_TIMESTAMP)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'published', CURRENT_TIMESTAMP)
         `,
         [
           service.name,
@@ -42,6 +55,7 @@ export async function seedServices() {
           service.meta_description,
           service.visual_type,
           service.icon_name,
+          service.cta_button_text,
         ]
       );
 

@@ -44,7 +44,7 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
       </h3>
 
       {/* Description */}
-      <p className="text-[14px] leading-[1.625] text-slate-500 flex-1">
+      <p className="text-[14px] leading-relaxed text-slate-500 flex-1">
         {service.shortDescription}
       </p>
 
@@ -53,7 +53,7 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
         href={`/services/${service.slug}`}
         className={`inline-flex items-center gap-1.5 text-[14px] font-semibold ${theme.text} transition-colors duration-200 group/link`}
       >
-        Talk {service.name}
+        {service.ctaButtonText || `Talk ${service.name}`}
         <ArrowRight
           size={13}
           className="transition-transform duration-200 group-hover/link:translate-x-0.5"

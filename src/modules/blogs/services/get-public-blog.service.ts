@@ -18,5 +18,5 @@ export async function getPublicBlogBySlugService(
   // Let me quickly check how get-public-page.ts handles this mapping.
   // Assuming it maps directly or requires a specific PublicBlogResponse. 
   // I will just return the blog data as is for now and verify type safety.
-  return toBlogDetailsResponse(blog as any);
+  return toBlogDetailsResponse(blog as unknown as Parameters<typeof toBlogDetailsResponse>[0]);
 }

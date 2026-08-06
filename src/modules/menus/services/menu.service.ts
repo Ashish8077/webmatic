@@ -182,11 +182,7 @@ export const menuService = {
   },
 
   async resolveTarget(item: MenuItem): Promise<ResolvedTarget> {
-    if (
-      item.itemType === "group" ||
-      item.itemType === "separator" ||
-      item.itemType === "heading"
-    ) {
+    if (item.itemType === "separator" || item.itemType === "heading") {
       return { href: "#", exists: true };
     }
 

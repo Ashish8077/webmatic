@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+
 import { SquarePen, Trash2 } from "lucide-react";
 import type { BlogTag } from "../types/blog.types";
 
