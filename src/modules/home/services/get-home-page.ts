@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { findPageActiveSectionsByPageId } from "@/modules/pages-section/repositories/page-section.repository";
 import { findPublishedPageByTemplate } from "../../pages/repositories/page.repository";
 import { PageSectionRow } from "../../pages-section/types/repository.types";
@@ -6,6 +7,7 @@ import { HomePageData, HomeSectionData } from "../types/home.types";
 import { findServices } from "@/modules/services/repositories/service.repository";
 import { findTestimonials } from "@/modules/testimonials/repositories/testimonial.repository";
 import { hydrateJsonMedia } from "@/modules/media/services/hydrate-json-media.service";
+import { resolveMediaUrl } from "@/modules/media/services/resolve-media-url";
 
 // ─── Data fetcher ─────────────────────────────────────────────────────────────
 
@@ -15,8 +17,11 @@ import { hydrateJsonMedia } from "@/modules/media/services/hydrate-json-media.se
  * for the public-facing website, not the admin panel.
  *
  * Returns null when the home page does not exist or is not yet published.
+ *
+ * Wrapped with React `cache()` so that `generateMetadata()` and the Page
+ * component share the same data within a single request.
  */
-export async function getHomePageData(): Promise<HomePageData | null> {
+export const getHomePageData = cache(async (): Promise<HomePageData | null> => {
   const page = await findPublishedPageByTemplate("home");
 
   if (!page) return null;
@@ -88,6 +93,12 @@ export async function getHomePageData(): Promise<HomePageData | null> {
     }),
   );
 
+  // Resolve OG and Twitter image IDs into public URLs
+  const [ogImage, twitterImage] = await Promise.all([
+    resolveMediaUrl(page.og_image_id),
+    resolveMediaUrl(page.twitter_image_id),
+  ]);
+
   return {
     meta: {
       title: page.title,
@@ -99,10 +110,12 @@ export async function getHomePageData(): Promise<HomePageData | null> {
       ogTitle: page.og_title,
       ogDescription: page.og_description,
       ogImageId: page.og_image_id,
+      ogImageUrl: ogImage?.url ?? null,
 
       twitterTitle: page.twitter_title,
       twitterDescription: page.twitter_description,
       twitterImageId: page.twitter_image_id,
+      twitterImageUrl: twitterImage?.url ?? null,
 
       robotsIndex: Boolean(page.robots_index),
       robotsFollow: Boolean(page.robots_follow),
@@ -111,4 +124,4 @@ export async function getHomePageData(): Promise<HomePageData | null> {
     },
     sections,
   };
-}
+});

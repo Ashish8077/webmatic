@@ -471,11 +471,13 @@ export default function ServiceForm({
             ogDescription: form.register("openGraphDescription"),
             twitterTitle: form.register("twitterTitle"),
             twitterDescription: form.register("twitterDescription"),
-              robotsIndex: form.register("name"), // mock registers
-              robotsFollow: form.register("name"),
+            robotsIndex: form.register("name"), // mock registers
+            robotsFollow: form.register("name"),
           }}
           errors={form.formState.errors}
           warnings={[]}
+          ogImageName="openGraphImageId"
+          twitterImageName="twitterImageId"
         />
       </div>
 

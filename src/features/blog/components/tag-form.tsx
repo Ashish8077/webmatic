@@ -40,8 +40,9 @@ export function TagForm({
       if (!defaultValues) {
         form.reset();
       }
-    } catch (error: any) {
-      if (error?.status === 409) {
+    } catch (error: unknown) {
+      const apiError = error as { status?: number };
+      if (apiError?.status === 409) {
         form.setError("slug", {
           type: "manual",
           message: "This slug is already in use",

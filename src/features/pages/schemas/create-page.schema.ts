@@ -64,6 +64,7 @@ export const createPageSchema = z.object({
     .optional(),
 
   ogImageId: nullableImageId,
+  ogImage: z.any().optional(),
 
   twitterTitle: z
     .string()
@@ -78,6 +79,7 @@ export const createPageSchema = z.object({
     .optional(),
 
   twitterImageId: nullableImageId,
+  twitterImage: z.any().optional(),
 
   robotsIndex: z.boolean(),
 
@@ -87,3 +89,7 @@ export const createPageSchema = z.object({
 });
 
 export type CreatePageInput = z.infer<typeof createPageSchema>;
+
+export const updateSystemPageSchema = createPageSchema.extend({
+  slug: z.string().optional(),
+});

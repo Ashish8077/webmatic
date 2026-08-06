@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -22,7 +22,7 @@ export default function FooterSettingsPage() {
   });
 
   const form = useForm<FooterSettings>({
-    resolver: zodResolver(footerSettingsSchema) as any,
+    resolver: zodResolver(footerSettingsSchema) as unknown as Resolver<FooterSettings>,
     defaultValues: {
       trustedBrands: { brands: [] },
       heroCta: {},
@@ -52,8 +52,8 @@ export default function FooterSettingsPage() {
     },
   });
 
-  const onSubmit = (data: any) => {
-    mutation.mutate(data as FooterSettings);
+  const onSubmit = (data: FooterSettings) => {
+    mutation.mutate(data);
   };
 
   if (isLoading) {

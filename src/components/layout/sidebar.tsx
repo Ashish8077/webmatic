@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navGroups } from "./navigation";
 import { usePermissions } from "@/features/auth/api/use-has-permission";
+import type { Permission } from "@/features/auth/constants/permissions";
 import { useState } from "react";
 
 export function Sidebar() {
@@ -104,15 +105,15 @@ function SidebarItem({
   pathname,
   has,
 }: {
-  item: any;
+  item: { label: string; href: string; icon: React.ElementType; children?: { label: string; href: string; permission?: Permission }[]; permission?: Permission };
   pathname: string;
-  has: (permission: any) => boolean;
+  has: (permission: Permission) => boolean;
 }) {
   const Icon = item.icon;
   const hasChildren = item.children && item.children.length > 0;
   
   const isChildActive = hasChildren
-    ? item.children.some((child: any) => pathname === child.href)
+    ? item.children?.some((child) => pathname === child.href)
     : false;
 
   const isActive = pathname === item.href || pathname.startsWith(item.href + "/") || isChildActive;
@@ -166,7 +167,7 @@ function SidebarItem({
         >
           <div className="overflow-hidden">
             <div className="pl-9 space-y-1 mt-1">
-              {item.children.map((child: any) => {
+              {item.children?.map((child) => {
                 const isChildCurrent = pathname === child.href;
                 if (child.permission && !has(child.permission)) return null;
 

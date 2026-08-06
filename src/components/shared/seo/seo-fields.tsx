@@ -10,6 +10,7 @@ import type {
   FieldValues,
 } from "react-hook-form";
 import type { SeoWarning } from "@/features/pages/utils/seo-analyzer";
+import { MediaPickerField } from "@/features/page-sections/components/fields";
 
 interface SeoFieldsProps {
   register: {
@@ -26,9 +27,11 @@ interface SeoFieldsProps {
   };
   errors: FieldErrors<FieldValues>;
   warnings: SeoWarning[];
+  ogImageName?: string;
+  twitterImageName?: string;
 }
 
-function SeoFields({ register, errors, warnings }: SeoFieldsProps) {
+function SeoFields({ register, errors, warnings, ogImageName, twitterImageName }: SeoFieldsProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -105,6 +108,13 @@ function SeoFields({ register, errors, warnings }: SeoFieldsProps) {
                 {...register.ogDescription}
                 error={errors.ogDescription?.message as string}
               />
+              {ogImageName && (
+                <MediaPickerField
+                  name={ogImageName}
+                  label="Open Graph Image"
+                  description="Recommended size: 1200x630px"
+                />
+              )}
             </div>
           </div>
 
@@ -123,6 +133,13 @@ function SeoFields({ register, errors, warnings }: SeoFieldsProps) {
                 {...register.twitterDescription}
                 error={errors.twitterDescription?.message as string}
               />
+              {twitterImageName && (
+                <MediaPickerField
+                  name={twitterImageName}
+                  label="Twitter Image"
+                  description="Recommended size: 1200x600px"
+                />
+              )}
             </div>
           </div>
 

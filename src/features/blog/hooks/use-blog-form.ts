@@ -26,8 +26,12 @@ const DEFAULT_VALUES: CreateBlogInput = {
   metaKeywords: "",
   ogTitle: "",
   ogDescription: "",
+  ogImageId: null,
+  ogImage: null,
   twitterTitle: "",
   twitterDescription: "",
+  twitterImageId: null,
+  twitterImage: null,
   robotsIndex: true,
   robotsFollow: true,
 };

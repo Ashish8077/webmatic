@@ -39,7 +39,7 @@ export async function findTestimonials(
   const sortDirection = options.sortOrder?.toUpperCase() === "DESC" ? "DESC" : "ASC";
   const orderByClause = `ORDER BY ${sortColumn} ${sortDirection}`;
 
-  const [rows] = await db.execute<TestimonialRow[]>(
+  const [rows] = await db.query<TestimonialRow[]>(
     `
     SELECT
       id,
@@ -60,7 +60,7 @@ export async function findTestimonials(
     ${orderByClause}
     LIMIT ? OFFSET ?
     `,
-    [...params, options.limit.toString(), offset.toString()],
+    [...params, options.limit, offset],
   );
 
   return rows;

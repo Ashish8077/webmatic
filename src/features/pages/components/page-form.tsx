@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Controller } from "react-hook-form";
+import { Controller, FormProvider } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup } from "@/components/ui/toggle-group";
@@ -32,9 +32,10 @@ function PageForm({
   const router = useRouter();
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-      {/* Core Fields */}
-      <div className="bg-card-bg border border-card-border rounded-2xl p-6 space-y-5">
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {/* Core Fields */}
+        <div className="bg-card-bg border border-card-border rounded-2xl p-6 space-y-5">
         <Input
           label="Title"
           placeholder="Enter page title"
@@ -88,6 +89,8 @@ function PageForm({
         }}
         errors={form.formState.errors}
         warnings={form.seoWarnings}
+        ogImageName="ogImageId"
+        twitterImageName="twitterImageId"
       />
 
       {/* Actions */}
@@ -102,7 +105,8 @@ function PageForm({
           Cancel
         </Button>
       </div>
-    </form>
+      </form>
+    </FormProvider>
   );
 }
 

@@ -1,6 +1,7 @@
 import mysql from "mysql2/promise";
 import { env } from "@/config/env.server";
 
+
 const globalForDb = globalThis as unknown as {
   db: mysql.Pool | undefined;
 };
@@ -16,6 +17,10 @@ const db =
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
+    ssl: {
+    rejectUnauthorized: true,
+  },
+
   });
 
 if (process.env.NODE_ENV !== "production") {

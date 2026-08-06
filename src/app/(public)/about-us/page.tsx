@@ -1,36 +1,43 @@
 import type { Metadata } from "next";
-import { findPublishedPageBySlug } from "@/modules/pages/repositories/page.repository";
+import { getCachedPublishedPageBySlug } from "@/modules/pages/services/get-public-page";
 import { findPageActiveSectionsByPageId } from "@/modules/pages-section/repositories/page-section.repository";
 import { hydrateJsonMedia } from "@/modules/media/services/hydrate-json-media.service";
 import { SectionRenderer } from "@/components/home/section-renderer";
+import { buildPageMetadata, serializeSchemaMarkup } from "@/lib/seo/build-page-metadata";
 
 export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const page = await findPublishedPageBySlug("about-us");
+  const page = await getCachedPublishedPageBySlug("about-us");
 
   if (!page) {
     return {
       title: "About Us",
       description: "Learn more about us.",
+      robots: { index: false, follow: false },
     };
   }
 
-  return {
-    title: page.seo_title ?? page.title,
-    description: page.meta_description ?? undefined,
-    ...(page.canonical_url && {
-      alternates: { canonical: page.canonical_url },
-    }),
-    robots: {
-      index: Boolean(page.robots_index),
-      follow: Boolean(page.robots_follow),
-    },
-  };
+  return buildPageMetadata({
+    title: page.title,
+    seoTitle: page.seo_title,
+    metaDescription: page.meta_description,
+    metaKeywords: page.meta_keywords,
+    canonicalUrl: page.canonical_url,
+    ogTitle: page.og_title,
+    ogDescription: page.og_description,
+    ogImageUrl: page.ogImageUrl,
+    twitterTitle: page.twitter_title,
+    twitterDescription: page.twitter_description,
+    twitterImageUrl: page.twitterImageUrl,
+    robotsIndex: Boolean(page.robots_index),
+    robotsFollow: Boolean(page.robots_follow),
+    schemaMarkup: page.schema_markup,
+  });
 }
 
 export default async function AboutUsPage() {
-  const page = await findPublishedPageBySlug("about-us");
+  const page = await getCachedPublishedPageBySlug("about-us");
 
   if (!page) {
     return (
@@ -70,9 +77,17 @@ export default async function AboutUsPage() {
     })),
   );
 
+  const jsonLd = serializeSchemaMarkup(page.schema_markup);
+
   return (
     <>
-      <main className="pt-[104px]">
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd }}
+        />
+      )}
+      <main className="pt-26">
         {sections.map((section) => (
           <SectionRenderer key={section.id} section={section as unknown as React.ComponentProps<typeof SectionRenderer>["section"]} pageTitle={page.title} />
         ))}

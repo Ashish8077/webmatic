@@ -30,7 +30,7 @@ export const createBlogSchema = z.object({
   content: z.string().optional(),
   
   featuredImageId: nullableImageId,
-  featuredImage: z.custom<Media>().optional(),
+  featuredImage: z.custom<Media>().nullable().optional(),
 
   status: z.enum(["draft", "published", "scheduled"]).default("draft"),
   
@@ -78,7 +78,7 @@ export const createBlogSchema = z.object({
     .optional(),
 
   ogImageId: nullableImageId,
-  ogImage: z.custom<Media>().optional(),
+  ogImage: z.custom<Media>().nullable().optional(),
 
   twitterTitle: z
     .string()
@@ -93,7 +93,7 @@ export const createBlogSchema = z.object({
     .optional(),
 
   twitterImageId: nullableImageId,
-  twitterImage: z.custom<Media>().optional(),
+  twitterImage: z.custom<Media>().nullable().optional(),
 
   robotsIndex: z.boolean(),
   robotsFollow: z.boolean(),

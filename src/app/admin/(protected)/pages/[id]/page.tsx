@@ -38,20 +38,29 @@ export default function EditPagePage({
           ogTitle: page.ogTitle ?? "",
           ogDescription: page.ogDescription ?? "",
           ogImageId: page.ogImageId ?? null,
+          ogImage: page.ogImage ?? null,
           twitterTitle: page.twitterTitle ?? "",
           twitterDescription: page.twitterDescription ?? "",
           twitterImageId: page.twitterImageId ?? null,
+          twitterImage: page.twitterImage ?? null,
           robotsIndex: page.robotsIndex ?? true,
           robotsFollow: page.robotsFollow ?? true,
         }
       : undefined;
   }, [page]);
 
-  const form = usePageForm({ values: formValues });
+  const form = usePageForm({ 
+    values: formValues,
+    isSystem: page?.isSystem,
+  });
 
   const handleSubmit = async (pageData: CreatePageInput) => {
     try {
       const payload: Partial<CreatePageInput> = { ...pageData };
+
+      // Ensure we don't send frontend-only fields to the backend
+      delete payload.ogImage;
+      delete payload.twitterImage;
 
       // Ensure we don't send protected fields for system pages so backend doesn't reject
       if (page?.isSystem) {

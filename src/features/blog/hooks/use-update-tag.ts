@@ -11,8 +11,9 @@ export function useUpdateTag(id: number) {
       await queryClient.invalidateQueries({ queryKey: ["blog-tags"] });
       showToast("Tag updated successfully", "success");
     },
-    onError(error: any) {
-      if (error?.status === 409) return;
+    onError(error: unknown) {
+      const apiError = error as { status?: number };
+      if (apiError?.status === 409) return;
       showToast("Failed to update tag", "error");
     },
   });

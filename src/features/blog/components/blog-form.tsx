@@ -9,6 +9,7 @@ import { ToggleGroup } from "@/components/ui/toggle-group";
 import { useBlogForm } from "@/features/blog/hooks/use-blog-form";
 import SeoFields from "@/components/shared/seo/seo-fields";
 import type { CreateBlogInput } from "@/features/blog/schemas/create-blog.schema";
+import type { BlogCategory, BlogTag } from "@/features/blog/types/blog.types";
 import { RichTextEditor } from "@/components/shared/editor";
 import { MediaPickerField } from "@/features/page-sections/components/fields";
 import { Textarea } from "@/components/ui/textarea";
@@ -24,7 +25,7 @@ const CategorySelector = ({ value = [], onChange }: { value: number[], onChange:
   
   return (
     <div className="max-h-48 overflow-y-auto border border-input-border rounded-lg p-3 space-y-2 bg-input-bg">
-      {data.data.items.map((category: any) => (
+      {data.data.items.map((category: BlogCategory) => (
         <div key={category.id} className="flex items-center space-x-2">
           <input
             type="checkbox"
@@ -56,7 +57,7 @@ const TagSelector = ({ value = [], onChange }: { value: number[], onChange: (val
   
   return (
     <div className="max-h-48 overflow-y-auto border border-input-border rounded-lg p-3 space-y-2 bg-input-bg">
-      {data.data.items.map((tag: any) => (
+      {data.data.items.map((tag: BlogTag) => (
         <div key={tag.id} className="flex items-center space-x-2">
           <input
             type="checkbox"
@@ -240,6 +241,8 @@ function BlogForm({
         }}
         errors={form.formState.errors}
         warnings={form.seoWarnings}
+        ogImageName="ogImageId"
+        twitterImageName="twitterImageId"
       />
 
       {/* Actions */}

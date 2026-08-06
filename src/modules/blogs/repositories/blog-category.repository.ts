@@ -69,7 +69,7 @@ export async function findById(id: number): Promise<BlogCategoryRow | null> {
  */
 export async function findAllCategories(query: GetCategoriesQuery): Promise<BlogCategoryRow[]> {
   const conditions = ["deleted_at IS NULL"];
-  const params: any[] = [];
+  const params: (string | number)[] = [];
 
   if (query.search) {
     conditions.push("(name LIKE ? OR description LIKE ?)");
@@ -105,7 +105,7 @@ export async function findAllCategories(query: GetCategoriesQuery): Promise<Blog
  */
 export async function countCategories(query: GetCategoriesQuery): Promise<number> {
   const conditions = ["deleted_at IS NULL"];
-  const params: any[] = [];
+  const params: (string | number)[] = [];
 
   if (query.search) {
     conditions.push("(name LIKE ? OR description LIKE ?)");

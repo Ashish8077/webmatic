@@ -12,10 +12,24 @@ export interface PublishedBlogRow extends RowDataPacket {
 
   title: string;
   slug: string;
+  excerpt: string | null;
+  content: string;
+
+  author_id: number | null;
+  featured_image_id: number | null;
 
   seo_title: string | null;
   meta_description: string | null;
+  meta_keywords: string | null;
   canonical_url: string | null;
+
+  og_title: string | null;
+  og_description: string | null;
+  og_image_id: number | null;
+
+  twitter_title: string | null;
+  twitter_description: string | null;
+  twitter_image_id: number | null;
 
   robots_index: 0 | 1;
   robots_follow: 0 | 1;
