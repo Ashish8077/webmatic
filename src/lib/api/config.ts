@@ -1,5 +1,5 @@
 export const config = {
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api`,
+  baseURL: "/api",
   withCredentials: true,
   timeout: 10000,
   headers: {
