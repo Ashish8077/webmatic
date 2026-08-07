@@ -49,22 +49,22 @@ export const permissions = [
   {
     name: "View Page Sections",
     slug: "page-section.view",
-    module: "pages-sections",
+    module: "page-sections",
   },
   {
     name: "Create Page Section",
     slug: "page-section.create",
-    module: "pages-sections",
+    module: "page-sections",
   },
   {
     name: "Update Page Section",
     slug: "page-section.update",
-    module: "pages-sections",
+    module: "page-sections",
   },
   {
     name: "Delete Page Section",
     slug: "page-section.delete",
-    module: "pages-sections",
+    module: "page-sections",
   },
 
   // ─────────────────────────────────────────────

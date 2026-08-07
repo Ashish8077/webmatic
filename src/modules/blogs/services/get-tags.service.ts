@@ -9,7 +9,7 @@ export async function getBlogTagsService(
   query: GetTagsQuery,
   user: AuthUser,
 ) {
-  requirePermission(user, PERMISSIONS.BLOG_VIEW);
+  requirePermission(user, PERMISSIONS.BLOG_TAGS_VIEW);
 
   const [tags, totalItems] = await Promise.all([
     findAllTags(query),

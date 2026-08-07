@@ -14,7 +14,7 @@ export async function createBlogCategoryService(
   categoryData: CreateBlogCategoryInput,
   user: AuthUser,
 ): Promise<{ category: BlogCategory }> {
-  requirePermission(user, PERMISSIONS.BLOG_CATEGORY_MANAGE);
+  requirePermission(user, PERMISSIONS.BLOG_CATEGORIES_CREATE);
 
   try {
     const existingCategory = await existsBySlug(categoryData.slug);

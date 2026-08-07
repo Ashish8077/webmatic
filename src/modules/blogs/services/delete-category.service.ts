@@ -8,7 +8,7 @@ export async function deleteBlogCategoryService(
   categoryId: number,
   user: AuthUser,
 ): Promise<void> {
-  requirePermission(user, PERMISSIONS.BLOG_CATEGORY_MANAGE);
+  requirePermission(user, PERMISSIONS.BLOG_CATEGORIES_DELETE);
 
   const category = await findById(categoryId);
 

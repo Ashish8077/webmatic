@@ -8,7 +8,7 @@ export async function deleteBlogTagService(
   tagId: number,
   user: AuthUser,
 ): Promise<void> {
-  requirePermission(user, PERMISSIONS.BLOG_TAG_MANAGE);
+  requirePermission(user, PERMISSIONS.BLOG_TAGS_DELETE);
 
   const tag = await findById(tagId);
 

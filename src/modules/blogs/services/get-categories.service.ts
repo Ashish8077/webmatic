@@ -9,7 +9,7 @@ export async function getBlogCategoriesService(
   query: GetCategoriesQuery,
   user: AuthUser,
 ) {
-  requirePermission(user, PERMISSIONS.BLOG_VIEW);
+  requirePermission(user, PERMISSIONS.BLOG_CATEGORIES_VIEW);
 
   const [categories, totalItems] = await Promise.all([
     findAllCategories(query),
