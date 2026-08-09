@@ -3,7 +3,6 @@ import { requirePermission } from "@/modules/auth/authorization/permission";
 import { AuthUser } from "@/modules/auth/types/auth-user";
 import { countTags, findAllTags } from "../repositories/blog-tag.repository";
 import { toBlogTagListResponse } from "../mapper/blog-tag.mapper";
-import { BlogTag } from "../types/blog.types";
 import { GetTagsQuery } from "../validation/get-tags-query.schema";
 
 export async function getBlogTagsService(

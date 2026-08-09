@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import { getBlogsService } from "@/modules/blogs/services/get-blogs.service";
 import { BlogCard } from "./_components/blog-card";
 import { PublicPagination } from "./_components/public-pagination";
