@@ -9,10 +9,8 @@ import { RelatedBlogs } from "./_components/related-blogs";
 
 /**
  * ISR revalidation interval in seconds.
- * Colocated here since only this route uses it currently.
  */
-const BLOG_REVALIDATE_SECONDS = 60;
-export const revalidate = BLOG_REVALIDATE_SECONDS;
+export const revalidate = 60;
 
 interface BlogPageProps {
   params: Promise<{
