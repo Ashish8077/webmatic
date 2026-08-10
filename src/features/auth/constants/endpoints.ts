@@ -4,7 +4,7 @@ export const AUTH_ENDPOINTS = {
   REFRESH: "/auth/refresh",
   ME: "/auth/me",
   PERMISSIONS: "/auth/permissions",
-  CHANGE_PASSWORD: "auth/change-password",
+  CHANGE_PASSWORD: "/auth/change-password",
   FORGOT_PASSWORD: "auth/forgot-password",
   RESET_PASSWORD: "auth/reset-password",
 } as const;

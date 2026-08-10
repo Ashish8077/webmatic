@@ -11,6 +11,11 @@ export interface UserRow extends RowDataPacket {
   role_slug: string | null;
 }
 
+export interface UserPasswordRow extends RowDataPacket {
+  id: number;
+  password_hash: string;
+}
+
 export interface RefreshTokenRow extends RowDataPacket {
   id: number;
   user_id: number;
