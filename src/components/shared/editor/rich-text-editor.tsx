@@ -52,7 +52,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
       toast.success("HTML imported successfully");
       setIsHtmlImportOpen(false);
       setHtmlInput("");
-    } catch (err) {
+    } catch {
       toast.error("Failed to parse HTML");
     }
   };
