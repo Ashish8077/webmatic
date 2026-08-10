@@ -16,6 +16,24 @@ export interface UserPasswordRow extends RowDataPacket {
   password_hash: string;
 }
 
+export interface UserProfileRow extends RowDataPacket {
+  id: number;
+  first_name: string;
+  last_name: string | null;
+  email: string;
+  profile_image_id: number | null;
+  status: string;
+  created_at: Date;
+  role_slug: string | null;
+  
+  // Media join fields
+  profile_image_url?: string | null;
+  profile_image_storage_path?: string | null;
+  profile_image_disk?: string | null;
+  profile_image_type?: string | null;
+  profile_image_name?: string | null;
+}
+
 export interface RefreshTokenRow extends RowDataPacket {
   id: number;
   user_id: number;

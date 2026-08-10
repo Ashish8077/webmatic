@@ -1,11 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useCurrentUser } from "@/features/auth/hooks/use-current-user";
 import { useLogout } from "@/features/auth/hooks/use-logout";
+import { useProfile } from "@/features/auth/hooks/use-profile";
 
 export function Topbar() {
   const { data, isLoading } = useCurrentUser();
+  const { data: profile } = useProfile();
   const logoutMutation = useLogout();
 
   if (isLoading) {
@@ -44,10 +47,23 @@ export function Topbar() {
 
           {/* Avatar + Name */}
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-accent/20">
-              {displayRole.charAt(0).toUpperCase()}
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-accent/20 relative overflow-hidden">
+              {profile?.profileImage?.url ? (
+                <Image
+                  src={profile.profileImage.url}
+                  alt="Avatar"
+                  fill
+                  className="object-cover"
+                  unoptimized={profile.profileImage.url.startsWith("/")}
+                />
+              ) : (
+                profile?.firstName?.charAt(0).toUpperCase() ?? displayRole.charAt(0).toUpperCase()
+              )}
             </div>
             <div className="hidden md:block ">
+              <p className="text-sm font-medium text-foreground">
+                {profile?.firstName ?? "Admin"}
+              </p>
               <p className="text-[11px] text-muted-foreground mt-0.5">
                 {user?.email}
               </p>
