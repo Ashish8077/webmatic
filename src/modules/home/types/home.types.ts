@@ -10,10 +10,12 @@ export interface HomePageMeta {
   ogTitle: string | null;
   ogDescription: string | null;
   ogImageId: number | null;
+  ogImageUrl: string | null;
 
   twitterTitle: string | null;
   twitterDescription: string | null;
   twitterImageId: number | null;
+  twitterImageUrl: string | null;
 
   robotsIndex: boolean;
   robotsFollow: boolean;

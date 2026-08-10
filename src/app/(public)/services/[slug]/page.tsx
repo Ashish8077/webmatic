@@ -8,6 +8,7 @@ import { KeyFeaturesSection } from "@/components/sections/key-features";
 import { BenefitsSection } from "@/components/sections/benefits";
 import { FaqSection } from "@/components/sections/faq/faq-section";
 import { ContactCta } from "@/components/sections/contact-cta";
+import { serializeSchemaMarkup } from "@/lib/seo/build-page-metadata";
 import { RichContent } from "@/components/shared/rich-content";
 
 interface ServicePageProps {
@@ -21,12 +22,17 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
     const { slug } = await params;
     const service = await getPublicServiceBySlug(slug);
     
+    // Parse comma-separated keywords into array
+    const keywords = service.metaKeywords
+      ? service.metaKeywords.split(",").map((k) => k.trim()).filter(Boolean)
+      : undefined;
+
     return {
       title: service.seoTitle || `${service.name} | Services`,
-      description: service.metaDescription || service.shortDescription,
-      keywords: service.metaKeywords,
+      description: service.metaDescription || service.shortDescription || undefined,
+      ...(keywords && keywords.length > 0 && { keywords }),
       alternates: {
-        canonical: service.canonicalUrl,
+        canonical: service.canonicalUrl || undefined,
       },
       openGraph: {
         title: service.openGraphTitle || service.seoTitle || service.name,
@@ -36,6 +42,7 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
         }),
       },
       twitter: {
+        card: service.twitterImage?.url ? "summary_large_image" : "summary",
         title: service.twitterTitle || service.openGraphTitle || service.seoTitle || service.name,
         description: service.twitterDescription || service.openGraphDescription || service.metaDescription || service.shortDescription || "",
         ...(service.twitterImage?.url && {
@@ -47,6 +54,7 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
     console.error("Metadata Error:", error);
     return {
       title: "Service Not Found",
+      robots: { index: false, follow: false },
     };
   }
 }
@@ -68,10 +76,18 @@ export default async function ServiceDetailsPage({ params }: ServicePageProps) {
       ? service.featuredImage.url
       : null;
 
+  const jsonLd = serializeSchemaMarkup(service.schemaMarkup as Record<string, unknown> | null);
+
   return (
     <>
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd }}
+        />
+      )}
       <Header />
-      <main className="pt-[104px]">
+      <main className="pt-26">
         {/* 1. Hero Banner */}
         <PageHero
           title={service.name}

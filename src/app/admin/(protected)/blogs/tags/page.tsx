@@ -9,6 +9,7 @@ import { useUpdateTag } from "@/features/blog/hooks/use-update-tag";
 import { useDeleteTag } from "@/features/blog/hooks/use-delete-tag";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import type { BlogTag } from "@/features/blog/types/blog.types";
+import type { CreateTagInput } from "@/features/blog/schemas/create-tag.schema";
 
 export default function TagsPage() {
   const [query, setQuery] = useState<{ page: number; limit: number; search?: string }>({
@@ -26,11 +27,11 @@ export default function TagsPage() {
 
   const tags = data?.data?.items ?? [];
 
-  const handleCreate = async (data: any) => {
+  const handleCreate = async (data: CreateTagInput) => {
     await createMutation.mutateAsync(data);
   };
 
-  const handleUpdate = async (data: any) => {
+  const handleUpdate = async (data: CreateTagInput) => {
     if (!editingTag) return;
     await updateMutation.mutateAsync(data);
     setEditingTag(null);

@@ -13,8 +13,9 @@ export function useCreateCategory() {
       });
       showToast("Category created successfully", "success");
     },
-    onError(error: any) {
-      if (error?.status === 409) return;
+    onError(error: unknown) {
+      const apiError = error as { status?: number };
+      if (apiError?.status === 409) return;
       showToast("Failed to create category", "error");
     },
   });

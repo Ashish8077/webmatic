@@ -1,12 +1,38 @@
 import type { Metadata } from "next";
 import { getServiceListPageData } from "@/modules/pages/services/get-public-page";
 import { SectionRenderer } from "@/components/home/section-renderer";
+import { buildPageMetadata, serializeSchemaMarkup } from "@/lib/seo/build-page-metadata";
 
-export const metadata: Metadata = {
-  title: "Services | CMS Admin",
-  description:
-    "Explore our comprehensive range of services tailored to elevate your business.",
-};
+export const revalidate = 60;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const pageData = await getServiceListPageData();
+
+  if (!pageData) {
+    return {
+      title: "Services",
+      description: "Explore our comprehensive range of services.",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  return buildPageMetadata({
+    title: pageData.meta.title,
+    seoTitle: pageData.meta.seoTitle,
+    metaDescription: pageData.meta.metaDescription,
+    metaKeywords: pageData.meta.metaKeywords,
+    canonicalUrl: pageData.meta.canonicalUrl ?? null,
+    ogTitle: pageData.meta.ogTitle ?? null,
+    ogDescription: pageData.meta.ogDescription ?? null,
+    ogImageUrl: pageData.meta.ogImageUrl ?? null,
+    twitterTitle: pageData.meta.twitterTitle ?? null,
+    twitterDescription: pageData.meta.twitterDescription ?? null,
+    twitterImageUrl: pageData.meta.twitterImageUrl ?? null,
+    robotsIndex: pageData.meta.robotsIndex ?? true,
+    robotsFollow: pageData.meta.robotsFollow ?? true,
+    schemaMarkup: pageData.meta.schemaMarkup ?? null,
+  });
+}
 
 export default async function ServicesPage() {
   const pageData = await getServiceListPageData();
@@ -25,9 +51,17 @@ export default async function ServicesPage() {
     (a, b) => a.sortOrder - b.sortOrder,
   );
 
+  const jsonLd = serializeSchemaMarkup(pageData.meta.schemaMarkup ?? null);
+
   return (
     <>
-      <main className="pt-[104px]">
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd }}
+        />
+      )}
+      <main className="pt-26">
         {sortedSections.map((section) => (
           <SectionRenderer key={section.id} section={section} pageTitle={pageData.meta.title} />
         ))}

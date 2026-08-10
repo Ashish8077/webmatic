@@ -11,8 +11,14 @@ import { RecaptchaProvider } from "@/providers/RecaptchaProvider";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: "CMS Admin",
-  description: "Content Management System — Admin Panel",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
+  ),
+  title: {
+    default: "Webmatic",
+    template: "%s | Webmatic",
+  },
+  description: "Content Management System",
 };
 
 export default function RootLayout({

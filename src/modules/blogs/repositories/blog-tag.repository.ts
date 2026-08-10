@@ -68,7 +68,7 @@ export async function findById(id: number): Promise<BlogTagRow | null> {
  */
 export async function findAllTags(query: GetTagsQuery): Promise<BlogTagRow[]> {
   const conditions = ["deleted_at IS NULL"];
-  const params: any[] = [];
+  const params: (string | number)[] = [];
 
   if (query.search) {
     conditions.push("name LIKE ?");
@@ -103,7 +103,7 @@ export async function findAllTags(query: GetTagsQuery): Promise<BlogTagRow[]> {
  */
 export async function countTags(query: GetTagsQuery): Promise<number> {
   const conditions = ["deleted_at IS NULL"];
-  const params: any[] = [];
+  const params: (string | number)[] = [];
 
   if (query.search) {
     conditions.push("name LIKE ?");

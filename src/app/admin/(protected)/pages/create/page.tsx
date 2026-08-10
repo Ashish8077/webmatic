@@ -22,7 +22,11 @@ export default function CreatePagePage() {
 
   const handleSubmit = async (pageData: CreatePageInput) => {
     try {
-      await createPageMutation.mutateAsync(pageData);
+      const payload: Partial<CreatePageInput> = { ...pageData };
+      delete payload.ogImage;
+      delete payload.twitterImage;
+
+      await createPageMutation.mutateAsync(payload as CreatePageInput);
     } catch (error: unknown) {
       if (error instanceof ApiError) {
         applyServerErrors(form, error.errors);

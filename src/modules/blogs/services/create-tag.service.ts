@@ -14,7 +14,7 @@ export async function createBlogTagService(
   tagData: CreateBlogTagInput,
   user: AuthUser,
 ): Promise<{ tag: BlogTag }> {
-  requirePermission(user, PERMISSIONS.BLOG_TAG_MANAGE);
+  requirePermission(user, PERMISSIONS.BLOG_TAGS_CREATE);
 
   try {
     const existingTag = await existsBySlug(tagData.slug);

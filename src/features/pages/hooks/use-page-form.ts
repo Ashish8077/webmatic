@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CreatePageInput,
   createPageSchema,
+  updateSystemPageSchema,
 } from "../schemas/create-page.schema";
 import { analyzeSeo, type SeoWarning } from "../utils/seo-analyzer";
 
@@ -21,8 +22,12 @@ const DEFAULT_VALUES: CreatePageInput = {
   metaKeywords: "",
   ogTitle: "",
   ogDescription: "",
+  ogImageId: null,
+  ogImage: null,
   twitterTitle: "",
   twitterDescription: "",
+  twitterImageId: null,
+  twitterImage: null,
   robotsIndex: true,
   robotsFollow: true,
 };
@@ -30,11 +35,12 @@ const DEFAULT_VALUES: CreatePageInput = {
 export function usePageForm(options?: {
   defaultValues?: Partial<CreatePageInput>;
   values?: CreatePageInput;
+  isSystem?: boolean;
 }): UseFormReturn<CreatePageInput> & { seoWarnings: SeoWarning[] } {
+  const schema = options?.isSystem ? updateSystemPageSchema : createPageSchema;
+
   const form = useForm<CreatePageInput>({
-    resolver: zodResolver(
-      createPageSchema,
-    ) as unknown as Resolver<CreatePageInput>,
+    resolver: zodResolver(schema) as unknown as Resolver<CreatePageInput>,
     defaultValues: { ...DEFAULT_VALUES, ...options?.defaultValues },
     values: options?.values,
   });

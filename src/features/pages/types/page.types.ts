@@ -8,11 +8,10 @@ import { BaseResponse } from "@/shared/types/api.types";
 //   slug: string;
 //   status: PageStatus;
 //   // ...
-// }
-
 // ===== ===== ===== ===== ===== ===== ===== API Requests =====  ===== ===== ===== ===== ===== =====
 
 import { PageTemplate } from "@/modules/pages/constants/page-templates";
+import type { Media } from "@/features/media/types";
 
 export interface CreatePageRequest {
   title: string;
@@ -51,9 +50,11 @@ export interface Page {
   ogTitle: string | null;
   ogDescription: string | null;
   ogImageId: number | null;
+  ogImage?: Media | null;
   twitterTitle: string | null;
   twitterDescription: string | null;
   twitterImageId: number | null;
+  twitterImage?: Media | null;
   robotsIndex: boolean;
   robotsFollow: boolean;
   schemaMarkup: Record<string, unknown> | null;

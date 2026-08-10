@@ -15,7 +15,7 @@ export async function updateBlogCategoryService(
   categoryData: UpdateBlogCategoryInput,
   user: AuthUser,
 ): Promise<void> {
-  requirePermission(user, PERMISSIONS.BLOG_CATEGORY_MANAGE);
+  requirePermission(user, PERMISSIONS.BLOG_CATEGORIES_UPDATE);
 
   try {
     const category = await findById(categoryId);

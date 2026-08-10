@@ -44,9 +44,9 @@ export async function seedMenus() {
 
   // Create Services Dropdown Group
   const [servicesGroupRes] = await db.execute<ResultSetHeader>(
-    `INSERT INTO menu_items (menu_id, title, item_type, sort_order, is_active, created_by)
-     VALUES (?, ?, ?, ?, ?, ?)`,
-    [headerMenuId, "Services", "group", 3, true, adminId]
+    `INSERT INTO menu_items (menu_id, title, item_type, target_type, url, sort_order, is_active, created_by)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    [headerMenuId, "Services", "group", "custom", "/services", 3, true, adminId]
   );
   const servicesGroupId = servicesGroupRes.insertId;
 

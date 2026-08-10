@@ -15,7 +15,7 @@ export async function updateBlogTagService(
   tagData: UpdateBlogTagInput,
   user: AuthUser,
 ): Promise<void> {
-  requirePermission(user, PERMISSIONS.BLOG_TAG_MANAGE);
+  requirePermission(user, PERMISSIONS.BLOG_TAGS_UPDATE);
 
   try {
     const tag = await findById(tagId);

@@ -22,8 +22,7 @@ function LoginForm() {
 
   async function onSubmit(values: LoginFormValues) {
     try {
-      const response = await loginMutation.mutateAsync(values);
-      console.log("SUCCESS", response);
+      await loginMutation.mutateAsync(values);
     } catch (error) {
       console.log("ERROR", error);
     }

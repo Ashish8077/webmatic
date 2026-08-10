@@ -9,6 +9,7 @@ import { useUpdateCategory } from "@/features/blog/hooks/use-update-category";
 import { useDeleteCategory } from "@/features/blog/hooks/use-delete-category";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import type { BlogCategory } from "@/features/blog/types/blog.types";
+import type { CreateCategoryInput } from "@/features/blog/schemas/create-category.schema";
 
 export default function CategoriesPage() {
   const [query, setQuery] = useState<{ page: number; limit: number; search?: string }>({
@@ -28,13 +29,19 @@ export default function CategoriesPage() {
 
   const categories = data?.data?.items ?? [];
 
-  const handleCreate = async (data: any) => {
-    await createMutation.mutateAsync(data);
+  const handleCreate = async (data: CreateCategoryInput) => {
+    await createMutation.mutateAsync({
+      ...data,
+      description: data.description ?? null,
+    });
   };
 
-  const handleUpdate = async (data: any) => {
+  const handleUpdate = async (data: CreateCategoryInput) => {
     if (!editingCategory) return;
-    await updateMutation.mutateAsync(data);
+    await updateMutation.mutateAsync({
+      ...data,
+      description: data.description ?? null,
+    });
     setEditingCategory(null);
   };
 

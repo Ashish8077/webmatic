@@ -11,6 +11,7 @@ import { seedUserRoles } from "./seeds/user-roles.seed";
 import { seedServices } from "./seeds/services.seed";
 import { seedMenus } from "./seeds/menus.seed";
 import { seedSiteSettings } from "./seeds/site-settings.seed";
+import { seedTestimonials } from "./seeds/testimonials.seed";
 
 async function seedDatabase() {
   try {
@@ -93,6 +94,11 @@ async function seedDatabase() {
      * Seed site settings (global configurations).
      */
     await seedSiteSettings();
+
+    /**
+     * Seed testimonials.
+     */
+    await seedTestimonials();
 
     console.log("\nDatabase seeding completed successfully");
   } catch (error) {
