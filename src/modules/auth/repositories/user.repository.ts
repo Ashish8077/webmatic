@@ -1,6 +1,7 @@
 import db from "@/database/connection";
+import type { ResultSetHeader } from "mysql2";
 
-import { UserRow } from "./types";
+import { UserRow, UserPasswordRow } from "./types";
 
 export async function findUserByEmail(email: string): Promise<UserRow | null> {
   const [rows] = await db.execute<UserRow[]>(
@@ -46,4 +47,41 @@ export async function findUserById(userId: number): Promise<UserRow | null> {
   );
 
   return rows[0] ?? null;
+}
+
+export async function findUserPasswordHashById(
+  userId: number,
+): Promise<UserPasswordRow | null> {
+  const [rows] = await db.execute<UserPasswordRow[]>(
+    `
+    SELECT
+      id,
+      password_hash
+    FROM users
+    WHERE id = ?
+      AND deleted_at IS NULL
+    LIMIT 1
+    `,
+    [userId],
+  );
+
+  return rows[0] ?? null;
+}
+
+export async function updateUserPassword(
+  userId: number,
+  passwordHash: string,
+): Promise<boolean> {
+  const [result] = await db.execute<ResultSetHeader>(
+    `
+    UPDATE users
+    SET password_hash = ?,
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = ?
+      AND deleted_at IS NULL
+    `,
+    [passwordHash, userId],
+  );
+
+  return result.affectedRows > 0;
 }
