@@ -70,6 +70,7 @@ export interface BlogDetailsResponse {
 
   categories?: { id: number; name: string }[];
   tags?: { id: number; name: string }[];
+  author?: { name: string };
 
   publishedAt: string | null;
   createdAt: string;

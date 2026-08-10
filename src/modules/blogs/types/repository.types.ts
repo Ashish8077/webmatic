@@ -18,6 +18,9 @@ export interface PublishedBlogRow extends RowDataPacket {
   author_id: number | null;
   featured_image_id: number | null;
 
+  status: BlogStatus;
+  is_featured: 0 | 1;
+
   seo_title: string | null;
   meta_description: string | null;
   meta_keywords: string | null;
@@ -37,6 +40,8 @@ export interface PublishedBlogRow extends RowDataPacket {
   schema_markup: JsonObject | null;
 
   published_at: Date | null;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export interface BlogListRow extends RowDataPacket {

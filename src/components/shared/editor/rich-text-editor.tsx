@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
@@ -17,9 +17,14 @@ import {
   ListOrdered,
   Quote,
   Code,
-  Link as LinkIcon
+  Link as LinkIcon,
+  FileCode
 } from "lucide-react";
 import clsx from "clsx";
+import { Modal } from "@/components/ui/modal";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 
 import type { Editor } from "@tiptap/react";
 
@@ -30,9 +35,27 @@ interface RichTextEditorProps {
 }
 
 const MenuBar = ({ editor }: { editor: Editor | null }) => {
+  const [isHtmlImportOpen, setIsHtmlImportOpen] = useState(false);
+  const [htmlInput, setHtmlInput] = useState("");
+
   if (!editor) {
     return null;
   }
+
+  const handleImportHtml = () => {
+    if (!htmlInput.trim()) {
+      toast.error("Please enter some HTML");
+      return;
+    }
+    try {
+      editor.commands.setContent(htmlInput);
+      toast.success("HTML imported successfully");
+      setIsHtmlImportOpen(false);
+      setHtmlInput("");
+    } catch (err) {
+      toast.error("Failed to parse HTML");
+    }
+  };
 
   const toggleLink = () => {
     const previousUrl = editor.getAttributes('link').href
@@ -123,27 +146,62 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
       isActive: editor.isActive('link'),
       title: 'Link',
     },
+    {
+      icon: <FileCode size={16} />,
+      onClick: () => setIsHtmlImportOpen(true),
+      isActive: false,
+      title: 'Import HTML',
+    },
   ];
 
   return (
-    <div className="flex flex-wrap items-center gap-1 p-2 border-b border-input bg-surface-hover/50 rounded-t-lg">
-      {buttons.map((btn, i) => (
-        <button
-          key={i}
-          onClick={(e) => {
-            e.preventDefault();
-            btn.onClick();
-          }}
-          title={btn.title}
-          className={clsx(
-            "p-2 rounded-md hover:bg-input transition-colors",
-            btn.isActive ? "bg-input text-accent" : "text-foreground"
-          )}
-        >
-          {btn.icon}
-        </button>
-      ))}
-    </div>
+    <>
+      <div className="flex flex-wrap items-center gap-1 p-2 border-b border-input bg-surface-hover/50 rounded-t-lg">
+        {buttons.map((btn, i) => (
+          <button
+            key={i}
+            onClick={(e) => {
+              e.preventDefault();
+              btn.onClick();
+            }}
+            title={btn.title}
+            className={clsx(
+              "p-2 rounded-md hover:bg-input transition-colors",
+              btn.isActive ? "bg-input text-accent" : "text-foreground"
+            )}
+          >
+            {btn.icon}
+          </button>
+        ))}
+      </div>
+
+      <Modal
+        isOpen={isHtmlImportOpen}
+        onClose={() => {
+          setIsHtmlImportOpen(false);
+          setHtmlInput("");
+        }}
+        title="Import HTML"
+        size="lg"
+        footer={
+          <div className="flex justify-end gap-3">
+            <Button variant="secondary" onClick={() => setIsHtmlImportOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleImportHtml}>
+              Import
+            </Button>
+          </div>
+        }
+      >
+        <Textarea
+          placeholder="Paste your raw HTML here..."
+          value={htmlInput}
+          onChange={(e) => setHtmlInput(e.target.value)}
+          className="min-h-[300px] font-mono text-sm"
+        />
+      </Modal>
+    </>
   );
 };
 

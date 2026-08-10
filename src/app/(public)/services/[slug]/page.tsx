@@ -9,6 +9,7 @@ import { BenefitsSection } from "@/components/sections/benefits";
 import { FaqSection } from "@/components/sections/faq/faq-section";
 import { ContactCta } from "@/components/sections/contact-cta";
 import { serializeSchemaMarkup } from "@/lib/seo/build-page-metadata";
+import { RichContent } from "@/components/shared/rich-content";
 
 interface ServicePageProps {
   params: Promise<{
@@ -108,11 +109,8 @@ export default async function ServiceDetailsPage({ params }: ServicePageProps) {
         {/* 2. Service Description */}
         {service.description && (
           <section className="bg-white py-16 lg:py-24">
-            <div className="mx-auto max-w-225 px-5 sm:px-8">
-              <div 
-                className="prose prose-lg mx-auto text-slate-600 marker:text-orange-500"
-                dangerouslySetInnerHTML={{ __html: service.description }}
-              />
+            <div className="mx-auto max-w-[900px] px-5 sm:px-8">
+              <RichContent html={service.description} className="prose-lg" />
             </div>
           </section>
         )}

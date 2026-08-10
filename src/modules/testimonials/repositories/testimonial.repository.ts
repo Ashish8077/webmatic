@@ -58,7 +58,7 @@ export async function findTestimonials(
     FROM testimonials
     ${whereClause}
     ${orderByClause}
-    LIMIT ? OFFSET ?
+    LIMIT ${Number(options.limit)} OFFSET ${Number(offset)}
     `,
     [...params, options.limit, offset],
   );

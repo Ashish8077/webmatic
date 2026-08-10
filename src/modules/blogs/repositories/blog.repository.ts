@@ -93,6 +93,8 @@ export async function findPublishedBySlug(
       content,
       author_id,
       featured_image_id,
+      status,
+      is_featured,
       seo_title,
       meta_description,
       meta_keywords,
@@ -106,7 +108,9 @@ export async function findPublishedBySlug(
       robots_index,
       robots_follow,
       schema_markup,
-      published_at
+      published_at,
+      created_at,
+      updated_at
     FROM blogs
     WHERE slug = ?
       AND status = 'published'

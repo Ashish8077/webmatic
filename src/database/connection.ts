@@ -18,9 +18,9 @@ const db =
     connectionLimit: 10,
     queueLimit: 0,
     ssl: {
-    rejectUnauthorized: true,
-  },
-
+      minVersion: "TLSv1.2",
+      rejectUnauthorized: true,
+    },
   });
 
 if (process.env.NODE_ENV !== "production") {
