@@ -18,15 +18,15 @@ export function BenefitsSection({
   if (!benefits || benefits.length === 0) return null;
 
   return (
-    <section className="bg-white py-16 lg:py-24">
+    <section className="bg-white py-16">
       <div className="mx-auto max-w-[1170px] px-5 sm:px-8">
-        <div className="mb-12 text-center">
-          <span className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em] text-green-600 mb-3">
-            <span className="h-px w-6 bg-green-600 rounded-full" />
+        <div className="mb-10 text-center">
+          <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-green-600 mb-3">
+            <span className="h-px w-5 bg-green-600 rounded-full" />
             {badge}
-            <span className="h-px w-6 bg-green-600 rounded-full" />
+            <span className="h-px w-5 bg-green-600 rounded-full" />
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-[#081a4b]">
+          <h2 className="text-[28px] sm:text-[32px] font-bold leading-[1.2] text-[#081a4b]">
             {heading} <span className="text-green-600">{highlight}</span>
           </h2>
         </div>
@@ -39,12 +39,12 @@ export function BenefitsSection({
             return (
               <article
                 key={index}
-                className="group flex flex-col gap-4 rounded-2xl bg-white ring-1 ring-green-100 p-7 shadow-lg shadow-green-100/80 hover:shadow-xl hover:shadow-green-200/60 hover:ring-green-300 hover:-translate-y-1 transition-all duration-300"
+                className="group flex flex-col gap-3.5 rounded-xl bg-white ring-1 ring-green-100 p-6 shadow-sm hover:shadow-md hover:ring-green-300 hover:-translate-y-0.5 transition-all duration-200"
               >
                 <div className="flex items-center">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 text-green-600 group-hover:bg-green-600 group-hover:text-white transition-all duration-300 overflow-hidden">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-green-50 text-green-600 group-hover:bg-green-600 group-hover:text-white transition-all duration-200 overflow-hidden">
                     {isString || (benefit as ServiceBenefit).visualType === "none" ? (
-                      <ShieldCheck size={22} strokeWidth={1.75} />
+                      <ShieldCheck size={20} strokeWidth={1.75} />
                     ) : (
                       <VisualRenderer
                         asset={{
@@ -53,16 +53,16 @@ export function BenefitsSection({
                           imageId: (benefit as ServiceBenefit).imageId ?? null,
                           image: (benefit as ServiceBenefit).image ?? null,
                         }}
-                        className="w-[22px] h-[22px]"
+                        className="w-[20px] h-[20px]"
                         iconClassName="w-full h-full"
                       />
                     )}
                   </div>
                 </div>
 
-                <span className="h-[2px] w-8 bg-green-300 rounded-full mt-1" />
+                <span className="h-[2px] w-7 bg-green-300 rounded-full" />
 
-                <p className="text-[15px] leading-[1.625] text-slate-600 font-medium mt-2 flex-1">
+                <p className="text-[14px] leading-[1.6] text-slate-600 font-medium flex-1">
                   {title}
                 </p>
               </article>

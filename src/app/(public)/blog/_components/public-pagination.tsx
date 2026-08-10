@@ -34,10 +34,10 @@ export function PublicPagination({
   }
 
   return (
-    <nav className="flex items-center justify-between lg:justify-center gap-2 mt-12 mb-8" aria-label="Pagination">
+    <nav className="flex items-center justify-between lg:justify-center gap-2 mt-10 mb-6" aria-label="Pagination">
       <Link
         href={current > 1 ? `${basePath}?page=${current - 1}` : "#"}
-        className={`inline-flex items-center justify-center w-10 h-10 rounded-full transition-colors ${
+        className={`inline-flex items-center justify-center w-9 h-9 rounded-full transition-colors ${
           current > 1
             ? "bg-slate-100 text-navy hover:bg-slate-200"
             : "bg-slate-50 text-slate-300 pointer-events-none"
@@ -45,7 +45,7 @@ export function PublicPagination({
         aria-disabled={current <= 1}
       >
         <span className="sr-only">Previous Page</span>
-        <ChevronLeft className="w-5 h-5" />
+        <ChevronLeft className="w-4 h-4" />
       </Link>
 
       <div className="flex items-center gap-2">
@@ -53,7 +53,7 @@ export function PublicPagination({
           <Link
             key={page}
             href={`${basePath}?page=${page}`}
-            className={`inline-flex items-center justify-center w-10 h-10 rounded-full text-sm font-semibold transition-colors ${
+            className={`inline-flex items-center justify-center w-9 h-9 rounded-full text-[13px] font-semibold transition-colors ${
               page === current
                 ? "bg-primary text-white shadow-sm shadow-primary/20"
                 : "bg-slate-100 text-navy hover:bg-slate-200"
@@ -67,7 +67,7 @@ export function PublicPagination({
 
       <Link
         href={current < totalPages ? `${basePath}?page=${current + 1}` : "#"}
-        className={`inline-flex items-center justify-center w-10 h-10 rounded-full transition-colors ${
+        className={`inline-flex items-center justify-center w-9 h-9 rounded-full transition-colors ${
           current < totalPages
             ? "bg-slate-100 text-navy hover:bg-slate-200"
             : "bg-slate-50 text-slate-300 pointer-events-none"
@@ -75,7 +75,7 @@ export function PublicPagination({
         aria-disabled={current >= totalPages}
       >
         <span className="sr-only">Next Page</span>
-        <ChevronRight className="w-5 h-5" />
+        <ChevronRight className="w-4 h-4" />
       </Link>
     </nav>
   );
