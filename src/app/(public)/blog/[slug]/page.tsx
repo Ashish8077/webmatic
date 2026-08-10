@@ -9,7 +9,6 @@ import { RelatedBlogs } from "./_components/related-blogs";
 
 /**
  * ISR revalidation interval in seconds.
- * Colocated here since only this route uses it currently.
  */
 export const revalidate = 60;
 
