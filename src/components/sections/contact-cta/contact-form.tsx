@@ -98,30 +98,30 @@ export function ContactForm({
   };
 
   const inputClasses =
-    "w-full bg-white border border-transparent focus:border-orange-500 focus:ring-0 px-4 py-3 text-[14px] text-slate-700 outline-none transition-colors shadow-sm placeholder-slate-300  rounded-lg ";
+    "w-full bg-white border-2 border-slate-200 focus:border-primary focus:ring-0 px-4 py-3 text-[14px] text-navy placeholder:text-slate-400 outline-none transition-all duration-200 rounded-xl shadow-sm hover:border-slate-300";
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" aria-busy={isPending} onChange={handleInputInteraction}>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" aria-busy={isPending} onChange={handleInputInteraction}>
       
       {isSuccess && (
         <div 
           ref={successRef}
           tabIndex={-1}
           aria-live="polite"
-          className="p-4 bg-green-50 text-green-700 text-[14px] font-medium border border-green-200 rounded-lg outline-none focus:ring-2 focus:ring-green-500"
+          className="p-3.5 bg-green-50 text-green-700 text-[14px] font-medium border-2 border-green-200 rounded-xl outline-none focus:ring-2 focus:ring-green-500"
         >
           {successMessage}
         </div>
       )}
 
       {isError && (
-        <div aria-live="polite" className="p-3 bg-red-50 text-red-600 text-[14px] font-medium border border-red-100 rounded-lg">
+        <div aria-live="polite" className="p-3.5 bg-red-50 text-red-600 text-[14px] font-medium border-2 border-red-200 rounded-xl">
           {error?.message || errorMessage}
         </div>
       )}
 
       {recaptchaError && (
-        <div aria-live="polite" className="p-3 bg-yellow-50 text-yellow-700 text-[14px] font-medium border border-yellow-200 rounded-lg">
+        <div aria-live="polite" className="p-3.5 bg-yellow-50 text-yellow-700 text-[14px] font-medium border-2 border-yellow-200 rounded-xl">
           {recaptchaError}
         </div>
       )}
@@ -129,7 +129,7 @@ export function ContactForm({
       <div className="space-y-1.5">
         <label
           htmlFor="name"
-          className="text-[14px] font-medium text-[#4a5568]"
+          className="text-[13px] font-semibold text-navy"
         >
           Your Name *
         </label>
@@ -139,10 +139,10 @@ export function ContactForm({
           type="text"
           placeholder="John Doe"
           disabled={isPending}
-          className={`${inputClasses} ${errors.name ? "border-red-500" : ""}`}
+          className={`${inputClasses} ${errors.name ? "border-red-500 focus:border-red-500" : ""}`}
         />
         {errors.name && (
-          <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>
+          <p className="text-[12px] text-red-600 mt-1 font-medium">{errors.name.message}</p>
         )}
       </div>
 
@@ -151,27 +151,27 @@ export function ContactForm({
       <div className="space-y-1.5">
         <label
           htmlFor="email"
-          className="text-[14px] font-medium text-[#4a5568]"
+          className="text-[13px] font-semibold text-navy"
         >
-          Your Mail *
+          Your Email *
         </label>
         <input
           {...register("email")}
           id="email"
           type="email"
-          placeholder="Email *"
+          placeholder="john@example.com"
           disabled={isPending}
-          className={`${inputClasses} ${errors.email ? "border-red-500" : ""}`}
+          className={`${inputClasses} ${errors.email ? "border-red-500 focus:border-red-500" : ""}`}
         />
         {errors.email && (
-          <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>
+          <p className="text-[12px] text-red-600 mt-1 font-medium">{errors.email.message}</p>
         )}
       </div>
 
       <div className="space-y-1.5">
         <label
           htmlFor="phone"
-          className="text-[14px] font-medium text-[#4a5568]"
+          className="text-[13px] font-semibold text-navy"
         >
           Your Phone Number *
         </label>
@@ -179,12 +179,12 @@ export function ContactForm({
           {...register("phone")}
           id="phone"
           type="tel"
-          placeholder="Phone *"
+          placeholder="+1 (555) 000-0000"
           disabled={isPending}
-          className={`${inputClasses} ${errors.phone ? "border-red-500" : ""}`}
+          className={`${inputClasses} ${errors.phone ? "border-red-500 focus:border-red-500" : ""}`}
         />
         {errors.phone && (
-          <p className="text-xs text-red-500 mt-1">{errors.phone.message}</p>
+          <p className="text-[12px] text-red-600 mt-1 font-medium">{errors.phone.message}</p>
         )}
       </div>
 
@@ -192,7 +192,7 @@ export function ContactForm({
         <div className="space-y-1.5">
           <label
             htmlFor="company"
-            className="text-[14px] font-medium text-[#4a5568]"
+            className="text-[13px] font-semibold text-navy"
           >
             Company
           </label>
@@ -202,10 +202,10 @@ export function ContactForm({
             type="text"
             placeholder="Company Name"
             disabled={isPending}
-            className={`${inputClasses} ${errors.company ? "border-red-500" : ""}`}
+            className={`${inputClasses} ${errors.company ? "border-red-500 focus:border-red-500" : ""}`}
           />
           {errors.company && (
-            <p className="text-xs text-red-500 mt-1">
+            <p className="text-[12px] text-red-600 mt-1 font-medium">
               {errors.company.message}
             </p>
           )}
@@ -216,22 +216,22 @@ export function ContactForm({
         <div className="space-y-1.5">
           <label
             htmlFor="message"
-            className="text-[14px] font-medium text-[#4a5568]"
+            className="text-[13px] font-semibold text-navy"
           >
             Message
           </label>
           <textarea
             {...register("message")}
             id="message"
-            placeholder="Message"
+            placeholder="Tell us about your project..."
             rows={3}
             disabled={isPending}
             className={`${inputClasses} resize-none ${
-              errors.message ? "border-red-500" : ""
+              errors.message ? "border-red-500 focus:border-red-500" : ""
             }`}
           />
           {errors.message && (
-            <p className="text-xs text-red-500 mt-1">
+            <p className="text-[12px] text-red-600 mt-1 font-medium">
               {errors.message.message}
             </p>
           )}
@@ -239,7 +239,7 @@ export function ContactForm({
       )}
 
       {privacyText && (
-        <div className="text-[13px] text-gray-500 mt-4 leading-relaxed">
+        <div className="text-[13px] text-slate-500 pt-2 leading-relaxed">
           {privacyText}
         </div>
       )}
@@ -249,7 +249,7 @@ export function ContactForm({
           type="submit"
           disabled={isPending || isSuccess}
           aria-disabled={isPending || isSuccess}
-          className="bg-primary text-white px-10 py-3 text-[15px] flex items-center justify-center gap-2 font-semibold rounded-xl hover:bg-primary-hover transition-all duration-200 shadow-md shadow-primary/20 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:hover:translate-y-0 cursor-pointer"
+          className="bg-primary text-white px-7 py-3 text-[14px] flex items-center justify-center gap-2 font-semibold rounded-xl hover:bg-primary-hover transition-all duration-200 shadow-lg shadow-primary/25 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:hover:translate-y-0 cursor-pointer"
         >
           {isPending ? (
             <>

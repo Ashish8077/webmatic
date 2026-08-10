@@ -108,9 +108,9 @@ export default async function ServiceDetailsPage({ params }: ServicePageProps) {
 
         {/* 2. Service Description */}
         {service.description && (
-          <section className="bg-white py-16 lg:py-24">
+          <section className="bg-white py-16">
             <div className="mx-auto max-w-[900px] px-5 sm:px-8">
-              <RichContent html={service.description} className="prose-lg" />
+              <RichContent html={service.description} className="prose" />
             </div>
           </section>
         )}
