@@ -31,7 +31,7 @@ export const servicesData = [
     seo_title: "Brand Marketing & Strategy Services",
     meta_description: "Focuses on conducting in-depth research on your customers, your competitors, and your search engine landscape.",
     visual_type: "icon",
-    icon_name: "Lightbulb",
+    icon_name: "Target",
     cta_button_text: "Talk Brand Strategy"
   },
   {
@@ -79,7 +79,7 @@ export const servicesData = [
     seo_title: "Custom Web Development Services | Enterprise Solutions",
     meta_description: "Transform your online presence with our high-performance, secure, and scalable web development services tailored for growing businesses.",
     visual_type: "icon",
-    icon_name: "Code",
+    icon_name: "Globe2",
     cta_button_text: "Talk Web Development"
   },
   {
@@ -127,7 +127,7 @@ export const servicesData = [
     seo_title: "Data-Driven Digital Marketing Services | Maximize ROI",
     meta_description: "Accelerate your business growth with targeted SEO, PPC, and social media marketing strategies designed to convert clicks into loyal customers.",
     visual_type: "icon",
-    icon_name: "Target",
+    icon_name: "Megaphone",
     cta_button_text: "Talk Digital Marketing"
   },
   {
@@ -220,7 +220,7 @@ export const servicesData = [
     seo_title: "Professional Content Writing & Copywriting Services",
     meta_description: "Engage your audience and boost SEO with our professional content writing services, specializing in blogs, web copy, and technical writing.",
     visual_type: "icon",
-    icon_name: "PenTool",
+    icon_name: "PenLine",
     cta_button_text: "Talk Content writing"
   },
   {
