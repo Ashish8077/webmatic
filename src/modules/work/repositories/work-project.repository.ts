@@ -322,18 +322,19 @@ export async function updateWorkProjectStatus(
   status: "draft" | "published",
   userId: number,
 ): Promise<boolean> {
-  const publishedAt = status === "published" ? new Date() : null;
-
   const [result] = await db.execute<ResultSetHeader>(
     `
     UPDATE work_projects
     SET 
       status = ?,
-      published_at = ?,
+      published_at = CASE 
+        WHEN ? THEN COALESCE(published_at, CURRENT_TIMESTAMP)
+        ELSE published_at
+      END,
       updated_by = ?
     WHERE id = ? AND deleted_at IS NULL
     `,
-    [status, publishedAt, userId, id],
+    [status, status === "published", userId, id],
   );
 
   return result.affectedRows > 0;

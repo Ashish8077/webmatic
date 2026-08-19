@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { usePermissions } from "@/features/auth/api/use-has-permission";
+import { Permission } from "@/features/auth/constants/permissions";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { 
   WorkProjectListTable, 
@@ -24,6 +26,9 @@ export default function WorkProjectsPage() {
     updateSort,
     updatePagination,
   } = useWorkProjectFilters();
+
+  const { has } = usePermissions();
+  const canCreate = has(Permission.WORK_CREATE);
 
   const [workProjectToDelete, setWorkProjectToDelete] = useState<WorkProjectListItem | null>(null);
 
@@ -59,12 +64,14 @@ export default function WorkProjectsPage() {
             Manage your offerings and workProjects
           </p>
         </div>
-        <Link href="/admin/work/projects/create">
-          <Button className="w-full sm:w-auto gap-2">
-            <Plus size={16} strokeWidth={2} />
-            Create WorkProject
-          </Button>
-        </Link>
+        {canCreate && (
+          <Link href="/admin/work/projects/create">
+            <Button className="w-full sm:w-auto gap-2">
+              <Plus size={16} strokeWidth={2} />
+              Create WorkProject
+            </Button>
+          </Link>
+        )}
       </div>
 
       <WorkProjectListFilters

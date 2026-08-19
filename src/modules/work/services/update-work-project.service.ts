@@ -9,6 +9,8 @@ import {
 import { UpdateWorkProjectInput } from "../validation/work-project.validation";
 
 import { AuthUser } from "@/modules/auth/types/auth-user";
+import { requirePermission } from "@/modules/auth/authorization/permission";
+import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { toUpdateWorkProjectPayload } from "../mapper/work-project.mapper";
 import { revalidatePath } from "next/cache";
 
@@ -17,6 +19,11 @@ export async function updateWorkProjectService(
   projectData: UpdateWorkProjectInput,
   user: AuthUser,
 ): Promise<boolean> {
+  requirePermission(user, PERMISSIONS.WORK_UPDATE);
+  if (projectData.status === "published") {
+    requirePermission(user, PERMISSIONS.WORK_PUBLISH);
+  }
+
   try {
     const existing = await findWorkProjectById(id);
     if (!existing) {
@@ -43,6 +50,13 @@ export async function updateWorkProjectService(
     }
 
     const payload = toUpdateWorkProjectPayload(projectData);
+
+    if (projectData.status && projectData.status !== existing.status) {
+      if (projectData.status === "published") {
+        payload.published_at = existing.published_at || new Date();
+      }
+    }
+
     const success = await updateWorkProject(id, payload, user.userId);
 
     if (success) {

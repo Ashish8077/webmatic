@@ -400,4 +400,32 @@ export const permissions = [
     slug: "audit-log.view",
     module: "audit",
   },
+  // ─────────────────────────────────────────────
+  // Work
+  // ─────────────────────────────────────────────
+  {
+    name: "View Work Projects",
+    slug: "work.view",
+    module: "work",
+  },
+  {
+    name: "Create Work Project",
+    slug: "work.create",
+    module: "work",
+  },
+  {
+    name: "Update Work Project",
+    slug: "work.update",
+    module: "work",
+  },
+  {
+    name: "Delete Work Project",
+    slug: "work.delete",
+    module: "work",
+  },
+  {
+    name: "Publish Work Project",
+    slug: "work.publish",
+    module: "work",
+  },
 ];

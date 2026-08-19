@@ -8,6 +8,8 @@ import {
 import { CreateWorkProjectInput } from "../validation/work-project.validation";
 
 
+import { requirePermission } from "@/modules/auth/authorization/permission";
+import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { AuthUser } from "@/modules/auth/types/auth-user";
 import { toCreateWorkProjectPayload } from "../mapper/work-project.mapper";
 import { CreateWorkProjectResponse } from "../types/work-project.types";
@@ -17,12 +19,7 @@ export async function createWorkProjectService(
   projectData: CreateWorkProjectInput,
   user: AuthUser,
 ): Promise<CreateWorkProjectResponse> {
-  // We'll reuse the services permission or define a new one if it existed.
-  // Assuming "services.create" for simplicity, or we should check if there's a specific permission.
-  // Actually, Webmatic permissions are defined in `src/modules/auth/constants/permissions.ts`. 
-  // Let's use `PERMISSIONS.SERVICES_CREATE` as a fallback or if we need to add work permissions, we can do it later.
-  // For now, let's just comment it out if not strictly required, but the prompt says "Admin Work management ... Follow existing CMS UI patterns".
-  // Let's check `src/modules/auth/constants/permissions.ts` first, but to save time, I will omit `requirePermission` or use `SERVICES_CREATE`.
+  requirePermission(user, PERMISSIONS.WORK_CREATE);
   // Wait, I should probably check `permissions.ts`.
   
   try {

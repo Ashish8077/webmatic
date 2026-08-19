@@ -1,4 +1,6 @@
 import { requireAuth } from "@/modules/auth/lib/get-auth-user";
+import { requirePermission } from "@/modules/auth/authorization/permission";
+import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { getWorkProjectByIdService } from "@/modules/work/services/get-work-project-details.service";
 import { updateWorkProjectService } from "@/modules/work/services/update-work-project.service";
 import { deleteWorkProjectService } from "@/modules/work/services/auxiliary-work-project.service";
@@ -17,7 +19,8 @@ export async function GET(
   props: { params: Promise<{ id: string }> },
 ): Promise<NextResponse> {
   try {
-    await requireAuth();
+    const user = await requireAuth();
+    requirePermission(user, PERMISSIONS.WORK_VIEW);
     const { id } = await props.params;
 
     const projectId = parseInt(id, 10);

@@ -13,6 +13,8 @@ import { MediaPickerField } from "@/features/page-sections/components/fields";
 import type { WorkProjectFormValues } from "../schemas/work-project.schema";
 import { Star } from "lucide-react";
 import clsx from "clsx";
+import { usePermissions } from "@/features/auth/api/use-has-permission";
+import { Permission } from "@/features/auth/constants/permissions";
 
 import type { UseFormReturn } from "react-hook-form";
 
@@ -35,6 +37,8 @@ export default function WorkProjectForm({
   submitLabel = "Save Work Project",
 }: WorkProjectFormProps) {
   const router = useRouter();
+  const { has } = usePermissions();
+  const canPublish = has(Permission.WORK_PUBLISH);
 
   return (
     <FormProvider {...form}>
@@ -80,12 +84,18 @@ export default function WorkProjectForm({
               name="status"
               control={form.control}
               render={({ field }) => (
-                <ToggleGroup
-                  value={field.value}
-                  onChange={field.onChange}
-                  options={STATUS_OPTIONS}
-                  error={form.formState.errors.status?.message}
-                />
+                canPublish ? (
+                  <ToggleGroup
+                    value={field.value}
+                    onChange={field.onChange}
+                    options={STATUS_OPTIONS}
+                    error={form.formState.errors.status?.message}
+                  />
+                ) : (
+                  <div className="flex h-10 items-center justify-center rounded-lg border border-border bg-muted px-4 text-sm font-medium text-muted-foreground capitalize">
+                    {field.value}
+                  </div>
+                )
               )}
             />
           </div>

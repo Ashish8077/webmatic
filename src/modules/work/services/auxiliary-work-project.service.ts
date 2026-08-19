@@ -1,4 +1,6 @@
 import { AuthUser } from "@/modules/auth/types/auth-user";
+import { requirePermission } from "@/modules/auth/authorization/permission";
+import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { AppError } from "@/shared/utils/errors/app-error";
 import {
   findWorkProjectById,
@@ -13,6 +15,11 @@ export async function updateWorkProjectStatusService(
   status: "draft" | "published",
   user: AuthUser,
 ): Promise<boolean> {
+  requirePermission(user, PERMISSIONS.WORK_UPDATE);
+  if (status === "published") {
+    requirePermission(user, PERMISSIONS.WORK_PUBLISH);
+  }
+
   const existing = await findWorkProjectById(id);
   if (!existing) {
     throw new AppError("Work project not found", 404);
@@ -34,6 +41,8 @@ export async function updateWorkProjectFeaturedService(
   isFeatured: boolean,
   user: AuthUser,
 ): Promise<boolean> {
+  requirePermission(user, PERMISSIONS.WORK_UPDATE);
+
   const existing = await findWorkProjectById(id);
   if (!existing) {
     throw new AppError("Work project not found", 404);
@@ -51,6 +60,8 @@ export async function deleteWorkProjectService(
   id: number,
   user: AuthUser,
 ): Promise<boolean> {
+  requirePermission(user, PERMISSIONS.WORK_DELETE);
+
   const existing = await findWorkProjectById(id);
   if (!existing) {
     throw new AppError("Work project not found", 404);

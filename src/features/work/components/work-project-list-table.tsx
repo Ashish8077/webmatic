@@ -3,6 +3,8 @@ import Link from "next/link";
 import { SquarePen, Pause, Play, Trash2, Star } from "lucide-react";
 import type { WorkProjectListItem } from "../types/work-project.types";
 import clsx from "clsx";
+import { usePermissions } from "@/features/auth/api/use-has-permission";
+import { Permission } from "@/features/auth/constants/permissions";
 
 interface WorkProjectListTableProps {
   workProjects: WorkProjectListItem[];
@@ -19,6 +21,11 @@ export default function WorkProjectListTable({
   onToggleStatus,
   onToggleFeatured,
 }: WorkProjectListTableProps) {
+  const { has } = usePermissions();
+  const canUpdate = has(Permission.WORK_UPDATE);
+  const canPublish = has(Permission.WORK_PUBLISH);
+  const canDelete = has(Permission.WORK_DELETE);
+
   if (isLoading) {
     return (
       <div className="bg-card-bg border border-card-border rounded-2xl overflow-hidden">
@@ -83,8 +90,9 @@ export default function WorkProjectListTable({
                   <td className="px-5 py-4 text-center">
                     <button
                       type="button"
+                      disabled={!canUpdate}
                       onClick={() => onToggleFeatured(workProject)}
-                      className="p-2 rounded-full hover:bg-surface-hover transition-colors inline-flex"
+                      className="p-2 rounded-full hover:bg-surface-hover transition-colors inline-flex disabled:opacity-50 disabled:cursor-not-allowed"
                       title={workProject.isFeatured ? "Remove from featured" : "Mark as featured"}
                     >
                       <Star 
@@ -109,38 +117,44 @@ export default function WorkProjectListTable({
                   </td>
                   <td className="px-5 py-4">
                     <div className="flex items-center justify-end gap-1">
-                      <Link href={`/admin/work/projects/${workProject.id}`}>
+                      {canUpdate && (
+                        <Link href={`/admin/work/projects/${workProject.id}`}>
+                          <button
+                            title="Edit"
+                            className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-surface-hover transition-all cursor-pointer"
+                          >
+                            <SquarePen size={15} strokeWidth={1.8} />
+                          </button>
+                        </Link>
+                      )}
+
+                      {canPublish && (
                         <button
-                          title="Edit"
-                          className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-surface-hover transition-all cursor-pointer"
+                          title={workProject.status === "published" ? "Unpublish" : "Publish"}
+                          onClick={() => onToggleStatus(workProject)}
+                          className={`p-2 rounded-lg transition-all cursor-pointer ${
+                            workProject.status === "published"
+                              ? "text-success hover:text-warning hover:bg-warning/10"
+                              : "text-muted-foreground hover:text-success hover:bg-success/10"
+                          }`}
                         >
-                          <SquarePen size={15} strokeWidth={1.8} />
+                          {workProject.status === "published" ? (
+                            <Pause size={15} strokeWidth={1.8} />
+                          ) : (
+                            <Play size={15} strokeWidth={1.8} />
+                          )}
                         </button>
-                      </Link>
+                      )}
 
-                      <button
-                        title={workProject.status === "published" ? "Unpublish" : "Publish"}
-                        onClick={() => onToggleStatus(workProject)}
-                        className={`p-2 rounded-lg transition-all cursor-pointer ${
-                          workProject.status === "published"
-                            ? "text-success hover:text-warning hover:bg-warning/10"
-                            : "text-muted-foreground hover:text-success hover:bg-success/10"
-                        }`}
-                      >
-                        {workProject.status === "published" ? (
-                          <Pause size={15} strokeWidth={1.8} />
-                        ) : (
-                          <Play size={15} strokeWidth={1.8} />
-                        )}
-                      </button>
-
-                      <button
-                        title="Delete"
-                        onClick={() => onDelete(workProject)}
-                        className="p-2 rounded-lg text-muted-foreground hover:text-danger hover:bg-danger/10 transition-all cursor-pointer"
-                      >
-                        <Trash2 size={15} strokeWidth={1.8} />
-                      </button>
+                      {canDelete && (
+                        <button
+                          title="Delete"
+                          onClick={() => onDelete(workProject)}
+                          className="p-2 rounded-lg text-muted-foreground hover:text-danger hover:bg-danger/10 transition-all cursor-pointer"
+                        >
+                          <Trash2 size={15} strokeWidth={1.8} />
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>

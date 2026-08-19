@@ -16,9 +16,10 @@ export async function seedWorkProjects() {
         description,
         status,
         is_featured,
-        sort_order
+        sort_order,
+        published_at
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
       ON DUPLICATE KEY UPDATE
         title = VALUES(title),
         category = VALUES(category),
@@ -26,7 +27,8 @@ export async function seedWorkProjects() {
         description = VALUES(description),
         status = VALUES(status),
         is_featured = VALUES(is_featured),
-        sort_order = VALUES(sort_order)
+        sort_order = VALUES(sort_order),
+        published_at = VALUES(published_at)
       `,
       [
         project.title,
@@ -37,6 +39,7 @@ export async function seedWorkProjects() {
         project.status,
         project.is_featured,
         project.sort_order,
+        project.status === "published" ? new Date() : null,
       ]
     );
   }

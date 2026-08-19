@@ -1,4 +1,6 @@
 import { requireAuth } from "@/modules/auth/lib/get-auth-user";
+import { requirePermission } from "@/modules/auth/authorization/permission";
+import { PERMISSIONS } from "@/modules/auth/constants/permissions";
 import { createWorkProjectService } from "@/modules/work/services/create-work-project.service";
 import { getWorkProjectsService } from "@/modules/work/services/get-work-projects.service";
 import {
@@ -32,7 +34,8 @@ export async function POST(req: Request): Promise<NextResponse> {
 
 export async function GET(request: Request): Promise<NextResponse> {
   try {
-    await requireAuth();
+    const user = await requireAuth();
+    requirePermission(user, PERMISSIONS.WORK_VIEW);
     const { searchParams } = new URL(request.url);
 
     const query = validate(
