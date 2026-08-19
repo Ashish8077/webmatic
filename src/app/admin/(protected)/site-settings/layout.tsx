@@ -21,6 +21,7 @@ export default async function SiteSettingsLayout({
 
   const tabs = [
     { name: "Footer", href: "/admin/site-settings/footer" },
+    { name: "Contact", href: "/admin/site-settings/contact" },
     { name: "Header", href: "/admin/site-settings/header", disabled: true },
     { name: "SEO & Social", href: "/admin/site-settings/seo", disabled: true },
     { name: "Company", href: "/admin/site-settings/company", disabled: true },

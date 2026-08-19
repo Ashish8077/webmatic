@@ -1,6 +1,6 @@
 import { RawFaqContent, FaqContent } from "./types";
 
-export function normaliseFaqContent(raw: RawFaqContent): FaqContent {
+export function normalizeFaqContent(raw: RawFaqContent): FaqContent {
   return {
     badge: raw.badge,
     heading: raw.heading,

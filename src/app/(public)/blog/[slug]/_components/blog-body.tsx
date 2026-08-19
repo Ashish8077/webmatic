@@ -9,7 +9,7 @@ interface BlogBodyProps {
 export function BlogBody({ content, tags }: BlogBodyProps) {
   return (
     <section className="bg-white py-16 lg:py-20">
-      <div className="mx-auto max-w-[900px] px-5 sm:px-8">
+      <div className="mx-auto max-w-225 px-5 sm:px-8">
         <article>
           {content ? (
             <RichContent html={content} className="prose prose-lg" />

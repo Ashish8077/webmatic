@@ -17,7 +17,7 @@ export function KeyFeaturesSection({
 
   return (
     <section className="bg-slate-50 py-16">
-      <div className="mx-auto max-w-[1170px] px-5 sm:px-8">
+      <div className="mx-auto max-w-292.5 px-5 sm:px-8">
         <div className="mb-10 text-center">
           <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-orange-500 mb-3">
             <span className="h-px w-5 bg-orange-500 rounded-full" />

@@ -29,7 +29,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             bg-input-bg border border-input-border text-foreground
             placeholder:text-muted-foreground/60
             focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent
-            transition-all duration-200 resize-y min-h-[100px]
+            transition-all duration-200 resize-y min-h-25
             disabled:opacity-50 disabled:cursor-not-allowed
             ${error ? "border-danger focus:ring-danger/40" : ""}
             ${className}

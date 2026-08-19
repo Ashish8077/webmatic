@@ -50,8 +50,7 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
         }),
       },
     };
-  } catch (error) {
-    console.error("Metadata Error:", error);
+  } catch {
     return {
       title: "Service Not Found",
       robots: { index: false, follow: false },
@@ -59,14 +58,42 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
   }
 }
 
+const serviceEditorialStyles = [
+  // Remove default prose constraints where they conflict with our custom editorial design
+  "!prose-p:m-0 !prose-headings:m-0",
+  // Paragraphs
+  "[&>p]:text-slate-600 [&>p]:leading-[1.8] [&>p]:mb-6",
+  "[&>p]:text-[16px] sm:[&>p]:text-[17px]",
+  // Intro Paragraph (First paragraph)
+  "[&>p:first-of-type]:text-[19px] sm:[&>p:first-of-type]:text-[21px] [&>p:first-of-type]:text-slate-700 [&>p:first-of-type]:font-medium [&>p:first-of-type]:mb-10 [&>p:first-of-type]:leading-[1.7]",
+  // H2
+  "[&>h2]:text-navy [&>h2]:font-extrabold [&>h2]:text-[28px] sm:[&>h2]:text-[32px] [&>h2]:mt-16 [&>h2]:mb-8",
+  "[&>h2]:relative [&>h2]:pb-5 [&>h2::after]:absolute [&>h2::after]:bottom-0 [&>h2::after]:left-0 [&>h2::after]:w-12 [&>h2::after]:h-1.5 [&>h2::after]:bg-orange-500 [&>h2::after]:rounded-full",
+  // H3
+  "[&>h3]:text-navy [&>h3]:font-bold [&>h3]:text-[22px] sm:[&>h3]:text-[24px] [&>h3]:mt-10 [&>h3]:mb-6",
+  // Lists
+  "[&>ul]:mt-6 [&>ul]:mb-8 [&>ul]:space-y-3 [&>ol]:mt-6 [&>ol]:mb-8 [&>ol]:space-y-3",
+  "[&_li]:text-slate-600 [&_li]:leading-[1.8] [&_li]:text-[16px] sm:[&_li]:text-[17px]",
+  "[&>ul>li]:marker:text-orange-500 [&>ol>li]:marker:text-navy [&>ol>li]:marker:font-bold",
+  // Strong
+  "[&_strong]:text-navy [&_strong]:font-bold",
+  // Links
+  "[&_a]:text-primary [&_a]:font-semibold [&_a]:underline [&_a]:decoration-primary/30 [&_a]:underline-offset-4 hover:[&_a]:decoration-primary [&_a]:transition-colors",
+  // Blockquotes
+  "[&>blockquote]:bg-slate-50/80 [&>blockquote]:border-l-4 [&>blockquote]:border-primary [&>blockquote]:px-6 [&>blockquote]:py-5 [&>blockquote]:text-slate-700 [&>blockquote]:not-italic [&>blockquote]:rounded-r-xl [&>blockquote]:font-medium [&>blockquote]:my-10 [&>blockquote]:shadow-sm",
+  // Images
+  "[&_img]:rounded-2xl [&_img]:border [&_img]:border-slate-100 [&_img]:shadow-md [&_img]:my-10 [&_img]:w-full [&_img]:h-auto",
+  // Horizontal Rule
+  "[&>hr]:border-slate-200 [&>hr]:my-12",
+].join(" ");
+
 export default async function ServiceDetailsPage({ params }: ServicePageProps) {
   let service;
   
   try {
     const { slug } = await params;
     service = await getPublicServiceBySlug(slug);
-  } catch (error) {
-    console.error("Page Error:", error);
+  } catch {
     notFound();
   }
 
@@ -108,9 +135,9 @@ export default async function ServiceDetailsPage({ params }: ServicePageProps) {
 
         {/* 2. Service Description */}
         {service.description && (
-          <section className="bg-white py-16">
-            <div className="mx-auto max-w-[900px] px-5 sm:px-8">
-              <RichContent html={service.description} className="prose" />
+          <section className="bg-white py-16 sm:py-24">
+            <div className="mx-auto max-w-3xl px-5 sm:px-8">
+              <RichContent html={service.description} className={serviceEditorialStyles} />
             </div>
           </section>
         )}

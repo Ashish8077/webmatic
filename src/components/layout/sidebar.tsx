@@ -12,7 +12,7 @@ export function Sidebar() {
   const { has } = usePermissions();
 
   return (
-    <aside className="fixed left-0 top-0 bottom-0 w-[260px] glass z-40 flex flex-col">
+    <aside className="fixed left-0 top-0 bottom-0 w-65 glass z-40 flex flex-col">
       {/* Logo */}
       <div className="px-6 py-6 border-b border-white/[0.06]">
         <div className="flex items-center justify-between">

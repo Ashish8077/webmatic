@@ -19,7 +19,7 @@ export function BenefitsSection({
 
   return (
     <section className="bg-white py-16">
-      <div className="mx-auto max-w-[1170px] px-5 sm:px-8">
+      <div className="mx-auto max-w-292.5 px-5 sm:px-8">
         <div className="mb-10 text-center">
           <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-green-600 mb-3">
             <span className="h-px w-5 bg-green-600 rounded-full" />
@@ -53,14 +53,14 @@ export function BenefitsSection({
                           imageId: (benefit as ServiceBenefit).imageId ?? null,
                           image: (benefit as ServiceBenefit).image ?? null,
                         }}
-                        className="w-[20px] h-[20px]"
+                        className="w-5 h-5"
                         iconClassName="w-full h-full"
                       />
                     )}
                   </div>
                 </div>
 
-                <span className="h-[2px] w-7 bg-green-300 rounded-full" />
+                <span className="h-0.5 w-7 bg-green-300 rounded-full" />
 
                 <p className="text-[14px] leading-[1.6] text-slate-600 font-medium flex-1">
                   {title}

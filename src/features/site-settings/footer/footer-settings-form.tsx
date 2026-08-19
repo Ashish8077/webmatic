@@ -13,55 +13,7 @@ export function FooterSettingsForm({ disabled }: { disabled?: boolean }) {
   return (
     <div className="space-y-6 pb-20">
       
-      {/* 1. Trusted Brands */}
-      <div className="rounded-xl border bg-card text-card-foreground shadow">
-        <div className="flex flex-col space-y-1.5 p-6">
-          <h3 className="font-semibold leading-none tracking-tight">1. Trusted Brands</h3>
-        </div>
-        <div className="p-6 pt-0 space-y-4">
-          <SwitchField name="trustedBrands.enabled" label="Enable Trusted Brands Strip" disabled={disabled} />
-          <TextField name="trustedBrands.title" label="Title" disabled={disabled} />
-          <div className="grid gap-3 sm:grid-cols-2">
-            <TextField name="trustedBrands.ctaText" label="CTA Text" disabled={disabled} />
-            <TextField name="trustedBrands.ctaUrl" label="CTA URL" disabled={disabled} />
-          </div>
-          
-          <RepeaterField
-            name="trustedBrands.brands"
-            label="Brands"
-            disabled={disabled}
-            defaultItem={{
-              name: "",
-              logoType: "text",
-              logoText: "",
-              mediaId: null,
-              fontWeight: "font-normal",
-              fontSize: "text-base",
-              tracking: "normal"
-            }}
-            renderItem={(index) => (
-              <div className="space-y-4">
-                <TextField name={`trustedBrands.brands.${index}.name`} label="Brand Name" disabled={disabled} />
-                <SelectField
-                  name={`trustedBrands.brands.${index}.logoType`}
-                  label="Logo Type"
-                  options={[
-                    { label: "Text Only", value: "text" },
-                    { label: "Image/Media (Coming soon)", value: "media" }
-                  ]}
-                  disabled={disabled}
-                />
-                <TextField name={`trustedBrands.brands.${index}.logoText`} label="Logo Text (if text type)" disabled={disabled} />
-                <div className="grid gap-3 sm:grid-cols-3">
-                  <TextField name={`trustedBrands.brands.${index}.fontWeight`} label="Tailwind Font Weight (e.g. font-bold)" disabled={disabled} />
-                  <TextField name={`trustedBrands.brands.${index}.fontSize`} label="Tailwind Font Size (e.g. text-lg)" disabled={disabled} />
-                  <TextField name={`trustedBrands.brands.${index}.tracking`} label="Tailwind Tracking (e.g. tracking-wide)" disabled={disabled} />
-                </div>
-              </div>
-            )}
-          />
-        </div>
-      </div>
+
 
       {/* 2. Hero CTA */}
       <div className="rounded-xl border bg-card text-card-foreground shadow">

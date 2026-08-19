@@ -9,7 +9,7 @@ interface EmptyMediaStateProps {
 
 export function EmptyMediaState({ onUploadClick, isFiltered }: EmptyMediaStateProps) {
   return (
-    <div className="flex min-h-[400px] flex-col items-center justify-center rounded-md border border-dashed p-8 text-center animate-in fade-in-50">
+    <div className="flex min-h-100 flex-col items-center justify-center rounded-md border border-dashed p-8 text-center animate-in fade-in-50">
       <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-muted">
         <ImageIcon className="h-6 w-6 text-muted-foreground" />
       </div>

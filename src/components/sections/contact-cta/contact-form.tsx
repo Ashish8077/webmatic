@@ -3,11 +3,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import {
-  contactFormSchema,
-  useSubmitContact,
-  type ContactFormData,
-} from "@/features/contact";
+import { contactFormSchema } from "@/features/contact/schemas";
+import { useSubmitContact } from "@/features/contact/hooks/use-submit-contact";
+import type { ContactFormData } from "@/features/contact/types";
 import { CONTACT_ERROR_MESSAGES } from "@/features/contact/constants/error-messages";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useState, useRef, useEffect } from "react";

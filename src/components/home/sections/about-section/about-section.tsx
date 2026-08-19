@@ -1,12 +1,12 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { normaliseAboutContent } from "./mapper";
+import { normalizeAboutContent } from "./mapper";
 import type { RawAboutContent } from "./types";
 import type { SectionProps } from "../types";
 import AboutCard from "./about-card";
 
 export const AboutSection = ({ content }: SectionProps) => {
-  const about = normaliseAboutContent(content as unknown as RawAboutContent);
+  const about = normalizeAboutContent(content as unknown as RawAboutContent);
   
   if (!about) return null;
 

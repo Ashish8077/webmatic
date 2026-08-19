@@ -19,16 +19,10 @@ export function parseContactCtaContentDefaults(
     heading: (raw.heading as string) ?? DEFAULT_CONTACT_CTA_CONTENT.heading,
     description:
       (raw.description as string) ?? DEFAULT_CONTACT_CTA_CONTENT.description,
-    privacyNote:
-      (raw.privacyNote as string) ?? DEFAULT_CONTACT_CTA_CONTENT.privacyNote,
     buttonText:
       (raw.buttonText as string) ?? DEFAULT_CONTACT_CTA_CONTENT.buttonText,
-    successMessage:
-      (raw.successMessage as string) ??
-      DEFAULT_CONTACT_CTA_CONTENT.successMessage,
     buttonUrl:
       (raw.buttonUrl as string) ?? DEFAULT_CONTACT_CTA_CONTENT.buttonUrl,
-    map: raw.map ?? DEFAULT_CONTACT_CTA_CONTENT.map,
   };
 }
 
@@ -66,18 +60,6 @@ export function ContactCtaContentForm({ disabled }: { disabled?: boolean }) {
         placeholder="Supporting text"
         disabled={disabled}
       />
-      <TextareaField
-        name="content.privacyNote"
-        label="Privacy Note"
-        placeholder="e.g. Your details are kept confidential."
-        disabled={disabled}
-      />
-      <TextField
-        name="content.successMessage"
-        label="Success Message"
-        placeholder="e.g. Thank you for getting in touch!"
-        disabled={disabled}
-      />
       <div className="grid gap-3 sm:grid-cols-2">
         <TextField
           name="content.buttonText"
@@ -91,18 +73,6 @@ export function ContactCtaContentForm({ disabled }: { disabled?: boolean }) {
           placeholder="e.g. /thank-you"
           disabled={disabled}
         />
-      </div>
-
-      <div className="pt-4 border-t border-border">
-        <TextField
-          name="content.map.embedUrl"
-          label="Google Map Embed URL"
-          placeholder="e.g. https://www.google.com/maps/embed?..."
-          disabled={disabled}
-        />
-        <div className="mt-2 text-xs text-muted-foreground">
-          Paste the src URL from the Google Maps iframe embed code.
-        </div>
       </div>
     </div>
   );

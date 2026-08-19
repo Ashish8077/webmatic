@@ -1,6 +1,6 @@
 import type { RawServiceContent, ServiceContent } from "./types";
 
-export function normaliseServiceContent(
+export function normalizeServiceContent(
   raw: RawServiceContent,
 ): ServiceContent {
   return {

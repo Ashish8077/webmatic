@@ -1,10 +1,17 @@
 
 import { Phone, Mail } from "lucide-react";
 import { FaFacebook, FaInstagram, FaLinkedinIn } from "react-icons/fa6";
-const TopHeader = () => {
+
+const TopHeader = ({ scrolled }: { scrolled: boolean }) => {
   return (
-    <div className="bg-slate-900 border-b border-white/10">
-      <div className="max-w-[1170px] mx-auto px-5 sm:px-8 h-10 flex items-center justify-between">
+    <div
+      className={`border-b transition-all duration-500 ${
+        scrolled
+          ? "bg-slate-900 border-white/10"
+          : "bg-transparent border-white/10"
+      }`}
+    >
+      <div className="max-w-292.5 mx-auto px-5 sm:px-8 h-10 flex items-center justify-between">
         {/* Left — contact info */}
         <div className="flex items-center gap-6 text-sm text-slate-300">
           <a

@@ -5,6 +5,7 @@ import {
   HeroSection,
   WhyChooseUsSection,
   ContactCtaSection,
+  PortfolioSection,
 } from "./sections";
 import { ServiceSection } from "@/components/sections/services/services-section";
 import { TestimonialsSection } from "@/components/sections/testimonials/testimonials-section";
@@ -36,6 +37,7 @@ const SECTION_MAP: Readonly<
   hero: HeroSection,
   about: AboutSection,
   services: ServiceSection,
+  portfolio: PortfolioSection,
   "why-choose-us": WhyChooseUsSection,
   testimonials: TestimonialsSection,
   faq: FaqSection,

@@ -2,6 +2,7 @@ export const PAGE_SECTION_TYPES = [
   "hero",
   "about",
   "services",
+  "portfolio",
   "why-choose-us", // change this to why_choose_use and same fro contact-cta
   "testimonials",
   "faq",

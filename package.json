@@ -27,6 +27,7 @@
     "html-to-text": "^10.0.0",
     "jsonwebtoken": "^9.0.3",
     "lucide-react": "^1.22.0",
+    "motion": "^13.1.0",
     "mysql2": "^3.22.5",
     "next": "16.2.9",
     "nodemailer": "^9.0.3",

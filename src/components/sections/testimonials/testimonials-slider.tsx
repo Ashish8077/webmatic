@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, Star, Quote, User } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star, User } from "lucide-react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { TestimonialItem } from "@/modules/testimonials/types/service.types";
-
 import { parseSliderSettingsDefaults } from "@/features/page-sections/schemas/common-settings.schema";
 
 interface TestimonialsSliderProps {
@@ -14,26 +14,24 @@ interface TestimonialsSliderProps {
 
 export function TestimonialsSlider({ items, settings }: TestimonialsSliderProps) {
   const parsedSettings = parseSliderSettingsDefaults(settings);
+  const shouldReduceMotion = useReducedMotion();
 
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [direction, setDirection] = useState(1);
 
   const goTo = useCallback(
     (index: number) => {
-      if (isAnimating) return;
-      
       let nextIndex = index;
       if (nextIndex < 0 || nextIndex >= items.length) {
         if (!parsedSettings.loop) return;
         nextIndex = (index + items.length) % items.length;
       }
       
-      setIsAnimating(true);
+      setDirection(nextIndex > current ? 1 : -1);
       setCurrent(nextIndex);
-      setTimeout(() => setIsAnimating(false), 500); // match transition duration
     },
-    [items.length, isAnimating, parsedSettings.loop],
+    [items.length, parsedSettings.loop, current],
   );
 
   const prev = () => goTo(current - 1);
@@ -45,132 +43,230 @@ export function TestimonialsSlider({ items, settings }: TestimonialsSliderProps)
     return () => clearInterval(timer);
   }, [next, paused, items.length, parsedSettings.autoplay, parsedSettings.autoplayDelay]);
 
-  if (items.length === 0) {
-    return null;
-  }
+  if (items.length === 0) return null;
 
   const t = items[current];
 
+  // Variants for the card slider
+  const cardVariants = shouldReduceMotion
+    ? {
+        enter: { opacity: 1 },
+        center: { opacity: 1 },
+        exit: { opacity: 1 },
+      }
+    : {
+        enter: (dir: number) => ({
+          opacity: 0,
+          scale: 0.95,
+          x: dir > 0 ? 80 : -80,
+        }),
+        center: {
+          opacity: 1,
+          scale: 1,
+          x: 0,
+          transition: {
+            duration: 0.6,
+            ease: [0.25, 0.46, 0.45, 0.94] as const,
+          },
+        },
+        exit: (dir: number) => ({
+          opacity: 0,
+          scale: 0.95,
+          x: dir > 0 ? -80 : 80,
+          transition: {
+            duration: 0.4,
+            ease: [0.25, 0.46, 0.45, 0.94] as const,
+          },
+        }),
+      };
+
+  // Staggered variants for the stars
+  const starContainerVariants = {
+    hidden: {},
+    visible: {
+      transition: { staggerChildren: shouldReduceMotion ? 0 : 0.05 },
+    },
+  };
+
+  const starVariants = shouldReduceMotion
+    ? { hidden: { opacity: 1 }, visible: { opacity: 1 } }
+    : {
+        hidden: { opacity: 0, scale: 0 },
+        visible: {
+          opacity: 1,
+          scale: 1,
+          transition: { type: "spring" as const, stiffness: 400, damping: 15 },
+        },
+      };
+
   return (
-    <div className="relative mx-auto max-w-4xl px-4 sm:px-12">
+    <div className="relative mx-auto max-w-5xl px-4 sm:px-6">
       <div
         className="relative group"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
-        <div 
-          className="relative rounded-2xl bg-slate-50 border border-slate-200 px-6 sm:px-16 py-12 sm:py-16 text-center shadow-sm hover:shadow-md transition-all duration-500"
-        >
-          {/* Quote icon */}
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex h-14 w-14 items-center justify-center rounded-full bg-primary shadow-lg shadow-primary/30 ring-4 ring-white">
-            <Quote size={24} className="text-white fill-white" />
-          </div>
+        {/* Background shadow layer for depth */}
+        <div className="absolute inset-0 bg-slate-200/60 rounded-[2.5rem] scale-[0.94] translate-y-6 opacity-0 group-hover:translate-y-8 group-hover:scale-[0.96] transition-all duration-500 hidden sm:block" />
+        <div className="absolute inset-0 bg-slate-200/40 rounded-[2.5rem] scale-[0.97] translate-y-3 opacity-0 group-hover:translate-y-4 group-hover:scale-[0.98] transition-all duration-500 hidden sm:block" />
 
-          <div
-            className={`transition-opacity duration-500 ${isAnimating ? "opacity-0" : "opacity-100"}`}
+        <AnimatePresence mode="wait" custom={direction}>
+          <motion.div
+            key={current}
+            custom={direction}
+            variants={cardVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            className="relative w-full rounded-[2.5rem] bg-linear-to-br from-white to-slate-50 border border-slate-200 p-8 sm:p-14 lg:p-16 shadow-xl shadow-slate-200/80 overflow-hidden"
           >
-            <div className="flex items-center justify-center gap-1 mb-6">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  size={20}
-                  className={
-                    t.rating > i
-                      ? "text-orange-500 fill-orange-500"
-                      : "text-slate-200 fill-slate-200"
-                  }
-                />
-              ))}
+            {/* Watermark Quote Icon */}
+            <div className="absolute -top-10 -left-6 text-[180px] font-serif leading-none text-slate-100/80 rotate-[-10deg] select-none pointer-events-none z-0">
+              &ldquo;
             </div>
 
-            {/* Title */}
-            {t.title && (
-              <h3 className="text-2xl sm:text-3xl font-bold text-navy leading-tight mb-4">
-                {t.title}
-              </h3>
-            )}
+            <div className="relative z-10 flex flex-col md:flex-row gap-10 md:gap-14 items-center md:items-start">
+              
+              {/* Left Column: Author Image & Details (for desktop, it can be on left or right, let's keep text on top/left, author on bottom/right) */}
+              
+              <div className="flex-1 w-full text-center md:text-left flex flex-col">
+                <motion.div
+                  variants={starContainerVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="flex items-center justify-center md:justify-start gap-1 mb-6"
+                >
+                  {[...Array(5)].map((_, i) => (
+                    <motion.div key={i} variants={starVariants}>
+                      <Star
+                        size={22}
+                        className={
+                          t.rating > i
+                            ? "text-orange-500 fill-orange-500"
+                            : "text-slate-200 fill-slate-200"
+                        }
+                      />
+                    </motion.div>
+                  ))}
+                </motion.div>
 
-            {/* Description */}
-            <p
-              className={`text-lg sm:text-xl leading-relaxed text-slate-600 max-w-2xl mx-auto font-medium italic ${!t.title ? "mt-4" : ""}`}
-            >
-              &quot;{t.description}&quot;
-            </p>
+                {t.title && (
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-navy leading-tight mb-4 tracking-tight">
+                    {t.title}
+                  </h3>
+                )}
 
-            {/* Author */}
-            <div className="mt-10 flex flex-col items-center justify-center gap-4">
-              <div className="relative h-16 w-16 shrink-0 rounded-full bg-slate-100 border-2 border-slate-200 overflow-hidden flex items-center justify-center shadow-sm">
-                {t.profileImage && t.profileImage.url ? (
-                  <Image
-                    src={t.profileImage.url}
-                    alt={t.clientName}
-                    fill
-                    className="object-cover"
-                    unoptimized
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                    }}
-                  />
-                ) : (
-                  <User size={28} className="text-slate-400" />
-                )}
-              </div>
-              <div className="text-center">
-                <p className="text-base font-bold text-navy">{t.clientName}</p>
-                {(t.designation || t.companyName) && (
-                  <p className="text-sm text-slate-500 mt-1 font-medium">
-                    {t.designation}
-                    {t.designation && t.companyName && (
-                      <span className="mx-1.5 opacity-50">•</span>
+                <p className={`text-[17px] sm:text-[20px] leading-[1.8] text-slate-600 font-medium ${!t.title ? "mt-2" : ""}`}>
+                  &ldquo;{t.description}&rdquo;
+                </p>
+
+                {/* Author Info Bottom */}
+                <div className="mt-10 flex items-center justify-center md:justify-start gap-4">
+                  <motion.div
+                    initial={shouldReduceMotion ? {} : { scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="relative h-16 w-16 shrink-0 rounded-full bg-slate-100 border-2 border-slate-200 shadow-md overflow-hidden flex items-center justify-center"
+                  >
+                    {t.profileImage && t.profileImage.url ? (
+                      <Image
+                        src={t.profileImage.url}
+                        alt={t.clientName}
+                        fill
+                        className="object-cover"
+                        unoptimized
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      <User size={28} className="text-slate-400" />
                     )}
-                    {t.companyName && (
-                      <span className="text-orange-600">{t.companyName}</span>
+                  </motion.div>
+                  <div className="text-left">
+                    <p className="text-lg font-bold text-navy">{t.clientName}</p>
+                    {(t.designation || t.companyName) && (
+                      <p className="text-sm text-slate-500 mt-0.5 font-medium">
+                        {t.designation}
+                        {t.designation && t.companyName && (
+                          <span className="mx-2 text-slate-300">•</span>
+                        )}
+                        {t.companyName && (
+                          <span className="text-primary">{t.companyName}</span>
+                        )}
+                      </p>
                     )}
-                  </p>
-                )}
+                  </div>
+                </div>
               </div>
+
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </AnimatePresence>
 
-        {/* Prev / Next arrows */}
+        {/* Navigation Buttons (Floating safely outside or overlapping elegantly) */}
         {items.length > 1 && parsedSettings.showNavigation && (
-          <>
+          <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 justify-between px-2 sm:-mx-6 lg:-mx-12 pointer-events-none z-20 hidden sm:flex">
             <button
               onClick={prev}
               aria-label="Previous testimonial"
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 sm:-translate-x-6 flex h-12 w-12 items-center justify-center rounded-full bg-white border border-slate-200 text-slate-500 shadow-md hover:border-primary hover:text-primary hover:scale-110 focus:outline-none focus:ring-4 focus:ring-primary/20 transition-all duration-300 z-10 opacity-0 sm:opacity-100 group-hover:opacity-100"
+              className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary shadow-lg shadow-primary/5 hover:bg-primary hover:text-white hover:scale-110 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/20 transition-all duration-300"
             >
-              <ChevronLeft size={22} />
+              <ChevronLeft size={24} strokeWidth={2.5} />
             </button>
             <button
               onClick={next}
               aria-label="Next testimonial"
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 sm:translate-x-6 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-md shadow-primary/30 hover:bg-primary-hover hover:scale-110 focus:outline-none focus:ring-4 focus:ring-primary/20 transition-all duration-300 z-10 opacity-0 sm:opacity-100 group-hover:opacity-100"
+              className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/30 hover:bg-primary-hover hover:scale-110 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/20 transition-all duration-300"
             >
-              <ChevronRight size={22} />
+              <ChevronRight size={24} strokeWidth={2.5} />
             </button>
-          </>
+          </div>
         )}
       </div>
 
-      {/* Dot indicators */}
-      {items.length > 1 && parsedSettings.showPagination && (
-        <div className="mt-10 flex items-center justify-center gap-2.5">
-          {items.map((_, i) => (
+      {/* Mobile Navigation & Dots */}
+      <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-8">
+        {/* Mobile Arrows (Visible only on mobile) */}
+        {items.length > 1 && parsedSettings.showNavigation && (
+          <div className="flex gap-4 sm:hidden">
             <button
-              key={i}
-              onClick={() => goTo(i)}
-              aria-label={`Go to testimonial ${i + 1}`}
-              className={`rounded-full transition-all duration-300 focus:outline-none ${
-                i === current
-                  ? "w-8 h-2.5 bg-primary"
-                  : "w-2.5 h-2.5 bg-slate-200 hover:bg-slate-300"
-              }`}
-            />
-          ))}
-        </div>
-      )}
+              onClick={prev}
+              aria-label="Previous testimonial"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors"
+            >
+              <ChevronLeft size={20} strokeWidth={2.5} />
+            </button>
+            <button
+              onClick={next}
+              aria-label="Next testimonial"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-md shadow-primary/30 hover:bg-primary-hover transition-colors"
+            >
+              <ChevronRight size={20} strokeWidth={2.5} />
+            </button>
+          </div>
+        )}
+
+        {items.length > 1 && parsedSettings.showPagination && (
+          <div className="flex items-center gap-3">
+            {items.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                aria-label={`Go to testimonial ${i + 1}`}
+                className="relative h-2.5 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                style={{ width: i === current ? 32 : 10 }}
+              >
+                <span
+                  className={`absolute inset-0 rounded-full transition-colors duration-300 ${
+                    i === current ? "bg-primary" : "bg-slate-300 hover:bg-slate-400"
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

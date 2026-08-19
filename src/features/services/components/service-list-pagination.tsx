@@ -51,7 +51,7 @@ export function ServiceListPagination({
       <div className="flex items-center gap-4 order-1 sm:order-2">
         <div className="flex items-center gap-2">
           <span className="text-sm text-muted-foreground whitespace-nowrap">Rows per page:</span>
-          <div className="w-[120px]">
+          <div className="w-30">
             <Select
               options={[
                 { label: "10", value: "10" },

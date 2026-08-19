@@ -23,7 +23,7 @@ export function MediaToolbar({
 }: MediaToolbarProps) {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center justify-between pb-4 border-b border-border">
-      <div className="flex-1 min-w-[280px] max-w-3xl">
+      <div className="flex-1 min-w-70 max-w-3xl">
         <MediaFilters
           query={query}
           onSearchChange={onSearchChange}

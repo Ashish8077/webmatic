@@ -8,7 +8,8 @@ import {
   Contact, 
   Menu,
   Settings,
-  FileText
+  FileText,
+  Palette
 } from "lucide-react";
 import { Permission } from "@/features/auth/constants/permissions";
 
@@ -51,6 +52,12 @@ export const navGroups: NavGroup[] = [
         href: "/admin/services",
         permission: Permission.PAGE_VIEW,
         icon: Briefcase,
+      },
+      {
+        label: "Work",
+        href: "/admin/work/projects",
+        permission: Permission.PAGE_VIEW,
+        icon: Palette,
       },
       {
         label: "Testimonials",

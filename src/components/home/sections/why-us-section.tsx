@@ -1,7 +1,9 @@
+import { motion } from "motion/react";
 import { str, arr } from "../content-helpers";
 import { VisualRenderer } from "@/components/ui/visual-renderer";
 import type { VisualAsset } from "@/shared/types/visual-asset.types";
 import { getIconComponent } from "@/components/ui/icon-registry";
+import React from "react";
 
 interface SectionProps {
   content: Record<string, unknown>;
@@ -16,13 +18,24 @@ interface ReasonItem {
   description: string;
 }
 
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
+  },
+};
+
 /**
- * Why Choose Us — numbered card grid with a subtle glass treatment.
- *
- * Expected content keys:
- * - heading      string   — Section headline
- * - subheading   string   — Optional supporting text
- * - reasons      array    — [{ visualType, iconName, imageId, title: string; description: string }]
+ * Why Choose Us — Modern, premium card grid with subtle hover animations and watermark numbering.
  */
 export function WhyUsSection({ content, title }: SectionProps) {
   const heading = str(content.heading, title ?? "Why Choose Us");
@@ -33,77 +46,89 @@ export function WhyUsSection({ content, title }: SectionProps) {
     <section
       id="why-us"
       aria-labelledby="why-us-heading"
-      className="py-16 px-4 relative overflow-hidden"
+      className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-slate-50/50"
     >
-      {/* Subtle background accent */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.04]"
-        aria-hidden="true"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 60% at 50% 50%, #6366f1, transparent)",
-        }}
-      />
-
-      <div className="relative max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <p className="text-[11px] font-bold text-accent uppercase tracking-[0.2em] mb-3">
-            Why Us
-          </p>
+      <div className="relative max-w-7xl mx-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-16"
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 text-accent mb-6">
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em]">Why Us</span>
+          </div>
           <h2
             id="why-us-heading"
-            className="text-[28px] sm:text-[32px] font-bold text-foreground mb-3"
+            className="text-[32px] sm:text-[40px] md:text-[48px] font-bold text-navy mb-6 tracking-tight leading-[1.1]"
           >
             {heading}
           </h2>
           {subheading && (
-            <p className="text-muted-foreground max-w-2xl mx-auto text-[15px] leading-[1.6]">
+            <p className="text-slate-500 max-w-2xl mx-auto text-[16px] sm:text-[18px] leading-[1.6]">
               {subheading}
             </p>
           )}
-        </div>
+        </motion.div>
 
         {reasons.length > 0 && (
-          <ul className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5" role="list">
+          <motion.ul 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" 
+            role="list"
+          >
             {reasons.map((reason, i) => (
-              <li
+              <motion.li
                 key={i}
-                className="relative pt-7 pb-5 px-5 rounded-xl glass border border-card-border hover:border-accent/25 transition-all duration-200"
+                variants={itemVariants}
+                className="group relative pt-10 pb-10 px-8 rounded-3xl bg-white border border-slate-100 shadow-xs hover:shadow-md transition-all duration-500 overflow-hidden"
               >
-                {/* Always show Numbered indicator as per previous design */}
-                <span
-                  className="absolute -top-3 left-4 w-7 h-7 rounded-full bg-accent text-white text-[11px] font-bold flex items-center justify-center shadow-md shadow-accent/40 tabular-nums"
-                  aria-hidden="true"
-                >
+                {/* Decorative top border gradient */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-slate-200 to-slate-200 group-hover:from-primary group-hover:to-orange-400 transition-all duration-500" />
+                
+                {/* Subtle watermark number with parallax-like hover effect */}
+                <div className="absolute -right-2 -top-4 text-[140px] font-black text-slate-50/60 group-hover:-translate-y-2 group-hover:-translate-x-2 transition-transform duration-700 select-none pointer-events-none z-0 tracking-tighter">
                   {String(i + 1).padStart(2, "0")}
-                </span>
+                </div>
 
-                {/* Render icon inside a consistent box or use VisualRenderer for images */}
-                {reason.visualType === "icon" && reason.iconName ? (
-                  <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-accent/10 text-accent shadow-sm">
+                <div className="relative z-10 flex flex-col h-full">
+                  {/* Modern Icon Container (Soft primary default, solid primary hover) */}
+                  <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500 shadow-sm">
                     {(() => {
-                      const Icon = getIconComponent(reason.iconName);
-                      return Icon ? <Icon size={20} strokeWidth={1.75} /> : null;
+                      if (reason.visualType === "icon" && reason.iconName) {
+                        const IconComponent = getIconComponent(reason.iconName);
+                        if (IconComponent) {
+                          return React.createElement(IconComponent, { size: 28, strokeWidth: 1.5 });
+                        }
+                      }
+                      if (reason.visualType === "image") {
+                        return (
+                          <VisualRenderer
+                            asset={reason as VisualAsset}
+                            className="w-full h-full rounded-2xl overflow-hidden"
+                            imageClassName="transition-transform duration-700 group-hover:scale-[1.1]"
+                          />
+                        );
+                      }
+                      // Fallback
+                      return <span className="text-[16px] font-bold currentColor">{String(i + 1).padStart(2, "0")}</span>;
                     })()}
                   </div>
-                ) : reason.visualType === "image" ? (
-                  <div className="mb-3 h-11 w-11 rounded-lg bg-accent/10 flex items-center justify-center text-accent shadow-sm overflow-hidden">
-                    <VisualRenderer
-                      asset={reason as VisualAsset}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : null}
 
-                <h3 className="text-[15px] font-semibold text-foreground mb-2">
-                  {str(reason.title)}
-                </h3>
-                <p className="text-muted-foreground text-[13px] leading-relaxed">
-                  {str(reason.description)}
-                </p>
-              </li>
+                  <h3 className="text-xl font-bold text-navy mb-4 group-hover:text-primary transition-colors duration-300">
+                    {str(reason.title)}
+                  </h3>
+                  <p className="text-slate-500 text-[15px] leading-[1.7] flex-1">
+                    {str(reason.description)}
+                  </p>
+                </div>
+              </motion.li>
             ))}
-          </ul>
+          </motion.ul>
         )}
       </div>
     </section>

@@ -27,7 +27,7 @@ export function StatCard({
     >
       {/* Gradient accent line */}
       <div
-        className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r ${accentColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+        className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${accentColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
       />
 
       <div className="flex items-start justify-between">
