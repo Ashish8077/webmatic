@@ -23,7 +23,7 @@ const mockFaqs: FaqItem[] = [
 export function ServicesFaq() {
   return (
     <section className="bg-green-50 py-20 sm:py-28">
-      <div className="mx-auto max-w-[1170px] px-5 sm:px-8">
+      <div className="mx-auto max-w-292.5 px-5 sm:px-8">
         <div className="mb-16 text-center">
           <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-orange-500 mb-3 animate-fade-in">
             <span className="h-px w-6 bg-orange-500 rounded-full" />

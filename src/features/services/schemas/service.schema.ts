@@ -136,30 +136,6 @@ export const serviceSchema = z
           message: "Description is required when publishing.",
         });
       }
-
-      if (!data.featuredImageId) {
-        ctx.addIssue({
-          code: "custom",
-          path: ["featuredImageId"],
-          message: "Featured image is required when publishing.",
-        });
-      }
-
-      if (!data.seoTitle) {
-        ctx.addIssue({
-          code: "custom",
-          path: ["seoTitle"],
-          message: "SEO title is required when publishing.",
-        });
-      }
-
-      if (!data.metaDescription) {
-        ctx.addIssue({
-          code: "custom",
-          path: ["metaDescription"],
-          message: "Meta description is required when publishing.",
-        });
-      }
     }
   });
 

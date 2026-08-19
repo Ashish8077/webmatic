@@ -37,6 +37,12 @@ import { missionVisionContentSchema } from "../schemas/mission-vision.schema";
 import { teamMembersContentSchema } from "../schemas/team-members.schema";
 import { developmentProcessContentSchema } from "../schemas/development-process.schema";
 import { blogListContentSchema, blogListSettingsSchema } from "../schemas/blog-list.schema";
+import {
+  portfolioContentSchema,
+  portfolioSettingsSchema,
+  parsePortfolioContentDefaults,
+  parsePortfolioSettingsDefaults,
+} from "../schemas/portfolio.schema";
 
 import {
   HeroContentForm,
@@ -71,6 +77,8 @@ import {
   parseContactInformationSettingsDefaults,
   BlogListContentForm,
   BlogListSettingsForm,
+  PortfolioContentForm,
+  PortfolioSettingsForm,
 } from "../components/forms";
 
 import {
@@ -128,6 +136,7 @@ export const SECTION_CONTENT_SCHEMA_MAP: Record<PageSectionType, z.ZodTypeAny> =
     "mission-vision": missionVisionContentSchema,
     "team-members": teamMembersContentSchema,
     "blog-list": blogListContentSchema,
+    portfolio: portfolioContentSchema,
   };
 
 export const SECTION_CONTENT_FORM_MAP: Record<
@@ -151,6 +160,7 @@ export const SECTION_CONTENT_FORM_MAP: Record<
   "mission-vision": MissionVisionContentForm,
   "team-members": TeamMembersContentForm,
   "blog-list": BlogListContentForm,
+  portfolio: PortfolioContentForm,
 };
 
 export const SECTION_CONTENT_DEFAULTS_MAP: Record<
@@ -174,6 +184,7 @@ export const SECTION_CONTENT_DEFAULTS_MAP: Record<
   "mission-vision": parseMissionVisionContentDefaults,
   "team-members": parseTeamMembersContentDefaults,
   "blog-list": parseBlogListContentDefaults,
+  portfolio: parsePortfolioContentDefaults,
 };
 
 // ─── Settings Registries ──────────────────────────────────────────────────────
@@ -199,6 +210,7 @@ export const SECTION_SETTINGS_SCHEMA_MAP: Record<
   "mission-vision": z.object({}),
   "team-members": z.object({}),
   "blog-list": blogListSettingsSchema,
+  portfolio: portfolioSettingsSchema,
 };
 
 export const SECTION_SETTINGS_FORM_MAP: Record<
@@ -222,6 +234,7 @@ export const SECTION_SETTINGS_FORM_MAP: Record<
   "mission-vision": () => null,
   "team-members": () => null,
   "blog-list": BlogListSettingsForm,
+  portfolio: PortfolioSettingsForm,
 };
 
 export const SECTION_SETTINGS_DEFAULTS_MAP: Record<
@@ -245,4 +258,5 @@ export const SECTION_SETTINGS_DEFAULTS_MAP: Record<
   "mission-vision": () => ({}),
   "team-members": () => ({}),
   "blog-list": parseBlogListSettingsDefaults,
+  portfolio: parsePortfolioSettingsDefaults,
 };

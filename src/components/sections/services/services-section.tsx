@@ -1,13 +1,14 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import ServiceCard from "./service-card";
+import * as motion from "motion/react-client";
 import { SectionProps } from "@/components/home/sections/types";
-import { normaliseServiceContent } from "./mapper";
+import { normalizeServiceContent } from "./mapper";
 import { RawServiceContent } from "./types";
 import { getServicesService } from "@/modules/services/services/get-services.service";
+import ServicesGrid from "./services-grid";
 
 export const ServiceSection = async ({ content }: SectionProps) => {
-  const service = normaliseServiceContent(
+  const service = normalizeServiceContent(
     content as unknown as RawServiceContent,
   );
 
@@ -20,10 +21,16 @@ export const ServiceSection = async ({ content }: SectionProps) => {
   });
 
   return (
-    <section className="bg-white py-16">
-      <div className="mx-auto max-w-[1170px] px-5 sm:px-8">
+    <section className="bg-white py-16 relative overflow-hidden">
+      <div className="mx-auto max-w-292.5 px-5 sm:px-8 relative z-10">
         {/* ── Section header ──────────────────────────────── */}
-        <div className="mb-12 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5 }}
+          className="mb-12 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5"
+        >
           <div>
             <span className="inline-flex items-center gap-2 mb-3 text-[11px] font-bold uppercase tracking-[0.2em] text-orange-500">
               <span className="h-px w-5 bg-orange-500 rounded-full" />
@@ -47,18 +54,20 @@ export const ServiceSection = async ({ content }: SectionProps) => {
               />
             </Link>
           )}
-        </div>
+        </motion.div>
 
-        {/* ── Services grid ───────────────────────────────── */}
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {servicesResponse.items.map((serviceItem) => (
-            <ServiceCard key={serviceItem.id} service={serviceItem} />
-          ))}
-        </div>
+        {/* ── Services grid (Client Component) ────────────── */}
+        <ServicesGrid services={servicesResponse.items} />
 
         {/* ── Bottom CTA strip ────────────────────────────── */}
         {(service.bottomText || service.primaryButton?.text) && (
-          <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200 pt-8">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200 pt-8"
+          >
             {service.bottomText && (
               <p className="text-[13px] text-slate-500 text-center sm:text-left">
                 {service.bottomText}
@@ -73,7 +82,7 @@ export const ServiceSection = async ({ content }: SectionProps) => {
                 <ArrowRight size={14} />
               </Link>
             )}
-          </div>
+          </motion.div>
         )}
       </div>
     </section>

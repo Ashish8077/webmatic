@@ -28,7 +28,7 @@ export function FaqSection({ content, title }: SectionProps) {
       aria-labelledby="faq-heading"
       className="bg-white py-16"
     >
-      <div className="mx-auto max-w-[1170px] px-5 sm:px-8">
+      <div className="mx-auto max-w-292.5 px-5 sm:px-8">
         <div className="text-center mb-12">
           <span className="inline-block mb-3 text-[11px] font-bold uppercase tracking-[0.2em] text-orange-500">
             FAQ

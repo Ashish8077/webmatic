@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function PublicNotFound() {
   return (
-    <main className="min-h-screen flex items-center justify-center pt-[160px] md:pt-[180px] pb-16 bg-slate-50 relative overflow-hidden">
+    <main className="min-h-screen flex items-center justify-center pt-40 md:pt-45 pb-16 bg-slate-50 relative overflow-hidden">
       {/* Subtle Light Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-50" />
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl pointer-events-none" />

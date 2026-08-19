@@ -1,11 +1,12 @@
 import { SectionProps } from "../types";
-import {
-  normaliseContactCtaContent,
-} from "./mapper";
-import { ContactCta, ContactMapCta } from "@/components/sections/contact-cta";
+import { normalizeContactCtaContent } from "./mapper";
+import { ContactCta } from "@/components/sections/contact-cta";
+import { ContactMapCta } from "@/components/sections/contact-cta/contact-map-cta";
+import { siteSettingsService } from "@/modules/site-settings/services/site-settings.service";
 
-export function ContactCtaSection({ content, settings }: SectionProps) {
-  const data = normaliseContactCtaContent(content);
+export async function ContactCtaSection({ content, settings }: SectionProps) {
+  const data = normalizeContactCtaContent(content);
+  const globalSettings = await siteSettingsService.getPublicContactSettings();
 
   const paddingTop = typeof settings?.paddingTop === "string" ? settings.paddingTop : "xl";
   const paddingBottom = typeof settings?.paddingBottom === "string" ? settings.paddingBottom : "xl";
@@ -18,15 +19,15 @@ export function ContactCtaSection({ content, settings }: SectionProps) {
         badge={data.badge}
         heading={data.heading}
         description={data.description}
-        privacyNote={data.privacyNote}
-        successMessage={data.successMessage}
+        privacyNote={globalSettings.form.privacyNote}
+        successMessage={globalSettings.form.successMessage}
         submitButtonText={data.buttonText}
         map={data.map}
         paddingTop={paddingTop}
         paddingBottom={paddingBottom}
         backgroundVariant={background}
         containerVariant={container}
-        showCompanyField={true}
+        showCompanyField={false}
         showMessageField={true}
       />
     );
@@ -37,14 +38,14 @@ export function ContactCtaSection({ content, settings }: SectionProps) {
       badge={data.badge}
       heading={data.heading}
       description={data.description}
-      privacyNote={data.privacyNote}
-      successMessage={data.successMessage}
+      privacyNote={globalSettings.form.privacyNote}
+      successMessage={globalSettings.form.successMessage}
       submitButtonText={data.buttonText}
       paddingTop={paddingTop}
       paddingBottom={paddingBottom}
       backgroundVariant={background}
       containerVariant={container}
-      showCompanyField={true}
+      showCompanyField={false}
       showMessageField={true}
     />
   );

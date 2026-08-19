@@ -27,6 +27,7 @@ import {
 import { MediaType } from "../constants/media.constants";
 import type { Media, UpdateMediaInput, MediaListResponse } from "../types/media.types";
 import type { MediaListQuery } from "../types/media-query.types";
+import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
 
 /** Resolve the StorageProvider dynamically to avoid shared mutable singletons. */
 function getStorageProvider() {
@@ -48,6 +49,7 @@ function determineMediaType(mimeType: string): MediaType {
   return "other";
 }
 
+
 export const MediaService = {
   /**
    * Orchestrates the complete file upload workflow.
@@ -55,13 +57,20 @@ export const MediaService = {
    * Flow:
    * 1. Validate & Read Buffer
    * 2. Extract Checksum & Metadata
-   * 3. Begin Transaction
+   * 3. Early-exit if checksum already exists in an active record
+   *    → return existing media (no storage write, no DB insert)
    * 4. Upload to Storage
-   * 5. Insert into Database
-   * 6. Commit
+   * 5. Begin Transaction → Insert into Database → Commit
    *
-   * Cleanup contract: If database insert fails, the freshly uploaded storage
-   * object will be immediately deleted and the transaction rolled back.
+   * Race-condition handling:
+   * Two concurrent uploads of the same file can both pass step 3 and
+   * both attempt the INSERT. The DB UNIQUE(checksum) constraint catches
+   * the second one. In that case the catch block recovers the existing
+   * record and returns it instead of surfacing a generic error.
+   *
+   * Cleanup contract: If the DB insert fails for any reason OTHER than
+   * a duplicate-key collision, the freshly uploaded storage object is
+   * immediately deleted and the transaction rolled back.
    */
   async uploadMedia(
     file: File,
@@ -76,27 +85,32 @@ export const MediaService = {
     const extension = path.extname(originalName).replace(".", "").toLowerCase();
     const size = file.size;
 
-    const uniqueId = uuidv4();
-    const generatedFileName = `${uniqueId}${extension ? `.${extension}` : ""}`;
-
-    // Compute Checksum and Metadata using Helper Services
+    // ── Step 1: Compute checksum & metadata ──────────────────────────────────
     const checksum = MediaChecksumService.generateChecksum(buffer);
     const extractedMetadata = await MediaMetadataService.extractMetadata(
       buffer,
       mimeType,
     );
 
-    // Duplicate Detection (Log/Proceed)
-    const duplicate = await findMediaByChecksum(checksum);
-    if (duplicate) {
-      // Hook for future duplicate policy
-      // throw new DuplicateMediaError("A file with this content already exists.");
+    // ── Step 2: Early-exit duplicate detection ───────────────────────────────
+    // findMediaByChecksum already filters `deleted_at IS NULL`, so a
+    // soft-deleted record is correctly treated as non-existent here.
+    const existingMedia = await findMediaByChecksum(checksum);
+    if (existingMedia) {
+      // The file content is identical to an active media record.
+      // Return it immediately — no storage write, no DB insert, no error.
+      logger.info(
+        `Duplicate upload detected for checksum ${checksum}. Returning existing media id=${existingMedia.id}.`,
+      );
+      return existingMedia;
     }
 
+    // ── Step 3: Proceed with new upload ─────────────────────────────────────
+    const uniqueId = uuidv4();
+    const generatedFileName = `${uniqueId}${extension ? `.${extension}` : ""}`;
     const type = determineMediaType(mimeType);
     const storage = getStorageProvider();
 
-    // Begin Database Transaction BEFORE doing external network calls (Upload)
     const conn = await db.getConnection();
     await conn.beginTransaction();
 
@@ -104,8 +118,7 @@ export const MediaService = {
     let providerFileId: string | null = null;
 
     try {
-      // 1. Upload to Storage
-      // (Retry behavior belongs inside the StorageProvider implementation)
+      // 3a. Upload to storage
       const uploadResult = await storage.upload(buffer, {
         fileName: generatedFileName,
         originalName,
@@ -117,7 +130,7 @@ export const MediaService = {
       providerFileId = uploadResult.providerFileId;
       const disk = storage.disk;
 
-      // 2. Insert into Repository
+      // 3b. Insert into repository
       const createdMedia = await createMedia(
         {
           originalName,
@@ -138,20 +151,51 @@ export const MediaService = {
           providerFileId: providerFileId ?? null,
           uploadedBy: user.userId,
         },
-        conn, // Pass connection for transaction
+        conn,
       );
 
-      // 3. Commit Transaction
+      // 3c. Commit
       await conn.commit();
       return createdMedia;
     } catch (error) {
       await conn.rollback();
 
+      // ── Race-condition recovery ────────────────────────────────────────────
+      // Two concurrent uploads of the same file can both pass the early-exit
+      // check above. The DB UNIQUE(checksum) constraint catches the second
+      // INSERT. Instead of surfacing a generic error, we recover the record
+      // that the winning request just inserted and return it.
+      if (isDuplicateKeyError(error)) {
+        logger.info(
+          `Race-condition duplicate key on checksum ${checksum}. Recovering existing record.`,
+        );
+        // The storage file we uploaded is now an orphan — clean it up.
+        if (uploadedPath) {
+          try {
+            await storage.delete(uploadedPath);
+          } catch (cleanupError) {
+            logger.error(
+              "Failed to cleanup orphaned storage file after race-condition duplicate:",
+              cleanupError,
+            );
+          }
+        }
+        // Fetch and return the record inserted by the winning request.
+        const recovered = await findMediaByChecksum(checksum);
+        if (recovered) return recovered;
+        // If for some reason it's still not found (extremely unlikely),
+        // fall through to the generic error below.
+      }
+
+      // ── General storage/DB failure cleanup ────────────────────────────────
       if (uploadedPath) {
         try {
           await storage.delete(uploadedPath);
         } catch (cleanupError) {
-          logger.error("Failed to cleanup orphaned storage file:", cleanupError);
+          logger.error(
+            "Failed to cleanup orphaned storage file after upload failure:",
+            cleanupError,
+          );
         }
       }
 

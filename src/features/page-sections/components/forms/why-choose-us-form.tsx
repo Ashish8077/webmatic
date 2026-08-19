@@ -143,7 +143,7 @@ export function WhyChooseUsContentForm({ disabled }: { disabled?: boolean }) {
 
 export function WhyChooseUsSettingsForm() {
   return (
-    <div className="flex min-h-[100px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center animate-in fade-in-50">
+    <div className="flex min-h-25 flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center animate-in fade-in-50">
       <p className="text-sm text-muted-foreground">
         No settings available for this section.
       </p>

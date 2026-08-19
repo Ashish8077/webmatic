@@ -14,7 +14,7 @@ export function RelatedBlogs({ blogs }: RelatedBlogsProps) {
 
   return (
     <section className="bg-slate-50 py-20 border-t border-slate-200">
-      <div className="mx-auto max-w-[1170px] px-5 sm:px-8">
+      <div className="mx-auto max-w-292.5 px-5 sm:px-8">
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 mb-4">
             <span className="text-[12px] font-bold text-orange-500 uppercase tracking-[0.2em]">

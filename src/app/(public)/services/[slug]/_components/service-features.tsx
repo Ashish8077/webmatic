@@ -9,7 +9,7 @@ export function ServiceFeatures({ features }: ServiceFeaturesProps) {
 
   return (
     <section className="bg-slate-50 py-16 lg:py-24">
-      <div className="mx-auto max-w-[1170px] px-5 sm:px-8">
+      <div className="mx-auto max-w-292.5 px-5 sm:px-8">
         <div className="mb-12 text-center">
           <span className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em] text-orange-500 mb-3">
             <span className="h-px w-6 bg-orange-500 rounded-full" />

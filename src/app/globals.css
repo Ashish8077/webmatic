@@ -27,7 +27,7 @@
   --color-hero-primary: #0A98D4;
   --color-hero-primary-hover: #0886BB;
   --color-hero-primary-active: #0675A4;
-  --color-hero-navy: #0c174c;
+  --color-hero-navy: #080f2e;
   --color-hero-accent: #f97316;
   
   /* Global Design System Tokens */
@@ -164,4 +164,15 @@ body {
 @keyframes progress {
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
+}
+
+/* Hero background animations */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes hero-ambient {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.75; }
 }

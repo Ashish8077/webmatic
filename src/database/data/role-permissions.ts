@@ -52,6 +52,13 @@ export const rolePermissions = {
     "menu.create",
     "menu.update",
     "menu.delete",
+
+    // Work
+    "work.view",
+    "work.create",
+    "work.update",
+    "work.delete",
+    "work.publish",
   ],
 
   "marketing-manager": [

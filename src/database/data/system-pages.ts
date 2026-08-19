@@ -36,4 +36,10 @@ export const systemPages: readonly {
     template: "contact",
     status: "published" as const,
   },
+  {
+    title: "Work",
+    slug: "work",
+    template: "work",
+    status: "published" as const,
+  },
 ];

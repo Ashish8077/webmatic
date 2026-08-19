@@ -50,7 +50,7 @@ function BlogListFilters({
       </div>
       <div className="flex gap-2 flex-wrap items-center">
         {onSortChange && (
-          <div className="w-[220px]">
+          <div className="w-55">
             <Select
               options={BLOG_SORT_OPTIONS}
               value={`${query.sortBy}|${query.sortOrder || "desc"}`}
@@ -61,7 +61,7 @@ function BlogListFilters({
             />
           </div>
         )}
-        <div className="flex gap-2 h-[42px] items-center">
+        <div className="flex gap-2 h-10.5 items-center">
           {(["all", "published", "scheduled", "draft"] as const).map((status) => (
             <button
               key={status}

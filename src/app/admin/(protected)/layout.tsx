@@ -38,7 +38,7 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <div className="ml-[260px] min-h-screen flex flex-col">
+      <div className="ml-65 min-h-screen flex flex-col">
         <Topbar />
         <main className="flex-1 p-6">{children}</main>
       </div>

@@ -1,55 +1,119 @@
-import { ChevronRight } from "lucide-react";
+"use client";
+
+import { ChevronRight, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { motion, useReducedMotion } from "motion/react";
 import { SlideType } from "./hero.types";
 
+// ─── Animation variants ────────────────────────────────────────────────────────
+
+function buildVariants(reducedMotion: boolean) {
+  const fadeUp = reducedMotion
+    ? { hidden: { opacity: 1 }, visible: { opacity: 1 } }
+    : {
+        hidden: { opacity: 0, y: 32, filter: "blur(6px)" },
+        visible: {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          transition: {
+            duration: 0.9,
+            ease: [0.16, 1, 0.3, 1] as const,
+          },
+        },
+      };
+
+  const stagger = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: reducedMotion ? 0 : 0.14,
+        delayChildren: reducedMotion ? 0 : 0.05,
+      },
+    },
+  };
+
+  return { fadeUp, stagger };
+}
+
+// ─── HeroContent ──────────────────────────────────────────────────────────────
+
 const HeroContent = ({ slide }: { slide: SlideType }) => {
+  const shouldReduceMotion = useReducedMotion() ?? false;
+  const { fadeUp, stagger } = buildVariants(shouldReduceMotion);
+
   return (
-    <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-5 sm:px-10 pt-8 pb-28 text-center">
-      {/* Badge */}
-      <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-hero-accent/20 bg-white/80 backdrop-blur-md px-4 py-2 text-sm font-semibold tracking-wide text-hero-accent shadow-sm animate-fade-in">
-        <span className="h-2 w-2 rounded-full bg-hero-accent animate-pulse" />
-        <span className="max-w-[200px] sm:max-w-none truncate sm:whitespace-normal">
+    <motion.div
+      className="relative z-10 flex flex-1 flex-col items-start justify-center px-6 sm:px-12 lg:px-20 pt-40 pb-12 max-w-360 mx-auto w-full"
+      variants={stagger}
+      initial="hidden"
+      animate="visible"
+    >
+      {/* Eyebrow badge */}
+      <motion.div
+        variants={fadeUp}
+        className="inline-flex items-center gap-2.5 rounded-full border border-white/12 bg-white/6 backdrop-blur-sm px-4 py-2 text-[11px] font-bold tracking-[0.13em] uppercase text-white/75 shadow-sm"
+      >
+        <span className="relative flex h-1.5 w-1.5 shrink-0">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-70" />
+          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-orange-400" />
+        </span>
+        <span className="max-w-48 sm:max-w-none truncate sm:whitespace-normal">
           {slide.label}
         </span>
-      </div>
+      </motion.div>
 
-      {/* Hero Heading */}
-      <h1 className="max-w-[896px] min-h-[100px] sm:min-h-[120px] md:min-h-[140px] flex flex-col items-center justify-center text-[30px] sm:text-[36px] md:text-[48px] font-extrabold leading-[1.15] tracking-tight text-hero-navy animate-slide-up">
+      {/* Primary headline */}
+      {/* max-w-[720px] keeps the line length editorial — 2–3 words per line at large size */}
+      <motion.h1
+        variants={fadeUp}
+        className="mt-6 max-w-180 text-[34px] sm:text-[46px] md:text-[56px] lg:text-[64px] font-extrabold leading-[1.06] tracking-[-0.02em] text-white"
+      >
         {slide.heading}{" "}
-        <span className="text-hero-accent">{slide.highlight}</span>
-      </h1>
+        <span className="text-orange-400">{slide.highlight}</span>
+      </motion.h1>
 
-      {/* Hero Subtitle */}
-      <p
-        className="mt-5 min-h-[56px] sm:min-h-[64px] max-w-[512px] text-[14px] sm:text-[16px] md:text-[18px] font-normal leading-[1.625] text-slate-500 animate-slide-up"
-        style={{ animationDelay: "80ms" }}
+      {/* Supporting description */}
+      {/* max-w-lg prevents the description from becoming an unreadable full-width block */}
+      <motion.p
+        variants={fadeUp}
+        className="mt-5 max-w-lg text-[15px] sm:text-[16px] leading-[1.75] text-white/55"
       >
         {slide.subheadline}
-      </p>
+      </motion.p>
 
-      {/* CTAs */}
-      <div
-        className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto animate-slide-up"
-        style={{ animationDelay: "150ms" }}
+      {/* CTA buttons */}
+      <motion.div
+        variants={fadeUp}
+        className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto"
       >
+        {/* Primary — solid orange, high-contrast */}
         <Link
           href={slide.primaryButton.to}
-          className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-hero-primary px-7 py-3.5 text-[14px] font-semibold text-white shadow-[0_6px_18px_rgba(10,152,212,0.2)] transition-all duration-200 hover:bg-hero-primary-hover hover:-translate-y-0.5 active:translate-y-0"
+          className="group inline-flex items-center justify-center gap-2 rounded-lg bg-orange-500 px-8 py-3.5 text-[14px] font-bold text-white shadow-lg shadow-orange-500/20 transition-all duration-250 hover:bg-orange-600 hover:shadow-xl hover:shadow-orange-500/25 hover:-translate-y-px active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-hero-navy"
         >
           {slide.primaryButton.text}
           <ChevronRight
             size={15}
-            className="transition-transform duration-200 group-hover:translate-x-0.5"
+            className="transition-transform duration-250 group-hover:translate-x-0.5"
+            aria-hidden="true"
           />
         </Link>
+
+        {/* Secondary — refined outline, no heavy glass morphism */}
         <Link
           href={slide.secondaryButton.to}
-          className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/70 backdrop-blur-sm px-7 py-3.5 text-[14px] font-semibold text-hero-navy transition-all duration-200 hover:bg-white hover:border-slate-400 hover:-translate-y-0.5 active:translate-y-0"
+          className="group inline-flex items-center justify-center gap-2 rounded-lg border border-white/18 bg-transparent px-8 py-3.5 text-[14px] font-bold text-white/80 transition-all duration-250 hover:bg-white/8 hover:border-white/28 hover:text-white hover:-translate-y-px active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-hero-navy"
         >
           {slide.secondaryButton.text}
+          <ArrowRight
+            size={14}
+            className="opacity-45 transition-all duration-250 group-hover:opacity-100 group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
         </Link>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

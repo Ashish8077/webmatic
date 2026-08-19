@@ -10,6 +10,7 @@ import { aboutSections } from "../data/about-sections";
 import { contactSections } from "../data/contact-sections";
 import { blogListSections } from "../data/blog-list-sections";
 import { serviceListSections } from "../data/service-list-sections";
+import { workSections } from "../data/work-sections";
 
 interface PageIdRow extends RowDataPacket {
   id: number;
@@ -23,6 +24,7 @@ export async function seedSystemPageSections(): Promise<void> {
   await seedSectionsByTemplate("service-list", serviceListSections);
   await seedSectionsByTemplate("blog-list", blogListSections);
   await seedSectionsByTemplate("contact", contactSections);
+  await seedSectionsByTemplate("work", workSections);
 
   console.log("System page sections seeded");
 }

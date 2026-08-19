@@ -11,7 +11,7 @@ export function ServiceBenefits({ benefits }: ServiceBenefitsProps) {
 
   return (
     <section className="bg-white py-16 lg:py-24">
-      <div className="mx-auto max-w-[1170px] px-5 sm:px-8">
+      <div className="mx-auto max-w-292.5 px-5 sm:px-8">
         <div className="mb-12 text-center">
           <span className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em] text-green-600 mb-3">
             <span className="h-px w-6 bg-green-600 rounded-full" />
@@ -37,14 +37,14 @@ export function ServiceBenefits({ benefits }: ServiceBenefitsProps) {
                       iconName: benefit.iconName ?? null,
                       imageId: benefit.imageId ?? null,
                     }}
-                    className="w-[22px] h-[22px]"
+                    className="w-5.5 h-5.5"
                   />
                 </div>
               </div>
 
-              <span className="h-[2px] w-8 bg-green-300 rounded-full mt-1" />
+              <span className="h-0.5 w-8 bg-green-300 rounded-full mt-1" />
 
-              <p className="text-[15px] leading-[1.625] text-slate-600 font-medium mt-2 flex-1">
+              <p className="text-[15px] leading-relaxed text-slate-600 font-medium mt-2 flex-1">
                 {benefit.title}
               </p>
             </article>

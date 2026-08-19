@@ -1,6 +1,6 @@
 import { AboutType, RawAboutContent } from "./types";
 
-export function normaliseAboutContent(raw: RawAboutContent): AboutType {
+export function normalizeAboutContent(raw: RawAboutContent): AboutType {
   return {
     badge: raw.badge,
     heading: raw.heading,

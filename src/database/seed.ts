@@ -12,6 +12,7 @@ import { seedServices } from "./seeds/services.seed";
 import { seedMenus } from "./seeds/menus.seed";
 import { seedSiteSettings } from "./seeds/site-settings.seed";
 import { seedTestimonials } from "./seeds/testimonials.seed";
+import { seedWorkProjects } from "./seeds/work-projects.seed";
 
 async function seedDatabase() {
   try {
@@ -99,6 +100,11 @@ async function seedDatabase() {
      * Seed testimonials.
      */
     await seedTestimonials();
+
+    /**
+     * Seed work projects.
+     */
+    await seedWorkProjects();
 
     console.log("\nDatabase seeding completed successfully");
   } catch (error) {

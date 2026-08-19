@@ -64,7 +64,7 @@ export default async function HomePage() {
           dangerouslySetInnerHTML={{ __html: jsonLd }}
         />
       )}
-      <main className="pt-[104px]">
+      <main className="pt-26">
         {data.sections.map((section) => (
           <SectionRenderer key={section.id} section={section} pageTitle={data.meta.title} />
         ))}

@@ -21,7 +21,7 @@ export function Dropdown({ node }: DropdownProps) {
         rel={node.rel || undefined}
       >
         {node.title}
-        <ChevronDown size={14} className="text-slate-400 group-hover:text-slate-600 transition-colors" />
+        <ChevronDown size={14} className="text-slate-400 group-hover:text-slate-600 group-[.is-top]/header:text-white/60 group-[.is-top]/header:group-hover:text-white transition-colors" />
       </Link>
       
       {/* Dropdown Container */}

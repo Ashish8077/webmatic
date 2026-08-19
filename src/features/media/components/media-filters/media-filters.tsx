@@ -40,7 +40,7 @@ export function MediaFilters({
 
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center w-full">
-      <div className="relative flex-1 min-w-[200px]">
+      <div className="relative flex-1 min-w-50">
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
           <Search size={16} className="text-muted-foreground" />
         </div>
@@ -54,7 +54,7 @@ export function MediaFilters({
       </div>
 
       <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 hide-scrollbar">
-        <div className="w-[140px] shrink-0">
+        <div className="w-35 shrink-0">
           <Select
             options={folderOptions}
             value={query.folder || "all"}
@@ -62,7 +62,7 @@ export function MediaFilters({
             placeholder="Folder"
           />
         </div>
-        <div className="w-[140px] shrink-0">
+        <div className="w-35 shrink-0">
           <Select
             options={typeOptions}
             value={query.type || "all"}
@@ -70,7 +70,7 @@ export function MediaFilters({
             placeholder="Type"
           />
         </div>
-        <div className="w-[140px] shrink-0">
+        <div className="w-35 shrink-0">
           <Select
             options={sortOptions}
             value={query.sortBy || "created_at"}

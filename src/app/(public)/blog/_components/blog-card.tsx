@@ -22,7 +22,7 @@ export function BlogCard({ blog }: BlogCardProps) {
   return (
     <article className="group flex flex-col rounded-xl bg-slate-50 border border-slate-200 overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
       {/* Featured Image */}
-      <Link href={`/blog/${blog.slug}`} className="relative h-[220px] w-full overflow-hidden block">
+      <Link href={`/blog/${blog.slug}`} className="relative h-55 w-full overflow-hidden block">
         {blog.featuredImage ? (
           <Image
             src={blog.featuredImage.url}

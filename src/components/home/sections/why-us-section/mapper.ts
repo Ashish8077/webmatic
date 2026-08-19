@@ -1,6 +1,6 @@
 import { RawWhyUsContent, WhyUsContent } from "./types";
 
-export function normaliseWhyUsContent(raw: RawWhyUsContent): WhyUsContent {
+export function normalizeWhyUsContent(raw: RawWhyUsContent): WhyUsContent {
   return {
     badge: raw.badge,
     heading: raw.heading,

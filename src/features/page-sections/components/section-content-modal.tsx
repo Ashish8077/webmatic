@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Loader2 } from "lucide-react";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
-import { showToast } from "@/components/ui/toast";
+
 import type { JsonObject } from "@/shared/types/json";
 import type { PageSectionType } from "@/modules/pages-section/validation/page-section.schema";
 import {
@@ -72,7 +72,7 @@ export function SectionContentModal(props: SectionContentModalProps) {
       }
     >
       {isLoading ? (
-        <div className="flex min-h-[300px] flex-col items-center justify-center">
+        <div className="flex min-h-75 flex-col items-center justify-center">
           <Loader2 className="h-7 w-7 animate-spin text-accent" />
           <p className="mt-3 text-sm text-muted-foreground">
             Loading section...
@@ -81,7 +81,7 @@ export function SectionContentModal(props: SectionContentModalProps) {
       ) : sectionType ? (
         <SectionEditorInner key={sectionType} {...props} sectionType={sectionType} />
       ) : (
-        <div className="flex min-h-[200px] flex-col items-center justify-center">
+        <div className="flex min-h-50 flex-col items-center justify-center">
           <p className="text-sm text-muted-foreground">
             Select a section...
           </p>
@@ -137,16 +137,12 @@ function SectionEditorInner({
         content: values.content as JsonObject,
         settings: values.settings as JsonObject,
       });
-    },
-    (errors) => {
-      console.error("Form Validation Errors:", JSON.stringify(errors, null, 2));
-      showToast("Please check the form for missing or invalid fields.", "error");
     }
   );
 
   if (!ContentForm || !SettingsForm) {
     return (
-      <div className="flex min-h-[200px] flex-col items-center justify-center">
+      <div className="flex min-h-50 flex-col items-center justify-center">
         <p className="text-sm text-muted-foreground">
           Form not available for {sectionType}.
         </p>

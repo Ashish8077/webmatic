@@ -51,7 +51,7 @@ export function MediaPagination({
       <div className="flex items-center gap-4 order-1 sm:order-2">
         <div className="flex items-center gap-2">
           <span className="text-sm text-muted-foreground whitespace-nowrap">Per page:</span>
-          <div className="w-[100px]">
+          <div className="w-25">
             <Select
               options={[
                 { label: "10", value: "10" },

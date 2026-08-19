@@ -16,7 +16,11 @@ const db =
     database: env.DB_NAME,
     waitForConnections: true,
     connectionLimit: 10,
+    maxIdle: 10,
+    idleTimeout: 60000,
     queueLimit: 0,
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 0,
     ssl: {
       minVersion: "TLSv1.2",
       rejectUnauthorized: true,
