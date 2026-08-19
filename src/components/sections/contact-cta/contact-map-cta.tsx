@@ -5,6 +5,7 @@ import clsx from "clsx";
 import type { ContactCtaProps } from "./types";
 import { ContactForm } from "./contact-form";
 import { ContactSuccess } from "./contact-success";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 export function ContactMapCta({
   badge,
@@ -40,11 +41,11 @@ export function ContactMapCta({
 
   return (
     <section className={clsx("w-full", paddingClasses, className)}>
-      <div className={clsx("mx-auto px-5 sm:px-8", containerVariant === "default" ? "max-w-7xl" : "max-w-[1400px]")}>
-        <div className="flex flex-col lg:flex-row min-h-[600px] border border-slate-200 rounded-2xl overflow-hidden shadow-sm bg-white">
+      <div className={clsx("mx-auto px-5 sm:px-8", containerVariant === "default" ? "max-w-7xl" : "max-w-350")}>
+        <div className="flex flex-col lg:flex-row min-h-150 border border-slate-200 rounded-2xl overflow-hidden shadow-sm bg-white">
           
           {/* Left Area (Form & Content) - 60% */}
-          <div className="w-full lg:w-[60%] p-8 sm:p-12 lg:p-16 flex flex-col bg-white">
+          <ScrollReveal direction="up" delay={0.1} className="w-full lg:w-[60%] p-8 sm:p-12 lg:p-16 flex flex-col bg-white">
             <div className="mb-10">
               {badge && (
                 <div className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-orange-600 bg-orange-100 rounded-full">
@@ -64,7 +65,7 @@ export function ContactMapCta({
               </div>
             </div>
 
-            <div className="flex-grow">
+            <div className="grow">
               {isSuccess ? (
                 <ContactSuccess onReset={() => setIsSuccess(false)} successMessage={successMessage} />
               ) : (
@@ -84,10 +85,10 @@ export function ContactMapCta({
                 {privacyNote || "Note: Your details are kept strictly confidential as per our Privacy Policy."}
               </div>
             )}
-          </div>
+          </ScrollReveal>
 
           {/* Right Area (Map) - 40% */}
-          <div className="w-full lg:w-[40%] min-h-[400px] lg:min-h-full bg-slate-100 relative">
+          <ScrollReveal direction="up" delay={0.3} className="w-full lg:w-[40%] min-h-100 lg:min-h-full bg-slate-100 relative">
             {map?.embedUrl ? (
               <iframe
                 src={map.embedUrl}
@@ -106,7 +107,7 @@ export function ContactMapCta({
                 <p>Location map will appear here</p>
               </div>
             )}
-          </div>
+          </ScrollReveal>
           
         </div>
       </div>

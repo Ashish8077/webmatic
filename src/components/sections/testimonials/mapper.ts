@@ -1,6 +1,6 @@
 import { RawTestimonialContent, TestimonialContent } from "./types";
 
-export function normaliseTestimonialContent(
+export function normalizeTestimonialContent(
   raw: RawTestimonialContent | undefined | null,
 ): TestimonialContent {
   const safeRaw = raw || {};

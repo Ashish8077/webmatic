@@ -106,8 +106,8 @@ function SectionItem({
   onDelete,
 }: SectionItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const isReadOnly = section.sectionType === "contact-cta";
-  const ownerModule = section.sectionType === "contact-cta" ? "Contact Module" : "";
+  const isReadOnly = false;
+  const ownerModule = "";
 
   return (
     <article
@@ -157,7 +157,7 @@ function SectionItem({
                 }`}
               >
                 <div className="overflow-hidden">
-                  <pre className="px-3 py-2 font-mono text-xs leading-5 text-muted-foreground/80 max-h-[300px] overflow-auto">
+                  <pre className="px-3 py-2 font-mono text-xs leading-5 text-muted-foreground/80 max-h-75 overflow-auto">
                     {getContentPreview(section)}
                   </pre>
                 </div>

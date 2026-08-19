@@ -6,19 +6,17 @@ export interface ContactCtaProps {
   description?: string;
   privacyNote?: string;
   successMessage?: string;
-  trustPoints?: string[];
-  formTitle?: string;
   submitButtonText?: string;
+  submitButtonUrl?: string;
+  map?: {
+    embedUrl?: string;
+  };
   backgroundVariant?: "white" | "slate" | "green" | string;
   containerVariant?: "default" | "full" | string;
   paddingTop?: string;
   paddingBottom?: string;
-  map?: {
-    embedUrl?: string;
-  };
-  showBadge?: boolean;
+  className?: string;
   showCompanyField?: boolean;
   showMessageField?: boolean;
-  className?: string;
   onSubmit?: (data: ContactFormData) => Promise<void>;
 }

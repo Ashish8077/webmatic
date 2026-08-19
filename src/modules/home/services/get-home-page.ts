@@ -57,6 +57,29 @@ export const getHomePageData = cache(async (): Promise<HomePageData | null> => {
         };
       }
 
+      if (row.section_type === "portfolio") {
+        const { findWorkProjects } = await import("@/modules/work/repositories/work-project.repository");
+        const projects = await findWorkProjects({
+          page: 1,
+          limit: 6,
+          status: "published",
+          isFeatured: true,
+          sortBy: "sort_order",
+          sortOrder: "asc",
+        });
+        
+        content = {
+          ...content,
+          projects: projects.map((project) => ({
+            title: project.title,
+            category: project.category,
+            description: project.short_description || "",
+            url: `/work/${project.slug}`,
+            imageId: project.featured_image_id,
+          })),
+        };
+      }
+
       if (row.section_type === "testimonials") {
         const testimonials = await findTestimonials({
           page: 1,

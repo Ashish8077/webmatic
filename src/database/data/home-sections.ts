@@ -95,8 +95,62 @@ export const homeSections = [
     },
   },
   {
-    sectionType: "why-choose-us",
+    sectionType: "portfolio",
     sortOrder: 3,
+    content: {
+      badge: "Our Portfolio",
+      heading: "A Collection of Our Work",
+      description: "We present the following case studies to showcase the solutions and services we offer to our diverse customer base. The Tech for Good movement leverages technology's potential to create positive impact.",
+      projects: [
+        {
+          title: "ASG Parners",
+          category: "Web Development",
+          description: "ASG & PARTNERS is a full-service law firm with offices in New Delhi, Mumbai.",
+          url: "/projects/asg-partners",
+          imageId: null
+        },
+        {
+          title: "Bigmans Academy",
+          category: "Web Development",
+          description: "A Bigmans Academy is a unit of Bigmans Consultant & Marketing Pvt. Ltd.",
+          url: "/projects/bigmans-academy",
+          imageId: null
+        },
+        {
+          title: "Mannaniya",
+          category: "E-CommerceWeb Development",
+          description: "Maananiya.com is an online e-commerce platform offering a wide range of stuff.",
+          url: "/projects/mannaniya",
+          imageId: null
+        },
+        {
+          title: "Zing Drops",
+          category: "E-CommerceWeb Development",
+          description: "You can easily make it your own adding your graphics",
+          url: "/projects/zing-drops",
+          imageId: null
+        },
+        {
+          title: "ITSE",
+          category: "Web Development",
+          description: "The International Talent Search Examination (ITSE) is a prestigious assessment",
+          url: "/projects/itse",
+          imageId: null
+        },
+        {
+          title: "Kite Star Grocery",
+          category: "E-CommerceWeb Development",
+          description: "Easily make it your own thanks to the smart layer.",
+          url: "/projects/kite-star-grocery",
+          imageId: null
+        }
+      ]
+    },
+    settings: null,
+  },
+  {
+    sectionType: "why-choose-us",
+    sortOrder: 4,
     content: {
       badge: "Why Choose Us",
       heading: "3 Reasons Why Webmatic is Your",
@@ -130,7 +184,7 @@ export const homeSections = [
   },
   {
     sectionType: "testimonials",
-    sortOrder: 4,
+    sortOrder: 5,
     content: {
       badge: "Client Testimonials",
       heading: "What Our",
@@ -141,7 +195,7 @@ export const homeSections = [
   },
   {
     sectionType: "faq",
-    sortOrder: 5,
+    sortOrder: 6,
     content: {
       badge: "Frequently Asked Questions",
       heading: "Everything You Need",
@@ -176,7 +230,7 @@ export const homeSections = [
   },
   {
     sectionType: "contact-cta",
-    sortOrder: 6,
+    sortOrder: 7,
     content: {
       badge: "Let's Work Together",
       heading: "Ready to Grow",

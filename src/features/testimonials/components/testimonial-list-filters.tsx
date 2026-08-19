@@ -58,7 +58,7 @@ export function TestimonialListFilters({
       </div>
       <div className="flex gap-2 flex-wrap items-center">
         {onSortChange && (
-          <div className="w-[220px]">
+          <div className="w-55">
             <Select
               options={TESTIMONIAL_SORT_OPTIONS}
               value={`${query.sortBy}|${query.sortOrder || "asc"}`}
@@ -69,7 +69,7 @@ export function TestimonialListFilters({
             />
           </div>
         )}
-        <div className="flex gap-2 h-[42px] items-center">
+        <div className="flex gap-2 h-10.5 items-center">
           {(["all", "published", "draft"] as const).map((status) => (
             <button
               key={status}

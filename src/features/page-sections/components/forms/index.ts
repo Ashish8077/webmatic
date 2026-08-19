@@ -14,3 +14,4 @@ export * from "./mission-vision-form";
 export * from "./team-members-form";
 export * from "./contact-information-form";
 export * from "./blog-list-form";
+export * from "./portfolio-form";

@@ -4,6 +4,8 @@ import type { VisualAsset } from "@/shared/types/visual-asset.types";
 
 import type { SectionProps } from "@/components/home/sections/types";
 
+import { AnimatedCounter } from "./animated-counter";
+
 export function CompanyStatisticsSection({ content }: SectionProps) {
   const itemsRaw = arr<Record<string, unknown>>(content.items);
 
@@ -15,51 +17,48 @@ export function CompanyStatisticsSection({ content }: SectionProps) {
   if (items.length === 0) return null;
 
   return (
-    <section className="relative bg-white py-12 overflow-hidden border-b border-slate-100">
+    <section className="relative bg-white py-16 sm:py-24 overflow-hidden border-b border-slate-100">
       <h2 className="sr-only">Company Statistics</h2>
-      <div className="relative mx-auto max-w-[1170px] px-5 sm:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div className="relative mx-auto max-w-292.5 px-5 sm:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-slate-200">
           {items.map((item, idx) => (
             <div
               key={idx}
-              className="group relative flex flex-col items-center text-center px-5 py-6 bg-slate-50 rounded-xl shadow-sm border border-slate-100 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+              className="group relative flex flex-col items-center text-center px-5 py-6 transition-transform duration-300 hover:-translate-y-1"
             >
-              {/* Decorative gradient blur (visible on hover) */}
-              <div className="absolute inset-0 bg-gradient-to-br from-hero-primary/5 to-transparent opacity-0 transition-opacity duration-200 group-hover:opacity-100 rounded-xl pointer-events-none" />
-
               {/* Optional Visual */}
               {Boolean(item.visualType) && (item.visualType as string) !== "none" && (
-                <div className="relative mb-3 w-12 h-12 bg-white rounded-lg shadow-sm flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+                <div className="relative mb-5 w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:shadow-md group-hover:bg-white">
                   <VisualRenderer
                     asset={item as unknown as VisualAsset}
-                    className="w-full h-full rounded-lg"
-                    imageClassName="object-contain p-1.5"
-                    iconClassName="w-6 h-6 text-orange-500"
+                    className="w-full h-full rounded-xl"
+                    imageClassName="object-contain p-2"
+                    iconClassName="w-7 h-7 text-orange-500"
                     alt={str(item.title, "Company statistic visual")}
                   />
                 </div>
               )}
 
               {/* Number */}
-              <div className="relative mb-2 flex items-baseline justify-center">
-                <span className="text-4xl font-bold text-navy tracking-tight transition-colors duration-200 group-hover:text-hero-primary">
-                  {str(item.number)}
+              <div className="relative mb-3 flex items-baseline justify-center">
+                <span className="text-5xl lg:text-6xl font-extrabold text-[#0c2340] tracking-tight transition-colors duration-300 group-hover:text-primary">
+                  <AnimatedCounter value={str(item.number)} />
                 </span>
                 {!!item.suffix && (
-                  <span className="text-2xl font-bold text-orange-500 ml-0.5">
+                  <span className="text-3xl lg:text-4xl font-bold text-orange-500 ml-1">
                     {str(item.suffix)}
                   </span>
                 )}
               </div>
 
               {/* Title */}
-              <h3 className="relative text-[15px] font-semibold text-slate-800 leading-snug">
+              <h3 className="relative text-lg lg:text-xl font-bold text-slate-800 leading-snug mb-2">
                 {str(item.title)}
               </h3>
 
               {/* Description */}
               {!!item.description && (
-                <p className="relative mt-1.5 text-[13px] text-slate-500 leading-relaxed">
+                <p className="relative max-w-xs mx-auto text-[15px] text-slate-500 leading-relaxed">
                   {str(item.description)}
                 </p>
               )}

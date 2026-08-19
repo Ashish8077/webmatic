@@ -3,7 +3,21 @@ export const servicesData = [
     name: "Brand Marketing",
     slug: "brand-marketing",
     short_description: "Focuses on conducting in-depth research on your customers, your competitors, and your search engine landscape.",
-    description: "<p>Focuses on conducting in-depth research on your customers, your competitors, and your search engine landscape. We help you define your brand identity and voice to stand out in the market.</p>",
+    description: `
+      <p>Strong brands are built on more than a logo. Our brand marketing services help businesses define a clear identity, communicate their value, and build meaningful connections with the right audience.</p>
+      <h2>Build a Strong and Recognizable Brand</h2>
+      <p>We combine brand strategy, creative direction, messaging, and visual identity to create a consistent brand experience across every customer touchpoint.</p>
+      <h3>What We Help With</h3>
+      <ul>
+        <li>Brand strategy and positioning</li>
+        <li>Visual identity and brand guidelines</li>
+        <li>Brand messaging and communication</li>
+        <li>Audience and market research</li>
+        <li>Campaign and creative direction</li>
+        <li>Brand awareness and recognition</li>
+      </ul>
+      <p>A strong and consistent brand helps businesses build trust, stand out from competitors, and create long-term customer relationships.</p>
+    `,
     key_features: JSON.stringify([
       "Brand Identity Design",
       "Market Research",
@@ -17,14 +31,28 @@ export const servicesData = [
     seo_title: "Brand Marketing & Strategy Services",
     meta_description: "Focuses on conducting in-depth research on your customers, your competitors, and your search engine landscape.",
     visual_type: "icon",
-    icon_name: "Lightbulb",
+    icon_name: "Target",
     cta_button_text: "Talk Brand Strategy"
   },
   {
     name: "Web Development",
     slug: "web-development",
     short_description: "Future-proof your website against the ever evolving online world with a well orchestrated web strategy.",
-    description: "<p>In today's digital landscape, a powerful website is the foundation of your online presence. Our Web Development service creates stunning, high-performance websites tailored to your unique business needs. We blend cutting-edge technology with intuitive design to deliver seamless user experiences that drive engagement and conversions.</p><p>From custom enterprise applications to dynamic e-commerce platforms, our expert team ensures your website is secure, scalable, and fully optimized for search engines. We focus on writing clean, maintainable code that grows alongside your business, giving you a robust digital asset that performs reliably under heavy traffic.</p>",
+    description: `
+      <p>A high-performing website is more than an online presence. Our web development services focus on creating fast, secure, responsive, and scalable websites that support your business goals and deliver a smooth user experience.</p>
+      <h2>Build a Website That Performs</h2>
+      <p>We design and develop modern websites using reliable technologies, clean architecture, responsive layouts, and performance-focused development practices.</p>
+      <h3>What We Help With</h3>
+      <ul>
+        <li>Corporate and business websites</li>
+        <li>Custom web applications</li>
+        <li>Responsive website development</li>
+        <li>CMS and dynamic websites</li>
+        <li>API and third-party integrations</li>
+        <li>Performance and technical optimization</li>
+      </ul>
+      <p>From a new website to a complex web application, we build digital experiences that are designed for usability, scalability, and long-term growth.</p>
+    `,
     key_features: JSON.stringify([
       "Custom UI/UX Design",
       "Mobile-First Responsiveness",
@@ -51,14 +79,28 @@ export const servicesData = [
     seo_title: "Custom Web Development Services | Enterprise Solutions",
     meta_description: "Transform your online presence with our high-performance, secure, and scalable web development services tailored for growing businesses.",
     visual_type: "icon",
-    icon_name: "Code",
+    icon_name: "Globe2",
     cta_button_text: "Talk Web Development"
   },
   {
     name: "Digital Marketing",
     slug: "digital-marketing",
     short_description: "Digital marketing services provide businesses of all sizes with an opportunity to market their brand 24/7 at a low cost.",
-    description: "<p>Amplify your brand's voice and reach your target audience with data-driven Digital Marketing strategies. We don't just generate traffic; we generate the right kind of traffic. By analyzing market trends and consumer behavior, we craft multi-channel campaigns that maximize your Return on Investment (ROI) and foster long-term brand loyalty.</p><p>Whether it's dominating search results, engaging followers on social media, or converting leads through targeted email automation, our holistic approach ensures every marketing dollar works harder for you. We provide transparent reporting and continuous optimization to keep your campaigns performing at their peak.</p>",
+    description: `
+      <p>Reaching the right audience requires more than simply promoting your business online. Our digital marketing services combine strategy, content, search, social media, and performance analysis to create campaigns focused on measurable growth.</p>
+      <h2>Turn Digital Reach Into Business Growth</h2>
+      <p>We develop data-driven marketing strategies that help improve visibility, attract qualified traffic, generate leads, and strengthen your online presence.</p>
+      <h3>What We Help With</h3>
+      <ul>
+        <li>Search engine optimization (SEO)</li>
+        <li>Social media marketing</li>
+        <li>Paid advertising campaigns</li>
+        <li>Content marketing</li>
+        <li>Email marketing</li>
+        <li>Analytics and performance tracking</li>
+      </ul>
+      <p>Our approach focuses on continuous optimization so your marketing efforts become more targeted, efficient, and effective over time.</p>
+    `,
     key_features: JSON.stringify([
       "Comprehensive SEO Strategy",
       "Targeted PPC Campaigns",
@@ -85,14 +127,27 @@ export const servicesData = [
     seo_title: "Data-Driven Digital Marketing Services | Maximize ROI",
     meta_description: "Accelerate your business growth with targeted SEO, PPC, and social media marketing strategies designed to convert clicks into loyal customers.",
     visual_type: "icon",
-    icon_name: "Target",
+    icon_name: "Megaphone",
     cta_button_text: "Talk Digital Marketing"
   },
   {
     name: "App Development",
     slug: "app-development",
     short_description: "App development involves designing, coding, testing, and deploying applications for mobile or web platforms to solve user problems.",
-    description: "<p>Bring your innovative ideas to life with our end-to-end App Development services. We build native and cross-platform mobile applications that users love to engage with. From the initial wireframing to the final app store launch, our team handles every aspect of development to deliver a polished, high-performance product.</p><p>We prioritize intuitive UI/UX design, fluid animations, and robust backend integrations. Whether you need a customer-facing utility app or a complex internal enterprise tool, our applications are built to scale, ensuring they remain fast and reliable even as your user base grows exponentially.</p>",
+    description: `
+      <p>Bring your innovative ideas to life with our end-to-end App Development services. We build native and cross-platform mobile applications that users love to engage with. From the initial wireframing to the final app store launch, our team handles every aspect of development to deliver a polished product.</p>
+      <h2>Exceptional User Experience</h2>
+      <p>We prioritize intuitive UI/UX design, fluid animations, and robust backend integrations. Mobile users expect perfection, and our engineering standards guarantee <strong>smooth 60fps performance</strong> across all devices.</p>
+      <h3>Cross-Platform vs. Native</h3>
+      <p>Depending on your project's unique requirements, we guide you through choosing the best technology stack.</p>
+      <ol>
+        <li>Native iOS (Swift) for maximum Apple ecosystem integration.</li>
+        <li>Native Android (Kotlin) for specialized hardware access.</li>
+        <li>React Native for rapid, cost-effective dual-platform deployment.</li>
+      </ol>
+      <hr>
+      <p>Whether you need a customer-facing utility app or a complex internal enterprise tool, our applications are built to scale seamlessly.</p>
+    `,
     key_features: JSON.stringify([
       "Native iOS & Android Development",
       "Cross-Platform Frameworks (React Native, Flutter)",
@@ -126,7 +181,19 @@ export const servicesData = [
     name: "Content Writing",
     slug: "content-writing",
     short_description: "Content writing involves crafting engaging, informative, and SEO-friendly text to inform, entertain, or persuade a target audience online.",
-    description: "<p>Words have the power to persuade, inform, and convert. Our Content Writing services provide you with compelling, high-quality copy that resonates with your audience and perfectly encapsulates your brand voice. We produce everything from thought-provoking blog posts to high-converting landing page copy.</p><p>Great content isn't just about sounding good; it's about strategy. Every piece we write is meticulously researched and optimized for search engines, ensuring it not only engages human readers but also ranks well on Google. Let us help you establish authority in your industry through impactful storytelling.</p>",
+    description: `
+      <p>Words have the power to persuade, inform, and convert. Our Content Writing services provide you with compelling, high-quality copy that resonates with your audience and perfectly encapsulates your brand voice.</p>
+      <h2>Strategic Copywriting</h2>
+      <p>Great content isn't just about sounding good; it's about strategy. Every piece we write is meticulously researched and optimized for search engines, ensuring it not only engages human readers but also ranks well on Google.</p>
+      <blockquote>"Content is the atomic particle of all digital marketing."</blockquote>
+      <h3>Our Expertise</h3>
+      <p>We produce everything from thought-provoking blog posts to high-converting landing page copy. Let us help you establish authority in your industry through impactful storytelling.</p>
+      <ul>
+        <li><strong>Technical Writing:</strong> Breaking down complex topics into digestible formats.</li>
+        <li><strong>Sales Copy:</strong> Driving action and increasing conversion rates.</li>
+        <li><strong>SEO Content:</strong> Targeting long-tail keywords to dominate SERPs.</li>
+      </ul>
+    `,
     key_features: JSON.stringify([
       "SEO-Optimized Blog Articles",
       "High-Converting Sales Copy",
@@ -153,14 +220,27 @@ export const servicesData = [
     seo_title: "Professional Content Writing & Copywriting Services",
     meta_description: "Engage your audience and boost SEO with our professional content writing services, specializing in blogs, web copy, and technical writing.",
     visual_type: "icon",
-    icon_name: "PenTool",
+    icon_name: "PenLine",
     cta_button_text: "Talk Content writing"
   },
   {
     name: "Game App Development",
     slug: "game-app-development",
     short_description: "Game app development involves designing, coding, testing, and launching interactive games for mobile or web platforms to engage users.",
-    description: "<p>Enter the lucrative world of mobile gaming with our specialized Game App Development services. We create highly addictive, visually stunning games that captivate players from the first tap. Our talented team of developers, artists, and sound designers work in unison to craft immersive digital worlds.</p><p>From casual 2D puzzle games to complex 3D multiplayer experiences, we utilize industry-leading engines like Unity and Unreal. We also implement sophisticated monetization strategies, including in-app purchases and integrated ad networks, ensuring your game is not only fun to play but also highly profitable.</p>",
+    description: `
+      <p>Enter the lucrative world of mobile gaming with our specialized Game App Development services. We create highly addictive, visually stunning games that captivate players from the first tap. Our talented team of developers, artists, and sound designers work in unison to craft immersive digital worlds.</p>
+      <h2>Industry-Leading Engines</h2>
+      <p>From casual 2D puzzle games to complex 3D multiplayer experiences, we utilize industry-leading engines like <strong>Unity</strong> and <strong>Unreal</strong>.</p>
+      <h3>Monetization Strategy</h3>
+      <p>A great game must also be a great business. We implement sophisticated monetization strategies to ensure your game is highly profitable.</p>
+      <ul>
+        <li>Strategic in-app purchase (IAP) integration</li>
+        <li>Rewarded video ad placements</li>
+        <li>Subscription models and battle passes</li>
+      </ul>
+      <hr>
+      <p>Let's build the next chart-topping hit together.</p>
+    `,
     key_features: JSON.stringify([
       "Unity & Unreal Engine Development",
       "2D/3D Asset Creation & Animation",

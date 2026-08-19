@@ -1,18 +1,25 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import * as motion from "motion/react-client";
 import { SectionProps } from "@/components/home/sections/types";
-import { normaliseFaqContent } from "./mapper";
+import { normalizeFaqContent } from "./mapper";
 import type { RawFaqContent } from "./types";
 import { FaqAccordion } from "./faq-accordion";
 
 export function FaqSection({ content }: SectionProps) {
-  const faqData = normaliseFaqContent(content as unknown as RawFaqContent);
+  const faqData = normalizeFaqContent(content as unknown as RawFaqContent);
 
   return (
-    <section className="bg-slate-50 py-16">
-      <div className="mx-auto max-w-[1170px] px-5 sm:px-8">
+    <section className="bg-white py-16 lg:py-24">
+      <div className="mx-auto max-w-292.5 px-5 sm:px-8">
         {/* ── Section Header ──────────────────────────────── */}
-        <div className="mb-12 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5 }}
+          className="mb-12 text-center"
+        >
           <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-orange-500 mb-3">
             <span className="h-px w-5 bg-orange-500 rounded-full" />
             {faqData.badge}
@@ -25,14 +32,20 @@ export function FaqSection({ content }: SectionProps) {
           <p className="mt-3 max-w-2xl mx-auto text-[14px] leading-relaxed text-slate-500 sm:text-[15px]">
             {faqData.description}
           </p>
-        </div>
+        </motion.div>
 
         {/* ── FAQ Accordion (Client Component) ───────────── */}
         <FaqAccordion items={faqData.items} />
 
         {/* ── Bottom CTA ──────────────────────────────────── */}
         {faqData.bottomText && faqData.primaryButton && (
-          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-5">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-5"
+          >
             <p className="text-[13px] font-medium text-slate-600 text-center sm:text-left">
               {faqData.bottomText}
             </p>
@@ -43,7 +56,7 @@ export function FaqSection({ content }: SectionProps) {
               {faqData.primaryButton.text}
               <ArrowRight size={14} />
             </Link>
-          </div>
+          </motion.div>
         )}
       </div>
     </section>

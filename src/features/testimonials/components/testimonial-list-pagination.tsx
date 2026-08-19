@@ -51,7 +51,7 @@ export function TestimonialListPagination({
       <div className="flex items-center gap-4 order-1 sm:order-2">
         <div className="flex items-center gap-2">
           <span className="text-sm text-muted-foreground whitespace-nowrap">Rows per page:</span>
-          <div className="w-[80px]">
+          <div className="w-20">
             <Select
               options={[
                 { label: "10", value: "10" },

@@ -49,7 +49,7 @@ export function PageSectionForm({
 
   if (isLoading) {
     return (
-      <div className="flex min-h-[300px] flex-col items-center justify-center">
+      <div className="flex min-h-75 flex-col items-center justify-center">
         <Loader2 className="h-7 w-7 animate-spin text-accent" />
         <p className="mt-3 text-sm text-muted-foreground">Loading section...</p>
       </div>
@@ -101,7 +101,7 @@ export function PageSectionForm({
         label="Content JSON"
         placeholder='{"heading": "Hello"}'
         disabled={isSubmitting}
-        className="min-h-[180px] font-mono text-xs"
+        className="min-h-45 font-mono text-xs"
         {...form.register("content")}
         error={errors.content?.message}
       />
@@ -110,7 +110,7 @@ export function PageSectionForm({
         label="Settings JSON"
         placeholder='{"theme": "dark"}'
         disabled={isSubmitting}
-        className="min-h-[120px] font-mono text-xs"
+        className="min-h-30 font-mono text-xs"
         {...form.register("settings")}
         error={errors.settings?.message}
       />

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Phone, Send, ArrowRight } from "lucide-react";
 import { FooterSettings } from "@/modules/site-settings/types/footer.types";
 import { MenuNode } from "@/modules/menus/types/menu.types";
-import clsx from "clsx";
+
 
 interface FooterClientProps {
   settings: FooterSettings;
@@ -19,45 +19,9 @@ const divider = "border-[#0c2340]/20";
 export function FooterClient({ settings, navLinks }: FooterClientProps) {
   return (
     <footer className="bg-[#6EC1E4]">
-      {/* ── Trusted brands strip ──────────────────────────── */}
-      {settings.trustedBrands.enabled && (
-        <div className={`border-b ${divider}`}>
-          <div className="mx-auto max-w-[1170px] px-4 sm:px-6 lg:px-8 py-4 flex flex-col xl:flex-row items-center justify-between gap-4 xl:gap-6">
-            <p className={`text-base font-semibold ${muted} shrink-0 whitespace-nowrap`}>
-              {settings.trustedBrands.title}
-            </p>
-            <div
-              className={`flex items-center justify-center gap-4 xl:gap-8 ${muted} flex-wrap xl:flex-nowrap`}
-            >
-              {settings.trustedBrands.brands.map((brand, idx) => (
-                <span
-                  key={idx}
-                  className={clsx(
-                    brand.fontWeight,
-                    brand.fontSize,
-                    brand.tracking,
-                    "whitespace-nowrap"
-                  )}
-                >
-                  {brand.logoText}
-                </span>
-              ))}
-              <span className="text-2xl leading-none">◖</span>
-            </div>
-            {settings.trustedBrands.ctaUrl && (
-              <Link
-                href={settings.trustedBrands.ctaUrl}
-                className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-[linear-gradient(113deg,_#dd154d_0%,_#fd0036_50%,_#fe613f_100%)] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#0c2340]/80 transition-all duration-200 hover:-translate-y-0.5 shadow-md whitespace-nowrap"
-              >
-                {settings.trustedBrands.ctaText} <ArrowRight size={14} />
-              </Link>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* ── Main footer ───────────────────────────────────── */}
-      <div className="mx-auto max-w-[1170px] px-5 sm:px-8 py-14 sm:py-18">
+      <div className="mx-auto max-w-292.5 px-5 sm:px-8 py-14 sm:py-18">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr]">
           {/* Left — CTA */}
           <div>
@@ -152,7 +116,7 @@ export function FooterClient({ settings, navLinks }: FooterClientProps) {
 
       {/* ── Bottom bar ────────────────────────────────────── */}
       <div className={`border-t ${divider}`}>
-        <div className="mx-auto max-w-[1170px] px-5 sm:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mx-auto max-w-292.5 px-5 sm:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className={`text-sm ${muted}`}>
             Copyright ©{" "}
             {settings.copyright.autoYear ? new Date().getFullYear() : ""}{" "}

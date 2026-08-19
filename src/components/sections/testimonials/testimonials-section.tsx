@@ -1,5 +1,5 @@
 import type { SectionProps } from "@/components/home/sections/types";
-import { normaliseTestimonialContent } from "./mapper";
+import { normalizeTestimonialContent } from "./mapper";
 import type { RawTestimonialContent } from "./types";
 import { TestimonialsSlider } from "./testimonials-slider";
 import Image from "next/image";
@@ -7,7 +7,7 @@ import { getPublicTestimonialsService } from "@/modules/testimonials/services/ge
 import { getMediaUrl } from "@/features/media/utils/media-url";
 
 export async function TestimonialsSection({ content, settings }: SectionProps) {
-  const data = normaliseTestimonialContent(
+  const data = normalizeTestimonialContent(
     content as unknown as RawTestimonialContent,
   );
 
@@ -61,7 +61,7 @@ export async function TestimonialsSection({ content, settings }: SectionProps) {
         </div>
       ) : null}
 
-      <div className="relative z-10 mx-auto max-w-[1170px] px-5 sm:px-8">
+      <div className="relative z-10 mx-auto max-w-292.5 px-5 sm:px-8">
         {/* ── Section header ──────────────────────────────── */}
         <div className="mb-14 text-center">
           {data.badge && (
@@ -78,7 +78,7 @@ export async function TestimonialsSection({ content, settings }: SectionProps) {
             )}
           </h2>
           {data.description && (
-            <p className="mt-3 text-[16px] leading-[1.625] text-slate-500">
+            <p className="mt-3 text-[16px] leading-relaxed text-slate-500">
               {data.description}
             </p>
           )}

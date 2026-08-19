@@ -1,7 +1,7 @@
 export default function BlogDetailLoading() {
   return (
-    <main className="bg-white min-h-screen pt-[104px]">
-      <div className="mx-auto max-w-[1170px] px-5 sm:px-8 py-12 lg:py-16">
+    <main className="bg-white min-h-screen pt-26">
+      <div className="mx-auto max-w-292.5 px-5 sm:px-8 py-12 lg:py-16">
         {/* Breadcrumb skeleton */}
         <div className="flex items-center gap-2 mb-6">
           <div className="h-4 w-12 bg-slate-200 rounded animate-pulse" />
@@ -38,7 +38,7 @@ export default function BlogDetailLoading() {
       </div>
 
       {/* Content skeleton */}
-      <div className="mx-auto max-w-[850px] px-5 sm:px-8 py-12 lg:py-16">
+      <div className="mx-auto max-w-212.5 px-5 sm:px-8 py-12 lg:py-16">
         <div className="space-y-4">
           <div className="h-5 w-full bg-slate-100 rounded animate-pulse" />
           <div className="h-5 w-11/12 bg-slate-100 rounded animate-pulse" />

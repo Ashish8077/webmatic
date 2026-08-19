@@ -39,7 +39,7 @@ export function PageHero({
   const isDark = activeTheme === "dark";
 
   return (
-    <section className="relative overflow-hidden min-h-[50vh] lg:min-h-[480px] flex items-center py-16 sm:py-24">
+    <section className="relative overflow-hidden min-h-[50vh] lg:min-h-120 flex items-center py-16 sm:py-24">
       {/* --- BACKGROUND MODES --- */}
       {bannerImage ? (
         // Mode 1: Image Background with Overlay
@@ -78,11 +78,11 @@ export function PageHero({
               />
 
               {/* Right-side geometric composition for light theme only */}
-              <div className="absolute top-1/2 -translate-y-1/2 right-0 w-[600px] h-[600px] opacity-10 hidden lg:block">
+              <div className="absolute top-1/2 -translate-y-1/2 right-0 w-150 h-150 opacity-10 hidden lg:block">
                 <svg
                   viewBox="0 0 200 200"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="absolute top-0 right-10 w-[400px] h-[400px]"
+                  className="absolute top-0 right-10 w-100 h-100"
                 >
                   <path
                     fill="#0EA5E9"
@@ -93,7 +93,7 @@ export function PageHero({
                 <svg
                   viewBox="0 0 200 200"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="absolute bottom-10 right-32 w-[300px] h-[300px] opacity-60"
+                  className="absolute bottom-10 right-32 w-75 h-75 opacity-60"
                 >
                   <path
                     fill="#F97316"
@@ -108,8 +108,8 @@ export function PageHero({
       )}
 
       {/* --- CONTENT LAYER --- */}
-      <div className="relative z-10 w-full mx-auto max-w-[1170px] px-5 sm:px-8">
-        <div className="max-w-2xl lg:max-w-[800px]">
+      <div className="relative z-10 w-full mx-auto max-w-292.5 px-5 sm:px-8">
+        <div className="max-w-2xl lg:max-w-200">
           
           {/* Breadcrumbs */}
           {breadcrumbs}

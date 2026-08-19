@@ -40,6 +40,13 @@ export const Permission = {
   LEAD_EXPORT: "lead.export",
 
   // Continue for the remaining permissions...
+  
+  // Work permissions
+  WORK_VIEW: "work.view",
+  WORK_CREATE: "work.create",
+  WORK_UPDATE: "work.update",
+  WORK_DELETE: "work.delete",
+  WORK_PUBLISH: "work.publish",
 } as const;
 
 export type Permission = (typeof Permission)[keyof typeof Permission];

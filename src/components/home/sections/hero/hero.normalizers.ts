@@ -10,7 +10,7 @@ import type { RawCMSSlide, RawHeroContent, SlideType } from "./hero.types";
  * If the CMS content shape changes, only this file needs updating.
  */
 
-function normaliseSlide(raw: RawCMSSlide, index: number): SlideType {
+function normalizeSlide(raw: RawCMSSlide, index: number): SlideType {
   return {
     id: index + 1,
     label: raw.badge ?? "",
@@ -30,7 +30,7 @@ function normaliseSlide(raw: RawCMSSlide, index: number): SlideType {
   };
 }
 
-export function normaliseHeroSlides(
+export function normalizeHeroSlides(
   content: Record<string, unknown>,
 ): SlideType[] {
   const raw = content as unknown as RawHeroContent;
@@ -39,5 +39,5 @@ export function normaliseHeroSlides(
     return [];
   }
 
-  return raw.slides.map(normaliseSlide);
+  return raw.slides.map(normalizeSlide);
 }

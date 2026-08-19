@@ -1,48 +1,5 @@
 export const defaultFooterSettings = {
-  trustedBrands: {
-    enabled: true,
-    title: "Trusted by over 6,000 Ambitious Brands Across the US",
-    ctaText: "Need Help?",
-    ctaUrl: "/contact",
-    brands: [
-      {
-        name: "Metrik Finance Services",
-        logoType: "text",
-        logoText: "Metrik Finance Services.",
-        mediaId: null,
-        fontWeight: "font-semibold",
-        fontSize: "text-base",
-        tracking: "tracking-wide"
-      },
-      {
-        name: "MODEN",
-        logoType: "text",
-        logoText: "MODEN",
-        mediaId: null,
-        fontWeight: "font-bold",
-        fontSize: "text-lg",
-        tracking: "tracking-widest"
-      },
-      {
-        name: "HNKN",
-        logoType: "text",
-        logoText: "H N K N",
-        mediaId: null,
-        fontWeight: "font-bold",
-        fontSize: "text-base",
-        tracking: "tracking-widest"
-      },
-      {
-        name: "Shape",
-        logoType: "text",
-        logoText: "◖",
-        mediaId: null,
-        fontWeight: "font-normal",
-        fontSize: "text-2xl",
-        tracking: "normal"
-      }
-    ]
-  },
+
   heroCta: {
     heading: "Ready to Grow Your",
     highlightedText: "Business?",

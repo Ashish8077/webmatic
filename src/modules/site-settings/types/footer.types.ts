@@ -1,21 +1,3 @@
-export interface FooterBrand {
-  name: string;
-  logoType: "text" | "media";
-  logoText: string | null | undefined;
-  mediaId: number | null | undefined;
-  fontWeight: string;
-  fontSize: string;
-  tracking: string;
-}
-
-export interface FooterTrustedBrands {
-  enabled: boolean;
-  title: string;
-  ctaText: string;
-  ctaUrl: string;
-  brands: FooterBrand[];
-}
-
 export interface FooterHeroCta {
   heading: string;
   highlightedText: string;
@@ -53,7 +35,6 @@ export interface FooterCopyright {
 }
 
 export interface FooterSettings {
-  trustedBrands: FooterTrustedBrands;
   heroCta: FooterHeroCta;
   contactInfo: FooterContactInfo;
   socialLinks: FooterSocialLink[];

@@ -57,7 +57,7 @@ export function ToastContainer() {
           className={`
             flex items-center gap-2.5 px-4 py-3 rounded-xl border
             text-sm font-medium shadow-xl shadow-black/30
-            animate-slide-in min-w-[280px]
+            animate-slide-in min-w-70
             ${variantStyles[toast.variant]}
           `}
         >

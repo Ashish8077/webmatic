@@ -100,7 +100,19 @@ export async function seedMenus() {
     await db.execute(
       `INSERT INTO menu_items (menu_id, title, item_type, target_type, reference_id, sort_order, is_active, created_by)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [headerMenuId, "About", "link", "page", aboutPage.id, 2, true, adminId]
+      [headerMenuId, "About Us", "link", "page", aboutPage.id, 2, true, adminId]
+    );
+  }
+
+  // Find Work Page
+  const workPage = await findPageSlug("work");
+  
+  // Create Work Link
+  if (workPage) {
+    await db.execute(
+      `INSERT INTO menu_items (menu_id, title, item_type, target_type, reference_id, sort_order, is_active, created_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [headerMenuId, "Work", "link", "page", workPage.id, 4, true, adminId]
     );
   }
 
@@ -109,7 +121,7 @@ export async function seedMenus() {
     await db.execute(
       `INSERT INTO menu_items (menu_id, title, item_type, target_type, reference_id, sort_order, is_active, created_by)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [headerMenuId, "Blog", "link", "page", blogPage.id, 4, true, adminId]
+      [headerMenuId, "Blog", "link", "page", blogPage.id, 6, true, adminId]
     );
   }
 

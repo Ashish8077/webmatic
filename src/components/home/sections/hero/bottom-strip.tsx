@@ -1,5 +1,6 @@
 "use client";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { motion } from "motion/react";
 import { SlideType } from "./hero.types";
 
 const BottomStrip = ({
@@ -27,16 +28,16 @@ const BottomStrip = ({
 }) => {
   return (
     <div
-      className="absolute bottom-0 left-0 right-0 z-10"
+      className="relative z-10 border-t border-white/10"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
       {/* Progress bar */}
-      <div className="h-[2px] bg-white/20">
+      <div className="absolute top-0 left-0 right-0 h-0.5 bg-white/10">
         {!paused && (
           <div
             key={`progress-${current}`}
-            className="h-full w-full bg-orange-500 origin-left"
+            className="h-full bg-orange-500 origin-left"
             style={{
               animation: `progress ${AUTOPLAY_DELAY}ms linear forwards`,
             }}
@@ -44,82 +45,90 @@ const BottomStrip = ({
         )}
       </div>
 
-      <div className="bg-white/65 backdrop-blur-md border-t border-white/40">
-        <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 flex items-center justify-between py-3 sm:py-4 gap-3">
-          {/* Mobile dot indicators */}
-          <div className="flex sm:hidden items-center gap-2 flex-1">
-            {showPagination !== false &&
-              slides.map((s, i) =>
-                i > highest ? null : (
-                  <button
-                    key={s.id}
-                    onClick={() => goTo(i)}
-                    aria-label={`Go to slide ${s.id}`}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      i === current
-                        ? "w-6 bg-orange-500"
-                        : "w-2 bg-slate-300 hover:bg-slate-400"
+      <div className="max-w-360 mx-auto px-6 sm:px-12 lg:px-20 py-4 flex items-center justify-between gap-4">
+        {/* Mobile dots */}
+        <div className="flex sm:hidden items-center gap-2 flex-1">
+          {showPagination !== false &&
+            slides.map((s, i) =>
+              i > highest ? null : (
+                <button
+                  key={s.id}
+                  onClick={() => goTo(i)}
+                  aria-label={`Go to slide ${s.id}`}
+                  className="relative h-2 rounded-full transition-all duration-300"
+                  style={{ width: i === current ? 24 : 8 }}
+                >
+                  <span
+                    className={`absolute inset-0 rounded-full transition-colors duration-300 ${
+                      i === current ? "bg-orange-500" : "bg-white/25"
                     }`}
                   />
-                ),
-              )}
-          </div>
+                </button>
+              ),
+            )}
+        </div>
 
-          {/* Desktop: number + label tabs */}
-          <div className="hidden sm:flex items-stretch gap-1 overflow-x-auto no-scrollbar flex-1 min-w-0">
-            {showPagination !== false &&
-              slides.map((s, i) =>
-                i > highest ? null : (
-                  <button
-                    key={s.id}
-                    onClick={() => goTo(i)}
-                    className={`group relative flex items-start gap-3 shrink-0 text-left px-4 py-3 rounded-xl transition-all duration-300 ${
-                      i === current ? "bg-white shadow-sm" : "hover:bg-white/60"
+        {/* Desktop tabs */}
+        <div className="hidden sm:flex items-center gap-1 flex-1 min-w-0">
+          {showPagination !== false &&
+            slides.map((s, i) =>
+              i > highest ? null : (
+                <button
+                  key={s.id}
+                  onClick={() => goTo(i)}
+                  className="group relative flex items-center gap-2.5 px-4 py-2.5 rounded-lg transition-all duration-300"
+                >
+                  {i === current && (
+                    <motion.div
+                      layoutId="hero-tab-bg"
+                      className="absolute inset-0 bg-white/10 rounded-lg border border-white/15"
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 30,
+                      }}
+                      style={{ zIndex: -1 }}
+                    />
+                  )}
+                  <span
+                    className={`text-base font-bold leading-none transition-colors duration-300 ${
+                      i === current
+                        ? "text-orange-400"
+                        : "text-white/25 group-hover:text-white/45"
                     }`}
                   >
-                    <span
-                      className={`text-xl font-extrabold leading-none transition-colors duration-200 ${
-                        i === current ? "text-orange-500" : "text-slate-300"
-                      }`}
-                    >
-                      {String(s.id).padStart(2, "0")}
-                    </span>
-                    <div className="min-w-0">
-                      {i === current && (
-                        <div className="mb-1.5 h-[2px] w-10 rounded-full bg-orange-500" />
-                      )}
-                      <p
-                        className={`text-sm sm:text-base font-semibold leading-snug whitespace-nowrap transition-colors duration-200 ${
-                          i === current
-                            ? "text-[#0c174c]"
-                            : "text-slate-400 group-hover:text-slate-600"
-                        }`}
-                      >
-                        {s.label}
-                      </p>
-                    </div>
-                  </button>
-                ),
-              )}
-          </div>
+                    {String(s.id).padStart(2, "0")}
+                  </span>
+                  <p
+                    className={`text-sm font-semibold whitespace-nowrap transition-colors duration-300 ${
+                      i === current
+                        ? "text-white"
+                        : "text-white/35 group-hover:text-white/60"
+                    }`}
+                  >
+                    {s.label}
+                  </p>
+                </button>
+              ),
+            )}
+        </div>
 
-          {/* Arrows */}
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              onClick={goPrev}
-              aria-label="Previous slide"
-              className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-300 hover:text-orange-500 hover:-translate-y-0.5 active:translate-y-0"
-            >
-              <ArrowLeft size={16} />
-            </button>
-            <button
-              onClick={goNext}
-              aria-label="Next slide"
-              className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-orange-500 text-white shadow-md shadow-orange-200 transition-all duration-200 hover:bg-orange-600 hover:-translate-y-0.5 active:translate-y-0"
-            >
-              <ArrowRight size={16} />
-            </button>
-          </div>
+        {/* Arrows */}
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            onClick={goPrev}
+            aria-label="Previous slide"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 bg-white/5 text-white/50 transition-all duration-300 hover:bg-white/12 hover:text-white hover:border-white/30 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
+          >
+            <ArrowLeft size={16} />
+          </button>
+          <button
+            onClick={goNext}
+            aria-label="Next slide"
+            className="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-500 text-white shadow-md shadow-orange-500/20 transition-all duration-300 hover:bg-orange-600 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
+          >
+            <ArrowRight size={16} />
+          </button>
         </div>
       </div>
     </div>

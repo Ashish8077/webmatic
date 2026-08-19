@@ -3,6 +3,7 @@ import { getMediaUrl } from "@/features/media/utils/media-url";
 import { type TeamMembersContentValues } from "@/features/page-sections/schemas/team-members.schema";
 import type { Media } from "@/features/media/types";
 import type { VisualAsset } from "@/shared/types/visual-asset.types";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 interface Props {
   content: Record<string, unknown>;
@@ -24,27 +25,29 @@ export function TeamMembersSection({ content }: Props) {
 
   return (
     <section className="relative bg-slate-50 py-16 overflow-hidden">
-      <div className="relative z-10 mx-auto max-w-[1170px] px-5 sm:px-8">
+      <div className="relative z-10 mx-auto max-w-292.5 px-5 sm:px-8">
         {/* ── Section header ──────────────────────────────── */}
-        <div className="mb-10 text-center flex flex-col items-center">
-          {data.badge && (
-            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-orange-100 text-[11px] font-bold uppercase tracking-[0.2em] text-orange-600 mb-4 shadow-sm">
-              <span className="h-1 w-1 bg-orange-500 rounded-full animate-pulse" />
-              {data.badge}
-            </span>
-          )}
-          <h2 className="text-[28px] sm:text-[32px] font-bold leading-[1.2] text-navy tracking-tight">
-            {data.heading}
-          </h2>
-          {data.description && (
-            <p className="mt-3 text-[15px] leading-[1.6] text-slate-500 max-w-2xl mx-auto">
-              {data.description}
-            </p>
-          )}
-        </div>
+        <ScrollReveal delay={0.1}>
+          <div className="mb-12 text-center flex flex-col items-center">
+            {data.badge && (
+              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-orange-100 text-[11px] font-bold uppercase tracking-[0.2em] text-orange-600 mb-4 shadow-sm">
+                <span className="h-1 w-1 bg-orange-500 rounded-full animate-pulse" />
+                {data.badge}
+              </span>
+            )}
+            <h2 className="text-[28px] sm:text-[32px] font-bold leading-[1.2] text-navy tracking-tight">
+              {data.heading}
+            </h2>
+            {data.description && (
+              <p className="mt-3 text-[15px] leading-[1.6] text-slate-500 max-w-2xl mx-auto">
+                {data.description}
+              </p>
+            )}
+          </div>
+        </ScrollReveal>
 
         {/* ── Team grid ───────────────────────────────────── */}
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {members.map((member, index) => {
             const profileImageUrl = getMediaUrl(member.image);
             const profileVisual = profileImageUrl && member.image
@@ -58,40 +61,39 @@ export function TeamMembersSection({ content }: Props) {
               : null;
 
             return (
-              <div
-                key={index}
-                className="group relative rounded-xl border border-slate-100 bg-white overflow-hidden shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md flex flex-col"
-              >
-                {/* Profile image */}
-                <div className="relative w-full aspect-[4/5] bg-slate-100 overflow-hidden">
-                  {profileVisual ? (
-                    <VisualRenderer
-                      asset={profileVisual}
-                      className="absolute inset-0"
-                      imageClassName="object-cover object-center transition-transform duration-300 group-hover:scale-105"
-                      iconClassName="w-14 h-14 text-slate-400 transition-colors duration-200"
-                      alt={member.name}
-                    />
-                  ) : null}
-                  {/* Subtle overlay gradient on image */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none" />
-                </div>
+              <ScrollReveal key={index} delay={index * 0.15} direction="up" className="h-full">
+                <div className="group relative rounded-2xl border border-slate-100 bg-white overflow-hidden shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col h-full">
+                  {/* Profile image - Changed to aspect-square so it's not massively tall */}
+                  <div className="relative w-full aspect-square bg-slate-100 overflow-hidden shrink-0">
+                    {profileVisual ? (
+                      <VisualRenderer
+                        asset={profileVisual}
+                        className="absolute inset-0"
+                        imageClassName="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                        iconClassName="w-14 h-14 text-slate-400 transition-colors duration-200"
+                        alt={member.name}
+                      />
+                    ) : null}
+                    {/* Subtle overlay gradient on image */}
+                    <div className="absolute inset-0 bg-linear-to-t from-navy/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                  </div>
 
-                {/* Info */}
-                <div className="p-5 text-center flex-grow flex flex-col justify-center relative bg-white transition-all duration-200">
-                  <h3 className="text-[15px] font-bold text-navy group-hover:text-hero-primary transition-colors duration-200 leading-tight">
-                    {member.name}
-                  </h3>
-                  <p className="mt-1 text-[11px] font-semibold text-orange-500 uppercase tracking-wide">
-                    {member.designation}
-                  </p>
-                  {member.description && (
-                    <p className="mt-2.5 text-[13px] leading-[1.5] text-slate-500 line-clamp-2">
-                      {member.description}
+                  {/* Info */}
+                  <div className="p-6 text-center grow flex flex-col items-center bg-white">
+                    <h3 className="text-lg font-bold text-navy group-hover:text-orange-500 transition-colors duration-200 leading-tight">
+                      {member.name}
+                    </h3>
+                    <p className="mt-1.5 text-xs font-bold text-hero-primary uppercase tracking-wider">
+                      {member.designation}
                     </p>
-                  )}
+                    {member.description && (
+                      <p className="mt-4 text-[14px] leading-relaxed text-slate-500 w-full">
+                        {member.description}
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
+              </ScrollReveal>
             );
           })}
         </div>

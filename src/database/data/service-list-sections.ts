@@ -88,8 +88,34 @@ export const serviceListSections = [
     sectionType: "faq",
     sortOrder: 5,
     content: {
-      heading: "",
-      items: [],
+      badge: "Frequently Asked Questions",
+      heading: "Everything You Need",
+      highlight: "To Know",
+      description: "Find answers to the most common questions about our services, process, pricing, and support.",
+      bottomText: "Still have questions? We'd be happy to help.",
+      primaryButton: { url: "/contact", text: "Contact Us" },
+      items: [
+        {
+          question: "What services does Webmatic Technology provide?",
+          answer: "We offer web development, mobile app development, digital marketing, branding, SEO, content writing, UI/UX design, and custom software solutions tailored to your business needs."
+        },
+        {
+          question: "How long does a typical project take?",
+          answer: "Project timelines depend on complexity and requirements. Most websites are completed within 4–8 weeks, while larger custom solutions may require additional time."
+        },
+        {
+          question: "Do you provide support after project delivery?",
+          answer: "Yes. We provide ongoing maintenance, technical support, security updates, and performance monitoring to ensure your solution continues to run smoothly."
+        },
+        {
+          question: "Can you improve our existing website instead of building a new one?",
+          answer: "Absolutely. We can redesign, optimize, improve performance, enhance SEO, and add new functionality to your existing website based on your business goals."
+        },
+        {
+          question: "How do we get started with Webmatic Technology?",
+          answer: "Simply contact us through our website or request a consultation. We'll discuss your requirements, understand your business objectives, and recommend the best solution."
+        }
+      ]
     },
     settings: {
       isVisible: true,
@@ -100,12 +126,11 @@ export const serviceListSections = [
     sectionType: "contact-cta",
     sortOrder: 6,
     content: {
-      heading: "",
-      description: "",
-      primaryButtonText: "",
-      primaryButtonUrl: "",
-      secondaryButtonText: "",
-      secondaryButtonUrl: "",
+      badge: "SUBMIT A REQUEST",
+      heading: "Ready to Grow Your Business Online?",
+      description: "From strategy and branding to web development, digital marketing, and custom software solutions, our team delivers the right digital services to help your business grow, perform, and stand out.",
+      buttonText: "Request a Demo",
+      buttonUrl: "/contact",
       backgroundImageId: null,
     },
     settings: {

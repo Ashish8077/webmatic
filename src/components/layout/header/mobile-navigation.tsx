@@ -58,7 +58,7 @@ function MobileNavItem({ node, setMenuOpen, depth = 0 }: { node: MenuNode; setMe
       </div>
       
       {/* Accordion content */}
-      <div className={`overflow-hidden transition-all duration-200 ${isOpen ? "max-h-[1000px] opacity-100 mt-1" : "max-h-0 opacity-0"}`}>
+      <div className={`overflow-hidden transition-all duration-200 ${isOpen ? "max-h-250 opacity-100 mt-1" : "max-h-0 opacity-0"}`}>
         <div className="flex flex-col gap-1 border-l-2 border-slate-100 ml-4 pl-1">
           {node.children.map(child => (
             <MobileNavItem key={child.id} node={child} setMenuOpen={setMenuOpen} depth={depth + 0.5} />
@@ -87,7 +87,7 @@ export function MobileNavigation({
         }`}
       >
         <nav
-          className="max-w-[1170px] mx-auto px-2 sm:px-5 py-3 flex flex-col gap-1"
+          className="max-w-292.5 mx-auto px-2 sm:px-5 py-3 flex flex-col gap-1"
           aria-label="Mobile navigation"
         >
           {navLinks.map((node) => (

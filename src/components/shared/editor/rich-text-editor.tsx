@@ -198,7 +198,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
           placeholder="Paste your raw HTML here..."
           value={htmlInput}
           onChange={(e) => setHtmlInput(e.target.value)}
-          className="min-h-[300px] font-mono text-sm"
+          className="min-h-75 font-mono text-sm"
         />
       </Modal>
     </>
@@ -220,7 +220,7 @@ export default function RichTextEditor({ value, onChange, error }: RichTextEdito
     content: value,
     editorProps: {
       attributes: {
-        class: 'prose prose-sm dark:prose-invert max-w-none focus:outline-none min-h-[200px] p-4 text-foreground',
+        class: 'prose prose-sm dark:prose-invert max-w-none focus:outline-none min-h-50 p-4 text-foreground',
       },
     },
     onUpdate: ({ editor }) => {

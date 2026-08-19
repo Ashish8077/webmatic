@@ -24,7 +24,6 @@ export default function FooterSettingsPage() {
   const form = useForm<FooterSettings>({
     resolver: zodResolver(footerSettingsSchema) as unknown as Resolver<FooterSettings>,
     defaultValues: {
-      trustedBrands: { brands: [] },
       heroCta: {},
       contactInfo: { phone: { phones: [] }, email: {} },
       socialLinks: [],

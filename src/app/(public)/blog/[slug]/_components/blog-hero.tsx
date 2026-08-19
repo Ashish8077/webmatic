@@ -30,8 +30,8 @@ export function BlogHero({
     : null;
 
   return (
-    <header className="bg-white pt-[104px]">
-      <div className="mx-auto max-w-[1170px] px-5 sm:px-8 py-12 lg:py-16">
+    <header className="bg-white pt-26">
+      <div className="mx-auto max-w-292.5 px-5 sm:px-8 py-12 lg:py-16">
         {/* Breadcrumbs */}
         <div className="mb-6">
           <Breadcrumbs

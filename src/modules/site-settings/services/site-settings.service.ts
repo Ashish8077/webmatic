@@ -3,6 +3,11 @@ import { siteSettingsRepository } from "../repositories/site-settings.repository
 import { FooterSettings } from "../types/footer.types";
 import { footerSettingsSchema } from "../schemas/footer.schema";
 import { defaultFooterSettings } from "@/database/data/footer-settings";
+import { 
+  contactSettingsSchema, 
+  type ContactSettings, 
+  defaultContactSettings 
+} from "../schemas/contact.schema";
 import { AuthUser } from "@/modules/auth/types/auth-user";
 import { requirePermission } from "@/modules/auth/authorization/permission";
 import { PERMISSIONS } from "@/modules/auth/constants/permissions";
@@ -48,5 +53,48 @@ export const siteSettingsService = {
     revalidatePath("/", "layout");
   },
 
-  // Future expansion: getHeaderSettings(), getSeoSettings(), etc.
+  // --- Contact Settings ---
+
+  async getContactSettings(user?: AuthUser): Promise<ContactSettings> {
+    if (user) {
+      requirePermission(user, PERMISSIONS.SETTINGS_VIEW);
+    }
+
+    const data = await siteSettingsRepository.getByKey("contact.configuration");
+
+    if (!data) {
+      return defaultContactSettings;
+    }
+
+    return data as unknown as ContactSettings;
+  },
+
+  async getPublicContactSettings(): Promise<ContactSettings> {
+    const data = await siteSettingsRepository.getByKey("contact.configuration");
+
+    if (!data) {
+      return defaultContactSettings;
+    }
+
+    return data as unknown as ContactSettings;
+  },
+
+  async updateContactSettings(data: unknown, user: AuthUser): Promise<void> {
+    requirePermission(user, PERMISSIONS.SETTINGS_UPDATE);
+
+    const validatedData = contactSettingsSchema.parse(data);
+
+    await siteSettingsRepository.upsert(
+      "contact.configuration",
+      validatedData,
+      true, // is_public = true so frontend can fetch it
+      user.userId,
+    );
+
+    // Invalidate caches
+    revalidatePath("/contact");
+    revalidatePath("/contact-us");
+    revalidatePath("/");
+    revalidatePath("/services");
+  },
 };

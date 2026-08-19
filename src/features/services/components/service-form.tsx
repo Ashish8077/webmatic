@@ -89,7 +89,7 @@ function StringArrayField({
   );
 }
 
-import { toast } from "sonner";
+
 
 export default function ServiceForm({
   form,
@@ -111,10 +111,7 @@ export default function ServiceForm({
   return (
     <FormProvider {...form}>
       <form 
-        onSubmit={form.handleSubmit(onSubmit, (errors) => {
-          console.error("Form Validation Errors:", errors);
-          toast.error("Please check the form for missing or invalid fields.");
-        })} 
+        onSubmit={form.handleSubmit(onSubmit)} 
         className="space-y-6"
       >
       {/* ────────────────────────────────────────────────────────────────────────
@@ -471,8 +468,8 @@ export default function ServiceForm({
             ogDescription: form.register("openGraphDescription"),
             twitterTitle: form.register("twitterTitle"),
             twitterDescription: form.register("twitterDescription"),
-            robotsIndex: form.register("name"), // mock registers
-            robotsFollow: form.register("name"),
+            robotsIndex: form.register("robotsIndex" as unknown as "name"),
+            robotsFollow: form.register("robotsFollow" as unknown as "name"),
           }}
           errors={form.formState.errors}
           warnings={[]}
