@@ -90,7 +90,7 @@ const HeroContent = ({ slide }: { slide: SlideType }) => {
         {/* Primary — solid orange, high-contrast */}
         <Link
           href={slide.primaryButton.to}
-          className="group inline-flex items-center justify-center gap-2 rounded-lg bg-orange-500 px-8 py-3.5 text-[14px] font-bold text-white shadow-lg shadow-orange-500/20 transition-all duration-250 hover:bg-orange-600 hover:shadow-xl hover:shadow-orange-500/25 hover:-translate-y-px active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-hero-navy"
+          className="group inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-8 py-3.5 text-[14px] font-bold text-white shadow-lg shadow-primary/20 transition-all duration-250 hover:bg-primary-hover hover:shadow-xl hover:shadow-primary/25 hover:-translate-y-px active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-hero-navy"
         >
           {slide.primaryButton.text}
           <ChevronRight

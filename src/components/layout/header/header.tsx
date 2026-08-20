@@ -50,7 +50,7 @@ const Header = ({ navLinks = [] }: HeaderProps) => {
               href="/contact"
               className={`hidden md:inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 ${
                 isSolid
-                  ? "bg-orange-500 text-white shadow-md shadow-orange-500/20 hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 active:translate-y-0"
+                  ? "bg-primary text-white shadow-md shadow-primary/20 hover:bg-primary-hover hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0"
                   : "bg-white/15 text-white backdrop-blur-md border border-white/25 hover:bg-white/25 hover:border-white/40"
               }`}
             >
