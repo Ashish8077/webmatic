@@ -9,14 +9,16 @@ import { MobileNavigation } from "./mobile-navigation";
 import useHeader from "./use-header";
 
 import { MenuNode } from "@/modules/menus/types/menu.types";
+import { HeaderSettings } from "@/modules/site-settings/types/header.types";
 
 import { usePathname } from "next/navigation";
 
 interface HeaderProps {
   navLinks: MenuNode[];
+  settings: HeaderSettings;
 }
 
-const Header = ({ navLinks = [] }: HeaderProps) => {
+const Header = ({ navLinks = [], settings }: HeaderProps) => {
   const { menuOpen, setMenuOpen, scrolled, visible } = useHeader();
   const pathname = usePathname();
   const isHome = pathname === "/";
@@ -32,13 +34,15 @@ const Header = ({ navLinks = [] }: HeaderProps) => {
           : "bg-transparent is-top"
       }`}
     >
-      <TopHeader scrolled={isSolid} />
+      {settings?.visibility?.topBar && (
+        <TopHeader scrolled={isSolid} settings={settings} />
+      )}
 
       {/* Main nav bar */}
       <div className="transition-all duration-500">
         <div className="max-w-292.5 mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
-          <Logo />
+          <Logo logoSettings={settings?.logo} />
 
           {/* Desktop nav */}
           <DesktopNavigation navLinks={navLinks} />
@@ -46,16 +50,18 @@ const Header = ({ navLinks = [] }: HeaderProps) => {
           {/* Right actions */}
           <div className="flex items-center gap-3">
             {/* Desktop CTA */}
-            <Link
-              href="/contact"
-              className={`hidden md:inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 ${
-                isSolid
-                  ? "bg-orange-500 text-white shadow-md shadow-orange-500/20 hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 active:translate-y-0"
-                  : "bg-white/15 text-white backdrop-blur-md border border-white/25 hover:bg-white/25 hover:border-white/40"
-              }`}
-            >
-              Get in Touch
-            </Link>
+            {settings?.cta?.destinationType !== "none" && (
+              <Link
+                href={settings?.cta?.url || "/contact"}
+                className={`hidden md:inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 ${
+                  isSolid
+                    ? "bg-orange-500 text-white shadow-md shadow-orange-500/20 hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 active:translate-y-0"
+                    : "bg-white/15 text-white backdrop-blur-md border border-white/25 hover:bg-white/25 hover:border-white/40"
+                }`}
+              >
+                {settings?.cta?.label || "Get in Touch"}
+              </Link>
+            )}
 
             {/* Mobile hamburger */}
             <button

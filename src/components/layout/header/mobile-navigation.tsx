@@ -7,7 +7,9 @@ import { MenuNode } from "@/modules/menus/types/menu.types";
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
-function MobileNavItem({ node, setMenuOpen, depth = 0 }: { node: MenuNode; setMenuOpen: (open: boolean) => void; depth?: number }) {
+import { generateHref } from "./mega-menu-link";
+
+function MobileNavItem({ node, setMenuOpen, depth = 0, isButton = false, parentTitle }: { node: MenuNode; setMenuOpen: (open: boolean) => void; depth?: number; isButton?: boolean; parentTitle?: string }) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   
@@ -21,6 +23,20 @@ function MobileNavItem({ node, setMenuOpen, depth = 0 }: { node: MenuNode; setMe
   const isActive = checkIsActive(node);
 
   if (!hasChildren) {
+    if (isButton) {
+      return (
+        <Link
+          href={generateHref(node, true, parentTitle)}
+          className="mx-3 mt-3 mb-1 inline-flex items-center justify-center py-2.5 px-4 text-[13px] font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors duration-200"
+          onClick={() => setMenuOpen(false)}
+          target={node.target || undefined}
+          rel={node.rel || undefined}
+        >
+          {node.title}
+        </Link>
+      );
+    }
+
     return (
       <Link
         href={node.href}
@@ -58,11 +74,28 @@ function MobileNavItem({ node, setMenuOpen, depth = 0 }: { node: MenuNode; setMe
       </div>
       
       {/* Accordion content */}
-      <div className={`overflow-hidden transition-all duration-200 ${isOpen ? "max-h-250 opacity-100 mt-1" : "max-h-0 opacity-0"}`}>
+      <div className={`overflow-hidden transition-all duration-300 ${isOpen ? "max-h-[1000px] opacity-100 mt-1 pb-2" : "max-h-0 opacity-0"}`}>
         <div className="flex flex-col gap-1 border-l-2 border-slate-100 ml-4 pl-1">
-          {node.children.map(child => (
-            <MobileNavItem key={child.id} node={child} setMenuOpen={setMenuOpen} depth={depth + 0.5} />
-          ))}
+          {(() => {
+            let ctaIndex = -1;
+            for (let i = node.children.length - 1; i >= 0; i--) {
+              if (node.children[i].href !== "#") {
+                ctaIndex = i;
+                break;
+              }
+            }
+
+            return node.children.map((child, index) => (
+              <MobileNavItem 
+                key={child.id} 
+                node={child} 
+                setMenuOpen={setMenuOpen} 
+                depth={depth + 0.5}
+                isButton={index === ctaIndex}
+                parentTitle={node.title}
+              />
+            ));
+          })()}
         </div>
       </div>
     </div>

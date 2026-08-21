@@ -105,8 +105,8 @@ export const navGroups: NavGroup[] = [
       },
       {
         label: "Site Settings",
-        href: "/admin/site-settings/footer", // default to footer for now
-        permission: Permission.MENUS_VIEW, // Reuse menus permission temporarily or remove
+        href: "/admin/site-settings/header",
+        permission: Permission.MENUS_VIEW,
         icon: Settings,
       }
     ]

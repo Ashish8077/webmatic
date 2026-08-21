@@ -2,16 +2,17 @@
 
 import { MenuItem } from "@/modules/menus/types/menu.types";
 import { Button } from "@/components/ui/button";
-import { ArrowDown, ArrowUp, ChevronRight, ChevronLeft, Edit2, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronRight, ChevronLeft, Edit2, Trash2, Plus } from "lucide-react";
 
 interface MenuTreeProps {
   items: MenuItem[];
   onChange: (items: MenuItem[]) => void;
   onEdit: (item: MenuItem) => void;
   onDelete: (id: number) => void;
+  onAddSubmenu: (parentId: number) => void;
 }
 
-export function MenuTree({ items, onChange, onEdit, onDelete }: MenuTreeProps) {
+export function MenuTree({ items, onChange, onEdit, onDelete, onAddSubmenu }: MenuTreeProps) {
   
   const moveUp = (index: number) => {
     if (index === 0) return;
@@ -92,6 +93,9 @@ export function MenuTree({ items, onChange, onEdit, onDelete }: MenuTreeProps) {
           <div className="w-px h-6 bg-card-border mx-2" />
           <Button variant="ghost" size="sm" onClick={() => onEdit(item)} title="Edit">
             <Edit2 className="w-4 h-4" />
+          </Button>
+          <Button variant="ghost" size="sm" onClick={() => onAddSubmenu(item.id)} title="Add Submenu">
+            <Plus className="w-4 h-4" />
           </Button>
           <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700" onClick={() => onDelete(item.id)} title="Delete">
             <Trash2 className="w-4 h-4" />
