@@ -44,7 +44,7 @@ function CSSBackground() {
       {/* Layer 3 — Primary brand light: large orange-warm glow, top-right */}
       {/* Clearly visible at 28% opacity — reads as a deliberate light source */}
       <div
-        className="absolute"
+        className="absolute max-sm:!animate-none max-sm:!filter-none"
         style={{
           top: "-15%",
           right: "-5%",
@@ -99,7 +99,7 @@ function CSSBackground() {
 
       {/* Layer 7 — Fine grain texture: material depth */}
       <div
-        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        className="absolute inset-0 opacity-[0.04] pointer-events-none hidden sm:block"
         style={{ backgroundImage: GRAIN_SVG }}
       />
     </div>
@@ -172,7 +172,7 @@ function ImageBackground({
 
       {/* Fine grain texture — keeps both modes visually consistent */}
       <div
-        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        className="absolute inset-0 opacity-[0.04] pointer-events-none hidden sm:block"
         style={{ backgroundImage: GRAIN_SVG }}
       />
     </motion.div>
@@ -250,12 +250,10 @@ export function HeroSlider({ content, settings }: SectionProps) {
         enter: () => ({
           opacity: 0,
           y: 20,
-          filter: "blur(4px)",
         }),
         center: {
           opacity: 1,
           y: 0,
-          filter: "blur(0px)",
           transition: {
             duration: 0.75,
             ease: [0.16, 1, 0.3, 1] as const,
@@ -264,7 +262,6 @@ export function HeroSlider({ content, settings }: SectionProps) {
         exit: () => ({
           opacity: 0,
           y: -12,
-          filter: "blur(4px)",
           transition: {
             duration: 0.4,
             ease: [0.16, 1, 0.3, 1] as const,

@@ -11,11 +11,10 @@ function buildVariants(reducedMotion: boolean) {
   const fadeUp = reducedMotion
     ? { hidden: { opacity: 1 }, visible: { opacity: 1 } }
     : {
-        hidden: { opacity: 0, y: 32, filter: "blur(6px)" },
+        hidden: { opacity: 0, y: 32 },
         visible: {
           opacity: 1,
           y: 0,
-          filter: "blur(0px)",
           transition: {
             duration: 0.9,
             ease: [0.16, 1, 0.3, 1] as const,
