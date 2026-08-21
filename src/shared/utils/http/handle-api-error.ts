@@ -1,57 +1,84 @@
-import { ZodIssue } from "zod";
 import { NextResponse } from "next/server";
 
 import { AppError } from "@/shared/utils/errors/app-error";
+import { isDuplicateKeyError } from "@/shared/utils/errors/database-error.util";
 import { ValidationError } from "@/shared/utils/errors/validation-error";
+import {
+  createValidationErrors,
+  type ValidationErrors,
+} from "@/shared/utils/errors/validation-errors";
 
-export function handleApiError(error: unknown) {
+interface ErrorResponseBody {
+  success: false;
+  message: string;
+  code?: string;
+  errors?: ValidationErrors;
+}
+
+function errorResponse(body: ErrorResponseBody, status: number): NextResponse {
+  return NextResponse.json(body, { status });
+}
+
+export function handleApiError(error: unknown): NextResponse {
   if (error instanceof ValidationError) {
-    return NextResponse.json(
+    return errorResponse(
       {
         success: false,
-        message: "Validation failed",
-        errors: error.zodError.issues.map((issue: ZodIssue) => ({
-          field: issue.path.join("."),
-          message: issue.message,
-        })),
+        message: error.message,
+        code: "VALIDATION_ERROR",
+        errors: error.errors,
       },
-      {
-        status: 400,
-      },
+      error.statusCode,
     );
   }
 
   if (error instanceof AppError) {
-    return NextResponse.json(
+    return errorResponse(
       {
         success: false,
         message: error.message,
+        ...(error.code && { code: error.code }),
+        ...(error.errors && { errors: error.errors }),
       },
-      {
-        status: error.statusCode,
-      },
+      error.statusCode,
     );
   }
 
   if (error instanceof SyntaxError) {
-    return NextResponse.json(
+    return errorResponse(
       {
         success: false,
         message: "Invalid JSON payload",
+        code: "INVALID_JSON",
+        errors: createValidationErrors("_root", "Invalid JSON payload."),
       },
-      {
-        status: 400,
-      },
+      400,
     );
   }
 
-  return NextResponse.json(
+  if (isDuplicateKeyError(error)) {
+    return errorResponse(
+      {
+        success: false,
+        message: "Duplicate value violates a unique constraint",
+        code: "DUPLICATE_VALUE",
+        errors: createValidationErrors(
+          "_root",
+          "A record with this value already exists.",
+        ),
+      },
+      409,
+    );
+  }
+
+  console.error(error);
+
+  return errorResponse(
     {
       success: false,
       message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR",
     },
-    {
-      status: 500,
-    },
+    500,
   );
 }

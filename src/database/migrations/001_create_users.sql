@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
     email                   VARCHAR(255)    NOT NULL UNIQUE,
     phone                   VARCHAR(20)     DEFAULT NULL,
     password_hash           VARCHAR(255)    NOT NULL,
-    profile_image           VARCHAR(500)    DEFAULT NULL,
+    profile_image_id        BIGINT UNSIGNED NULL,
     status                  ENUM('active','inactive','suspended') NOT NULL DEFAULT 'active',
     email_verified          BOOLEAN         NOT NULL DEFAULT FALSE,
     email_verified_at       TIMESTAMP       NULL DEFAULT NULL,

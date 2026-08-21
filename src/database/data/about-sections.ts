@@ -1,0 +1,150 @@
+export const aboutSections = [
+  {
+    sectionType: "about-hero",
+    sortOrder: 0,
+    content: {
+      badge: "KNOW MORE ABOUT US",
+      heading: "Learn a little more about us.",
+      highlight: "",
+      description:
+        "Webmatic Technology is a Full-service Creative and Strategic Digital Marketing serving businesses of all sizes worldwide.",
+      ctaLabel: "Explore Our Story",
+      ctaTargetId: "company-overview",
+      imageId: null,
+    },
+    settings: {},
+  },
+  {
+    sectionType: "company-statistics",
+    sortOrder: 1,
+    content: {
+      items: [
+        {
+          number: "5",
+          suffix: "+",
+          title: "Years of Innovation and Creativity",
+          description: "",
+          iconId: null,
+          sortOrder: 1,
+        },
+        {
+          number: "89",
+          suffix: "+",
+          title: "People Working to Make the World a Better",
+          description: "",
+          iconId: null,
+          sortOrder: 2,
+        },
+        {
+          number: "5",
+          suffix: "+",
+          title: "Countries Operated in Around the World",
+          description: "",
+          iconId: null,
+          sortOrder: 3,
+        },
+      ],
+    },
+    settings: {},
+  },
+  {
+    sectionType: "company-overview",
+    sortOrder: 2,
+    content: {
+      badge: "GET TO KNOW US BETTER",
+      heading: "Driven by a Passion to Bring New Ideas to Life",
+      description:
+        "This has always been the belief at Webmatic Technology Pvt Ltd, so never forget to provide the best IT solutions and digital marketing services. The company started with a simple business plan since its inception and has grown into an award-winning global-level digital marketing agency.\n\nSince our foundation, we have produced outstanding results that surpass expectations. Our vision was to change the face of digital marketing and to become a brand people rely on, delivering both quality and innovation. We focus on developing high-performance websites or improving online presence through SEO, PPC, and analytics services. We feel we're on a great journey with our clients and can't wait for what awaits us in the future.",
+      primaryButton: { text: "Speak With An Expert", url: "/contact" },
+      bottomText: {
+        supportingText: "We Serve our Clients' Best Interests with the Best Marketing Solutions.",
+        linkText: "Find Out More",
+        linkUrl: "/services"
+      }
+    },
+    settings: {},
+  },
+  {
+    sectionType: "core-values",
+    sortOrder: 3,
+    content: {
+      badge: "CORE VALUES",
+      heading: "3 Reasons Why Webmatic Technology is Your Ideal Digital Marketing Partner",
+      values: [
+        {
+          title: "Customers First",
+          description: "Webmatic Technology starts by fully understanding your business objectives. Every strategy we create is designed with your goals at the forefront, ensuring we drive the results that matter most to you.",
+          iconId: null,
+          linkText: "Find Out More",
+          linkUrl: "/about-us"
+        },
+        {
+          title: "Exceptional Team",
+          description: "Our talented in-house team combines agency expertise with enterprise-level knowledge. We offer various backgrounds and expertise to deliver unique digital marketing solutions.",
+          iconId: null,
+          linkText: "Meet The Team",
+          linkUrl: "/team"
+        },
+        {
+          title: "Reliable Support",
+          description: "We make communication easy. Our support team is always accessible, and our average response time is incredibly fast—ensuring you get the help you need when you need it.",
+          iconId: null,
+          linkText: "Talk to Customer Support",
+          linkUrl: "/contact"
+        }
+      ]
+    },
+    settings: {},
+  },
+  {
+    sectionType: "mission-vision",
+    sortOrder: 4,
+    content: {
+      missionTitle: "Our Mission",
+      missionDescription: "To empower businesses worldwide through innovative digital marketing and cutting-edge technology solutions that drive measurable growth and success.",
+      visionTitle: "Our Vision",
+      visionDescription: "To be the globally recognized standard in digital marketing excellence, creating a brand that people rely on for both exceptional quality and continuous innovation.",
+    },
+    settings: {},
+  },
+  {
+    sectionType: "team-members",
+    sortOrder: 5,
+    content: {
+      badge: "OUR TEAM",
+      heading: "Meet the People Behind the Brand",
+      description: "Our diverse team of experts combines creative brilliance with technical excellence.",
+      members: [
+        {
+          name: "John Doe",
+          designation: "CEO & Founder",
+          description: "Visionary leader with over 15 years of experience in digital marketing and technology.",
+          imageId: null,
+          sortOrder: 1,
+        },
+        {
+          name: "Jane Smith",
+          designation: "Chief Marketing Officer",
+          description: "Strategic marketing expert specializing in global brand development and scaling.",
+          imageId: null,
+          sortOrder: 2,
+        },
+        {
+          name: "Michael Johnson",
+          designation: "Head of Technology",
+          description: "Technical architect driving innovation and building robust, scalable digital platforms.",
+          imageId: null,
+          sortOrder: 3,
+        },
+        {
+          name: "Sarah Williams",
+          designation: "Creative Director",
+          description: "Award-winning designer passionate about creating beautiful, user-centric experiences.",
+          imageId: null,
+          sortOrder: 4,
+        }
+      ]
+    },
+    settings: {},
+  }
+] as const;

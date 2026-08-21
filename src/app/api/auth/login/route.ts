@@ -1,15 +1,12 @@
 // Shared app infrastructure
 import { handleApiError } from "@/shared/utils/http/handle-api-error";
 import { successResponse } from "@/shared/utils/http/success-response";
-import { validate } from "@/shared/utils/validation/validation";
+import { validate } from "@/shared/utils/validators/validation";
 
 // Auth module
 import { loginService } from "@/modules/auth/services/login.service";
 import { setAuthCookies } from "@/modules/auth/lib/cookies";
-import {
-  LoginInput,
-  loginSchema,
-} from "@/modules/auth/validators/login.schema";
+import { LoginInput, loginSchema } from "@/modules/auth/schemas/login.schema";
 
 export async function POST(request: Request) {
   try {

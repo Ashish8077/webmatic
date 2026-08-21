@@ -1,21 +1,35 @@
 import db from "@/database/connection";
 import { ResultSetHeader } from "mysql2";
-import { CreatePageInput } from "../validators/create-page.schema";
+
+import { GetPagesQuery } from "../validation/get-pages-query.schema";
+import { toJson } from "@/shared/utils/database/json";
+import { PageStatus } from "../constants/page.constants";
 import {
   CountRow,
   PageDetailsRow,
   PageListRow,
   PageSlugRow,
   PublishedPageRow,
-} from "./types";
-import { GetPagesQuery } from "../validators/get-pages-query.schema";
-import { UpdatePageInput } from "../validators/update-page.schema";
+} from "../types/repository.types";
+import { CreatePagePayload, UpdatePagePayload } from "../types/service.types";
 
-const SORT_COLUMNS = {
+type SortBy = NonNullable<GetPagesQuery["sortBy"]>;
+
+export const SORT_COLUMNS: Record<SortBy, string> = {
   title: "title",
+  slug: "slug",
+  status: "status",
   created_at: "created_at",
+  updated_at: "updated_at",
   published_at: "published_at",
-} as const;
+};
+
+/**
+ * Finds a page by slug.
+ *
+ * @param slug - Slug of the page to find.
+ * @returns The page slug row or null if not found.
+ */
 
 export async function findPageSlug(slug: string): Promise<PageSlugRow | null> {
   const [rows] = await db.execute<PageSlugRow[]>(
@@ -34,6 +48,42 @@ export async function findPageSlug(slug: string): Promise<PageSlugRow | null> {
   return rows[0] ?? null;
 }
 
+/**
+ * Finds a page by slug, excluding a specific page ID.
+ *
+ * @param slug - Slug of the page to find.
+ * @param pageId - ID of the page to exclude.
+ * @returns The page slug row or null if not found.
+ */
+
+export async function findPageSlugExcludingPageId(
+  slug: string,
+  pageId: number,
+): Promise<PageSlugRow | null> {
+  const [rows] = await db.execute<PageSlugRow[]>(
+    `
+    SELECT
+      id,
+      slug
+    FROM pages
+    WHERE slug = ?
+      AND id <> ?
+      AND deleted_at IS NULL
+    LIMIT 1
+    `,
+    [slug, pageId],
+  );
+
+  return rows[0] ?? null;
+}
+
+/**
+ * Finds a published page by slug.
+ *
+ * @param slug - Slug of the page to find.
+ * @returns The published page row or null if not found.
+ */
+
 export async function findPublishedPageBySlug(
   slug: string,
 ): Promise<PublishedPageRow | null> {
@@ -43,9 +93,17 @@ export async function findPublishedPageBySlug(
       id,
       title,
       slug,
+      template,
       seo_title,
       meta_description,
+      meta_keywords,
       canonical_url,
+      og_title,
+      og_description,
+      og_image_id,
+      twitter_title,
+      twitter_description,
+      twitter_image_id,
       robots_index,
       robots_follow,
       schema_markup,
@@ -61,6 +119,57 @@ export async function findPublishedPageBySlug(
 
   return rows[0] ?? null;
 }
+
+/**
+ * Finds a published page by page type.
+ * Used for loading system pages (home, about, services, etc.) on the public website.
+ *
+ * @param template - The template to find.
+ * @returns The published page row or null if not found.
+ */
+
+export async function findPublishedPageByTemplate(
+  template: string,
+): Promise<PublishedPageRow | null> {
+  const [rows] = await db.execute<PublishedPageRow[]>(
+    `
+    SELECT
+      id,
+      title,
+      slug,
+      template,
+      seo_title,
+      meta_description,
+      meta_keywords,
+      canonical_url,
+      og_title,
+      og_description,
+      og_image_id,
+      twitter_title,
+      twitter_description,
+      twitter_image_id,
+      robots_index,
+      robots_follow,
+      schema_markup,
+      published_at
+    FROM pages
+    WHERE template = ?
+      AND status = 'published'
+      AND deleted_at IS NULL
+    LIMIT 1
+    `,
+    [template],
+  );
+
+  return rows[0] ?? null;
+}
+
+/**
+ * Finds pages by query.
+ *
+ * @param options - Options for finding pages.
+ * @returns The page list rows.
+ */
 
 export async function findPages(
   options: GetPagesQuery,
@@ -81,32 +190,42 @@ export async function findPages(
     params.push(options.status);
   }
 
-  const sortColumn = SORT_COLUMNS[options.sortBy] ?? SORT_COLUMNS.created_at;
+  const sortColumn = SORT_COLUMNS[options.sortBy];
 
-  const sortDirection = options.sortOrder === "asc" ? "ASC" : "DESC";
+  const sortDirection: "ASC" | "DESC" =
+    options.sortOrder === "asc" ? "ASC" : "DESC";
 
-  params.push(options.limit);
-  params.push(offset);
+  params.push(offset, options.limit);
 
-  const [rows] = await db.execute<PageListRow[]>(
+  const [rows] = await db.query<PageListRow[]>(
     `
     SELECT
       id,
       title,
       slug,
+      template,
       status,
+      is_system,
       published_at,
-      created_at
+      created_at,
+      updated_at
     FROM pages
     WHERE ${where.join(" AND ")}
     ORDER BY ${sortColumn} ${sortDirection}
-    LIMIT ${offset}, ${options.limit}
+    LIMIT ?, ?
     `,
     params,
   );
 
   return rows;
 }
+
+/**
+ * Finds a page by ID.
+ *
+ * @param id - ID of the page to find.
+ * @returns The page details row or null if not found.
+ */
 
 export async function findPageById(id: number): Promise<PageDetailsRow | null> {
   const [rows] = await db.execute<PageDetailsRow[]>(
@@ -115,12 +234,19 @@ export async function findPageById(id: number): Promise<PageDetailsRow | null> {
       id,
       title,
       slug,
-      status,
       template,
+      status,
+      is_system,
       seo_title,
       meta_description,
       meta_keywords,
       canonical_url,
+      og_title,
+      og_description,
+      og_image_id,
+      twitter_title,
+      twitter_description,
+      twitter_image_id,
       robots_index,
       robots_follow,
       schema_markup,
@@ -153,7 +279,7 @@ export async function countPages(options: GetPagesQuery): Promise<number> {
     params.push(options.status);
   }
 
-  const [rows] = await db.execute<CountRow[]>(
+  const [rows] = await db.query<CountRow[]>(
     `
     SELECT COUNT(*) AS total
     FROM pages
@@ -165,114 +291,215 @@ export async function countPages(options: GetPagesQuery): Promise<number> {
   return Number(rows[0].total);
 }
 
-export async function createPage(createPage: CreatePageInput): Promise<number> {
+/**
+ * Creates a new page.
+ *
+ * @param page - Page data to insert.
+ * @param userId - ID of the authenticated user creating the page.
+ * @returns The newly created page ID.
+ */
+
+export async function createPage(
+  page: CreatePagePayload,
+  userId: number,
+): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
     INSERT INTO pages
     (
       title,
       slug,
-      status,
       template,
+      status,
+
+      is_system,
+
       seo_title,
       meta_description,
       meta_keywords,
       canonical_url,
-      schema_markup
+
+      og_title,
+      og_description,
+      og_image_id,
+
+      twitter_title,
+      twitter_description,
+      twitter_image_id,
+
+      schema_markup,
+
+      published_at,
+      created_by,
+      updated_by
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?,  FALSE, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CASE
+    WHEN ?
+      THEN CURRENT_TIMESTAMP
+    ELSE NULL
+  END, ?, ?)
     `,
     [
-      createPage.title,
-      createPage.slug,
-      createPage.status,
-      createPage.template ?? null,
-      createPage.seoTitle ?? null,
-      createPage.metaDescription ?? null,
-      createPage.metaKeywords ?? null,
-      createPage.canonicalUrl ?? null,
-      createPage.schemaMarkup ? JSON.stringify(createPage.schemaMarkup) : null,
+      // Basic Information
+      page.title,
+      page.slug,
+      page.template,
+      page.status,
+
+      // SEO
+      page.seoTitle ?? null,
+      page.metaDescription ?? null,
+      page.metaKeywords ?? null,
+      page.canonicalUrl ?? null,
+
+      // Open Graph
+      page.ogTitle ?? null,
+      page.ogDescription ?? null,
+      page.ogImageId ?? null,
+
+      // Twitter Card
+      page.twitterTitle ?? null,
+      page.twitterDescription ?? null,
+      page.twitterImageId ?? null,
+
+      // Schema
+
+      toJson(page.schemaMarkup),
+
+      // Publishing
+      page.status === "published",
+
+      // Audit
+      userId,
+      userId,
     ],
   );
 
   return result.insertId;
 }
 
+/**
+ * Updates an existing page.
+ *
+ * @param pageId - ID of the page to update.
+ * @param updatePage - Page data to update.
+ * @returns The number of affected rows.
+ */
+
 export async function updatePage(
   pageId: number,
-  updatePage: UpdatePageInput,
-): Promise<boolean> {
+  updatePage: UpdatePagePayload,
+  userId: number,
+): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
     UPDATE pages
     SET
       title = ?,
       slug = ?,
-      status = ?,
       template = ?,
+      status = ?,
       seo_title = ?,
       meta_description = ?,
       meta_keywords = ?,
       canonical_url = ?,
+      og_title = ?,
+      og_description = ?,
+      og_image_id = ?,
+      twitter_title = ?,
+      twitter_description = ?,
+      twitter_image_id = ?,
       robots_index = ?,
       robots_follow = ?,
-      schema_markup = ?
+      schema_markup = ?,
+      published_at = CASE 
+      WHEN ?
+        THEN COALESCE(published_at, CURRENT_TIMESTAMP)
+        ELSE published_at
+      END,
+      updated_by = ?
     WHERE id = ?
       AND deleted_at IS NULL
     `,
     [
       updatePage.title,
       updatePage.slug,
+      updatePage.template,
       updatePage.status,
-      updatePage.template ?? null,
-      updatePage.seoTitle ?? null,
-      updatePage.metaDescription ?? null,
-      updatePage.metaKeywords ?? null,
-      updatePage.canonicalUrl ?? null,
-      updatePage.robotsIndex ?? true,
-      updatePage.robotsFollow ?? true,
-      updatePage.schemaMarkup ? JSON.stringify(updatePage.schemaMarkup) : null,
+      updatePage.seoTitle,
+      updatePage.metaDescription,
+      updatePage.metaKeywords,
+      updatePage.canonicalUrl,
+      updatePage.ogTitle,
+      updatePage.ogDescription,
+      updatePage.ogImageId,
+      updatePage.twitterTitle,
+      updatePage.twitterDescription,
+      updatePage.twitterImageId,
+      updatePage.robotsIndex,
+      updatePage.robotsFollow,
+      toJson(updatePage.schemaMarkup),
+      updatePage.status === "published",
+      userId,
       pageId,
     ],
   );
 
-  return result.affectedRows > 0;
+  return result.affectedRows;
 }
 
-export async function softDeletePage(pageId: number): Promise<boolean> {
+/**
+ * Soft deletes a page.
+ *
+ * @param pageId - ID of the page to soft delete.
+ * @returns The number of affected rows.
+ */
+
+export async function softDeletePage(
+  pageId: number,
+  deletedBy: number,
+): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
     UPDATE pages
     SET
-      deleted_at = CURRENT_TIMESTAMP
+      slug = CONCAT(
+        LEFT(slug, 255 - CHAR_LENGTH(CONCAT('__deleted__', id))),
+        '__deleted__',
+        id
+      ),
+      deleted_at = CURRENT_TIMESTAMP,
+      deleted_by = ?
     WHERE id = ?
       AND deleted_at IS NULL
     `,
-    [pageId],
+    [deletedBy, pageId],
   );
 
-  return result.affectedRows > 0;
+  return result.affectedRows;
 }
 
 export async function updatePageStatus(
   pageId: number,
-  status: "draft" | "published",
-): Promise<boolean> {
+  status: PageStatus,
+  updatedBy: number,
+): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `
     UPDATE pages
     SET
       status = ?,
+      updated_by = ?,
       published_at = CASE
         WHEN ? = 'published'
-        THEN CURRENT_TIMESTAMP
-        ELSE NULL
+          THEN COALESCE(published_at, CURRENT_TIMESTAMP)
+        ELSE published_at
       END
     WHERE id = ?
       AND deleted_at IS NULL
     `,
-    [status, status, pageId],
+    [status, updatedBy, status, pageId],
   );
 
-  return result.affectedRows > 0;
+  return result.affectedRows;
 }

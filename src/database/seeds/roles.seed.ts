@@ -20,5 +20,17 @@ export async function seedRoles() {
     );
   }
 
+  // Delete obsolete roles
+  if (roles.length > 0) {
+    const roleSlugs = roles.map((r) => r.slug);
+    const placeholders = roleSlugs.map(() => "?").join(", ");
+    await db.execute(
+      `DELETE FROM roles WHERE slug NOT IN (${placeholders})`,
+      roleSlugs,
+    );
+  } else {
+    await db.execute(`DELETE FROM roles`);
+  }
+
   console.log("Roles seeded");
 }

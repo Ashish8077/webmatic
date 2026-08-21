@@ -1,11 +1,11 @@
 import { handleApiError } from "@/shared/utils/http/handle-api-error";
 import { successResponse } from "@/shared/utils/http/success-response";
-import { getAuthUser } from "@/modules/auth/lib/get-auth-user";
+import { requireAuth } from "@/modules/auth/lib/get-auth-user";
 import { permissionsService } from "@/modules/auth/services/permissions.service";
 
 export async function GET() {
   try {
-    const authUser = await getAuthUser();
+    const authUser = await requireAuth();
 
     const result = await permissionsService(authUser.userId);
 

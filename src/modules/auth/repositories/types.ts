@@ -11,6 +11,29 @@ export interface UserRow extends RowDataPacket {
   role_slug: string | null;
 }
 
+export interface UserPasswordRow extends RowDataPacket {
+  id: number;
+  password_hash: string;
+}
+
+export interface UserProfileRow extends RowDataPacket {
+  id: number;
+  first_name: string;
+  last_name: string | null;
+  email: string;
+  profile_image_id: number | null;
+  status: string;
+  created_at: Date;
+  role_slug: string | null;
+  
+  // Media join fields
+  profile_image_url?: string | null;
+  profile_image_storage_path?: string | null;
+  profile_image_disk?: string | null;
+  profile_image_type?: string | null;
+  profile_image_name?: string | null;
+}
+
 export interface RefreshTokenRow extends RowDataPacket {
   id: number;
   user_id: number;
@@ -21,4 +44,14 @@ export interface RefreshTokenRow extends RowDataPacket {
 
 export interface PermissionRow extends RowDataPacket {
   slug: string;
+}
+
+export interface AuthUserRow extends RowDataPacket {
+  id: number;
+  email: string;
+}
+
+export interface AuthPermissionRow extends RowDataPacket {
+  role_slug: string;
+  permission_slug: string;
 }

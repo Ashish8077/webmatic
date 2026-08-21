@@ -54,3 +54,19 @@ export async function findRefreshTokenByHash(
 
   return rows[0] ?? null;
 }
+
+export async function revokeAllRefreshTokensForUser(
+  userId: number,
+): Promise<void> {
+  await db.execute(
+    `
+    UPDATE refresh_tokens
+    SET
+      is_revoked = 1,
+      revoked_at = CURRENT_TIMESTAMP
+    WHERE user_id = ?
+      AND is_revoked = 0
+    `,
+    [userId],
+  );
+}

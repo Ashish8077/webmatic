@@ -1,0 +1,113 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { Controller, FormProvider } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { ToggleGroup } from "@/components/ui/toggle-group";
+
+import { usePageForm } from "@/features/pages/hooks/use-page-form";
+import SeoFields from "@/components/shared/seo/seo-fields";
+import type { CreatePageInput } from "@/features/pages/schemas/create-page.schema";
+
+const STATUS_OPTIONS = [
+  { label: "Draft", value: "draft" as const },
+  { label: "Published", value: "published" as const },
+];
+
+interface PageFormProps {
+  form: ReturnType<typeof usePageForm>;
+  onSubmit: (data: CreatePageInput) => Promise<void>;
+  submitLabel?: string;
+  defaultValues?: Partial<CreatePageInput>;
+  isSystem?: boolean;
+}
+
+function PageForm({
+  form,
+  onSubmit,
+  submitLabel = "Create Page",
+  isSystem,
+}: PageFormProps) {
+  const router = useRouter();
+
+  return (
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {/* Core Fields */}
+        <div className="bg-card-bg border border-card-border rounded-2xl p-6 space-y-5">
+        <Input
+          label="Title"
+          placeholder="Enter page title"
+          autoComplete="off"
+          autoFocus
+          {...form.register("title")}
+          error={form.formState.errors.title?.message}
+        />
+
+        <Input
+          label="Slug"
+          placeholder="page-url-slug"
+          disabled={isSystem}
+          {...form.register("slug")}
+          hint={
+            isSystem
+              ? "System page slugs cannot be changed"
+              : "URL path for this page"
+          }
+          error={form.formState.errors.slug?.message}
+        />
+
+        <Controller
+          name="status"
+          control={form.control}
+          render={({ field }) => (
+            <ToggleGroup
+              label="Status"
+              value={field.value}
+              onChange={field.onChange}
+              options={STATUS_OPTIONS}
+              error={form.formState.errors.status?.message}
+            />
+          )}
+        />
+      </div>
+
+      {/* SEO Section */}
+      <SeoFields
+        register={{
+          seoTitle: form.register("seoTitle"),
+          metaDescription: form.register("metaDescription"),
+          canonicalUrl: form.register("canonicalUrl"),
+          metaKeywords: form.register("metaKeywords"),
+          ogTitle: form.register("ogTitle"),
+          ogDescription: form.register("ogDescription"),
+          twitterTitle: form.register("twitterTitle"),
+          twitterDescription: form.register("twitterDescription"),
+          robotsIndex: form.register("robotsIndex"),
+          robotsFollow: form.register("robotsFollow"),
+        }}
+        errors={form.formState.errors}
+        warnings={form.seoWarnings}
+        ogImageName="ogImageId"
+        twitterImageName="twitterImageId"
+      />
+
+      {/* Actions */}
+      <div className="flex items-center gap-3 pt-2">
+        <Button
+          type="submit"
+          isLoading={form.formState.isSubmitting || form.formState.isLoading}
+        >
+          {submitLabel}
+        </Button>
+        <Button type="button" variant="secondary" onClick={() => router.back()}>
+          Cancel
+        </Button>
+      </div>
+      </form>
+    </FormProvider>
+  );
+}
+
+export default PageForm;

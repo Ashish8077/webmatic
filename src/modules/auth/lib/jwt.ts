@@ -1,22 +1,22 @@
 import jwt from "jsonwebtoken";
-import { env } from "@/config/env";
-import type { JwtPayload } from "./types";
+import { env } from "@/config/env.server";
+import type { JwtExpiresIn, JwtPayload } from "../types/jwt";
 import { AppError } from "@/shared/utils/errors/app-error";
 
-export function generateAccessToken(userId: number) {
+export function generateAccessToken(userId: number): string {
   return jwt.sign({ sub: userId }, env.JWT_ACCESS_SECRET, {
-    expiresIn: env.JWT_ACCESS_EXPIRES_IN,
+    expiresIn: env.JWT_ACCESS_EXPIRES_IN as JwtExpiresIn,
   });
 }
 
-export function generateRefreshToken(userId: number) {
+export function generateRefreshToken(userId: number): string {
   return jwt.sign(
     {
       sub: userId,
     },
     env.JWT_REFRESH_SECRET,
     {
-      expiresIn: env.JWT_REFRESH_EXPIRES_IN,
+      expiresIn: env.JWT_REFRESH_EXPIRES_IN as JwtExpiresIn,
     },
   );
 }

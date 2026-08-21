@@ -1,10 +1,18 @@
 import db from "./connection";
 
 import { seedPermissions } from "./seeds/permissions.seed";
-import { seedRolePermissions } from "./seeds/rolePermission.seed";
+import { seedRolePermissions } from "./seeds/role-permission.seed";
 import { seedRoles } from "./seeds/roles.seed";
-import { seedSuperAdmin } from "./seeds/superAdmin.seed";
-import { seedUserRoles } from "./seeds/userRoles.seed";
+import { seedSuperAdmin } from "./seeds/super-admin.seed";
+import { seedSystemPageSections } from "./seeds/system-page-sections.seed";
+import { seedSystemPages } from "./seeds/system-pages.seed";
+import { seedTestUsers } from "./seeds/test-users.seed";
+import { seedUserRoles } from "./seeds/user-roles.seed";
+import { seedServices } from "./seeds/services.seed";
+import { seedMenus } from "./seeds/menus.seed";
+import { seedSiteSettings } from "./seeds/site-settings.seed";
+import { seedTestimonials } from "./seeds/testimonials.seed";
+import { seedWorkProjects } from "./seeds/work-projects.seed";
 
 async function seedDatabase() {
   try {
@@ -47,6 +55,56 @@ async function seedDatabase() {
      * - roles table populated
      */
     await seedUserRoles();
+
+    /**
+     * Create test users.
+     *
+     * Requires:
+     * - users table populated
+     * - roles table populated
+     */
+    await seedTestUsers();
+
+    /**
+     * Seed system pages.
+     *
+     * Requires:
+     * - pages table populated
+     */
+    await seedSystemPages();
+
+    /**
+     * Seed system page sections.
+     *
+     * Requires:
+     * - system-pages table populated
+     */
+    await seedSystemPageSections();
+
+    /**
+     * Seed services.
+     */
+    await seedServices();
+
+    /**
+     * Seed menus.
+     */
+    await seedMenus();
+
+    /**
+     * Seed site settings (global configurations).
+     */
+    await seedSiteSettings();
+
+    /**
+     * Seed testimonials.
+     */
+    await seedTestimonials();
+
+    /**
+     * Seed work projects.
+     */
+    await seedWorkProjects();
 
     console.log("\nDatabase seeding completed successfully");
   } catch (error) {

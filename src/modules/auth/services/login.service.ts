@@ -3,7 +3,7 @@
 // Shared app infrastructure
 import { AppError } from "@/shared/utils/errors/app-error";
 import { createHash } from "@/shared/utils/crypto/hash";
-import { env } from "@/config/env";
+import { env } from "@/config/env.server";
 
 // Auth module
 import { comparePassword } from "@/modules/auth/lib/password";
@@ -15,7 +15,7 @@ import {
 } from "@/modules/auth/lib/jwt";
 import { createRefreshToken } from "@/modules/auth/repositories/refresh-token.repository";
 import type { LoginResponse } from "@/modules/auth/services/types";
-import type { LoginInput } from "@/modules/auth/validators/login.schema";
+import type { LoginInput } from "@/modules/auth/schemas/login.schema";
 
 export async function loginService(
   loginInput: LoginInput,
