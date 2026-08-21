@@ -47,6 +47,12 @@ export const Permission = {
   WORK_UPDATE: "work.update",
   WORK_DELETE: "work.delete",
   WORK_PUBLISH: "work.publish",
+
+  // User permissions
+  USER_VIEW: "user.view",
+  USER_CREATE: "user.create",
+  USER_UPDATE: "user.update",
+  USER_DELETE: "user.delete",
 } as const;
 
 export type Permission = (typeof Permission)[keyof typeof Permission];

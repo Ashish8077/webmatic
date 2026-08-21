@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { passwordSchema } from "@/shared/utils/validators/password.schema";
+
 export const changePasswordSchema = z
   .object({
     currentPassword: z
@@ -11,14 +13,7 @@ export const changePasswordSchema = z
         message: "Current password is too long.",
       }),
 
-    newPassword: z
-      .string()
-      .min(8, {
-        message: "New password must be at least 8 characters.",
-      })
-      .max(255, {
-        message: "New password is too long.",
-      }),
+    newPassword: passwordSchema,
 
     confirmPassword: z
       .string()
