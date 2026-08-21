@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { requiredString, optionalString, optionalUrl } from "@/features/page-sections/schemas/common.schema";
+import { requiredString, optionalString} from "@/features/page-sections/schemas/common.schema";
 
 const headerLogoSchema = z.object({
   imageId: z.number().int().positive().nullable(),

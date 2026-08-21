@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Menu, MenuItem } from "@/modules/menus/types/menu.types";
 import { Button } from "@/components/ui/button";
 import { Plus, Save } from "lucide-react";

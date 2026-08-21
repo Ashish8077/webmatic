@@ -15,7 +15,7 @@ import { useMenuItemForm } from "../hooks/use-menu-item-form";
 import { useCreateMenuItem, useUpdateMenuItem } from "../hooks/use-menu-mutations";
 import { toCreateMenuItemPayload } from "../utils/menu-item-mappers";
 import { ReferenceTargetSelector } from "./reference-target-selector";
-import { DESTINATION_TYPES, MenuItemFormValues } from "../schemas/menu-item-form.schema";
+import { MenuItemFormValues } from "../schemas/menu-item-form.schema";
 
 interface MenuItemFormProps {
   menuId: number;
