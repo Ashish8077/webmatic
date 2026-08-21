@@ -9,7 +9,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 
 import { generateHref } from "./mega-menu-link";
 
-function MobileNavItem({ node, setMenuOpen, depth = 0, isButton = false, parentTitle }: { node: MenuNode; setMenuOpen: (open: boolean) => void; depth?: number; isButton?: boolean; parentTitle?: string }) {
+function MobileNavItem({ node, setMenuOpen, depth = 0, isButton = false }: { node: MenuNode; setMenuOpen: (open: boolean) => void; depth?: number; isButton?: boolean }) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   
@@ -26,7 +26,7 @@ function MobileNavItem({ node, setMenuOpen, depth = 0, isButton = false, parentT
     if (isButton) {
       return (
         <Link
-          href={generateHref(node, true, parentTitle)}
+          href={generateHref(node)}
           className="mx-3 mt-3 mb-1 inline-flex items-center justify-center py-2.5 px-4 text-[13px] font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors duration-200"
           onClick={() => setMenuOpen(false)}
           target={node.target || undefined}
@@ -92,7 +92,6 @@ function MobileNavItem({ node, setMenuOpen, depth = 0, isButton = false, parentT
                 setMenuOpen={setMenuOpen} 
                 depth={depth + 0.5}
                 isButton={index === ctaIndex}
-                parentTitle={node.title}
               />
             ));
           })()}

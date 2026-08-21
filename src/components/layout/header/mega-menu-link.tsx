@@ -7,24 +7,17 @@ interface MegaMenuLinkProps {
   parentTitle?: string;
 }
 
-export function generateHref(node: MenuNode, isButton?: boolean, parentTitle?: string) {
-  // If the admin set a valid explicit URL, respect it
-  if (node.href && node.href !== "/" && node.href !== "") {
+export function generateHref(node: MenuNode) {
+  // The menu service's resolveTarget() already generates correct hrefs
+  // (e.g., /services/actual-db-slug). Use them as-is.
+  if (node.href && node.href !== "#") {
     return node.href;
   }
-  
-  // If it's a bottom CTA button (e.g. "Talk Brand Strategy"), use the parent's title for the slug
-  if (isButton && parentTitle) {
-    const slug = parentTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
-    return `/services/${slug}`;
-  }
-  
-  // Otherwise use the node's own title for the slug
-  const slug = node.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
-  return `/services/${slug}`;
+
+  return "#";
 }
 
-export function MegaMenuLink({ node, isButton, parentTitle }: MegaMenuLinkProps) {
+export function MegaMenuLink({ node, isButton }: MegaMenuLinkProps) {
   // If it's a Heading or has no link, NEVER render it as a button, even if it's the last item.
   if (node.href === "#") {
     return (
@@ -34,7 +27,7 @@ export function MegaMenuLink({ node, isButton, parentTitle }: MegaMenuLinkProps)
     );
   }
 
-  const href = generateHref(node, isButton, parentTitle);
+  const href = generateHref(node);
 
   if (isButton) {
     return (

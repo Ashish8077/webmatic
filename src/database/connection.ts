@@ -17,10 +17,10 @@ const db =
     waitForConnections: true,
     connectionLimit: 10,
     maxIdle: 10,
-    idleTimeout: 60000,
+    idleTimeout: 30000, // Evict connections from the pool before the server drops them
     queueLimit: 0,
     enableKeepAlive: true,
-    keepAliveInitialDelay: 0,
+    keepAliveInitialDelay: 10000, // Important for TiDB/Cloud load balancers
     ssl: {
       minVersion: "TLSv1.2",
       rejectUnauthorized: true,

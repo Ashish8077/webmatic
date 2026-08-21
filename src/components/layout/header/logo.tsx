@@ -40,7 +40,7 @@ export function Logo({ logoSettings }: LogoProps) {
       />
       {/* Image for solid white header (scrolled) */}
       <Image
-        src="/images/webmatic-logo-removebg-preview.png"
+        src="/images/webmatic-logo-removebg.png"
         alt={alt}
         className="h-9 sm:h-10 w-auto object-contain transition-all duration-300 drop-shadow-[0_0_15px_rgba(255,255,255,0.15)] absolute inset-0 opacity-100 group-[.is-top]/header:opacity-0"
         width={465}

@@ -59,7 +59,13 @@ export function MegaMenu({ node }: MegaMenuProps) {
       </Link>
 
       {/* Mega Menu Container */}
-      <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+      <div
+        className={`absolute left-1/2 -translate-x-1/2 top-full pt-2 transition-all duration-200 ease-out z-50 ${
+          open
+            ? "opacity-100 visible translate-y-0"
+            : "opacity-0 invisible translate-y-2 pointer-events-none"
+        }`}
+      >
         <div className="bg-white rounded-xl shadow-lg border border-slate-100 p-6 min-w-80 md:min-w-175 lg:min-w-225">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-0 md:divide-x md:divide-slate-100">
             {node.children.map((columnNode) => (
