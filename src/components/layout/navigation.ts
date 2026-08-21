@@ -9,7 +9,8 @@ import {
   Menu,
   Settings,
   FileText,
-  Palette
+  Palette,
+  Users
 } from "lucide-react";
 import { Permission } from "@/features/auth/constants/permissions";
 
@@ -108,6 +109,17 @@ export const navGroups: NavGroup[] = [
         href: "/admin/site-settings/header",
         permission: Permission.MENUS_VIEW,
         icon: Settings,
+      }
+    ]
+  },
+  {
+    title: "System",
+    items: [
+      {
+        label: "Users",
+        href: "/admin/users",
+        permission: Permission.USER_VIEW,
+        icon: Users,
       }
     ]
   }

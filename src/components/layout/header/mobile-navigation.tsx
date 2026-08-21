@@ -74,7 +74,7 @@ function MobileNavItem({ node, setMenuOpen, depth = 0, isButton = false, parentT
       </div>
       
       {/* Accordion content */}
-      <div className={`overflow-hidden transition-all duration-300 ${isOpen ? "max-h-[1000px] opacity-100 mt-1 pb-2" : "max-h-0 opacity-0"}`}>
+      <div className={`overflow-hidden transition-all duration-300 ${isOpen ? "max-h-250 opacity-100 mt-1 pb-2" : "max-h-0 opacity-0"}`}>
         <div className="flex flex-col gap-1 border-l-2 border-slate-100 ml-4 pl-1">
           {(() => {
             let ctaIndex = -1;

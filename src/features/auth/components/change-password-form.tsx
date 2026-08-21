@@ -3,12 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import {
   changePasswordSchema,
   type ChangePasswordFormValues,
 } from "../schemas/change-password.schema";
+import { PasswordStrengthIndicator } from "@/components/shared/password-strength-indicator";
 import { useChangePassword } from "../hooks/use-change-password";
 
 export function ChangePasswordForm() {
@@ -17,6 +18,7 @@ export function ChangePasswordForm() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<ChangePasswordFormValues>({
     resolver: zodResolver(changePasswordSchema),
@@ -37,6 +39,11 @@ export function ChangePasswordForm() {
       );
     }
   }
+
+  const newPasswordValue = useWatch({
+    control,
+    name: "newPassword",
+  });
 
   return (
     <div className="max-w-lg">
@@ -61,15 +68,19 @@ export function ChangePasswordForm() {
             error={errors.currentPassword?.message}
           />
 
-          <Input
-            label="New Password"
-            type="password"
-            placeholder="••••••••"
-            autoComplete="new-password"
-            {...register("newPassword")}
-            error={errors.newPassword?.message}
-            hint="Minimum 8 characters"
-          />
+          <div className="space-y-2">
+            <Input
+              label="New Password"
+              type="password"
+              placeholder="••••••••"
+              autoComplete="new-password"
+              {...register("newPassword")}
+              error={errors.newPassword?.message}
+            />
+            {newPasswordValue && (
+              <PasswordStrengthIndicator password={newPasswordValue} />
+            )}
+          </div>
 
           <Input
             label="Confirm New Password"
