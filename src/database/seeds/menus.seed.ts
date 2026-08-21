@@ -57,13 +57,18 @@ export async function seedMenus() {
   );
   const brandStrategyId = brandStrategyRes.insertId;
 
-  const brandLinks = ["Logo Design", "Graphic Design", "Corporate Identity", "Packaging Design Services", "Talk Brand Strategy"];
-  for (let i = 0; i < brandLinks.length; i++) {
+  const brandHeadings = ["Logo Design", "Graphic Design", "Corporate Identity", "Packaging Design Services"];
+  for (let i = 0; i < brandHeadings.length; i++) {
     await db.execute(
-      `INSERT INTO menu_items (menu_id, parent_id, title, item_type, target_type, url, sort_order, is_active, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [headerMenuId, brandStrategyId, brandLinks[i], "link", "custom", "#", i + 1, true, adminId]
+      `INSERT INTO menu_items (menu_id, parent_id, title, item_type, sort_order, is_active, created_by) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [headerMenuId, brandStrategyId, brandHeadings[i], "heading", i + 1, true, adminId]
     );
   }
+  // CTA Button
+  await db.execute(
+    `INSERT INTO menu_items (menu_id, parent_id, title, item_type, target_type, url, sort_order, is_active, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [headerMenuId, brandStrategyId, "Talk Brand Strategy", "link", "custom", "/services/brand-strategy", brandHeadings.length + 1, true, adminId]
+  );
 
   // Create Column 2: Website Design
   const [websiteDesignRes] = await db.execute<ResultSetHeader>(
@@ -72,13 +77,18 @@ export async function seedMenus() {
   );
   const websiteDesignId = websiteDesignRes.insertId;
 
-  const webLinks = ["Web Design & Development", "User Interface Design", "User Experience Design", "Content Strategy", "Talk Website Design"];
-  for (let i = 0; i < webLinks.length; i++) {
+  const webHeadings = ["Web Design & Development", "User Interface Design", "User Experience Design", "Content Strategy"];
+  for (let i = 0; i < webHeadings.length; i++) {
     await db.execute(
-      `INSERT INTO menu_items (menu_id, parent_id, title, item_type, target_type, url, sort_order, is_active, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [headerMenuId, websiteDesignId, webLinks[i], "link", "custom", "#", i + 1, true, adminId]
+      `INSERT INTO menu_items (menu_id, parent_id, title, item_type, sort_order, is_active, created_by) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [headerMenuId, websiteDesignId, webHeadings[i], "heading", i + 1, true, adminId]
     );
   }
+  // CTA Button
+  await db.execute(
+    `INSERT INTO menu_items (menu_id, parent_id, title, item_type, target_type, url, sort_order, is_active, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [headerMenuId, websiteDesignId, "Talk Website Design", "link", "custom", "/services/website-design", webHeadings.length + 1, true, adminId]
+  );
 
   // Create Column 3: Digital Marketing
   const [digitalMarketingRes] = await db.execute<ResultSetHeader>(
@@ -87,13 +97,18 @@ export async function seedMenus() {
   );
   const digitalMarketingId = digitalMarketingRes.insertId;
 
-  const marketingLinks = ["Content Marketing", "Social Media Strategy", "Email Marketing", "SEO Strategy", "Talk Digital Marketing"];
-  for (let i = 0; i < marketingLinks.length; i++) {
+  const marketingHeadings = ["Content Marketing", "Social Media Strategy", "Email Marketing", "SEO Strategy"];
+  for (let i = 0; i < marketingHeadings.length; i++) {
     await db.execute(
-      `INSERT INTO menu_items (menu_id, parent_id, title, item_type, target_type, url, sort_order, is_active, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [headerMenuId, digitalMarketingId, marketingLinks[i], "link", "custom", "#", i + 1, true, adminId]
+      `INSERT INTO menu_items (menu_id, parent_id, title, item_type, sort_order, is_active, created_by) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [headerMenuId, digitalMarketingId, marketingHeadings[i], "heading", i + 1, true, adminId]
     );
   }
+  // CTA Button
+  await db.execute(
+    `INSERT INTO menu_items (menu_id, parent_id, title, item_type, target_type, url, sort_order, is_active, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [headerMenuId, digitalMarketingId, "Talk Digital Marketing", "link", "custom", "/services/digital-marketing", marketingHeadings.length + 1, true, adminId]
+  );
 
   // Create About Link
   if (aboutPage) {
@@ -136,13 +151,13 @@ export async function seedMenus() {
 
   // Quick Links for footer
   const footerLinks = [
-    { title: "Brand Strategy", target: "custom", url: "#" },
+    { title: "Brand Strategy", target: "custom", url: "/services/brand-marketing" },
     { title: "About Us", target: "page", ref: aboutPage?.id },
     { title: "Services", target: "custom", url: "/services" },
-    { title: "Website Design", target: "custom", url: "#" },
+    { title: "Website Design", target: "custom", url: "/services/web-development" },
     { title: "Our Work", target: "custom", url: "/work" },
     { title: "Contact Us", target: "page", ref: contactPage?.id },
-    { title: "Digital Marketing", target: "custom", url: "#" },
+    { title: "Digital Marketing", target: "custom", url: "/services/digital-marketing" },
     { title: "Forum Support", target: "custom", url: "/support" }
   ];
 

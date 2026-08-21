@@ -1,28 +1,39 @@
 import db from "../connection";
 import { toJson } from "@/shared/utils/database/json";
 import { defaultFooterSettings } from "../data/footer-settings";
+import { defaultHeaderSettings } from "../data/header-settings";
 
 export async function seedSiteSettings() {
   console.log("Seeding site settings...");
 
   const adminId = 1;
 
-  // Upsert Footer Settings
+  // Insert Footer Settings (Idempotent - will not overwrite if exists)
   await db.execute(
     `
-    INSERT INTO site_settings (
+    INSERT IGNORE INTO site_settings (
       setting_key, 
       setting_value, 
       is_public, 
       created_by
     )
     VALUES (?, ?, ?, ?)
-    ON DUPLICATE KEY UPDATE 
-      setting_value = VALUES(setting_value),
-      is_public = VALUES(is_public),
-      updated_by = VALUES(created_by)
     `,
     ["layout.footer", toJson(defaultFooterSettings), true, adminId]
+  );
+
+  // Insert Header Settings (Idempotent - will not overwrite if exists)
+  await db.execute(
+    `
+    INSERT IGNORE INTO site_settings (
+      setting_key, 
+      setting_value, 
+      is_public, 
+      created_by
+    )
+    VALUES (?, ?, ?, ?)
+    `,
+    ["layout.header", toJson(defaultHeaderSettings), true, adminId]
   );
 
   console.log("Site settings seeded");

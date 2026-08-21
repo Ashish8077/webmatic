@@ -16,20 +16,23 @@ export async function seedServices() {
 
     const existingSlugs = new Set(existingServices.map((row) => row.slug));
 
-    for (const service of servicesData) {
+    for (const [index, service] of servicesData.entries()) {
+      const sortOrder = index + 1;
+
       if (existingSlugs.has(service.slug)) {
         console.log(`Service '${service.slug}' already exists. Updating...`);
         await connection.execute(
           `
           UPDATE services SET
             name = ?, short_description = ?, description = ?, key_features = ?, benefits = ?, faq = ?,
-            seo_title = ?, meta_description = ?, visual_type = ?, icon_name = ?, cta_button_text = ?
+            seo_title = ?, meta_description = ?, visual_type = ?, icon_name = ?, cta_button_text = ?,
+            sort_order = ?
           WHERE slug = ?
           `,
           [
             service.name, service.short_description, service.description, service.key_features, service.benefits, service.faq,
             service.seo_title, service.meta_description, service.visual_type, service.icon_name, service.cta_button_text,
-            service.slug
+            sortOrder, service.slug
           ]
         );
         continue;
@@ -40,8 +43,8 @@ export async function seedServices() {
         INSERT INTO services (
           name, slug, short_description, description, key_features, benefits, faq,
           seo_title, meta_description, visual_type, icon_name, cta_button_text,
-          status, published_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'published', CURRENT_TIMESTAMP)
+          status, published_at, sort_order
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'published', CURRENT_TIMESTAMP, ?)
         `,
         [
           service.name,
@@ -56,6 +59,7 @@ export async function seedServices() {
           service.visual_type,
           service.icon_name,
           service.cta_button_text,
+          sortOrder,
         ]
       );
 
